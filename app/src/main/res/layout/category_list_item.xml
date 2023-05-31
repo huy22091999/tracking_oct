@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="#EFEFEF"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_category_layout">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_category"
+            android:minWidth="200dp"
+            android:minHeight="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/img_category" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lable_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/background_category"
+            android:gravity="center"
+            android:paddingStart="8sp"
+            android:paddingTop="12dp"
+            android:paddingEnd="8sp"
+            android:paddingBottom="12dp"
+            android:text="Bệnh sốt xuất huyết"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</RelativeLayout>

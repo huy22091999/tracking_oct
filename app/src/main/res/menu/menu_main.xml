@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.oceantech.tracking.MainActivity">
+    <item
+
+        android:icon="@drawable/img_flag_vi"
+        android:id="@+id/action_en"
+        app:showAsAction="collapseActionView"
+        android:title="en" />
+    <item
+        android:id="@+id/action_vi"
+        android:icon="@drawable/img_flag_vi"
+        app:showAsAction="collapseActionView"
+        android:title="vi"/>
+</menu>

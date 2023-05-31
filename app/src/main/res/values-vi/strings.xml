@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dengue Alert</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_home">Trang chủ</string>
+    <string name="menu_category">Danh mục tin tức</string>
+    <string name="menu_nearest_medical">Cơ sở y tế gần nhất</string>
+    <string name="menu_feedback">Phản hồi</string>
+    <string name="fragment_home">Trang chủ</string>
+    <string name="feedback_to_app">Phản hồi về ứng dụng</string>
+    <string name="feedback_description">Vui lòng nhập ý kiến phản hồi của bạn để góp phần làm cho ứng dụng của chúng tôi ngày càng hoàn thiện hơn.</string>
+    <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
+    <string name="fragment_news">Tin tức</string>
+    <string name="send_feedback">Gửi phản hồi</string>
+    <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
+    <string name="loggin">Đăng nhập</string>
+    <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
+    <string name="forget_password">Quên mật khẩu</string>
+    <string name="category_theme">Chủ đề tin tức</string>
+    <string name="home_everyone">Mọi người cùng chung tay phòng chống dịch bệnh sốt xuất huyết</string>
+    <string name="home_button">Tin tức sốt xuất huyết</string>
+    <string name="note">Dengue Alert không thực hiện lưu trữ, thu thập dữ liệu vị tí của dười dùng.</string>
+    <string name="accept_use">Đồng ý sử dụng</string>
+    <string name="title_category">Bệnh sốt xuất huyết</string>
+    <string name="no_location_text">No location</string>
+    <string name="ok">Ok</string>
+    <string name="permission_denied_explanation">permission denied explanation</string>
+    <string name="settings">Cài đặt</string>
+    <string name="warning_dengue">Ứng dụng đang quét các ổ dịch xung quanh bạn !</string>
+    <string name="password">Mật khẩu</string>
+    <string name="email">Email</string>
+    <string name="send">Gửi</string>
+    <string name="signin">Đăng kí tài khoản</string>
+    <string name="last_name">Tên</string>
+    <string name="first_name">Họ</string>
+    <string name="display_name">Tên hiển thị</string>
+    <string name="username">Tên đăng nhập</string>
+    <string name="signin_account">Đăng kí</string>
+    <string name="login_fail">Tài khoản hoặc mật khẩu không đúng. Mời bạn đăng nhập lại</string>
+    <string name="login_success">Đăng nhập thành công</string>
+    <string name="username_not_empty">Trường này không được để trống.</string>
+    <string name="has_dengue">⛔ Bạn đang ở trong phạm vi có nguy cơ nhiễm Sốt xuất huyết !</string>
+    <string name="content_new">Nội dung tin</string>
+    <string name="by_outhor">bởi tác giả</string>
+    <string name="view_count">" %1$s Lượt xem"</string>
+    <string name="vi">Tiếng Việt</string>
+    <string name="en">Tiếng Anh</string>
+    <string name="Cancel">Hủy</string>
+    <string name="open_location_settings">Mở cài đặt</string>
+    <string name="gps_network_not_enabled">Ứng dụng cần sử dụng vị trí của bạn để phát hiện và cảnh báo các ổ dịch xunh quanh.</string>
+    <string name="close">Đóng</string>
+    <string name="retry">Thử lại</string>
+    <string name="permission_rationale">permission rationale</string>
+    <string name="account">Tài khoản</string>
+    <string name="info_app">Thông tin ứng dụng</string>
+    <string name="privacy">Dengue alert là một ứng dụng cảnh báo chủ động, hỗ trợ người dân phát hiện và tránh tiếp xúc với các yếu tố nguy cơ lây nhiễm sốt xuất huyết. Đồng thời, ứng dụng cũng cung cấp các thông tin cần thiết vầ bệnh sốt xuất huyết như thông tin về tác nhân gây bệnh, các biện pháp phòng tránh và các cơ sở y tế gần nhất đối với người dân.</string>
+    <string name="channel_description">Thông báo</string>
+    <string name="need_network">Ứng dụng Dengue Alert cần sử dụng dữ liệu di động để phát hiện ổ dịch xung quanh. \n\nBạn cần bật dữ liệu di động hoặc Wifi trong phần cài đặt</string>
+    <string name="received">We have received your feedback</string>
+    <string name="exit">Thoát ứng dụng</string>
+    <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
+    <string name="at">lúc</string>
+    <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+</resources>

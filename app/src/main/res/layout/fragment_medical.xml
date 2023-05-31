@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#EFEFEF"
+    android:orientation="vertical"
+    tools:context=".ui.medical.MedicalFragment">
+        <com.google.android.material.textview.MaterialTextView
+            android:text="@string/menu_nearest_medical"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <!-- TODO: Update blank fragment layout -->
+<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+<!--        android:id="@+id/swipeRefresh"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:paddingTop="8dp"
+            android:id="@+id/recycler_view"
+            tools:listitem="@layout/item_health_organization"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+
+</LinearLayout>

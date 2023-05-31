@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NimpeInputLayoutLogin" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxCornerRadiusTopStart">24dp</item>
+        <item name="boxCornerRadiusTopEnd">24dp</item>
+        <item name="boxCornerRadiusBottomStart">24dp</item>
+        <item name="boxCornerRadiusBottomEnd">24dp</item>
+        <item name="boxStrokeColor">@color/boxstroke_outline</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+    <style name="NimpeButtonLogin">
+        <item name="cornerRadius">24dp</item>
+
+    </style>
+    <style name="stylePopup" parent="Base.Widget.AppCompat.PopupMenu">
+        <item name="android:dropDownVerticalOffset">0dip</item>
+        <item name="android:dropDownHorizontalOffset">20dp</item>
+        <item name="android:dropDownWidth">100dp</item>
+        <item name="android:width">100dp</item>
+    </style>
+</resources>
