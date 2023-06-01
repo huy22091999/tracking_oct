@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class AuthRepository @Inject constructor(
     val api: AuthApi,
-    val preferences: UserPreferences
+    private val preferences: UserPreferences
 ) {
     fun login(username: String, password: String): Observable<TokenResponse> = api.oauth(
         UserCredentials(

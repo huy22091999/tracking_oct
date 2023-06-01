@@ -27,15 +27,6 @@
         android:theme="@style/Theme.Nimpe"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <service
-            android:name="com.oceantech.tracking.ui.home.request_location.ForegroundOnlyLocationService"
-            android:enabled="true"
-            android:exported="true"
-            android:foregroundServiceType="location" />
-        <activity
-            android:name="com.oceantech.tracking.ui.security.AcceptActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Nimpe.NoActionBar" />
         <activity
             android:name="com.oceantech.tracking.ui.security.LoginActivity"
             android:exported="true"

@@ -40,7 +40,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import kotlin.system.measureTimeMillis
 
-abstract class TrackingBaseActivity<VB: ViewBinding> : AppCompatActivity(), HasScreenInjector {
+abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), HasScreenInjector {
 
     protected lateinit var views: VB
 
@@ -51,12 +51,12 @@ abstract class TrackingBaseActivity<VB: ViewBinding> : AppCompatActivity(), HasS
 
     protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
         viewEvents
-                .observe()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    hideWaitingView()
-                    observer(it)
-                }
+            .observe()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                hideWaitingView()
+                observer(it)
+            }
     }
 
     private lateinit var fragmentFactory: FragmentFactory
@@ -68,16 +68,18 @@ abstract class TrackingBaseActivity<VB: ViewBinding> : AppCompatActivity(), HasS
     private var savedInstanceState: Bundle? = null
 
     private lateinit var nimpeComponent: TrackingComponent
+
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate Activity ${javaClass.simpleName}")
 
-        nimpeComponent= DaggerTrackingComponent.factory().create(this)
+        nimpeComponent = DaggerTrackingComponent.factory().create(this)
         val timeForInjection = measureTimeMillis {
             injectWith(nimpeComponent)
         }
         Timber.v("Injecting dependencies into ${javaClass.simpleName} took $timeForInjection ms")
         fragmentFactory = nimpeComponent.fragmentFactory()
+        viewModelFactory = nimpeComponent.viewModelFactory()
         supportFragmentManager.fragmentFactory = fragmentFactory
         super.onCreate(savedInstanceState)
 
@@ -226,10 +228,14 @@ abstract class TrackingBaseActivity<VB: ViewBinding> : AppCompatActivity(), HasS
         }
     }
 
-    private fun recursivelyDispatchOnBackPressed(fm: FragmentManager, fromToolbar: Boolean): Boolean {
+    private fun recursivelyDispatchOnBackPressed(
+        fm: FragmentManager,
+        fromToolbar: Boolean
+    ): Boolean {
         val reverseOrder = fm.fragments.filterIsInstance<TrackingBaseFragment<*>>().reversed()
         for (f in reverseOrder) {
-            val handledByChildFragments = recursivelyDispatchOnBackPressed(f.childFragmentManager, fromToolbar)
+            val handledByChildFragments =
+                recursivelyDispatchOnBackPressed(f.childFragmentManager, fromToolbar)
             if (handledByChildFragments) {
                 return true
             }

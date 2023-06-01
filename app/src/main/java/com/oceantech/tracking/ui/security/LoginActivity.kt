@@ -14,6 +14,7 @@ import javax.inject.Inject
 class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {
 
     val viewModel: SecurityViewModel by viewModel()
+
     @Inject
     lateinit var securityviewmodelFactory: SecurityViewModel.Factory
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,18 +34,13 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     }
 
     private fun handleEvent(event: SecurityViewEvent) {
-        when(event){
-            is SecurityViewEvent.ReturnSigninEvent ->{
-                addFragmentToBackstack(R.id.frame_layout,SigninFragment::class.java)
-//                supportFragmentManager.commit {
-//                    replace<SigninFragment>(R.id.frame_layout)
-//                }
+        when (event) {
+            is SecurityViewEvent.ReturnSigninEvent -> {
+                addFragmentToBackstack(R.id.frame_layout, SigninFragment::class.java)
             }
-            is SecurityViewEvent.ReturnResetpassEvent->{
-                addFragmentToBackstack(R.id.frame_layout,ResetPasswordFragment::class.java)
-//                supportFragmentManager.commit {
-//                    replace<ResetPasswordFragment>(R.id.frame_layout)
-//                }
+
+            is SecurityViewEvent.ReturnResetpassEvent -> {
+                addFragmentToBackstack(R.id.frame_layout, ResetPasswordFragment::class.java)
             }
 
         }

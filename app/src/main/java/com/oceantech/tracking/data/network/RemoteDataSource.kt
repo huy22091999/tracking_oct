@@ -34,23 +34,10 @@ class RemoteDataSource() {
 
     companion object {
         private const val BASE_URL =
-            "http://api.oceantech.vn/demonimpe/"
+            "http://android-tracking.oceantech.com.vn/mita/"
         private const val DEFAULT_USER_AGENT = "Nimpe-Android"
         private const val DEFAULT_CONTENT_TYPE = "application/json"
     }
-
-    fun buildApi():ReDengueLocationApi {
-        val gson = GsonBuilder().setLenient().create()
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .callbackExecutor(Executors.newSingleThreadExecutor())
-            .client(getRetrofitClient())
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-            .create(ReDengueLocationApi::class.java)
-
-    }
-
     fun <Api> buildApi(
         api: Class<Api>,
         context: Context
@@ -60,15 +47,13 @@ class RemoteDataSource() {
             .setLenient()
             .create()
 
-//        val sessionManager = SessionManager(context.applicationContext)
-//        Timber.e("Access token = ${sessionManager.fetchAuthToken()}")
+        val sessionManager = SessionManager(context.applicationContext)
         var authenticator: TokenAuthenticator? =null
-        //TokenAuthenticator(context,buildTokenApi())
 
-//        if (sessionManager.fetchAuthToken() != null) {
-//            authenticator = TokenAuthenticator(sessionManager.fetchAuthToken()!!)
-//        } else
-        authenticator = TokenAuthenticator("")
+        authenticator = if (sessionManager.fetchAuthToken() != null) {
+            TokenAuthenticator(sessionManager.fetchAuthToken()!!)
+        } else
+            TokenAuthenticator("")
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)

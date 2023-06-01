@@ -16,9 +16,11 @@
 
 package com.oceantech.tracking.di
 
-import javax.inject.Scope
+import androidx.lifecycle.ViewModel
+import dagger.MapKey
+import kotlin.reflect.KClass
 
-@Scope
-@MustBeDocumented
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ScreenScope
+@MapKey
+annotation class ViewModelKey(val value: KClass<out ViewModel>)

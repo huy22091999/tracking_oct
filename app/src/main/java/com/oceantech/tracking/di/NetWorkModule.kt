@@ -11,14 +11,14 @@ import dagger.Provides
 @Module
 object NetWorkModule {
     @Provides
-    fun providerLocaleHelper():LocalHelper=LocalHelper()
+    fun providerLocaleHelper(): LocalHelper = LocalHelper()
 
     @Provides
     fun providerRemoteDateSource(): RemoteDataSource = RemoteDataSource()
 
 
     @Provides
-    fun providerUserPreferences(context: Context): UserPreferences= UserPreferences(context)
+    fun providerUserPreferences(context: Context): UserPreferences = UserPreferences(context)
 
 
     @Provides
@@ -32,7 +32,7 @@ object NetWorkModule {
     fun providerAuthRepository(
         userPreferences: UserPreferences,
         api: AuthApi
-    ) :AuthRepository=AuthRepository(api,userPreferences)
+    ): AuthRepository = AuthRepository(api, userPreferences)
 
 
     @Provides
@@ -40,39 +40,10 @@ object NetWorkModule {
         remoteDataSource: RemoteDataSource,
         context: Context
     ) = remoteDataSource.buildApi(UserApi::class.java, context)
+
     @Provides
     fun providerUserRepository(
         api: UserApi
-    ) : UserRepository =UserRepository(api)
-
-    @Provides
-    fun providerCategoryRepository(
-        api: CategoryApi
-    ) : CategoryRepository =CategoryRepository(api)
-    @Provides
-    fun providerCategoryApi(
-        remoteDataSource: RemoteDataSource,
-        context: Context
-    ) = remoteDataSource.buildApi(CategoryApi::class.java, context)
-    @Provides
-    fun providerHealthRepository(
-        api: HealthOrganizationApi
-    ) : HealthOrganizationRepository =HealthOrganizationRepository(api)
-    @Provides
-    fun providerHealthApi(
-        remoteDataSource: RemoteDataSource,
-        context: Context
-    ) = remoteDataSource.buildApi(HealthOrganizationApi::class.java, context)
-
-    @Provides
-    fun providerReDengueRepository(
-        api: ReDengueLocationApi
-    ) : ReDengueRepository =ReDengueRepository(api)
-    @Provides
-    fun providerReDengueApi(
-        remoteDataSource: RemoteDataSource,
-        context: Context
-    ) = remoteDataSource.buildApi(ReDengueLocationApi::class.java, context)
-
+    ): UserRepository = UserRepository(api)
 
 }

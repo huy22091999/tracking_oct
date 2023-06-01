@@ -11,10 +11,10 @@ class TokenAuthenticator(
 //    val api: AuthApi
 ) : Authenticator {
 
-        private val mAccessToken = accessToken
+    private val mAccessToken = accessToken
     //val sessionManager = SessionManager(context.applicationContext)
 
-        override fun authenticate(route: Route?, response: Response): Request {
+    override fun authenticate(route: Route?, response: Response): Request {
         return response.request.newBuilder()
             .header(
                 "Authorization",

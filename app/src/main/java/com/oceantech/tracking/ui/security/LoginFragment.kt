@@ -14,11 +14,12 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.FragmentLoginBinding
+import com.oceantech.tracking.ui.MainActivity
 import javax.inject.Inject
 
 
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
-    val viewModel:SecurityViewModel by activityViewModel()
+    private val viewModel:SecurityViewModel by activityViewModel()
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentLoginBinding {
         return FragmentLoginBinding.inflate(inflater,container,false)
     }
@@ -36,7 +37,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         }
         super.onViewCreated(view, savedInstanceState)
     }
-    fun loginSubmit()
+    private fun loginSubmit()
     {
         username=views.username.text.toString().trim()
         password=views.password.text.toString().trim()
@@ -58,7 +59,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                     viewModel.handle(SecurityViewAction.SaveTokenAction(token!!))
                 }
                 Toast.makeText(requireContext(),getString(R.string.login_success),Toast.LENGTH_LONG).show()
-                startActivity(Intent(requireContext(),AcceptActivity::class.java))
+                startActivity(Intent(requireContext(), MainActivity::class.java))
                 activity?.finish()
             }
             is Fail->{
