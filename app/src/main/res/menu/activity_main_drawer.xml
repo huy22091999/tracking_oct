@@ -17,6 +17,9 @@
         <item android:id="@+id/nav_feedbackFragment"
             android:icon="@drawable/ic_feedback"
             android:title="@string/menu_feedback"/>
+        <item android:id="@+id/nav_trackingFragment"
+            android:icon="@drawable/img_tracking"
+            android:title="@string/tracking"/>
     </group>
     <group android:id="@+id/lang" >
         <item
@@ -29,5 +32,6 @@
         <item android:title="@string/exit"
             android:id="@+id/exit"
             android:icon="@drawable/ic_exit"/>
+
     </group>
 </menu>

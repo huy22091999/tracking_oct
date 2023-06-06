@@ -27,14 +27,24 @@ data class User(
 
     @SerializedName("firstName")
     val firstName: String? = null,
-    @SerializedName("oldPassword")
-    val oldPassword: String? = null,
+    @SerializedName("gender")
+    val gender:String? = null,
+    @SerializedName("hasPhoto")
+    val hasPhoto:Boolean? = null,
+    @SerializedName("lastName")
+    val lastName:String? = null,
+//    @SerializedName("oldPassword")
+//    val oldPassword: String? = null,
     @SerializedName("password")
     val password: String? = null,
     @SerializedName("setPassword")
     val setPassword: String? = null,
     @SerializedName("person")
-    val person: Person? = null,
-    @SerializedName("roles")
-    val roles: List<Role>? = null
+//    val person: Person? = null,
+//    @SerializedName("roles")
+    val roles: List<Role>? = null,
+    @SerializedName("university")
+    val university: String? = null,
+    @SerializedName("year")
+    val year:Int? = null
 )

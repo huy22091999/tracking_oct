@@ -44,7 +44,6 @@ class HomeFragment @Inject constructor(val api: UserApi) :
             }
 
         })
-
     }
 
     private fun handleEvent(it: HomeViewEvent) {
@@ -55,5 +54,4 @@ class HomeFragment @Inject constructor(val api: UserApi) :
             }
         }
     }
-
 }

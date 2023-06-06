@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_HomeFragment_to_medicalFragment"
             app:destination="@id/nav_medicalFragment" />
+        <action
+            android:id="@+id/action_nav_HomeFragment_to_trackingFragment"
+            app:destination="@id/nav_trackingFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_newsFragment"
@@ -58,5 +61,10 @@
             android:id="@+id/action_listNewsFragment_to_detailNewsFragment"
             app:destination="@id/detailNewsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_trackingFragment"
+        android:name="com.oceantech.tracking.ui.tracking.TrackingFragment"
+        android:label="fragment_tracking"
+        tools:layout="@layout/fragment_tracking" />
 
 </navigation>

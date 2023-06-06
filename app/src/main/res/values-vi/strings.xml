@@ -16,12 +16,17 @@
     <string name="menu_category">Danh mục tin tức</string>
     <string name="menu_nearest_medical">Cơ sở y tế gần nhất</string>
     <string name="menu_feedback">Phản hồi</string>
+    <string name="menu_tracking">Tracking</string>
     <string name="fragment_home">Trang chủ</string>
     <string name="feedback_to_app">Phản hồi về ứng dụng</string>
+    <string name="tracking">Tracking</string>
     <string name="feedback_description">Vui lòng nhập ý kiến phản hồi của bạn để góp phần làm cho ứng dụng của chúng tôi ngày càng hoàn thiện hơn.</string>
+    <string name="tracking_description">Vui lòng nhập tracking của bạn.</string>
     <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
+    <string name="tracking_hint">Tracking của bạn ...</string>
     <string name="fragment_news">Tin tức</string>
     <string name="send_feedback">Gửi phản hồi</string>
+    <string name="save_tracking">Lưu tracking</string>
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
@@ -46,6 +51,7 @@
     <string name="display_name">Tên hiển thị</string>
     <string name="username">Tên đăng nhập</string>
     <string name="signin_account">Đăng kí</string>
+    <string name="sign_success">Đăng kí tài khoản thành công</string>
     <string name="login_fail">Tài khoản hoặc mật khẩu không đúng. Mời bạn đăng nhập lại</string>
     <string name="login_success">Đăng nhập thành công</string>
     <string name="username_not_empty">Trường này không được để trống.</string>
@@ -71,4 +77,7 @@
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">lúc</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="birth_place">Nơi sinh</string>
+    <string name="gender">Giới tính</string>
+    <string name="tracking_success">Thành công.</string>
 </resources>

@@ -1,8 +1,11 @@
 package com.oceantech.tracking.ui.security
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
@@ -25,14 +28,30 @@ class SecurityViewModel @AssistedInject constructor(
         when(action){
             is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
+            is SecurityViewAction.SignAction -> handleSign(action.username, action.displayName, action.email, action.firstName, action.lastName, action.password)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
+            is SecurityViewAction.GetAllUser -> handleAllUser()
         }
     }
+
+    private fun handleAllUser() {
+
+    }
+
 
     private fun handleCurrentUser() {
         setState { copy(userCurrent=Loading()) }
         userRepo.getCurrentUser().execute {
             copy(userCurrent=it)
+        }
+    }
+
+    private fun handleSign(username: String, displayName: String, email: String, firstName: String, lastName: String, password: String) {
+        setState {
+            copy(asyncSign = Loading())
+        }
+        userRepo.sign(username,displayName,email,firstName,lastName,password).execute {
+            copy(asyncSign = it)
         }
     }
 
@@ -49,7 +68,6 @@ class SecurityViewModel @AssistedInject constructor(
         this.viewModelScope.async {
             repository.saveAccessTokens(tokenResponse)
         }
-
     }
 
     fun handleReturnSignin() {
@@ -57,6 +75,10 @@ class SecurityViewModel @AssistedInject constructor(
     }
     fun handleReturnResetPass() {
         _viewEvents.post(SecurityViewEvent.ReturnResetpassEvent)
+    }
+
+    fun handleReturnLogin(){
+        _viewEvents.post(SecurityViewEvent.ReturnLoginEvent)
     }
 
     fun getString()="test"

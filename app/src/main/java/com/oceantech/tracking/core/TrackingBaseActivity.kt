@@ -117,7 +117,6 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     override fun onDestroy() {
         super.onDestroy()
         Timber.i("onDestroy Activity ${javaClass.simpleName}")
-
     }
 
 
@@ -329,6 +328,4 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
     @MenuRes
     open fun getMenuRes() = -1
-
-
 }

@@ -15,12 +15,17 @@
     <string name="menu_category">News</string>
     <string name="menu_nearest_medical">Nearest Medical</string>
     <string name="menu_feedback">Feedback</string>
+    <string name="menu_tracking">Tracking</string>
     <string name="fragment_home">Home</string>
     <string name="fragment_news">News</string>
     <string name="feedback_to_app">App feedback</string>
+    <string name="tracking">Tracking</string>
     <string name="feedback_description">Please enter your feedback below to help make our app even better !</string>
+    <string name="tracking_description">Please enter your tracking!</string>
     <string name="feedback_hint">Your feedback ...</string>
+    <string name="tracking_hint">Your tracking ...</string>
     <string name="send_feedback">Send feedback</string>
+    <string name="save_tracking">Save Tracking</string>
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
@@ -45,6 +50,7 @@
     <string name="email">Email <font color="red">*</font></string>
     <string name="send">Send</string>
     <string name="signin">Đăng kí tài khoản</string>
+    <string name="sign_success">Đăng kí tài khoản thành công</string>
     <string name="last_name">Fisrt Name</string>
     <string name="first_name">Last Name</string>
     <string name="display_name">Display name</string>
@@ -70,4 +76,7 @@
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">at</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="birth_place">Nơi sinh</string>
+    <string name="gender">Giới tính</string>
+    <string name="tracking_success">Success</string>
 </resources>

@@ -20,4 +20,4 @@ data class Person(
     val phoneNumber:String?=null,
     @SerializedName("userId")
     val userId:String?=null
-    )
+)

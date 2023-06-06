@@ -1,6 +1,7 @@
 package com.oceantech.tracking.di
 
 import android.content.Context
+import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.data.network.*
 import com.oceantech.tracking.data.repository.*
 import com.oceantech.tracking.ui.security.UserPreferences
@@ -46,4 +47,25 @@ object NetWorkModule {
         api: UserApi
     ): UserRepository = UserRepository(api)
 
+    @Provides
+    fun providerTrackingApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(TrackingApi::class.java, context)
+
+    @Provides
+    fun providerTrackingRepository(
+        api: TrackingApi
+    ):TrackingRepository = TrackingRepository(api)
+
+    @Provides
+    fun providerTimeSheetApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(TimeSheetApi::class.java, context)
+
+    @Provides
+    fun providerTimeSheetRepository(
+        api:TimeSheetApi
+    ):TimeSheetRepository = TimeSheetRepository(api)
 }

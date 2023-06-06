@@ -72,7 +72,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
     }
 
-
     override fun create(initialState: HomeViewState): HomeViewModel {
         return homeViewModelFactory.create(initialState)
     }
@@ -100,6 +99,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.nav_HomeFragment,
                 R.id.nav_newsFragment,
                 R.id.nav_medicalFragment,
+                R.id.nav_trackingFragment,
                 R.id.nav_feedbackFragment,
                 R.id.listNewsFragment,
                 R.id.detailNewsFragment
@@ -239,6 +239,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         menu.findItem(R.id.nav_newsFragment).title = getString(R.string.menu_category)
         menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
         menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
+        menu.findItem(R.id.nav_trackingFragment).title = getString(R.string.menu_tracking)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }

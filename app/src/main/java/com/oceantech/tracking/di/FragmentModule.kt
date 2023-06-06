@@ -15,5 +15,4 @@ interface FragmentModule {
     @IntoMap
     @FragmentKey(HomeFragment::class)
     fun bindHomeFragment(homeFragment: HomeFragment): Fragment
-
 }

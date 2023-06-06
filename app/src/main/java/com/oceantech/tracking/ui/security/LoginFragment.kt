@@ -17,7 +17,6 @@ import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
 import javax.inject.Inject
 
-
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
     private val viewModel:SecurityViewModel by activityViewModel()
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentLoginBinding {
@@ -66,6 +65,5 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                 views.passwordTil.error=getString(R.string.login_fail)
             }
         }
-
     }
 }
