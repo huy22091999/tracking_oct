@@ -2,7 +2,6 @@ package com.oceantech.tracking.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,19 +10,11 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
-import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
-import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.UserApi
 import com.oceantech.tracking.databinding.FragmentHomeBinding
-import com.oceantech.tracking.ui.MainActivity
-import com.oceantech.tracking.ui.security.SecurityViewAction
-import com.oceantech.tracking.ui.security.SecurityViewEvent
-import retrofit2.Call
-import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
-import javax.security.auth.callback.Callback
 
 class HomeFragment @Inject constructor(val api: UserApi) :
     TrackingBaseFragment<FragmentHomeBinding>() {
