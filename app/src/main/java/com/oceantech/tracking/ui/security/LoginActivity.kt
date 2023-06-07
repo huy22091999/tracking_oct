@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {
 
-    val viewModel: SecurityViewModel by viewModel()
+    private val viewModel: SecurityViewModel by viewModel()
 
     @Inject
     lateinit var securityviewmodelFactory: SecurityViewModel.Factory
@@ -41,6 +41,9 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
 
             is SecurityViewEvent.ReturnResetpassEvent -> {
                 addFragmentToBackstack(R.id.frame_layout, ResetPasswordFragment::class.java)
+            }
+            is SecurityViewEvent.ReturnLoginEvent -> {
+                addFragmentToBackstack(R.id.frame_layout, LoginFragment::class.java)
             }
 
         }

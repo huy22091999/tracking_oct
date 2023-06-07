@@ -9,6 +9,7 @@ import com.oceantech.tracking.data.model.User
 
 data class SecurityViewState (
     var asyncLogin: Async<TokenResponse> = Uninitialized,
+    var asyncSignIn : Async<User> = Uninitialized,
     var userCurrent:Async<User> = Uninitialized
     ):MvRxState{
         fun isLoading()= asyncLogin is Loading

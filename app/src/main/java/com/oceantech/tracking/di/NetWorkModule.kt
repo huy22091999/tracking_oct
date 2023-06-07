@@ -27,13 +27,15 @@ object NetWorkModule {
         context: Context
     ) = remoteDataSource.buildApi(AuthApi::class.java, context)
 
-
     @Provides
     fun providerAuthRepository(
         userPreferences: UserPreferences,
         api: AuthApi
     ): AuthRepository = AuthRepository(api, userPreferences)
 
+    @Provides
+    fun provideSignApi(remoteDataSource: RemoteDataSource) =
+        remoteDataSource.buildApiSignIn(SignApi::class.java)
 
     @Provides
     fun providerUserApi(

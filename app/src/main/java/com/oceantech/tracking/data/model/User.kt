@@ -5,7 +5,7 @@ import java.util.*
 
 data class User(
     @SerializedName("id")
-    val id: String? = null,
+    val id: Long? = null,
     @SerializedName("username")
     val username: String? = null,
     @SerializedName("active")
@@ -18,23 +18,26 @@ data class User(
     val confirmPassword: String? = null,
     @SerializedName("displayName")
     val displayName: String? = null,
-
     @SerializedName("dob")
-    val dob: Date? = null,
-
+    val dob: String? = null,
     @SerializedName("email")
     val email: String? = null,
-
     @SerializedName("firstName")
     val firstName: String? = null,
-    @SerializedName("oldPassword")
-    val oldPassword: String? = null,
+    @SerializedName("lastName")
+    val lastName : String? = null,
     @SerializedName("password")
     val password: String? = null,
     @SerializedName("setPassword")
-    val setPassword: String? = null,
-    @SerializedName("person")
-    val person: Person? = null,
+    val setPassword: Boolean? = null,
     @SerializedName("roles")
-    val roles: List<Role>? = null
+    val roles: List<Role>? = null,
+    @SerializedName("university")
+    val university: String? = null,
+    @SerializedName("year")
+    val year: Int? = null,
+    @SerializedName("gender")
+    val gender: String? = null,
+    @SerializedName("hasPhoto")
+    val hasPhoto: Boolean? = null
 )

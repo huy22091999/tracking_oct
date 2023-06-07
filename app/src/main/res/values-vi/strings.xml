@@ -71,4 +71,6 @@
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">lúc</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="sign_in_success">"Đăng ký thành công. Vui lòng đăng nhập !"</string>
+    <string name="sign_in_false">"Đăng ký thất bại. Vui lòng thử lại !"</string>
 </resources>

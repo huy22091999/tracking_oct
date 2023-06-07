@@ -1,9 +1,9 @@
 package com.oceantech.tracking.data.network
 
-import okhttp3.Authenticator
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.Route
+import android.annotation.SuppressLint
+import android.util.Log
+import okhttp3.*
+import java.io.IOException
 
 class TokenAuthenticator(
     accessToken: String

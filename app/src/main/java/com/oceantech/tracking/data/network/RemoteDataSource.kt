@@ -3,13 +3,13 @@ package com.oceantech.tracking.data.network
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.oceantech.tracking.BuildConfig
-import com.oceantech.tracking.utils.format
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
+import com.oceantech.tracking.BuildConfig
+import com.oceantech.tracking.utils.format
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,13 +21,13 @@ import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.util.*
-import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
+
 
 @Singleton
 class RemoteDataSource() {
@@ -55,6 +55,22 @@ class RemoteDataSource() {
         } else
             TokenAuthenticator("")
 
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(getRetrofitClient(authenticator))
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+            .create(api)
+    }
+    fun <Api> buildApiSignIn(
+        api: Class<Api>,
+    ): Api {
+        val gson = GsonBuilder()
+            .registerTypeAdapter(Date::class.java, UnitEpochDateTypeAdapter())
+            .setLenient()
+            .create()
+        val authenticator = TokenAuthenticator("")
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(getRetrofitClient(authenticator))
