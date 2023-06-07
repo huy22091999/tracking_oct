@@ -12,5 +12,6 @@ class UserRepository @Inject constructor(
     val api: UserApi
 ) {
     fun getCurrentUser(): Observable<User> = api.getCurrentUser().subscribeOn(Schedulers.io())
+    fun getAllUser() : Observable<List<User>> = api.getAllUser().subscribeOn(Schedulers.io())
     fun getString(): String = "test part"
 }

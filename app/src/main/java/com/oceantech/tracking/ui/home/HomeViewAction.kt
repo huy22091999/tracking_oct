@@ -6,6 +6,7 @@ import com.oceantech.tracking.data.model.Feedback
 sealed class HomeViewAction:NimpeViewModelAction{
 
     object GetCurrentUser:HomeViewAction()
+    object GetAllUser : HomeViewAction()
     object GetCategorys:HomeViewAction()
     object ResetLang:HomeViewAction()
     data class SaveFeedback(val feedback: Feedback):HomeViewAction()

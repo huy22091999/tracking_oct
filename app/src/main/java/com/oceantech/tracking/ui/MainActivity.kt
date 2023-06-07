@@ -148,7 +148,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             menuItem.title = getString(R.string.vi)
             homeViewModel.language = 1
         }
-        var buttonShowMenu = actionView as AppCompatImageView
+        val buttonShowMenu = actionView as AppCompatImageView
         buttonShowMenu.setImageDrawable(getDrawable(R.drawable.ic_drop))
         buttonShowMenu.setOnClickListener {
             showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)

@@ -11,4 +11,7 @@ interface UserApi {
     fun getCurrentUser(): Observable<User>
     @GET("users/get-user-current")
     fun getCurrentUserTest(): Call<User>
+
+    @GET("users/get-all-user")
+    fun getAllUser() : Observable<List<User>>
 }

@@ -10,6 +10,7 @@ data class HomeViewState(
     val asyncCategory: Async<Page<Category>> = Uninitialized,
     val asyncNews: Async<Page<News>> = Uninitialized,
     val asyncSaveFeedback:Async<Feedback> = Uninitialized,
+    val asyncListUser : Async<List<User>> = Uninitialized,
     val userCurrent:Async<User> = Uninitialized,
 
 ) : MvRxState {

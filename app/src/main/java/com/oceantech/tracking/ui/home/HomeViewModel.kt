@@ -16,6 +16,7 @@ class HomeViewModel @AssistedInject constructor(
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang()
+            is HomeViewAction.GetAllUser -> handleGetAll()
         }
     }
 
@@ -26,6 +27,12 @@ class HomeViewModel @AssistedInject constructor(
         setState { copy(userCurrent = Loading()) }
         repository.getCurrentUser().execute {
             copy(userCurrent = it)
+        }
+    }
+    private fun handleGetAll(){
+        setState { copy(asyncListUser = Loading()) }
+        repository.getAllUser().execute {
+            copy(asyncListUser = it)
         }
     }
 
