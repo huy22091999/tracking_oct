@@ -32,7 +32,7 @@
                 android:textSize="18sp"
                 android:layout_marginEnd="24dp"
                 android:textStyle="bold"
-                android:textColor="@color/gray"
+                android:textColor="#E4E4E4"
                 android:layout_height="wrap_content"/>
         </androidx.appcompat.widget.Toolbar>
 

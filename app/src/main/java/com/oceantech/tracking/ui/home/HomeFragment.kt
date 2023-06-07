@@ -42,7 +42,6 @@ class HomeFragment @Inject constructor(val api: UserApi) :
         views.rcvUser.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
         views.rcvUser.adapter = adapter
     }
-
     @SuppressLint("NotifyDataSetChanged")
     override fun invalidate(): Unit = withState(viewModel) {
         when(it.asyncListUser){
