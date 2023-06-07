@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
@@ -58,11 +59,16 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                     viewModel.handle(SecurityViewAction.SaveTokenAction(token!!))
                 }
                 Toast.makeText(requireContext(),getString(R.string.login_success),Toast.LENGTH_LONG).show()
+                dismissLoadingDialog()
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 activity?.finish()
             }
+            is Loading ->{
+                showLoadingDialog()
+            }
             is Fail->{
                 views.passwordTil.error=getString(R.string.login_fail)
+                dismissLoadingDialog()
             }
         }
     }

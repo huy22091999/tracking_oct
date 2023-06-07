@@ -79,4 +79,8 @@
     <string name="birth_place">Nơi sinh</string>
     <string name="gender">Giới tính</string>
     <string name="tracking_success">Success</string>
+    <string name="university">University</string>
+    <string name="year">Year</string>
+    <string name="birthPlace">Birth Place</string>
+    <string name="please_wait">Xin chờ</string>
 </resources>

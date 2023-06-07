@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.oceantech.tracking.R
 
-
 /**
  * Session manager to save and fetch data from SharedPreferences
  */

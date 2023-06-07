@@ -80,4 +80,8 @@
     <string name="birth_place">Nơi sinh</string>
     <string name="gender">Giới tính</string>
     <string name="tracking_success">Thành công.</string>
+    <string name="university">Trường đại học</string>
+    <string name="year">SViên năm</string>
+    <string name="birthPlace">Nơi sinh</string>
+    <string name="please_wait">Please waiting</string>
 </resources>

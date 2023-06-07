@@ -1,11 +1,9 @@
 package com.oceantech.tracking.ui.security
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+
 import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TokenResponse
-import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
@@ -28,7 +26,7 @@ class SecurityViewModel @AssistedInject constructor(
         when(action){
             is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
-            is SecurityViewAction.SignAction -> handleSign(action.username, action.displayName, action.email, action.firstName, action.lastName, action.password)
+            is SecurityViewAction.SignAction -> handleSign(action.username, action.displayName, action.email, action.firstName, action.lastName, action.password, action.birthPlace, action.university, action.year)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
             is SecurityViewAction.GetAllUser -> handleAllUser()
         }
@@ -46,11 +44,11 @@ class SecurityViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handleSign(username: String, displayName: String, email: String, firstName: String, lastName: String, password: String) {
+    private fun handleSign(username: String, displayName: String, email: String, firstName: String, lastName: String, password: String, birthPlace:String, university:String, year:Int) {
         setState {
             copy(asyncSign = Loading())
         }
-        userRepo.sign(username,displayName,email,firstName,lastName,password).execute {
+        userRepo.sign(username,displayName,email,firstName,lastName,password, birthPlace, university, year).execute {
             copy(asyncSign = it)
         }
     }

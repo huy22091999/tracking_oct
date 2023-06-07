@@ -17,6 +17,9 @@ class HomeViewModel @AssistedInject constructor(
     val trackingRepo: TrackingRepository
 ) : TrackingViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     var language: Int = 1
+    init {
+        handleAllTracking()
+    }
     override fun handle(action: HomeViewAction) {
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()

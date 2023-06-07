@@ -17,7 +17,7 @@
         <item android:id="@+id/nav_feedbackFragment"
             android:icon="@drawable/ic_feedback"
             android:title="@string/menu_feedback"/>
-        <item android:id="@+id/nav_trackingFragment"
+        <item android:id="@+id/nav_allTrackingFragment"
             android:icon="@drawable/img_tracking"
             android:title="@string/tracking"/>
     </group>

@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -52,3 +53,13 @@ fun validateEmail(email: String): Boolean {
     val emailRegex = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
     return emailRegex.matches(email)
 }
+
+fun getCurrentDate(): Date {
+    val zoneId: ZoneId = ZoneId.systemDefault()
+    return Date.from(LocalDate.now().atStartOfDay(zoneId).toInstant())
+}
+
+//fun getCurrentDate(): Date {
+//    val calendar = Calendar.getInstance()
+//    return calendar.time
+//}

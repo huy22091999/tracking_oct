@@ -10,6 +10,7 @@ import android.util.DisplayMetrics
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
@@ -85,6 +86,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         toolbar.title = ""
         views.title.text = getString(R.string.app_name)
         setSupportActionBar(toolbar)
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
@@ -100,6 +102,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.nav_newsFragment,
                 R.id.nav_medicalFragment,
                 R.id.nav_trackingFragment,
+                R.id.nav_allTrackingFragment,
                 R.id.nav_feedbackFragment,
                 R.id.listNewsFragment,
                 R.id.detailNewsFragment
@@ -221,7 +224,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             }
 
             R.id.menu_list_health -> {
-
+                navigateTo(R.id.nav_trackingFragment)
                 return true
             }
 

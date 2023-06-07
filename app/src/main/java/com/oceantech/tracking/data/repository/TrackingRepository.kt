@@ -3,6 +3,7 @@ package com.oceantech.tracking.data.repository
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.TrackingApi
+import com.oceantech.tracking.utils.getCurrentDate
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Singleton
@@ -14,7 +15,7 @@ class TrackingRepository @Inject constructor(
 ) {
     fun save(content:String): Observable<Tracking> = api.save(Tracking(
         content,
-        null,
+        getCurrentDate().toString(),
         null,
         null
     )).subscribeOn(Schedulers.io())

@@ -72,16 +72,5 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
                 Log.e("Test Save Tracking: ", "Fail")
             }
         }
-//        when(it.allTracking){
-//            is Success -> {
-//                it.allTracking.invoke().let { trackings ->
-//                    for(i in trackings) Log.i("Trackings:", i.content.toString())
-//                }
-//            }
-//            is Fail -> {
-//                Log.e("Get Trackings: ", "Fail")
-//            }
-//        }
     }
-
 }

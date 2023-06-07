@@ -30,6 +30,7 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.BaseMvRxFragment
+import com.oceantech.tracking.R
 import com.oceantech.tracking.di.DaggerTrackingComponent
 import com.oceantech.tracking.di.HasScreenInjector
 import com.oceantech.tracking.di.TrackingComponent
@@ -178,15 +179,15 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
 //        nimpeBaseActivity.getCoordinatorLayout()?.showOptimizedSnackbar(errorFormatter.toHumanReadable(throwable))
 //    }
 
-//    protected fun showLoadingDialog(message: CharSequence? = null, cancelable: Boolean = false) {
-//        progress?.dismiss()
-//        progress = ProgressDialog(requireContext()).apply {
-//            setCancelable(cancelable)
-//            setMessage(message ?: getString(R.string.please_wait))
-//            setProgressStyle(ProgressDialog.STYLE_SPINNER)
-//            show()
-//        }
-//    }
+    protected fun showLoadingDialog(message: CharSequence? = null, cancelable: Boolean = false) {
+        progress?.dismiss()
+        progress = ProgressDialog(requireContext()).apply {
+            setCancelable(cancelable)
+            setMessage(message ?: getString(R.string.please_wait))
+            setProgressStyle(ProgressDialog.STYLE_SPINNER)
+            show()
+        }
+    }
 
     protected fun dismissLoadingDialog() {
         progress?.dismiss()
