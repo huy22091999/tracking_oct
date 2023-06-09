@@ -19,7 +19,7 @@
     <string name="fragment_home">Trang chủ</string>
     <string name="feedback_to_app">Phản hồi về ứng dụng</string>
     <string name="feedback_description">Vui lòng nhập ý kiến phản hồi của bạn để góp phần làm cho ứng dụng của chúng tôi ngày càng hoàn thiện hơn.</string>
-    <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
+    <string name="feedback_hint">Ý kiến phản hồi của bạn …</string>
     <string name="fragment_news">Tin tức</string>
     <string name="send_feedback">Gửi phản hồi</string>
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>

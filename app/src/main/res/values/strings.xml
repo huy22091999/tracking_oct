@@ -72,4 +72,8 @@
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
     <string name="sign_in_success">"Sign up successfully. Please Login !"</string>
     <string name="sign_in_false">"Sign up false. Please try again !"</string>
+    <string name="daily_tracking">Daily tracking</string>
+    <string name="content">Content...</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
 </resources>

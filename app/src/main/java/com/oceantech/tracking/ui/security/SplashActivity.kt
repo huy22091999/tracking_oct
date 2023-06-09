@@ -12,7 +12,7 @@ import com.oceantech.tracking.ui.MainActivity
 import javax.inject.Inject
 
 
-class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityViewModel.Factory {
+class SplashActivity() : TrackingBaseActivity<ActivitySplashBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
 
@@ -32,7 +32,9 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     private fun handleStateChange(it: SecurityViewState) {
         when (it.userCurrent) {
             is Success -> {
-                startActivity(Intent(this, MainActivity::class.java))
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("user",it.userCurrent.invoke())
+                startActivity(intent)
                 finish()
             }
 
@@ -50,6 +52,9 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     override fun getBinding(): ActivitySplashBinding {
         return ActivitySplashBinding.inflate(layoutInflater)
     }
+
+    override val mvrxViewId: String
+        get() = "Splash"
 
     override fun create(initialState: SecurityViewState): SecurityViewModel {
         return securityViewModelFactory.create(initialState)

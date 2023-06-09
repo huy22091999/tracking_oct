@@ -16,6 +16,7 @@
 
 package com.oceantech.tracking.core
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -33,6 +34,7 @@ import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import com.airbnb.mvrx.MvRxView
 import com.oceantech.tracking.di.DaggerTrackingComponent
 import com.oceantech.tracking.di.HasScreenInjector
 import com.oceantech.tracking.di.TrackingComponent
@@ -40,7 +42,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import kotlin.system.measureTimeMillis
 
-abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), HasScreenInjector {
+abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), HasScreenInjector,MvRxView {
 
     protected lateinit var views: VB
 
@@ -49,6 +51,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     protected val viewModelProvider
         get() = ViewModelProvider(this, viewModelFactory)
 
+    @SuppressLint("CheckResult")
     protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
         viewEvents
             .observe()
@@ -330,5 +333,9 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     @MenuRes
     open fun getMenuRes() = -1
 
+    override fun invalidate() {
+        // no-ops by default
+        Timber.v("invalidate() method has not been implemented")
+    }
 
 }

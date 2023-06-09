@@ -1,11 +1,9 @@
 package com.oceantech.tracking.ui.security
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
@@ -15,12 +13,7 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.Role
 import com.oceantech.tracking.data.model.User
-import com.oceantech.tracking.data.network.AuthApi
 import com.oceantech.tracking.databinding.FragmentSigninBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
 import javax.inject.Inject
 
 

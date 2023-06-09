@@ -2,24 +2,28 @@ package com.oceantech.tracking.ui
 
 import android.annotation.SuppressLint
 import android.app.*
+import android.app.ActionBar.LayoutParams
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
-import com.airbnb.mvrx.viewModel
+import com.airbnb.mvrx.*
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.ui.home.HomeViewAction
@@ -32,9 +36,12 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
+import com.oceantech.tracking.data.model.Tracking
+import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.databinding.DialogTrackingBinding
 import com.oceantech.tracking.ui.home.TestViewModel
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
+class MainActivity() : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -54,10 +61,12 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
     lateinit var navView: NavigationView
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
+        user = intent.getParcelableExtra("user")
         sharedActionViewModel = viewModelProvider.get(TestViewModel::class.java)
         setContentView(views.root)
         setupToolbar()
@@ -178,7 +187,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             true
         )
         popup.elevation = 20F
-        popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
+        popup.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
             changeLangue("en")
@@ -198,6 +207,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+    override val mvrxViewId: String
+        get() = "Main"
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -221,7 +233,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             }
 
             R.id.menu_list_health -> {
-
+                openDialogTracking()
                 return true
             }
 
@@ -230,6 +242,31 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun openDialogTracking() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCanceledOnTouchOutside(true)
+        val binding = DialogTrackingBinding.inflate(LayoutInflater.from(this))
+        dialog.setContentView(binding.root)
+        val window = dialog.window
+        window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        binding.btnCancel.setOnClickListener { dialog.dismiss() }
+        binding.btnAdd.setOnClickListener {
+            addTracking(binding)
+        }
+        dialog.show()
+    }
+
+    private fun addTracking(binding: DialogTrackingBinding) {
+        val content = binding.edtContent.text.toString().trim()
+        if (content.isEmpty()) Toast.makeText(this, "Content is empty", Toast.LENGTH_LONG).show()
+        else {
+            val date = Calendar.getInstance().time
+            val tracking = Tracking(null, "$date", content, user)
+            homeViewModel.handle(HomeViewAction.AddTracking(tracking))
+        }
     }
 
 
@@ -243,6 +280,15 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }
 
-
+    override fun invalidate(): Unit = withState(homeViewModel) {
+        when (it.asyncTracking) {
+            is Success -> {
+                Toast.makeText(this, "${it.asyncTracking.invoke().content} is added", Toast.LENGTH_LONG).show()
+            }
+            is Fail -> {
+                Toast.makeText(this, "Fail! Please tracking again", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 }
 
