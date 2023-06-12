@@ -1,4 +1,4 @@
-package com.oceantech.tracking.data.repository
+package com.oceantech.tracking.ui.home.repository
 
 import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.model.User

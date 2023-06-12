@@ -1,11 +1,11 @@
-package com.oceantech.tracking.data.repository
+package com.oceantech.tracking.ui.home.repository
 
 import com.oceantech.tracking.data.model.Tracking
-import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.TrackingApi
-import com.oceantech.tracking.utils.getCurrentDate
+import com.oceantech.tracking.utils.getCurrentDateTime
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import java.time.LocalDateTime
 import javax.inject.Singleton
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class TrackingRepository @Inject constructor(
 ) {
     fun save(content:String): Observable<Tracking> = api.save(Tracking(
         content,
-        getCurrentDate().toString(),
+        LocalDateTime.now().toString(),
         null,
         null
     )).subscribeOn(Schedulers.io())
@@ -27,12 +27,7 @@ class TrackingRepository @Inject constructor(
         null
     )).subscribeOn(Schedulers.io())
 
-    fun delete(id:Int):Observable<Tracking> = api.delete(Tracking(
-        null,
-        null,
-        id,
-        null
-    )).subscribeOn(Schedulers.io())
+    fun delete(id:Int):Observable<Tracking> = api.delete(id).subscribeOn(Schedulers.io())
 
     fun getAllByUser():Observable<List<Tracking>> = api.getAllByUser().subscribeOn(Schedulers.io())
 }

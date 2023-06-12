@@ -3,64 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center_horizontal"
+    android:padding="16dp"
+    android:background="#EFEFEF"
     android:orientation="vertical"
-    android:padding="24dp"
-    tools:context=".ui.tracking.TrackingFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="100dp"
-        android:layout_marginTop="40dp"
-        android:layout_height="100dp"
-        android:background="@drawable/img_tracking_color"/>
+    tools:context=".ui.tracking.AllTrackingFragment">
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:id="@+id/title1"
-        android:layout_marginTop="24dp"
-        style="@style/TextAppearance.AppCompat"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:text="@string/tracking"
-        android:layout_height="wrap_content"/>
-    <com.google.android.material.textview.MaterialTextView
+        android:textColor="@color/gray"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        style="@style/TextAppearance.AppCompat"
-        android:textSize="16sp"
-        android:id="@+id/title2"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/tracking_description"
         android:layout_height="wrap_content"/>
-    <com.google.android.material.textfield.TextInputLayout
+    <!-- TODO: Update blank fragment layout -->
+    <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+    <!--        android:id="@+id/swipeRefresh"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingTop="8dp"
+        android:id="@+id/recycler_view"
+        tools:listitem="@layout/item_health_organization"
         android:layout_width="match_parent"
-        android:layout_marginTop="40dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeColor="#E2D1F6"
-        android:id="@+id/feedback_til"
-        app:hintEnabled="false"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_height="wrap_content">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tracking"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:hint="@string/tracking_hint"
-            android:gravity="top"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.button.MaterialButton
-        android:layout_marginTop="16dp"
-        android:id="@+id/btn_save_tracking"
-        android:layout_width="wrap_content"
-        app:cornerRadius="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:text="@string/save_tracking"
-        android:backgroundTint="@color/about_twitter_color"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
+    <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+
 </LinearLayout>
