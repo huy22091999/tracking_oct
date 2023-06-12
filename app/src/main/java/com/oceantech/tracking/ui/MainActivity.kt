@@ -40,13 +40,17 @@ import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.DialogTrackingBinding
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.trackings.TrackingListFragment
+import com.oceantech.tracking.ui.trackings.TrackingListViewModel
+import com.oceantech.tracking.ui.trackings.TrackingViewState
 
-class MainActivity() : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory , TrackingListViewModel.Factory{
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
 
     private val homeViewModel: HomeViewModel by viewModel()
+    private val trackingListViewModel : TrackingListViewModel by viewModel()
 
     private lateinit var sharedActionViewModel: TestViewModel
 
@@ -55,6 +59,9 @@ class MainActivity() : TrackingBaseActivity<ActivityMainBinding>(), HomeViewMode
 
     @Inject
     lateinit var homeViewModelFactory: HomeViewModel.Factory
+
+    @Inject
+    lateinit var trackingViewModelFactory: TrackingListViewModel.Factory
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -107,11 +114,9 @@ class MainActivity() : TrackingBaseActivity<ActivityMainBinding>(), HomeViewMode
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_HomeFragment,
-                R.id.nav_newsFragment,
+                R.id.trackingListFragment,
                 R.id.nav_medicalFragment,
                 R.id.nav_feedbackFragment,
-                R.id.listNewsFragment,
-                R.id.detailNewsFragment
             ), drawerLayout
         )
 
@@ -130,7 +135,10 @@ class MainActivity() : TrackingBaseActivity<ActivityMainBinding>(), HomeViewMode
                     homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(homeIntent)
                 }
-
+                R.id.nav_trackingListFragment -> {
+                    navigateTo(R.id.action_nav_HomeFragment_to_trackingListFragment)
+                    drawerLayout.close()
+                }
                 R.id.nav_change_langue -> {
                     showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
                 }
@@ -264,7 +272,7 @@ class MainActivity() : TrackingBaseActivity<ActivityMainBinding>(), HomeViewMode
         if (content.isEmpty()) Toast.makeText(this, "Content is empty", Toast.LENGTH_LONG).show()
         else {
             val date = Calendar.getInstance().time
-            val tracking = Tracking(null, "$date", content, user)
+            val tracking = Tracking(null, content,date)
             homeViewModel.handle(HomeViewAction.AddTracking(tracking))
         }
     }
@@ -273,7 +281,7 @@ class MainActivity() : TrackingBaseActivity<ActivityMainBinding>(), HomeViewMode
     private fun updateLanguge(lang: String) {
         val menu: Menu = navView.menu
         menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
-        menu.findItem(R.id.nav_newsFragment).title = getString(R.string.menu_category)
+        menu.findItem(R.id.trackingListFragment).title = getString(R.string.menu_category)
         menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
         menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
         menu.findItem(R.id.nav_change_langue).title =
@@ -289,6 +297,9 @@ class MainActivity() : TrackingBaseActivity<ActivityMainBinding>(), HomeViewMode
                 Toast.makeText(this, "Fail! Please tracking again", Toast.LENGTH_LONG).show()
             }
         }
+    }
+    override fun create(initialState: TrackingViewState): TrackingListViewModel {
+        return trackingViewModelFactory.create(initialState)
     }
 }
 

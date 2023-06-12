@@ -11,4 +11,13 @@ import javax.inject.Singleton
 class TrackingRepository @Inject constructor(val api: TrackingApi) {
     fun tracking(tracking: Tracking): Observable<Tracking> =
         api.tracking(tracking).subscribeOn(Schedulers.io())
+
+    fun updateTracking(tracking: Tracking): Observable<Tracking> =
+        api.updateTracking(tracking, tracking.id).subscribeOn(Schedulers.io())
+
+    fun getAllTracking(): Observable<List<Tracking>> =
+        api.getAllTracking().subscribeOn(Schedulers.io())
+
+    fun delete(tracking: Tracking): Observable<Tracking> =
+        api.deleteTracking(tracking.id!!).subscribeOn(Schedulers.io())
 }

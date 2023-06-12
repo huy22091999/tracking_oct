@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/tvEdit"
+        android:textSize="18sp"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:text="@string/edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:drawableStartCompat="@drawable/baseline_edit_24" />
+    <TextView
+        android:id="@+id/tvRemove"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:text="@string/remove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:drawableStartCompat="@drawable/baseline_bookmark_remove_24" />
+
+</LinearLayout>

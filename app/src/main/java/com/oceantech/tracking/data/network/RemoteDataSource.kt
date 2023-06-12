@@ -1,5 +1,6 @@
 package com.oceantech.tracking.data.network
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -20,6 +21,7 @@ import java.net.CookiePolicy
 import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -139,13 +141,19 @@ class RemoteDataSource() {
             }
         }
 
+        @SuppressLint("SimpleDateFormat")
         override fun read(_in: JsonReader?) =
             if (_in != null) {
                 if (_in.peek() == JsonToken.NULL) {
                     _in.nextNull()
                     null
                 } else {
-                    Date(_in.nextLong())
+                    val stringDate = _in.nextString()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse(stringDate)
+                    } else {
+                        Date(_in.nextLong())
+                    }
                 }
             } else null
     }
