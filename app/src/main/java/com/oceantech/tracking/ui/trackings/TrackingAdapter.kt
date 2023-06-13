@@ -32,7 +32,8 @@ class TrackingAdapter(val listener : OnClickTracking) : RecyclerView.Adapter<Tra
             listener.onClick(tracking)
         }
     }
-    fun setData(listData : List<Tracking>){
+    fun setData(listData : MutableList<Tracking>){
         list = listData
+        notifyDataSetChanged()
     }
 }

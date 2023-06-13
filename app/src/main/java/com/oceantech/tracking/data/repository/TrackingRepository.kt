@@ -15,7 +15,7 @@ class TrackingRepository @Inject constructor(val api: TrackingApi) {
     fun updateTracking(tracking: Tracking): Observable<Tracking> =
         api.updateTracking(tracking, tracking.id).subscribeOn(Schedulers.io())
 
-    fun getAllTracking(): Observable<List<Tracking>> =
+    fun getAllTracking(): Observable<MutableList<Tracking>> =
         api.getAllTracking().subscribeOn(Schedulers.io())
 
     fun delete(tracking: Tracking): Observable<Tracking> =

@@ -6,9 +6,8 @@ import com.airbnb.mvrx.Uninitialized
 import com.oceantech.tracking.data.model.Tracking
 
 data class TrackingViewState(
-    var asyncListTracking : Async<List<Tracking>> = Uninitialized,
+    var asyncListTracking : Async<MutableList<Tracking>> = Uninitialized,
     var asyncDelete : Async<Tracking> = Uninitialized,
     var asyncUpdate : Async<Tracking> = Uninitialized,
-) : MvRxState{
-
-}
+    val asyncTracking : Async<Tracking> = Uninitialized,
+) : MvRxState

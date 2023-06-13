@@ -15,7 +15,7 @@ interface TrackingApi {
     fun updateTracking(@Body tracking: Tracking, @Path("id") id: Int?) : Observable<Tracking>
 
     @GET("tracking")
-    fun getAllTracking() : Observable<List<Tracking>>
+    fun getAllTracking() : Observable<MutableList<Tracking>>
 
     @DELETE("tracking/{id}")
     fun deleteTracking(@Path("id") id: Int) : Observable<Tracking>

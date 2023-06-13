@@ -11,7 +11,7 @@ import com.oceantech.tracking.databinding.ActivityLoginBinding
 import com.oceantech.tracking.utils.addFragmentToBackstack
 import javax.inject.Inject
 
-class LoginActivity() : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {
+class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
 
@@ -38,7 +38,6 @@ class LoginActivity() : TrackingBaseActivity<ActivityLoginBinding>(), SecurityVi
             is SecurityViewEvent.ReturnSigninEvent -> {
                 addFragmentToBackstack(R.id.frame_layout, SigninFragment::class.java)
             }
-
             is SecurityViewEvent.ReturnResetpassEvent -> {
                 addFragmentToBackstack(R.id.frame_layout, ResetPasswordFragment::class.java)
             }

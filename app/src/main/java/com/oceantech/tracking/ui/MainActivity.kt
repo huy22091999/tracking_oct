@@ -42,6 +42,7 @@ import com.oceantech.tracking.databinding.DialogTrackingBinding
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.trackings.TrackingListFragment
 import com.oceantech.tracking.ui.trackings.TrackingListViewModel
+import com.oceantech.tracking.ui.trackings.TrackingViewAction
 import com.oceantech.tracking.ui.trackings.TrackingViewState
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory , TrackingListViewModel.Factory{
@@ -85,6 +86,16 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
             } else
                 views.appBarMain.contentMain.waitingView.visibility = View.GONE
+        }
+        trackingListViewModel.subscribe(this){
+            when(it.asyncTracking){
+                is Success -> {
+                    Toast.makeText(this, "${it.asyncTracking.invoke().content} is added", Toast.LENGTH_LONG).show()
+                }
+                is Fail -> {
+                    Toast.makeText(this, "Fail! Please tracking again", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
@@ -263,6 +274,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         binding.btnCancel.setOnClickListener { dialog.dismiss() }
         binding.btnAdd.setOnClickListener {
             addTracking(binding)
+            dialog.dismiss()
         }
         dialog.show()
     }
@@ -273,7 +285,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         else {
             val date = Calendar.getInstance().time
             val tracking = Tracking(null, content,date)
-            homeViewModel.handle(HomeViewAction.AddTracking(tracking))
+            trackingListViewModel.handle(TrackingViewAction.AddTracking(tracking))
         }
     }
 
@@ -286,17 +298,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
-    }
-
-    override fun invalidate(): Unit = withState(homeViewModel) {
-        when (it.asyncTracking) {
-            is Success -> {
-                Toast.makeText(this, "${it.asyncTracking.invoke().content} is added", Toast.LENGTH_LONG).show()
-            }
-            is Fail -> {
-                Toast.makeText(this, "Fail! Please tracking again", Toast.LENGTH_LONG).show()
-            }
-        }
     }
     override fun create(initialState: TrackingViewState): TrackingListViewModel {
         return trackingViewModelFactory.create(initialState)
