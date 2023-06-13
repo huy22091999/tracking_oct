@@ -36,15 +36,23 @@ object NetWorkModule {
     @Provides
     fun provideSignApi(remoteDataSource: RemoteDataSource) =
         remoteDataSource.buildApiSignIn(SignApi::class.java)
+
     @Provides
-    fun providerSignInRepository(api: SignApi) : SignRepository = SignRepository(api)
+    fun providerSignInRepository(api: SignApi): SignRepository = SignRepository(api)
 
     @Provides
     fun providerTracking(remoteDataSource: RemoteDataSource, context: Context) =
         remoteDataSource.buildApi(TrackingApi::class.java, context)
 
     @Provides
-    fun providerTrackingRepository(api: TrackingApi) : TrackingRepository = TrackingRepository(api)
+    fun providerTrackingRepository(api: TrackingApi): TrackingRepository = TrackingRepository(api)
+
+    @Provides
+    fun provideTimeSheetApi(remoteDataSource: RemoteDataSource, context: Context) =
+        remoteDataSource.buildApi(TimeSheetApi::class.java, context)
+
+    @Provides
+    fun provideTimeSheetRepo(api: TimeSheetApi): TimeSheetRepository = TimeSheetRepository(api)
 
     @Provides
     fun providerUserApi(

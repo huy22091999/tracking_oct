@@ -3,6 +3,7 @@ package com.oceantech.tracking.ui.home
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.Tracking
+import com.oceantech.tracking.data.repository.TimeSheetRepository
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
@@ -13,6 +14,7 @@ class HomeViewModel @AssistedInject constructor(
     @Assisted state: HomeViewState,
     val repository: UserRepository,
     val repoTracking: TrackingRepository,
+    val repoCheckIn : TimeSheetRepository
 ) : TrackingViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     var language: Int = 1
     override fun handle(action: HomeViewAction) {
@@ -21,6 +23,22 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.ResetLang -> handResetLang()
             is HomeViewAction.GetAllUser -> handleGetAll()
             is HomeViewAction.AddTracking -> handleTracking(action.tracking)
+            is HomeViewAction.CheckIn -> handleCheckIn(action.ip)
+            is HomeViewAction.GetAllTimeSheet -> handleGetTimeSheet()
+        }
+    }
+
+    private fun handleGetTimeSheet() {
+        setState { copy(asyncTimeSheet = Loading()) }
+        repoCheckIn.getTimeSheet().execute {
+            copy(asyncTimeSheet = it)
+        }
+    }
+
+    private fun handleCheckIn(ip: String) {
+        setState { copy(asyncCheckIn = Loading()) }
+        repoCheckIn.checkIn(ip).execute {
+            copy(asyncCheckIn = it)
         }
     }
 

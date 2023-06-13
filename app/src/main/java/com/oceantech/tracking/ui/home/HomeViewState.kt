@@ -13,6 +13,8 @@ data class HomeViewState(
     val asyncListUser : Async<List<User>> = Uninitialized,
     val asyncTracking : Async<Tracking> = Uninitialized,
     val userCurrent:Async<User> = Uninitialized,
+    val asyncCheckIn : Async<TimeSheet> = Uninitialized,
+    val asyncTimeSheet : Async<List<TimeSheet>> = Uninitialized
 
 ) : MvRxState {
     fun isLoadding() = asyncCategory is Loading ||

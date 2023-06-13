@@ -44,6 +44,8 @@ import com.oceantech.tracking.ui.trackings.TrackingListFragment
 import com.oceantech.tracking.ui.trackings.TrackingListViewModel
 import com.oceantech.tracking.ui.trackings.TrackingViewAction
 import com.oceantech.tracking.ui.trackings.TrackingViewState
+import timber.log.Timber
+import java.net.NetworkInterface
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory , TrackingListViewModel.Factory{
     companion object {
@@ -80,12 +82,22 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         setupToolbar()
         setupDrawer()
         sharedActionViewModel.test()
-
+        val ip = getIPAddress()?.let { Timber.tag("ip").e(it) }
+        homeViewModel.handle(HomeViewAction.CheckIn(ip.toString()))
+        homeViewModel.handle(HomeViewAction.GetAllTimeSheet)
         homeViewModel.subscribe(this) {
             if (it.isLoadding()) {
                 views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
             } else
                 views.appBarMain.contentMain.waitingView.visibility = View.GONE
+            when(it.asyncCheckIn){
+                is Success -> {
+                    Log.e("check-in",it.asyncCheckIn.invoke().toString())
+                }
+            }
+            if (it.asyncTimeSheet is Success){
+                Log.e("time-sheet",it.asyncTimeSheet.invoke().toString())
+            }
         }
         trackingListViewModel.subscribe(this){
             when(it.asyncTracking){
@@ -289,7 +301,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
     }
 
-
     private fun updateLanguge(lang: String) {
         val menu: Menu = navView.menu
         menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
@@ -301,6 +312,20 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     }
     override fun create(initialState: TrackingViewState): TrackingListViewModel {
         return trackingViewModelFactory.create(initialState)
+    }
+    private fun getIPAddress(): String? {
+        val interfaces = NetworkInterface.getNetworkInterfaces()
+        while (interfaces.hasMoreElements()) {
+            val networkInterface = interfaces.nextElement()
+            val addresses = networkInterface.inetAddresses
+            while (addresses.hasMoreElements()) {
+                val address = addresses.nextElement()
+                if (!address.isLinkLocalAddress && !address.isLoopbackAddress && address.isSiteLocalAddress) {
+                    return address.hostAddress
+                }
+            }
+        }
+        return null
     }
 }
 

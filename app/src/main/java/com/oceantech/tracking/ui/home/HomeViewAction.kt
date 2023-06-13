@@ -8,6 +8,8 @@ sealed class HomeViewAction:NimpeViewModelAction{
 
     object GetCurrentUser:HomeViewAction()
     object GetAllUser : HomeViewAction()
+    data class CheckIn(var ip : String) : HomeViewAction()
+    object GetAllTimeSheet : HomeViewAction()
     data class AddTracking(var tracking: Tracking) : HomeViewAction()
     object GetCategorys:HomeViewAction()
     object ResetLang:HomeViewAction()

@@ -5,13 +5,12 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="#EFEFEF"
-    android:orientation="vertical"
-    tools:context=".ui.medical.MedicalFragment">
+    android:orientation="vertical">
         <com.google.android.material.textview.MaterialTextView
             android:text="@string/menu_nearest_medical"
             android:textColor="@color/gray"
             android:textStyle="bold"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:layout_marginBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
