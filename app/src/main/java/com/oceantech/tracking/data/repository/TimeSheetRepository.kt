@@ -11,6 +11,5 @@ import javax.inject.Singleton
 class TimeSheetRepository @Inject constructor(val api : TimeSheetApi) {
 
     fun checkIn(ip: String?): Observable<TimeSheet> = api.checkIn(ip).subscribeOn(Schedulers.io())
-
     fun getTimeSheet() : Observable<List<TimeSheet>> = api.getTimeSheet().subscribeOn(Schedulers.io())
 }
