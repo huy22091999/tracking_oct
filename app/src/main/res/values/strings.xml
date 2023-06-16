@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Dengue Alert</string>
+    <string name="app_name">Tracking</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -12,7 +12,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">Home</string>
-    <string name="menu_category">News</string>
+    <string name="menu_category">Tracking List</string>
     <string name="menu_nearest_medical">Nearest Medical</string>
     <string name="menu_feedback">Feedback</string>
     <string name="fragment_home">Home</string>
@@ -23,7 +23,7 @@
     <string name="send_feedback">Send feedback</string>
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
     <string name="loggin">Đăng nhập</string>
-    <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
+    <string name="lable_signing">Chưa có tài khoản /<font color="#00AFEF"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="channel_description">Notification</string>
     <string name="category_theme">News topic</string>
@@ -66,7 +66,7 @@
     <string name="need_network">The Dengue Alert app needs to use mobile data to detect outbreaks around. You need to anable mobile data or Wifi in the settings.</string>
     <string name="account">User name</string>
     <string name="received">We have received your feedback</string>
-    <string name="exit">Thoát ứng dụng</string>
+    <string name="exit">Exit</string>
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">at</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
@@ -78,4 +78,8 @@
     <string name="add">Add</string>
     <string name="edit">Chỉnh sửa</string>
     <string name="remove">Xóa</string>
+    <string name="slogan">Daily tracking makes you better</string>
+    <string name="tv_login">Đã có tài khoản? <font color="#00AFEF"><b> Đăng nhập</b></font></string>
+    <string name="list_intern">List of Android Intern</string>
+    <string name="dark_mode">Dark mode</string>
 </resources>

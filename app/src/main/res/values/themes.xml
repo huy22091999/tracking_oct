@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Nimpe" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.Nimpe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/teal_200</item>
         <item name="colorPrimaryVariant">@color/teal_700</item>
@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">#00000000</item>
+        <item name="android:statusBarColor" >#00000000</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
         <!-- Customize your theme here. -->
     </style>
@@ -20,7 +20,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Nimpe.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Nimpe.AppBarOverlay" parent="ThemeOverlay.AppCompat.DayNight" />
 
-    <style name="Theme.Nimpe.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Nimpe.PopupOverlay" parent="ThemeOverlay.AppCompat.DayNight" />
 </resources>

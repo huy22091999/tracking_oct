@@ -51,10 +51,6 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     override fun getBinding(): ActivityLoginBinding {
         return ActivityLoginBinding.inflate(layoutInflater)
     }
-
-    override val mvrxViewId: String
-        get() = "Login"
-
     override fun create(initialState: SecurityViewState): SecurityViewModel {
         return securityviewmodelFactory.create(initialState)
     }

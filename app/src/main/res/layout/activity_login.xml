@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.security.LoginActivity">
+    tools:context=".ui.security.LoginActivity"
+    android:background="@color/background">
     <FrameLayout
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"

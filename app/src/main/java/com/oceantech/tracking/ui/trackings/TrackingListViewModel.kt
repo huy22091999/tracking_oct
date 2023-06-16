@@ -7,6 +7,8 @@ import com.oceantech.tracking.data.repository.TrackingRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class TrackingListViewModel @AssistedInject constructor(
     @Assisted state: TrackingViewState,
@@ -16,7 +18,7 @@ class TrackingListViewModel @AssistedInject constructor(
         when (action) {
             is TrackingViewAction.GetAllTracking -> handleGetTracking()
             is TrackingViewAction.Delete -> handleDelete(action.tracking)
-            is TrackingViewAction.Update -> handleUpdate(action.tracking,action.newTracking)
+            is TrackingViewAction.Update -> handleUpdate(action.newTracking)
             is TrackingViewAction.AddTracking -> handleAdd(action.tracking)
         }
     }
@@ -24,24 +26,28 @@ class TrackingListViewModel @AssistedInject constructor(
     private fun handleAdd(tracking: Tracking) {
         setState { copy(asyncTracking = Loading()) }
         repository.tracking(tracking).execute {
-            copy(asyncTracking = it)
-        }
-        withState { state ->
-            if (state.asyncListTracking is Success) {
-                state.asyncListTracking()?.add(tracking)
+            val newState = copy(asyncTracking = it)
+            if (it is Success) {
+                newState.asyncListTracking = Loading()
+                repository.getAllTracking().execute {listState->
+                    copy(asyncListTracking = listState)
+                }
             }
+            newState
         }
     }
 
     private fun handleDelete(tracking: Tracking) {
         setState { copy(asyncDelete = Loading()) }
         repository.delete(tracking).execute {
-            copy(asyncDelete = it)
-        }
-        withState { state ->
-            if (state.asyncListTracking is Success) {
-                state.asyncListTracking()?.remove(tracking)
+            val newState = copy(asyncDelete = it)
+            if (it is Success) {
+                newState.asyncListTracking = Loading()
+                repository.getAllTracking().execute {listState->
+                    copy(asyncListTracking = listState)
+                }
             }
+            newState
         }
     }
 
@@ -52,16 +58,17 @@ class TrackingListViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handleUpdate(tracking: Tracking, newTracking: Tracking) {
+    private fun handleUpdate(newTracking: Tracking) {
         setState { copy(asyncUpdate = Loading()) }
-        repository.updateTracking(tracking).execute {
-            copy(asyncUpdate = it)
-        }
-        withState { state ->
-            if (state.asyncListTracking is Success) {
-                val list = state.asyncListTracking.invoke()
-                state.asyncListTracking()?.set(list?.indexOf(tracking) ?: 0,newTracking)
+        repository.updateTracking(newTracking).execute {
+            val newState = copy(asyncUpdate = it)
+            if (it is Success) {
+                newState.asyncListTracking = Loading()
+                repository.getAllTracking().execute {listState->
+                    copy(asyncListTracking = listState)
+                }
             }
+            newState
         }
     }
 

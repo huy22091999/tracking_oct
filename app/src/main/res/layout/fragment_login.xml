@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context=".ui.security.LoginFragment">
 
@@ -15,38 +15,29 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <LinearLayout
-                android:id="@+id/space"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@color/nimpe_background_login"
-                android:orientation="horizontal" />
-
+            android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="-20sp"
-                android:layout_below="@id/space"
-                android:background="@drawable/background_login"
+                android:layout_marginTop="40dp"
                 android:orientation="vertical"
                 android:padding="24dp">
 
                 <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/logo_login" />
+                    android:background="@drawable/logo_app" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
+                    android:fontFamily="@font/baloo"
                     android:gravity="center"
-                    android:text="@string/warning"
-                    android:textColor="@color/gray"
+                    android:text="@string/slogan"
+                    android:textColor="@color/white"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
@@ -57,11 +48,13 @@
                     android:id="@+id/username_til"
                     android:layout_marginTop="24dp"
                     app:hintEnabled="false"
+                    app:startIconTint="@color/white"
                     app:startIconDrawable="@drawable/ic_person">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/username"
                         android:hint="@string/account"
+                        android:textColorHint="@color/text_color"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -73,12 +66,14 @@
                     android:layout_marginTop="16dp"
                     app:errorEnabled="true"
                     app:hintEnabled="false"
+                    app:startIconTint="@color/white"
                     app:startIconDrawable="@drawable/ic_lock"
                     android:id="@+id/password_til">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:hint="@string/password"
+                        android:textColorHint="@color/text_color"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -102,7 +97,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
                     android:text="@string/lable_signing"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/white"
                     android:textSize="16sp" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -113,7 +108,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="32dp"
                     android:text="@string/forget_password"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/main"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>

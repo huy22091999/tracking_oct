@@ -42,7 +42,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import kotlin.system.measureTimeMillis
 
-abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), HasScreenInjector,MvRxView {
+abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), HasScreenInjector{
 
     protected lateinit var views: VB
 
@@ -332,10 +332,4 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
     @MenuRes
     open fun getMenuRes() = -1
-
-    override fun invalidate() {
-        // no-ops by default
-        Timber.v("invalidate() method has not been implemented")
-    }
-
 }

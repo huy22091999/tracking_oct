@@ -17,6 +17,9 @@
         <item android:id="@+id/nav_feedbackFragment"
             android:icon="@drawable/ic_feedback"
             android:title="@string/menu_feedback"/>
+        <item android:id="@+id/nav_darkMode"
+            android:icon="@drawable/dark_mode"
+            android:title="@string/dark_mode"/>
     </group>
     <group android:id="@+id/lang" >
         <item

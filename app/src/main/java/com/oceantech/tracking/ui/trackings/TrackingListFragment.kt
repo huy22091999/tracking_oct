@@ -16,7 +16,7 @@ import com.oceantech.tracking.databinding.BottomSheetOptionBinding
 import com.oceantech.tracking.databinding.FragmentTrackingListBinding
 import timber.log.Timber
 import javax.inject.Inject
-
+@SuppressLint("NotifyDataSetChanged")
 class TrackingListFragment @Inject constructor() :
     TrackingBaseFragment<FragmentTrackingListBinding>(), OnClickTracking {
     private val viewModel: TrackingListViewModel by activityViewModel()
@@ -45,39 +45,52 @@ class TrackingListFragment @Inject constructor() :
         views.rcvTracking.adapter = adapter
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun invalidate(): Unit = withState(viewModel) {
         when(state){
-            GET_ALL -> {
-                when (it.asyncListTracking) {
-                    is Success -> {
-                        it.asyncListTracking.invoke()?.let { it1 ->
-                            adapter.setData(it1)
-                            adapter.notifyDataSetChanged()
-                        }
-                    }
-                    is Fail -> Timber.tag("Load tracking").e("error")
+            GET_ALL -> handleGetAll(it)
+            DELETE -> handleDelete(it)
+            UPDATE -> handleUpdate(it)
+        }
+    }
+    private fun handleGetAll(state: TrackingViewState) {
+        when (val result = state.asyncListTracking) {
+            is Success -> {
+                result.invoke().let { list ->
+                    adapter.setData(list)
+                    adapter.notifyDataSetChanged()
                 }
             }
-            DELETE -> {
-                when (it.asyncDelete) {
-                    is Success -> {
-                        adapter.notifyDataSetChanged()
-                        Toast.makeText(requireContext(), "Delete success", Toast.LENGTH_LONG).show()
-                    }
-                    is Fail -> Toast.makeText(requireContext(), "Delete Fail", Toast.LENGTH_LONG).show()
+            is Fail -> {
+                Timber.tag("Load tracking").e("error")
+            }
+        }
+    }
+    private fun handleDelete(state: TrackingViewState) {
+        when (state.asyncDelete) {
+            is Success -> {
+                state.asyncListTracking.invoke()?.let { it1 ->
+                    adapter.setData(it1)
+                    adapter.notifyDataSetChanged()
+                    Toast.makeText(requireContext(), "Delete success", Toast.LENGTH_LONG).show()
+                    state.asyncListTracking = Loading()
+                    state.asyncDelete = Loading()
                 }
             }
-            UPDATE -> {
-                when (it.asyncUpdate) {
-                    is Success -> {
-                        adapter.notifyDataSetChanged()
-                        Toast.makeText(requireContext(), "Update success", Toast.LENGTH_LONG).show()
-                    }
-                    is Fail -> Toast.makeText(requireContext(), "Update fail", Toast.LENGTH_LONG).show()
+            is Fail -> Toast.makeText(requireContext(), "Delete Fail", Toast.LENGTH_LONG).show()
+        }
+    }
+    private fun handleUpdate(state : TrackingViewState){
+        when (state.asyncUpdate) {
+            is Success -> {
+                state.asyncListTracking.invoke()?.let { it1 ->
+                    adapter.setData(it1)
+                    adapter.notifyDataSetChanged()
+                    Toast.makeText(requireContext(), "Update success", Toast.LENGTH_LONG).show()
+                    state.asyncUpdate = Loading()
+                    state.asyncListTracking = Loading()
                 }
             }
-
+            is Fail -> Toast.makeText(requireContext(), "Update fail", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -98,6 +111,7 @@ class TrackingListFragment @Inject constructor() :
         val dialog = BottomSheetDialog(requireContext())
         val binding = BottomSheetEditBinding.inflate(LayoutInflater.from(requireContext()))
         dialog.setContentView(binding.root)
+        binding.edtContent.setText(tracking.content)
         binding.btnCancel.setOnClickListener {
             dialog.dismiss()
             bDialog.dismiss()
@@ -118,7 +132,7 @@ class TrackingListFragment @Inject constructor() :
         if (newContent.isNotEmpty()) {
             val newTracking = tracking.copy(content = newContent)
             state = UPDATE
-            viewModel.handle(TrackingViewAction.Update(tracking,newTracking))
+            viewModel.handle(TrackingViewAction.Update(newTracking))
             dialog.dismiss()
             bDialog.dismiss()
         }

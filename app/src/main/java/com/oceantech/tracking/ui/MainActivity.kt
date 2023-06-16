@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.annotation.MenuRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -40,22 +41,27 @@ import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.DialogTrackingBinding
 import com.oceantech.tracking.ui.home.TestViewModel
-import com.oceantech.tracking.ui.trackings.TrackingListFragment
 import com.oceantech.tracking.ui.trackings.TrackingListViewModel
 import com.oceantech.tracking.ui.trackings.TrackingViewAction
 import com.oceantech.tracking.ui.trackings.TrackingViewState
+import com.oceantech.tracking.utils.getIPAddress
 import timber.log.Timber
 import java.net.NetworkInterface
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory , TrackingListViewModel.Factory{
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
+    TrackingListViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
+        const val HOME_FRAGMENT = 0
+        const val TRACKING_FRAGMENT = 1
     }
 
     private val homeViewModel: HomeViewModel by viewModel()
-    private val trackingListViewModel : TrackingListViewModel by viewModel()
+    private val trackingListViewModel: TrackingListViewModel by viewModel()
+    private var positionFragment: Int = 0
 
     private lateinit var sharedActionViewModel: TestViewModel
+    private var isChecked : Boolean = false
 
     @Inject
     lateinit var localHelper: LocalHelper
@@ -76,37 +82,51 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
+        positionFragment = HOME_FRAGMENT
         user = intent.getParcelableExtra("user")
         sharedActionViewModel = viewModelProvider.get(TestViewModel::class.java)
         setContentView(views.root)
         setupToolbar()
         setupDrawer()
         sharedActionViewModel.test()
-        val ip = getIPAddress()?.let { Timber.tag("ip").e(it) }
-        homeViewModel.handle(HomeViewAction.CheckIn(ip.toString()))
-        homeViewModel.handle(HomeViewAction.GetAllTimeSheet)
+//        val ip = getIPAddress()?.let { Timber.tag("ip").e(it) }
+//        homeViewModel.handle(HomeViewAction.CheckIn(ip.toString()))
+//        homeViewModel.handle(HomeViewAction.GetAllTimeSheet)
+        handleHomeStateChange()
+        handleTrackingStateChange()
+    }
+
+    private fun handleTrackingStateChange() {
+        trackingListViewModel.subscribe(this) {
+            when (it.asyncTracking) {
+                is Success -> {
+                    Toast.makeText(
+                        this,
+                        "${it.asyncTracking.invoke()?.content} is added",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    it.asyncTracking = Loading()
+                }
+                is Fail -> {
+                    Toast.makeText(this, "Fail! Please tracking again", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    private fun handleHomeStateChange() {
         homeViewModel.subscribe(this) {
             if (it.isLoadding()) {
                 views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
             } else
                 views.appBarMain.contentMain.waitingView.visibility = View.GONE
-            when(it.asyncCheckIn){
+            when (it.asyncCheckIn) {
                 is Success -> {
-                    Log.e("check-in",it.asyncCheckIn.invoke().toString())
+                    Log.e("check-in", it.asyncCheckIn.invoke().toString())
                 }
             }
-            if (it.asyncTimeSheet is Success){
-                Log.e("time-sheet",it.asyncTimeSheet.invoke().toString())
-            }
-        }
-        trackingListViewModel.subscribe(this){
-            when(it.asyncTracking){
-                is Success -> {
-                    Toast.makeText(this, "${it.asyncTracking.invoke().content} is added", Toast.LENGTH_LONG).show()
-                }
-                is Fail -> {
-                    Toast.makeText(this, "Fail! Please tracking again", Toast.LENGTH_LONG).show()
-                }
+            if (it.asyncTimeSheet is Success) {
+                Log.e("time-sheet", it.asyncTimeSheet.invoke().toString())
             }
         }
     }
@@ -152,6 +172,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
 
             when (menuItem.itemId) {
+                R.id.nav_HomeFragment -> {
+                    positionFragment = HOME_FRAGMENT
+                    drawerLayout.close()
+
+                }
                 R.id.exit -> {
                     val homeIntent = Intent(Intent.ACTION_MAIN)
                     homeIntent.addCategory(Intent.CATEGORY_HOME)
@@ -159,11 +184,13 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                     startActivity(homeIntent)
                 }
                 R.id.nav_trackingListFragment -> {
-                    navigateTo(R.id.action_nav_HomeFragment_to_trackingListFragment)
-                    drawerLayout.close()
+                    checkedNav(TRACKING_FRAGMENT,R.id.action_nav_HomeFragment_to_trackingListFragment,R.id.nav_trackingListFragment)
                 }
                 R.id.nav_change_langue -> {
                     showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
+                }
+                R.id.nav_darkMode -> {
+
                 }
 
                 else -> {
@@ -189,11 +216,22 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             homeViewModel.language = 1
         }
         val buttonShowMenu = actionView as AppCompatImageView
-        buttonShowMenu.setImageDrawable(getDrawable(R.drawable.ic_drop))
+        buttonShowMenu.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_drop))
         buttonShowMenu.setOnClickListener {
             showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
         }
 
+    }
+
+    private fun checkedNav(TRACKING_FRAGMENT: Int, action: Int, idFragment: Int) {
+        if (positionFragment != TRACKING_FRAGMENT) {
+            navigateTo(
+                action,
+                TRACKING_FRAGMENT
+            )
+        }
+        navView.setCheckedItem(idFragment)
+        drawerLayout.close()
     }
 
     private fun changeLangue(lang: String) {
@@ -218,7 +256,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             true
         )
         popup.elevation = 20F
-        popup.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.backgound_box))
+        popup.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
             changeLangue("en")
@@ -239,17 +277,15 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override val mvrxViewId: String
-        get() = "Main"
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
-    fun navigateTo(fragmentId: Int) {
+    fun navigateTo(fragmentId: Int, currentPosition: Int) {
         navController.navigate(fragmentId)
+        positionFragment = currentPosition
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -296,7 +332,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         if (content.isEmpty()) Toast.makeText(this, "Content is empty", Toast.LENGTH_LONG).show()
         else {
             val date = Calendar.getInstance().time
-            val tracking = Tracking(null, content,date)
+            val tracking = Tracking(null, content, date)
             trackingListViewModel.handle(TrackingViewAction.AddTracking(tracking))
         }
     }
@@ -304,28 +340,18 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun updateLanguge(lang: String) {
         val menu: Menu = navView.menu
         menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
-        menu.findItem(R.id.trackingListFragment).title = getString(R.string.menu_category)
+        menu.findItem(R.id.nav_trackingListFragment).title = getString(R.string.menu_category)
         menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
         menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
+        menu.findItem(R.id.nav_darkMode).title = getString(R.string.dark_mode)
+        menu.findItem(R.id.exit).title = getString(R.string.exit)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }
+
     override fun create(initialState: TrackingViewState): TrackingListViewModel {
         return trackingViewModelFactory.create(initialState)
     }
-    private fun getIPAddress(): String? {
-        val interfaces = NetworkInterface.getNetworkInterfaces()
-        while (interfaces.hasMoreElements()) {
-            val networkInterface = interfaces.nextElement()
-            val addresses = networkInterface.inetAddresses
-            while (addresses.hasMoreElements()) {
-                val address = addresses.nextElement()
-                if (!address.isLinkLocalAddress && !address.isLoopbackAddress && address.isSiteLocalAddress) {
-                    return address.hostAddress
-                }
-            }
-        }
-        return null
-    }
+
 }
 

@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import java.net.NetworkInterface
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -47,4 +48,18 @@ fun <T : Fragment> AppCompatActivity.addFragmentToBackstack(
         option?.invoke(this)
         replace(frameId, fragmentClass,null, tag).addToBackStack(tag)
     }
+}
+fun getIPAddress(): String? {
+    val interfaces = NetworkInterface.getNetworkInterfaces()
+    while (interfaces.hasMoreElements()) {
+        val networkInterface = interfaces.nextElement()
+        val addresses = networkInterface.inetAddresses
+        while (addresses.hasMoreElements()) {
+            val address = addresses.nextElement()
+            if (!address.isLinkLocalAddress && !address.isLoopbackAddress && address.isSiteLocalAddress) {
+                return address.hostAddress
+            }
+        }
+    }
+    return null
 }

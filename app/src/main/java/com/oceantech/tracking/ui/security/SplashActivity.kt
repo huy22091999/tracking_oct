@@ -2,6 +2,8 @@ package com.oceantech.tracking.ui.security
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
@@ -34,27 +36,25 @@ class SplashActivity() : TrackingBaseActivity<ActivitySplashBinding>(), Security
             is Success -> {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("user",it.userCurrent.invoke())
-                startActivity(intent)
-                finish()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    startActivity(intent)
+                    finish()
+                },2000)
             }
 
             is Fail -> {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                },2000)
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 
     override fun getBinding(): ActivitySplashBinding {
         return ActivitySplashBinding.inflate(layoutInflater)
     }
-
-    override val mvrxViewId: String
-        get() = "Splash"
 
     override fun create(initialState: SecurityViewState): SecurityViewModel {
         return securityViewModelFactory.create(initialState)

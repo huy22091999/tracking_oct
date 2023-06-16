@@ -38,6 +38,7 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
             val password = views.password.text.toString().trim()
             validateData(username, displayName, email, firstName, lastName, password)
         }
+        views.tvReturnLogin.setOnClickListener { viewModel.handleReturnLogin() }
     }
 
     private fun validateData(

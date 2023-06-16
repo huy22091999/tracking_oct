@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:elevation="0dp"
-        android:background="?attr/colorOnPrimarySurface"
+        android:background="#001D29"
         app:statusBarScrim="@android:color/transparent"
         android:theme="@style/Theme.Nimpe.AppBarOverlay">
 
@@ -23,7 +23,7 @@
             android:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorOnPrimarySurface"
+            android:background="#001D29"
             app:popupTheme="@style/Theme.Nimpe.PopupOverlay" >
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"

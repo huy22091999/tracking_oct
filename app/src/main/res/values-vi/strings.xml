@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Dengue Alert</string>
+    <string name="app_name">Tracking</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -13,7 +13,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">Trang chủ</string>
-    <string name="menu_category">Danh mục tin tức</string>
+    <string name="menu_category">Danh sách tracking</string>
     <string name="menu_nearest_medical">Cơ sở y tế gần nhất</string>
     <string name="menu_feedback">Phản hồi</string>
     <string name="fragment_home">Trang chủ</string>
@@ -24,7 +24,7 @@
     <string name="send_feedback">Gửi phản hồi</string>
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
     <string name="loggin">Đăng nhập</string>
-    <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
+    <string name="lable_signing">Chưa có tài khoản /<font color="#00AFEF"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="category_theme">Chủ đề tin tức</string>
     <string name="home_everyone">Mọi người cùng chung tay phòng chống dịch bệnh sốt xuất huyết</string>
@@ -73,4 +73,12 @@
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
     <string name="sign_in_success">"Đăng ký thành công. Vui lòng đăng nhập !"</string>
     <string name="sign_in_false">"Đăng ký thất bại. Vui lòng thử lại !"</string>
+    <string name="content">Nội dung</string>
+    <string name="cancel">Hủy</string>
+    <string name="add">Thêm</string>
+    <string name="edit">Sửa</string>
+    <string name="remove">Xóa</string>
+    <string name="slogan">Slogan</string>
+    <string name="list_intern">Danh sách thực tập Android</string>
+    <string name="dark_mode">Nền tối</string>
 </resources>

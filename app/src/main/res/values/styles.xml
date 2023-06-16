@@ -10,6 +10,7 @@
     </style>
     <style name="NimpeButtonLogin">
         <item name="cornerRadius">24dp</item>
+        <item name="backgroundTint">@color/main</item>
 
     </style>
     <style name="stylePopup" parent="Base.Widget.AppCompat.PopupMenu">
