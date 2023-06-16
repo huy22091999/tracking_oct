@@ -1,5 +1,6 @@
 package com.oceantech.tracking.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,10 +36,12 @@ class HomeFragment @Inject constructor(val api: UserApi) :
             handleEvent(it)
         }
         api.getCurrentUserTest().enqueue(object : retrofit2.Callback<User> {
+            @SuppressLint("LogNotTimber")
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 Log.e("Test", "onResponse: $response")
             }
 
+            @SuppressLint("LogNotTimber")
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.e("Test", "onResponse: ${t.stackTrace}")
             }

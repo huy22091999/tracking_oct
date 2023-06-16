@@ -20,9 +20,9 @@
     <application
         android:name="com.oceantech.tracking.TrackingApplication"
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/dangue_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/dangue_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nimpe"
         android:usesCleartextTraffic="true"

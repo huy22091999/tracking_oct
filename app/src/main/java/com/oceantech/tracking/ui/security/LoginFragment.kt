@@ -2,6 +2,7 @@ package com.oceantech.tracking.ui.security
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
     }
     private fun loginSubmit()
     {
-        username=views.username.text.toString().trim()
+        username=views.userName.text.toString().trim()
         password=views.password.text.toString().trim()
         if(username.isNullOrEmpty()) views.usernameTil.error=getString(R.string.username_not_empty)
         if(password.isNullOrEmpty()) views.passwordTil.error=getString(R.string.username_not_empty)
@@ -56,6 +57,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                     val sessionManager = context?.let { it1 -> SessionManager(it1.applicationContext) }
                     token.accessToken?.let { it1 -> sessionManager!! .saveAuthToken(it1) }
                     token.refreshToken?.let { it1 -> sessionManager!!.saveAuthTokenRefresh(it1) }
+                    Log.i("Login", token.toString())
                     viewModel.handle(SecurityViewAction.SaveTokenAction(token!!))
                 }
                 Toast.makeText(requireContext(),getString(R.string.login_success),Toast.LENGTH_LONG).show()

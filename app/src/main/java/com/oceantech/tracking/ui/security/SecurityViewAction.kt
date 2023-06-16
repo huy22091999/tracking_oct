@@ -7,4 +7,9 @@ sealed class SecurityViewAction : NimpeViewModelAction {
     data class LogginAction(var userName: String, var password: String) : SecurityViewAction()
     data class SaveTokenAction(var token: TokenResponse) : SecurityViewAction()
     object GetUserCurrent : SecurityViewAction()
+    data class SignInAction(
+        var userName: String,
+        var password: String,
+        var displayName: String
+    ):SecurityViewAction()
 }
