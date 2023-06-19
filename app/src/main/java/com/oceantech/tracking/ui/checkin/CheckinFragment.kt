@@ -46,7 +46,6 @@ class CheckinFragment : TrackingBaseFragment<FragmentCheckinBinding>(){
         adapter = CheckinAdapter()
         views.btnCheckin.setOnClickListener {
             validateCheckin(ip)
-//            viewModel.handle(CheckinViewAction.Checkin(ip.toString()))
         }
         views.rcvTimeSheet.layoutManager = GridLayoutManager(requireContext(),3)
         views.rcvTimeSheet.adapter = adapter
