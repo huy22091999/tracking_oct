@@ -16,4 +16,7 @@ interface UserApi {
     fun getCurrentUserTest(): Call<User>
     @POST("public/sign")
     fun createUpdateUser(@Body user: User): Observable<TokenResponse>
+
+    @GET("users/get-all-user")
+    fun getAllUsers(): Observable<List<User>>
 }

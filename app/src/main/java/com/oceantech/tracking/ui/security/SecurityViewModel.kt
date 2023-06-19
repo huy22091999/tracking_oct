@@ -35,6 +35,16 @@ class SecurityViewModel @AssistedInject constructor(
             is SecurityViewAction.SaveTokenAction -> handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent -> handleCurrentUser()
             is SecurityViewAction.SignInAction -> handleSignIn(action.userName, action.password, action.displayName)
+            is SecurityViewAction.GetAllUsers -> handleAllUsers()
+        }
+    }
+
+    private fun handleAllUsers() {
+        setState {
+            copy(allUsers = Loading())
+        }
+        userRepo.getAllUsers().execute {
+            copy(allUsers = it)
         }
     }
 
@@ -73,6 +83,8 @@ class SecurityViewModel @AssistedInject constructor(
         }
 
     }
+
+
 
 
     fun handleReturnSignin() {

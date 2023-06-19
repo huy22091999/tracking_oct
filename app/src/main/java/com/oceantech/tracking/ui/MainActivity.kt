@@ -34,10 +34,12 @@ import javax.inject.Inject
 import com.oceantech.tracking.R
 import com.oceantech.tracking.di.TrackingViewModelFactory
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
+import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
 import com.oceantech.tracking.ui.tracking.TrackingViewState
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory, TrackingViewModel.Factory {
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory, TrackingViewModel.Factory, TimeSheetViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -54,6 +56,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     @Inject
     lateinit var trackingViewModelFactory: TrackingViewModel.Factory
+
+    @Inject
+    lateinit var timeSheetViewModelFactory: TimeSheetViewModel.Factory
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -77,7 +82,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 views.appBarMain.contentMain.waitingView.visibility = View.GONE
         }
     }
-
+    override fun create(S: TimeSheetViewState): TimeSheetViewModel {
+        return timeSheetViewModelFactory.create(S)
+    }
 
     override fun create(initialState: HomeViewState): HomeViewModel {
         return homeViewModelFactory.create(initialState)
@@ -111,13 +118,13 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.nav_medicalFragment,
                 R.id.nav_feedbackFragment,
                 R.id.listNewsFragment,
-                R.id.detailNewsFragment
+                R.id.detailNewsFragment,
+                R.id.trackingFragment
             ), drawerLayout
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
         // settings
         navView.setNavigationItemSelectedListener { menuItem ->
 
@@ -248,10 +255,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         menu.findItem(R.id.nav_newsFragment).title = getString(R.string.menu_category)
         menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
         menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
+        menu.findItem(R.id.trackingFragment).title = getString(R.string.fragment_tracking)
+        menu.findItem(R.id.timeSheetFragment).title = getString(R.string.time_sheet)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }
-
 
 
 

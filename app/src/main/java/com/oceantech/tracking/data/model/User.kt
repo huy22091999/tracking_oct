@@ -34,7 +34,7 @@ data class User(
     @SerializedName("password")
     val password: String? = null,
     @SerializedName("setPassword")
-    val setPassword: String? = null,
+    val setPassword: Boolean? = null,
     @SerializedName("roles")
     val roles: List<Role>? = null,
     @SerializedName("gender")

@@ -7,6 +7,7 @@ import com.oceantech.tracking.ui.security.UserPreferences
 import com.oceantech.tracking.utils.LocalHelper
 import dagger.Module
 import dagger.Provides
+import java.sql.Time
 
 @Module
 object NetWorkModule {
@@ -56,5 +57,15 @@ object NetWorkModule {
     fun providerTrackingRepository(
         api: TrackingApi
     ): TrackingRepository = TrackingRepository(api)
+
+    @Provides
+    fun providerTimeSheetApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(TimeSheetApi::class.java, context)
+    @Provides
+    fun providerTimeSheetRepository(
+        api: TimeSheetApi
+    ) = TimeSheetRepository(api)
 
 }

@@ -1,14 +1,10 @@
 package com.oceantech.tracking.data.repository
 
-import android.util.Log
 import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.UserApi
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -46,4 +42,6 @@ class UserRepository @Inject constructor(
             null
         )
     ).subscribeOn(Schedulers.io())
+
+    fun getAllUsers(): Observable<List<User>> = api.getAllUsers().subscribeOn(Schedulers.io())
 }

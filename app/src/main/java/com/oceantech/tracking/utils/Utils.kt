@@ -6,6 +6,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import java.time.Instant
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -47,4 +49,16 @@ fun <T : Fragment> AppCompatActivity.addFragmentToBackstack(
         option?.invoke(this)
         replace(frameId, fragmentClass,null, tag).addToBackStack(tag)
     }
+}
+
+
+// Convert ISO 8061 to normal date time
+
+fun String.toLocalDate(isoDateTime: String): String {
+    val formatter = DateTimeFormatter.ISO_DATE_TIME.parse(isoDateTime)
+    val normalFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val instant = Instant.from(formatter)
+    val normalDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+
+    return normalDateTime.format(normalFormat)
 }

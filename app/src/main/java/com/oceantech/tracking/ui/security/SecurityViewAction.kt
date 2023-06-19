@@ -12,4 +12,6 @@ sealed class SecurityViewAction : NimpeViewModelAction {
         var password: String,
         var displayName: String
     ):SecurityViewAction()
+
+    object GetAllUsers: SecurityViewAction()
 }

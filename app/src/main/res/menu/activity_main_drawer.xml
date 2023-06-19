@@ -17,9 +17,14 @@
         <item android:id="@+id/trackingFragment"
             android:icon="@mipmap/tracking"
             android:title="@string/menu_tracking"/>
+        <item android:id="@+id/timeSheetFragment"
+            android:title="@string/time_sheet"
+            android:icon="@mipmap/time_sheet"/>
         <item android:id="@+id/nav_feedbackFragment"
             android:icon="@drawable/ic_feedback"
             android:title="@string/menu_feedback"/>
+
+
     </group>
     <group android:id="@+id/lang" >
         <item

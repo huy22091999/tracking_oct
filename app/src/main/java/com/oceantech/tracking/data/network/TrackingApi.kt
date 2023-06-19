@@ -17,7 +17,7 @@ interface TrackingApi {
     fun saveTracking(@Body tracking: Tracking): io.reactivex.Observable<Tracking>
 
     @POST("tracking/{id}")
-    fun updateTracking(@Path("id") id: Int): io.reactivex.Observable<Tracking>
+    fun updateTracking(@Body tracking: Tracking, @Path("id") id: Int): io.reactivex.Observable<Tracking>
 
     @DELETE("tracking/{id}")
     fun deleteTracking(@Path("id") id: Int): io.reactivex.Observable<Tracking>

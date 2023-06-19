@@ -1,11 +1,18 @@
 package com.oceantech.tracking.ui.tracking
 
+import android.annotation.SuppressLint
+import android.util.Log
+import android.widget.Toast
 import com.airbnb.mvrx.ActivityViewModelContext
+import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
+import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingViewModel
+import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.ui.security.SecurityViewModel
 import dagger.assisted.Assisted
@@ -13,7 +20,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import javax.inject.Inject
 import javax.inject.Singleton
-
+@SuppressLint("LogNotTimber")
 class TrackingViewModel @AssistedInject constructor(
     @Assisted trackingState: TrackingViewState,
     private val repository: TrackingRepository
@@ -22,14 +29,33 @@ class TrackingViewModel @AssistedInject constructor(
 
     override fun handle(action: TrackingViewAction) {
         when(action){
-            is TrackingViewAction.SaveTracking -> handleSaveTracking(action.firstName, action.lastName, action.dob, action.gender)
+            is TrackingViewAction.SaveTracking -> handleSaveTracking(action.content)
             is TrackingViewAction.GetAllTracking -> handleGetAllTracking()
+            is TrackingViewAction.DeleteTracking -> handleDeleteTracking(action.id)
+            is TrackingViewAction.UpdateTracking -> handleUpdateTracking(action.tracking, action.id)
         }
     }
 
-    private fun handleSaveTracking(firstName: String, lastName: String, dob: String, gender: String){
+
+    private fun handleUpdateTracking(tracking: Tracking, id: Int) {
+        setState { copy(updateTracking = Loading()) }
+        repository.updateTracking(tracking, id).execute {
+            copy(updateTracking = it)
+        }
+
+    }
+
+    private fun handleDeleteTracking(id: Int) {
+        setState { copy(deleteTracking = Loading()) }
+        repository.deleteTracking(id).execute {
+            copy(deleteTracking = it)
+        }
+
+    }
+
+    private fun handleSaveTracking(content: String){
         setState { copy(saveTracking = Loading()) }
-        repository.saveTracking(firstName, lastName, dob, gender).execute {
+        repository.saveTracking(content).execute {
             copy(saveTracking = it)
         }
     }
