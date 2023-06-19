@@ -59,6 +59,7 @@ class CheckinFragment : TrackingBaseFragment<FragmentCheckinBinding>(){
             Toast.makeText(requireContext(),getString(R.string.noti_checkin),Toast.LENGTH_SHORT).show()
         }
         else {
+            state = CHECK_IN
             viewModel.handle(CheckinViewAction.Checkin(ip.toString()))
             sessionManager.saveCheckin(currentDate)
         }
