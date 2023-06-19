@@ -3,12 +3,14 @@ package com.oceantech.tracking.data.network
 import android.content.Context
 import android.content.SharedPreferences
 import com.oceantech.tracking.R
+import java.util.Date
+import javax.inject.Inject
 
 
 /**
  * Session manager to save and fetch data from SharedPreferences
  */
-class SessionManager(context: Context) {
+class SessionManager (context: Context) {
 
     private var prefs: SharedPreferences =
         context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
@@ -16,7 +18,8 @@ class SessionManager(context: Context) {
     companion object {
         const val USER_TOKEN = "user_token"
         const val TOKEN_REFRESH="refresh_token"
-        const val THEME = "light"
+        const val THEME = "theme"
+        const val CHECK_IN = "check_in"
     }
 
     /**
@@ -48,4 +51,11 @@ class SessionManager(context: Context) {
         return prefs.getInt(THEME, R.style.Theme_Dark)
     }
 
+    fun saveCheckin(date : String){
+        val editor = prefs.edit()
+        editor.putString(CHECK_IN,date).apply()
+    }
+    fun getCheckin() : String{
+        return prefs.getString(CHECK_IN,"").toString()
+    }
 }

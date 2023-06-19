@@ -64,5 +64,4 @@ object NetWorkModule {
     fun providerUserRepository(
         api: UserApi
     ): UserRepository = UserRepository(api)
-
 }

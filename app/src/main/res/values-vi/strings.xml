@@ -82,4 +82,5 @@
     <string name="list_intern">Danh sách thực tập Android</string>
     <string name="dark_mode">Nền tối</string>
     <string name="check_in">Check in có mặt</string>
+    <string name="noti_checkin">Hôm nay bạn đã check in rồi</string>
 </resources>

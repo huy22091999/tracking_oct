@@ -2,21 +2,26 @@ package com.oceantech.tracking.ui.checkin
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.airbnb.mvrx.*
+import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.TimeSheet
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.FragmentCheckinBinding
 import com.oceantech.tracking.utils.getIPAddress
-import javax.inject.Inject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CheckinFragment : TrackingBaseFragment<FragmentCheckinBinding>(){
     private lateinit var adapter: CheckinAdapter
+
+    private lateinit var sessionManager: SessionManager
 
     companion object {
         private const val CHECK_IN = 0
@@ -35,12 +40,30 @@ class CheckinFragment : TrackingBaseFragment<FragmentCheckinBinding>(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         state = GET
+        sessionManager = SessionManager(requireContext())
         viewModel.handle(CheckinViewAction.GetTimeSheet)
         val ip = getIPAddress()
         adapter = CheckinAdapter()
-        views.btnCheckin.setOnClickListener { viewModel.handle(CheckinViewAction.Checkin(ip.toString())) }
+        views.btnCheckin.setOnClickListener {
+            validateCheckin(ip)
+//            viewModel.handle(CheckinViewAction.Checkin(ip.toString()))
+        }
         views.rcvTimeSheet.layoutManager = GridLayoutManager(requireContext(),3)
         views.rcvTimeSheet.adapter = adapter
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun validateCheckin(ip: String?) {
+        val savedDate = sessionManager.getCheckin()
+        val calendar = Calendar.getInstance().time
+        val currentDate = SimpleDateFormat("dd/MM/yyyy").format(calendar)
+        if (savedDate == currentDate){
+            Toast.makeText(requireContext(),getString(R.string.noti_checkin),Toast.LENGTH_SHORT).show()
+        }
+        else {
+            viewModel.handle(CheckinViewAction.Checkin(ip.toString()))
+            sessionManager.saveCheckin(currentDate)
+        }
     }
 
     override fun invalidate()  : Unit = withState(viewModel){

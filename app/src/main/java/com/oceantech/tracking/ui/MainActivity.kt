@@ -50,9 +50,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     TrackingListViewModel.Factory,CheckinViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
-        const val HOME_FRAGMENT = 0
-        const val TRACKING_FRAGMENT = 1
-        const val CHECKIN_FRAGMENT = 2
     }
 
     private val homeViewModel: HomeViewModel by viewModel()
@@ -87,16 +84,12 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         currentTheme = sessionManager.getTheme()
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
-        positionFragment = HOME_FRAGMENT
         user = intent.getParcelableExtra("user")
         sharedActionViewModel = viewModelProvider.get(TestViewModel::class.java)
         setContentView(views.root)
         setupToolbar()
         setupDrawer()
         sharedActionViewModel.test()
-//        val ip = getIPAddress()?.let { Timber.tag("ip").e(it) }
-//        homeViewModel.handle(HomeViewAction.CheckIn(ip.toString()))
-//        homeViewModel.handle(HomeViewAction.GetAllTimeSheet)
         handleHomeStateChange()
         handleTrackingStateChange()
     }
