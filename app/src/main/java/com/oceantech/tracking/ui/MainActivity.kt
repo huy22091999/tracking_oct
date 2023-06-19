@@ -32,9 +32,12 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
+import com.oceantech.tracking.di.TrackingViewModelFactory
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.tracking.TrackingViewModel
+import com.oceantech.tracking.ui.tracking.TrackingViewState
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory, TrackingViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -49,6 +52,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     @Inject
     lateinit var homeViewModelFactory: HomeViewModel.Factory
 
+    @Inject
+    lateinit var trackingViewModelFactory: TrackingViewModel.Factory
+
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
@@ -58,7 +64,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
-        sharedActionViewModel = viewModelProvider.get(TestViewModel::class.java)
+        sharedActionViewModel = viewModelProvider[TestViewModel::class.java]
         setContentView(views.root)
         setupToolbar()
         setupDrawer()
@@ -77,6 +83,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return homeViewModelFactory.create(initialState)
     }
 
+    override fun create(state: TrackingViewState): TrackingViewModel {
+        return trackingViewModelFactory.create(state)
+    }
     override fun getBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
     }
@@ -242,6 +251,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }
+
+
 
 
 }

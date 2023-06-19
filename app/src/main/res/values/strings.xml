@@ -45,8 +45,8 @@
     <string name="email">Email <font color="red">*</font></string>
     <string name="send">Send</string>
     <string name="signin">Đăng kí tài khoản</string>
-    <string name="last_name">Fisrt Name</string>
-    <string name="first_name">Last Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
     <string name="display_name">Display name</string>
     <string name="username">User name</string>
     <string name="signin_account">Sign in</string>
@@ -70,4 +70,13 @@
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">at</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="menu_tracking">Tracking</string>
+    <string name="add_tracking">Add Tracking</string>
+    <string name="gender">Gender</string>
+    <string name="dob">Date Of Birth</string>
+    <string name="add_new_tracking">Add</string>
+    <string name="cancel_add_new_tracking">Cancel</string>
+    <string name="create_tracking_successfully">Create successfully</string>
+    <string name="create_tracking_failed">Create failed</string>
+    <string name="requirement_add_new_tracking">You must type all information</string>
 </resources>

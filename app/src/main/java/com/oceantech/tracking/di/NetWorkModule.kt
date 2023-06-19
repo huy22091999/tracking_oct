@@ -46,4 +46,15 @@ object NetWorkModule {
         api: UserApi
     ): UserRepository = UserRepository(api)
 
+    @Provides
+    fun providerTrackingApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(TrackingApi::class.java, context)
+
+    @Provides
+    fun providerTrackingRepository(
+        api: TrackingApi
+    ): TrackingRepository = TrackingRepository(api)
+
 }

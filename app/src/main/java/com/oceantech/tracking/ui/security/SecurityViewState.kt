@@ -7,11 +7,11 @@ import com.airbnb.mvrx.Uninitialized
 import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.model.User
 
-data class SecurityViewState (
+data class SecurityViewState(
     var asyncLogin: Async<TokenResponse> = Uninitialized,
-    var userCurrent:Async<User> = Uninitialized,
+    var userCurrent: Async<User> = Uninitialized,
     var userSignIn: Async<TokenResponse> = Uninitialized
 
-    ):MvRxState{
-        fun isLoading()= asyncLogin is Loading
-    }
+) : MvRxState {
+    fun isLoading() = asyncLogin is Loading
+}

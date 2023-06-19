@@ -9,16 +9,16 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <!-- Required for foreground services on P+. -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" /> <!-- Required for foreground services on P+. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <!-- TODO: Step 1.0, Review Permissions: Specify permissions you are using. -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- TODO: Step 1.0, Review Permissions: Specify permissions you are using. -->
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
-        android:name="com.oceantech.tracking.TrackingApplication"
+        android:name=".TrackingApplication"
         android:allowBackup="false"
         android:icon="@mipmap/dangue_icon"
         android:label="@string/app_name"
@@ -28,11 +28,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
-            android:name="com.oceantech.tracking.ui.security.LoginActivity"
+            android:name=".ui.security.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Nimpe.NoActionBar" />
         <activity
-            android:name="com.oceantech.tracking.ui.security.SplashActivity"
+            android:name=".ui.security.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Nimpe.NoActionBar">
             <intent-filter>
@@ -42,9 +42,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.oceantech.tracking.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Nimpe.NoActionBar"/>
+            android:theme="@style/Theme.Nimpe.NoActionBar" />
     </application>
 
 </manifest>

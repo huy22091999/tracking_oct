@@ -41,8 +41,8 @@
     <string name="email">Email</string>
     <string name="send">Gửi</string>
     <string name="signin">Đăng kí tài khoản</string>
-    <string name="last_name">Tên</string>
-    <string name="first_name">Họ</string>
+    <string name="last_name">Họ</string>
+    <string name="first_name">Tên</string>
     <string name="display_name">Tên hiển thị</string>
     <string name="username">Tên đăng nhập</string>
     <string name="signin_account">Đăng kí</string>
@@ -71,4 +71,13 @@
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">lúc</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="menu_tracking">Theo dõi</string>
+    <string name="add_tracking">Thêm theo dõi mới</string>
+    <string name="gender">Giới Tính</string>
+    <string name="dob">Ngày Sinh</string>
+    <string name="add_new_tracking">Thêm</string>
+    <string name="cancel_add_new_tracking">Huỷ</string>
+    <string name="create_tracking_successfully">Thêm thành công</string>
+    <string name="create_tracking_failed">Thêm thất bại, vui lòng thử lại sau</string>
+    <string name="requirement_add_new_tracking">Bạn phải nhập đủ thông tin</string>
 </resources>
