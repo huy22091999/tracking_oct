@@ -14,7 +14,6 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.annotation.MenuRes
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -25,43 +24,43 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.airbnb.mvrx.*
+import com.google.android.material.navigation.NavigationView
+import com.oceantech.tracking.R
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
-import com.oceantech.tracking.ui.home.HomeViewAction
-import com.oceantech.tracking.ui.home.HomeViewState
-import com.oceantech.tracking.ui.home.HomeViewModel
-import com.oceantech.tracking.utils.LocalHelper
-import com.google.android.material.navigation.NavigationView
-import com.oceantech.tracking.databinding.ActivityMainBinding
-import java.util.*
-import javax.inject.Inject
-
-import com.oceantech.tracking.R
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.network.SessionManager
+import com.oceantech.tracking.databinding.ActivityMainBinding
 import com.oceantech.tracking.databinding.DialogTrackingBinding
+import com.oceantech.tracking.ui.checkin.CheckinViewModel
+import com.oceantech.tracking.ui.checkin.CheckinViewState
+import com.oceantech.tracking.ui.home.HomeViewAction
+import com.oceantech.tracking.ui.home.HomeViewModel
+import com.oceantech.tracking.ui.home.HomeViewState
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.trackings.TrackingListViewModel
 import com.oceantech.tracking.ui.trackings.TrackingViewAction
 import com.oceantech.tracking.ui.trackings.TrackingViewState
-import com.oceantech.tracking.utils.getIPAddress
-import timber.log.Timber
-import java.net.NetworkInterface
+import com.oceantech.tracking.utils.LocalHelper
+import java.util.*
+import javax.inject.Inject
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
-    TrackingListViewModel.Factory {
+    TrackingListViewModel.Factory,CheckinViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
         const val HOME_FRAGMENT = 0
         const val TRACKING_FRAGMENT = 1
+        const val CHECKIN_FRAGMENT = 2
     }
 
     private val homeViewModel: HomeViewModel by viewModel()
     private val trackingListViewModel: TrackingListViewModel by viewModel()
     private var positionFragment: Int = 0
+    private lateinit var sessionManager : SessionManager
 
     private lateinit var sharedActionViewModel: TestViewModel
-    private var isChecked : Boolean = false
 
     @Inject
     lateinit var localHelper: LocalHelper
@@ -71,15 +70,21 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     @Inject
     lateinit var trackingViewModelFactory: TrackingListViewModel.Factory
+    @Inject
+    lateinit var checkInViewModelFactory: CheckinViewModel.Factory
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
     lateinit var navView: NavigationView
+    private var currentTheme : Int = R.style.Theme_Nimpe
     private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sessionManager = SessionManager(this)
+        setTheme(sessionManager.getTheme())
+        currentTheme = sessionManager.getTheme()
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         positionFragment = HOME_FRAGMENT
@@ -157,9 +162,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_HomeFragment,
-                R.id.trackingListFragment,
-                R.id.nav_medicalFragment,
-                R.id.nav_feedbackFragment,
+                R.id.nav_trackingListFragment,
+                R.id.nav_checkin
             ), drawerLayout
         )
 
@@ -172,26 +176,29 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
 
             when (menuItem.itemId) {
-                R.id.nav_HomeFragment -> {
-                    positionFragment = HOME_FRAGMENT
-                    drawerLayout.close()
-
-                }
+//                R.id.nav_HomeFragment -> {
+//                    positionFragment = HOME_FRAGMENT
+//                    drawerLayout.close()
+//
+//                }
                 R.id.exit -> {
                     val homeIntent = Intent(Intent.ACTION_MAIN)
                     homeIntent.addCategory(Intent.CATEGORY_HOME)
                     homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(homeIntent)
                 }
-                R.id.nav_trackingListFragment -> {
-                    checkedNav(TRACKING_FRAGMENT,R.id.action_nav_HomeFragment_to_trackingListFragment,R.id.nav_trackingListFragment)
-                }
+//                R.id.nav_trackingListFragment -> {
+//                    checkedNav(TRACKING_FRAGMENT,R.id.action_nav_HomeFragment_to_trackingListFragment,R.id.nav_trackingListFragment)
+//                }
                 R.id.nav_change_langue -> {
                     showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
                 }
                 R.id.nav_darkMode -> {
-
+                    changeTheme()
                 }
+//                R.id.nav_checkin -> {
+//                    checkedNav(CHECKIN_FRAGMENT,R.id.action_nav_HomeFragment_to_checkinFragment,R.id.nav_checkin)
+//                }
 
                 else -> {
                     drawerLayout.closeDrawer(GravityCompat.START)
@@ -223,6 +230,13 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     }
 
+    private fun changeTheme() {
+        if (currentTheme == R.style.Theme_Dark){
+            sessionManager.saveTheme(R.style.Theme_Nimpe)
+        }
+        else sessionManager.saveTheme(R.style.Theme_Dark)
+        recreate()
+    }
     private fun checkedNav(TRACKING_FRAGMENT: Int, action: Int, idFragment: Int) {
         if (positionFragment != TRACKING_FRAGMENT) {
             navigateTo(
@@ -329,7 +343,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     private fun addTracking(binding: DialogTrackingBinding) {
         val content = binding.edtContent.text.toString().trim()
-        if (content.isEmpty()) Toast.makeText(this, "Content is empty", Toast.LENGTH_LONG).show()
+        if (content.isEmpty()) Toast.makeText(this, "Content is empty", Toast.LENGTH_SHORT).show()
         else {
             val date = Calendar.getInstance().time
             val tracking = Tracking(null, content, date)
@@ -341,10 +355,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val menu: Menu = navView.menu
         menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
         menu.findItem(R.id.nav_trackingListFragment).title = getString(R.string.menu_category)
-        menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
-        menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
         menu.findItem(R.id.nav_darkMode).title = getString(R.string.dark_mode)
         menu.findItem(R.id.exit).title = getString(R.string.exit)
+        menu.findItem(R.id.nav_checkin).title = getString(R.string.check_in)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }
@@ -353,5 +366,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return trackingViewModelFactory.create(initialState)
     }
 
+    override fun create(initialState: CheckinViewState): CheckinViewModel {
+        return checkInViewModelFactory.create(initialState)
+    }
 }
 

@@ -7,6 +7,7 @@ import com.airbnb.mvrx.viewModel
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseActivity
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivityLoginBinding
 import com.oceantech.tracking.utils.addFragmentToBackstack
 import javax.inject.Inject
@@ -14,10 +15,13 @@ import javax.inject.Inject
 class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
+    private lateinit var sessionManager: SessionManager
 
     @Inject
     lateinit var securityviewmodelFactory: SecurityViewModel.Factory
     override fun onCreate(savedInstanceState: Bundle?) {
+        sessionManager = SessionManager(this)
+        setTheme(sessionManager.getTheme())
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)

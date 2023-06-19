@@ -78,7 +78,8 @@
     <string name="add">Thêm</string>
     <string name="edit">Sửa</string>
     <string name="remove">Xóa</string>
-    <string name="slogan">Slogan</string>
+    <string name="slogan">Daily tracking makes you better</string>
     <string name="list_intern">Danh sách thực tập Android</string>
     <string name="dark_mode">Nền tối</string>
+    <string name="check_in">Check in có mặt</string>
 </resources>

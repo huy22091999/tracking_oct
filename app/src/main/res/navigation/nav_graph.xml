@@ -12,12 +12,20 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_HomeFragment_to_trackingListFragment"
-            app:destination="@id/trackingListFragment" />
+            app:destination="@id/nav_trackingListFragment" />
+        <action
+            android:id="@+id/action_nav_HomeFragment_to_checkinFragment"
+            app:destination="@id/nav_checkin" />
     </fragment>
     <fragment
-        android:id="@+id/trackingListFragment"
+        android:id="@+id/nav_trackingListFragment"
         android:name="com.oceantech.tracking.ui.trackings.TrackingListFragment"
         android:label="fragment_tracking_list"
         tools:layout="@layout/fragment_tracking_list" />
+    <fragment
+        android:id="@+id/nav_checkin"
+        android:name="com.oceantech.tracking.ui.checkin.CheckinFragment"
+        android:label="fragment_checkin"
+        tools:layout="@layout/fragment_checkin" />
 
 </navigation>

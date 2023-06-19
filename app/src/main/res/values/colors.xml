@@ -14,4 +14,5 @@
     <color name="text_color">#777777</color>
     <color name="background">#001219</color>
     <color name="main">#00AFEF</color>
+    <color name="primary">#012635</color>
 </resources>

@@ -4,6 +4,6 @@
 <item android:id="@+id/menu_list_health"
     android:title="List"
     android:icon="@drawable/ic_hostpital"
-    android:iconTint="@color/white"
+    android:iconTint="@color/black"
     app:showAsAction="always"/>
 </menu>

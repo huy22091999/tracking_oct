@@ -16,6 +16,7 @@ class SessionManager(context: Context) {
     companion object {
         const val USER_TOKEN = "user_token"
         const val TOKEN_REFRESH="refresh_token"
+        const val THEME = "light"
     }
 
     /**
@@ -38,5 +39,13 @@ class SessionManager(context: Context) {
         editor.apply()
     }
 
+    fun saveTheme(theme : Int){
+        val editor = prefs.edit()
+        editor.putInt(THEME,theme)
+        editor.apply()
+    }
+    fun getTheme() : Int {
+        return prefs.getInt(THEME, R.style.Theme_Dark)
+    }
 
 }

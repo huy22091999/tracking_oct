@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:elevation="0dp"
-        android:background="#001D29"
+        android:background="?attr/colorSecondary"
         app:statusBarScrim="@android:color/transparent"
         android:theme="@style/Theme.Nimpe.AppBarOverlay">
 
@@ -23,7 +23,7 @@
             android:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#001D29"
+            android:background="?attr/colorSecondary"
             app:popupTheme="@style/Theme.Nimpe.PopupOverlay" >
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:textSize="18sp"
                 android:layout_marginEnd="24dp"
                 android:textStyle="bold"
-                android:textColor="#E4E4E4"
+                android:textColor="?attr/colorOnSecondary"
                 android:layout_height="wrap_content"/>
         </androidx.appcompat.widget.Toolbar>
 

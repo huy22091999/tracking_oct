@@ -82,4 +82,5 @@
     <string name="tv_login">Đã có tài khoản? <font color="#00AFEF"><b> Đăng nhập</b></font></string>
     <string name="list_intern">List of Android Intern</string>
     <string name="dark_mode">Dark mode</string>
+    <string name="check_in">Check in</string>
 </resources>

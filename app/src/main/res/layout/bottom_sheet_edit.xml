@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:background="#002533">
+    android:background="?attr/colorSecondary">
     <TextView
-        android:textColor="@color/white"
+        android:textColor="?attr/colorOnSecondary"
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_gravity="center_horizontal"
@@ -17,10 +17,10 @@
         tools:ignore="HardcodedText" />
     <EditText
         android:id="@+id/edtContent"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorOnSecondary"
         android:layout_marginTop="10dp"
         android:hint="New Content..."
-        android:textColorHint="#C6C6C6"
+        android:textColorHint="?attr/colorOnSecondary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="HardcodedText" />

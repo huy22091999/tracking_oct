@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.di.DaggerTrackingComponent
 import com.oceantech.tracking.di.TrackingComponent
 import com.oceantech.tracking.ui.MainActivity
@@ -28,6 +29,7 @@ open class TrackingApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        setTheme(R.style.Theme_Dark)
         trackingComponent.inject(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
@@ -52,6 +54,5 @@ open class TrackingApplication : Application() {
             getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
-
 }
 

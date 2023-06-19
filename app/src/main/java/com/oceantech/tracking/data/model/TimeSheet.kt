@@ -6,6 +6,6 @@ data class TimeSheet(
     val id : Int? = null,
     val ip : String? = null,
     val note : String? = null,
-    val date : Date? = null,
+    val dateAttendance : Date? = null,
     val user : User? = null
 )

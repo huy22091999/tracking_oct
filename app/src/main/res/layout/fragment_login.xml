@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="?attr/colorPrimaryVariant"
     android:orientation="vertical"
     tools:context=".ui.security.LoginFragment">
 
@@ -23,11 +23,11 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="140dp"
                     android:layout_height="140dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/logo_app" />
+                    android:src="@drawable/logo_app" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
                     android:fontFamily="@font/baloo"
                     android:gravity="center"
                     android:text="@string/slogan"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSecondary"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
@@ -48,7 +48,7 @@
                     android:id="@+id/username_til"
                     android:layout_marginTop="24dp"
                     app:hintEnabled="false"
-                    app:startIconTint="@color/white"
+                    app:startIconTint="?attr/colorOnSecondary"
                     app:startIconDrawable="@drawable/ic_person">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -66,7 +66,7 @@
                     android:layout_marginTop="16dp"
                     app:errorEnabled="true"
                     app:hintEnabled="false"
-                    app:startIconTint="@color/white"
+                    app:startIconTint="?attr/colorOnSecondary"
                     app:startIconDrawable="@drawable/ic_lock"
                     android:id="@+id/password_til">
 
@@ -97,7 +97,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
                     android:text="@string/lable_signing"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSecondary"
                     android:textSize="16sp" />
 
                 <com.google.android.material.textview.MaterialTextView
