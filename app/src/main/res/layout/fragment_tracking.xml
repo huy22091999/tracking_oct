@@ -6,7 +6,7 @@
     android:padding="16dp"
     android:background="#EFEFEF"
     android:orientation="vertical"
-    tools:context=".ui.tracking.AllTrackingFragment">
+    tools:context=".ui.tracking.TrackingFragment">
     <com.google.android.material.textview.MaterialTextView
         android:text="@string/tracking"
         android:textColor="@color/gray"

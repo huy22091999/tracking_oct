@@ -1,4 +1,4 @@
-package com.oceantech.tracking.ui.home.repository
+package com.oceantech.tracking.data.repository
 
 import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.data.network.TimeSheetApi

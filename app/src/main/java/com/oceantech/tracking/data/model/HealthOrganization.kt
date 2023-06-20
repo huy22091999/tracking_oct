@@ -34,5 +34,4 @@ data class HealthOrganizationFilter(
     val pageIndex: Int? = null,
     @SerializedName("pageSize")
     val pageSize: Int? = null,
-
     )

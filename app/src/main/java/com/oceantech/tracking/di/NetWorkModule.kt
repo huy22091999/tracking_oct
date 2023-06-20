@@ -1,9 +1,11 @@
 package com.oceantech.tracking.di
 
 import android.content.Context
-import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.data.network.*
-import com.oceantech.tracking.data.repository.*
+import com.oceantech.tracking.data.repository.AuthRepository
+import com.oceantech.tracking.data.repository.TimeSheetRepository
+import com.oceantech.tracking.data.repository.TrackingRepository
+import com.oceantech.tracking.data.repository.UserRepository
 import com.oceantech.tracking.ui.security.UserPreferences
 import com.oceantech.tracking.utils.LocalHelper
 import dagger.Module
@@ -56,7 +58,7 @@ object NetWorkModule {
     @Provides
     fun providerTrackingRepository(
         api: TrackingApi
-    ):TrackingRepository = TrackingRepository(api)
+    ): TrackingRepository = TrackingRepository(api)
 
     @Provides
     fun providerTimeSheetApi(
@@ -67,5 +69,5 @@ object NetWorkModule {
     @Provides
     fun providerTimeSheetRepository(
         api:TimeSheetApi
-    ):TimeSheetRepository = TimeSheetRepository(api)
+    ): TimeSheetRepository = TimeSheetRepository(api)
 }

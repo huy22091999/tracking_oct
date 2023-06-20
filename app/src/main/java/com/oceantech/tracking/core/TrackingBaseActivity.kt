@@ -172,7 +172,6 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         }
     }
 
-
     /**
      * Force to render the activity in fullscreen
      */

@@ -1,8 +1,7 @@
-package com.oceantech.tracking.ui.home.repository
+package com.oceantech.tracking.data.repository
 
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.network.TrackingApi
-import com.oceantech.tracking.utils.getCurrentDateTime
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.time.LocalDateTime
@@ -20,9 +19,9 @@ class TrackingRepository @Inject constructor(
         null
     )).subscribeOn(Schedulers.io())
 
-    fun update(id:Int, content:String): Observable<Tracking> = api.update(Tracking(
+    fun update(id:Int, content:String): Observable<Tracking> = api.update(id,Tracking(
         content,
-        null,
+        LocalDateTime.now().toString(),
         id,
         null
     )).subscribeOn(Schedulers.io())

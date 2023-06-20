@@ -9,7 +9,7 @@ data class Tracking(
     @SerializedName("date")
     val date: String? = null,
     @SerializedName("id")
-    val id: Int? = null,
+    var id: Int? = null,
     @SerializedName("user")
     val user: User? = null
 )

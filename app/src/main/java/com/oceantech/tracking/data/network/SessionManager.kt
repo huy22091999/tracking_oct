@@ -36,6 +36,9 @@ class SessionManager(context: Context) {
         editor.putString(USER_TOKEN, token)
         editor.apply()
     }
-
-
+    fun clearAuthToken(){
+        val editor = prefs.edit()
+        editor.clear()
+        editor.apply()
+    }
 }

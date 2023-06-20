@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 
 class ExposedDropdownMenu : MaterialAutoCompleteTextView {
-
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(

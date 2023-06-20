@@ -83,4 +83,13 @@
     <string name="year">Year</string>
     <string name="birthPlace">Birth Place</string>
     <string name="please_wait">Xin chờ</string>
+    <string name="delete_success">Delete success</string>
+    <string name="logout">Logout</string>
+    <string name="update">Update Tracking</string>
+    <string name="delete">Delete Tracking</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_delete">Confirm delete</string>
+    <string name="time_sheet">Time Sheet</string>
 </resources>

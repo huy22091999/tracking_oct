@@ -15,7 +15,7 @@ import kotlinx.coroutines.async
 class SecurityViewModel @AssistedInject constructor(
     @Assisted state: SecurityViewState,
     val repository: AuthRepository,
-    private val userRepo:UserRepository
+    private val userRepo: UserRepository
 ) :
     TrackingViewModel<SecurityViewState,SecurityViewAction,SecurityViewEvent>(state) {
     init {

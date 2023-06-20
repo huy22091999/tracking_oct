@@ -30,7 +30,6 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
             }
         }
         print(viewModel.getString())
-
     }
 
     private fun handleEvent(event: SecurityViewEvent) {
@@ -38,7 +37,6 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
             is SecurityViewEvent.ReturnSigninEvent -> {
                 addFragmentToBackstack(R.id.frame_layout, SigninFragment::class.java)
             }
-
             is SecurityViewEvent.ReturnResetpassEvent -> {
                 addFragmentToBackstack(R.id.frame_layout, ResetPasswordFragment::class.java)
             }
@@ -55,5 +53,4 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     override fun create(initialState: SecurityViewState): SecurityViewModel {
         return securityviewmodelFactory.create(initialState)
     }
-
 }

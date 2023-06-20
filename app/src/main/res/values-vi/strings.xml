@@ -84,4 +84,13 @@
     <string name="year">SViên năm</string>
     <string name="birthPlace">Nơi sinh</string>
     <string name="please_wait">Please waiting</string>
+    <string name="delete_success">Xóa thành công</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="update">Sửa Tracking</string>
+    <string name="delete">Xóa Tracking</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_delete">Confirm delete</string>
+    <string name="time_sheet">Time Sheet</string>
 </resources>

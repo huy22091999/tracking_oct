@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_nav_HomeFragment_to_allTrackingFragment"
             app:destination="@id/nav_allTrackingFragment" />
+        <action
+            android:id="@+id/action_nav_HomeFragment_to_timeSheetFragment"
+            app:destination="@id/nav_timeSheetFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_newsFragment"
@@ -66,13 +69,31 @@
     </fragment>
     <fragment
         android:id="@+id/nav_trackingFragment"
-        android:name="com.oceantech.tracking.ui.tracking.TrackingFragment"
+        android:name="com.oceantech.tracking.ui.tracking.AddOrUpTrackFragment"
         android:label="fragment_tracking"
-        tools:layout="@layout/fragment_tracking" />
+        tools:layout="@layout/fragment_add_or_up_tracking" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="content"
+            app:argType="string"
+            android:defaultValue='" "' />
+    </fragment>
     <fragment
         android:id="@+id/nav_allTrackingFragment"
-        android:name="com.oceantech.tracking.ui.tracking.AllTrackingFragment"
+        android:name="com.oceantech.tracking.ui.tracking.TrackingFragment"
         android:label="fragment_all_tracking"
-        tools:layout="@layout/fragment_all_tracking" />
+        tools:layout="@layout/fragment_tracking" >
+        <action
+            android:id="@+id/action_nav_allTrackingFragment_to_nav_trackingFragment"
+            app:destination="@id/nav_trackingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_timeSheetFragment"
+        android:name="com.oceantech.tracking.ui.timesheet.TimeSheetFragment"
+        android:label="fragment_time_sheet"
+        tools:layout="@layout/fragment_time_sheet" />
 
 </navigation>

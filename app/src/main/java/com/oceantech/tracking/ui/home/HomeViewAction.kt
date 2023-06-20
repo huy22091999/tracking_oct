@@ -8,11 +8,12 @@ import com.oceantech.tracking.data.model.User
 sealed class HomeViewAction:NimpeViewModelAction{
 
     object GetCurrentUser:HomeViewAction()
-    object GetCategorys:HomeViewAction()
     object GetTrackings:HomeViewAction()
+    object GetTimeSheets:HomeViewAction()
+    object GetCheckIn:HomeViewAction()
     object ResetLang:HomeViewAction()
     data class SaveTracking(val content:String):HomeViewAction()
-    data class UpdateTracking(val content:String, val id:Int):HomeViewAction()
+    data class UpdateTracking(val id:Int, val content:String):HomeViewAction()
     data class DeleteTracking(val id:Int):HomeViewAction()
-    data class SaveFeedback(val feedback: Feedback):HomeViewAction()
+
 }

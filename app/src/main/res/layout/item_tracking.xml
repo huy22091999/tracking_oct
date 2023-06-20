@@ -1,38 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
     android:background="@drawable/background_item_health"
-    android:padding="16dp">
+    android:padding="13dp">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_gravity="center_vertical"
+        android:id="@+id/tracking_image"
         android:layout_width="50dp"
-        android:layout_height="32dp"
-        android:src="@drawable/ic_ambulance"
-        android:tint="#F80754" />
+        android:layout_height="70dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/img_tracking_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
-        android:layout_marginStart="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="7dp"
+        android:paddingHorizontal="6dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/circleImageView"
+        app:layout_constraintStart_toEndOf="@+id/tracking_image"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tracking_date"
-            android:text="07/06/2023"
-            android:textColor="@color/gray"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="07/06/2023"
+            android:singleLine="true"
+            android:textColor="@color/gray"
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tracking_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minLines="2"
-            android:id="@+id/tracking_content"
-            android:text="MvRx"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:text="MvRx" />
     </LinearLayout>
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/circleImageView"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_update"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/red" />
+</androidx.constraintlayout.widget.ConstraintLayout>

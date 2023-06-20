@@ -1,37 +1,74 @@
 package com.oceantech.tracking.ui.home
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
+import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.repository.TimeSheetRepository
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.data.repository.UserRepository
+import com.oceantech.tracking.utils.PublishDataSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel @AssistedInject constructor(
     @Assisted state: HomeViewState,
     val repository: UserRepository,
-    val trackingRepo: TrackingRepository
+    val trackingRepo: TrackingRepository,
+    val timeSheetRepo:TimeSheetRepository
 ) : TrackingViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     var language: Int = 1
+    private var _trackings:MutableLiveData<List<Tracking>> = MutableLiveData()
+    private var _timeSheets:MutableLiveData<List<TimeSheet>> = MutableLiveData()
+
     init {
-        handleAllTracking()
+        handleTimeSheets()
+        handleCheckIn()
     }
     override fun handle(action: HomeViewAction) {
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang()
             is HomeViewAction.GetTrackings -> handleAllTracking()
+            is HomeViewAction.GetTimeSheets -> handleTimeSheets()
+            is HomeViewAction.GetCheckIn -> handleCheckIn()
             is HomeViewAction.SaveTracking -> handleSaveTracking(action.content)
             is HomeViewAction.UpdateTracking -> handleUpdateTracking(action.id, action.content)
             is HomeViewAction.DeleteTracking -> handleDeleteTracking(action.id)
         }
     }
 
-    private fun handleDeleteTracking(id: Int) {
+    private fun handleCheckIn() {
+        setState { copy(checkIn = Loading()) }
+        timeSheetRepo.checkIn().execute {
+            copy(checkIn = it)
+        }
+    }
+
+    val timeSheets:LiveData<List<TimeSheet>>
+        get() = _timeSheets
+    private fun handleTimeSheets() {
+        setState { copy(timeSheets = Loading()) }
+        timeSheetRepo.getAllByUser().execute {
+            it.invoke()?.let { timeSheet ->
+                _timeSheets.postValue(timeSheet)
+            }
+            copy(timeSheets = it)
+        }
+    }
+
+    private fun handleDeleteTracking(id:Int) {
         setState { copy(asyncDeleteTracking = Loading()) }
         trackingRepo.delete(id).execute {
             copy(asyncDeleteTracking = it)
@@ -45,9 +82,14 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handleAllTracking() {
+    val trackings:LiveData<List<Tracking>>
+        get() = _trackings
+    fun handleAllTracking() {
         setState { copy(allTracking = Loading()) }
         trackingRepo.getAllByUser().execute {
+            it.invoke()?.let { tracking ->
+                _trackings.postValue(tracking)
+            }
             copy(allTracking = it)
         }
     }
@@ -58,9 +100,11 @@ class HomeViewModel @AssistedInject constructor(
             copy(asyncSaveTracking = it)
         }
     }
-
     private fun handResetLang() {
         _viewEvents.post(HomeViewEvent.ResetLanguege)
+    }
+    fun handleReturnUpdate(content:String, id:Int){
+        _viewEvents.post(HomeViewEvent.ReturnUpdateTracking(content, id))
     }
     private fun handleCurrentUser() {
         setState { copy(userCurrent = Loading()) }
@@ -88,5 +132,4 @@ class HomeViewModel @AssistedInject constructor(
                 ?: error("You should let your activity/fragment implements Factory interface")
         }
     }
-
 }

@@ -24,7 +24,6 @@ data class Page<T>(
 
     @SerializedName("empty")
     val empty: Boolean? = null
-
 )
 
 data class Pageable(

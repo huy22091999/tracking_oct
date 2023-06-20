@@ -7,33 +7,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.navArgs
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.databinding.FragmentAddOrUpTrackingBinding
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
 
 
-class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
+class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding>() {
     private val viewModel:HomeViewModel by activityViewModel()
-    lateinit var content:String
+    private var id:Int = -1
+    private var content:String = ""
+    private val arg:AddOrUpTrackFragmentArgs by navArgs()
 
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentTrackingBinding = FragmentTrackingBinding.inflate(layoutInflater, container, false)
+    ): FragmentAddOrUpTrackingBinding = FragmentAddOrUpTrackingBinding.inflate(layoutInflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.observeViewEvents {
             handleEvent(it)
         }
         views.btnSaveTracking.setOnClickListener {
-            saveTracking()
+            if(id != -1){
+                update()
+            } else{
+                saveTracking()
+            }
+        }
+        id = arg.id
+        if(id != -1){
+            views.tracking.setText(arg.content)
         }
         super.onViewCreated(view, savedInstanceState)
     }
@@ -52,6 +64,11 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         }
     }
 
+    private fun update(){
+        content = views.tracking.text.toString().trim()
+        viewModel.handle(HomeViewAction.UpdateTracking(id, content))
+    }
+
     private fun handleEvent(it:HomeViewEvent){
         when(it){
             is HomeViewEvent.ResetLanguege ->{
@@ -64,6 +81,14 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
 
     override fun invalidate():Unit = withState(viewModel){
         when(it.asyncSaveTracking){
+            is Success -> {
+                Toast.makeText(requireActivity(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
+            }
+            is Fail -> {
+                Log.e("Test Save Tracking: ", "Fail")
+            }
+        }
+        when(it.asyncUpdateTracking){
             is Success -> {
                 Toast.makeText(requireActivity(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
             }

@@ -18,5 +18,4 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(TestViewModel::class)
     fun bindViewModel(viewModel: TestViewModel): ViewModel
-
 }

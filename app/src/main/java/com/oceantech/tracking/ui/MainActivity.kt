@@ -14,9 +14,11 @@ import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
@@ -33,7 +35,16 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
+import com.oceantech.tracking.data.network.SessionManager
+import com.oceantech.tracking.ui.home.HomeFragmentDirections
+import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.security.LoginActivity
+import com.oceantech.tracking.ui.security.UserPreferences
+import com.oceantech.tracking.ui.tracking.AddOrUpTrackFragment
+import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
+import com.oceantech.tracking.utils.addFragmentToBackstack
+import kotlinx.coroutines.launch
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
     companion object {
@@ -71,6 +82,20 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             } else
                 views.appBarMain.contentMain.waitingView.visibility = View.GONE
         }
+
+        homeViewModel.observeViewEvents {
+            if(it!=null){
+                handleEvents(it)
+            }
+        }
+    }
+
+    private fun handleEvents(viewEvent: HomeViewEvent) {
+        when(viewEvent){
+            is HomeViewEvent.ReturnUpdateTracking ->{
+                navigateTo(R.id.nav_trackingFragment, viewEvent.id, viewEvent.content)
+            }
+        }
     }
 
     override fun create(initialState: HomeViewState): HomeViewModel {
@@ -84,7 +109,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun setupToolbar() {
         toolbar = views.toolbar
         toolbar.title = ""
-        views.title.text = getString(R.string.app_name)
+        views.title.text = getString(R.string.tracking)
         setSupportActionBar(toolbar)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
@@ -103,6 +128,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.nav_medicalFragment,
                 R.id.nav_trackingFragment,
                 R.id.nav_allTrackingFragment,
+                R.id.nav_timeSheetFragment,
                 R.id.nav_feedbackFragment,
                 R.id.listNewsFragment,
                 R.id.detailNewsFragment
@@ -129,6 +155,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                     showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
                 }
 
+                R.id.logout -> {
+                    val sessionManager = SessionManager(this@MainActivity)
+                    sessionManager.clearAuthToken()
+                    startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+                }
                 else -> {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     handled
@@ -156,7 +187,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         buttonShowMenu.setOnClickListener {
             showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
         }
-
     }
 
     private fun changeLangue(lang: String) {
@@ -167,8 +197,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         conf.setLocale(myLocale)
         res.updateConfiguration(conf, dm)
         updateLanguge(lang)
-
-
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int) {
@@ -208,8 +236,14 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return true
     }
 
-    fun navigateTo(fragmentId: Int) {
-        navController.navigate(fragmentId)
+    private fun navigateTo(fragmentId: Int, id:Int? = null,content:String ? = null) {
+        if(id != null){
+            val direction = TrackingFragmentDirections.actionNavAllTrackingFragmentToNavTrackingFragment(id, content!!)
+            navController.navigate(direction)
+        } else {
+            navController.navigate(fragmentId)
+        }
+        //navController.navigate(fragmentId)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -227,14 +261,12 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 navigateTo(R.id.nav_trackingFragment)
                 return true
             }
-
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     private fun updateLanguge(lang: String) {
         val menu: Menu = navView.menu
@@ -243,10 +275,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
         menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
         menu.findItem(R.id.nav_trackingFragment).title = getString(R.string.menu_tracking)
+        menu.findItem(R.id.nav_timeSheetFragment).title = getString(R.string.time_sheet)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }
-
-
 }
 
