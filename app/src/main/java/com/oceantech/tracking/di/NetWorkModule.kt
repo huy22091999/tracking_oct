@@ -30,8 +30,9 @@ object NetWorkModule {
     @Provides
     fun providerAuthRepository(
         userPreferences: UserPreferences,
-        api: AuthApi
-    ): AuthRepository = AuthRepository(api, userPreferences)
+        api: AuthApi,
+        configApi: ConfigApi
+    ): AuthRepository = AuthRepository(api, configApi, userPreferences)
 
     @Provides
     fun provideSignApi(remoteDataSource: RemoteDataSource) =
@@ -52,13 +53,22 @@ object NetWorkModule {
         remoteDataSource.buildApi(TimeSheetApi::class.java, context)
 
     @Provides
-    fun provideTimeSheetRepo(api: TimeSheetApi): TimeSheetRepository = TimeSheetRepository(api)
+    fun provideTimeSheetRepo(api: TimeSheetApi, ipApi: IpApi): TimeSheetRepository =
+        TimeSheetRepository(api, ipApi)
 
     @Provides
     fun providerUserApi(
         remoteDataSource: RemoteDataSource,
         context: Context
     ) = remoteDataSource.buildApi(UserApi::class.java, context)
+
+    @Provides
+    fun providerIpApi(remoteDataSource: RemoteDataSource, context: Context) =
+        remoteDataSource.buildApiIp(IpApi::class.java, context)
+
+    @Provides
+    fun providerConfigApi(remoteDataSource: RemoteDataSource, context: Context) =
+        remoteDataSource.buildApi(ConfigApi::class.java, context)
 
     @Provides
     fun providerUserRepository(

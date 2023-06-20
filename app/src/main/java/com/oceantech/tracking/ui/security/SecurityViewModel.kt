@@ -36,6 +36,14 @@ class SecurityViewModel @AssistedInject constructor(
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
             is SecurityViewAction.SignIn -> handleSignIn(action.user)
+            is SecurityViewAction.GetVersionName -> handleGetVersion()
+        }
+    }
+
+    private fun handleGetVersion() {
+        setState { copy(asyncVersion = Loading()) }
+        repository.getVersionName().execute {
+            copy(asyncVersion = it)
         }
     }
 

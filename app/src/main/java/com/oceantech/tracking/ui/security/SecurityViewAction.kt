@@ -9,4 +9,5 @@ sealed class SecurityViewAction : NimpeViewModelAction {
     data class SaveTokenAction(var token: TokenResponse) : SecurityViewAction()
     data class SignIn(var user: User) :SecurityViewAction()
     object GetUserCurrent : SecurityViewAction()
+    object GetVersionName : SecurityViewAction()
 }

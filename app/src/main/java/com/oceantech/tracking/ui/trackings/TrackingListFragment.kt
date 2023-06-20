@@ -40,8 +40,7 @@ class TrackingListFragment @Inject constructor() :
         viewModel.handle(TrackingViewAction.GetAllTracking)
         state = GET_ALL
         adapter = TrackingAdapter(this)
-        views.rcvTracking.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        views.rcvTracking.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         views.rcvTracking.adapter = adapter
     }
 
@@ -65,32 +64,22 @@ class TrackingListFragment @Inject constructor() :
             }
         }
     }
-    private fun handleDelete(state: TrackingViewState) {
-        when (state.asyncDelete) {
+    private fun handleDelete(it: TrackingViewState) {
+        when (it.asyncDelete) {
             is Success -> {
-                state.asyncListTracking.invoke()?.let { it1 ->
-                    adapter.setData(it1)
-                    adapter.notifyDataSetChanged()
-                    Toast.makeText(requireContext(), "Delete success", Toast.LENGTH_LONG).show()
-                    state.asyncListTracking = Loading()
-                    state.asyncDelete = Loading()
-                }
+                    Toast.makeText(requireContext(), "Delete success", Toast.LENGTH_SHORT).show()
+                    state = GET_ALL
             }
-            is Fail -> Toast.makeText(requireContext(), "Delete Fail", Toast.LENGTH_LONG).show()
+            is Fail -> Toast.makeText(requireContext(), "Delete Fail", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun handleUpdate(state : TrackingViewState){
-        when (state.asyncUpdate) {
+    private fun handleUpdate(it : TrackingViewState){
+        when (it.asyncUpdate) {
             is Success -> {
-                state.asyncListTracking.invoke()?.let { it1 ->
-                    adapter.setData(it1)
-                    adapter.notifyDataSetChanged()
-                    Toast.makeText(requireContext(), "Update success", Toast.LENGTH_LONG).show()
-                    state.asyncUpdate = Loading()
-                    state.asyncListTracking = Loading()
-                }
+                Toast.makeText(requireContext(), "Update success", Toast.LENGTH_SHORT).show()
+                state = GET_ALL
             }
-            is Fail -> Toast.makeText(requireContext(), "Update fail", Toast.LENGTH_LONG).show()
+            is Fail -> Toast.makeText(requireContext(), "Update fail", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -130,8 +119,8 @@ class TrackingListFragment @Inject constructor() :
     ) {
         val newContent = binding.edtContent.text.toString().trim()
         if (newContent.isNotEmpty()) {
-            val newTracking = tracking.copy(content = newContent)
             state = UPDATE
+            val newTracking = tracking.copy(content = newContent)
             viewModel.handle(TrackingViewAction.Update(newTracking))
             dialog.dismiss()
             bDialog.dismiss()

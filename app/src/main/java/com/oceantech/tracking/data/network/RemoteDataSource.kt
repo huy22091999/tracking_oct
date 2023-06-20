@@ -35,8 +35,8 @@ import javax.net.ssl.X509TrustManager
 class RemoteDataSource() {
 
     companion object {
-        private const val BASE_URL =
-            "http://android-tracking.oceantech.com.vn/mita/"
+        private const val BASE_URL = "http://android-tracking.oceantech.com.vn/mita/"
+        private const val BASE_URL_IP = "https://api.ipify.org/"
         private const val DEFAULT_USER_AGENT = "Nimpe-Android"
         private const val DEFAULT_CONTENT_TYPE = "application/json"
     }
@@ -48,7 +48,6 @@ class RemoteDataSource() {
             .registerTypeAdapter(Date::class.java, UnitEpochDateTypeAdapter())
             .setLenient()
             .create()
-
         val sessionManager = SessionManager(context.applicationContext)
         var authenticator: TokenAuthenticator? =null
 
@@ -59,6 +58,30 @@ class RemoteDataSource() {
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(getRetrofitClient(authenticator))
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+            .create(api)
+    }
+    fun <Api> buildApiIp(
+        api: Class<Api>,
+        context: Context
+    ): Api {
+        val gson = GsonBuilder()
+            .registerTypeAdapter(Date::class.java, UnitEpochDateTypeAdapter())
+            .setLenient()
+            .create()
+        val sessionManager = SessionManager(context.applicationContext)
+        var authenticator: TokenAuthenticator? =null
+
+        authenticator = if (sessionManager.fetchAuthToken() != null) {
+            TokenAuthenticator(sessionManager.fetchAuthToken()!!)
+        } else
+            TokenAuthenticator("")
+
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL_IP)
             .client(getRetrofitClient(authenticator))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

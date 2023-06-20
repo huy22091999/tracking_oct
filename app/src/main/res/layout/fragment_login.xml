@@ -54,6 +54,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/username"
                         android:hint="@string/account"
+                        android:textColor="?attr/colorOnSecondary"
                         android:textColorHint="@color/text_color"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -73,6 +74,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:hint="@string/password"
+                        android:textColor="?attr/colorOnSecondary"
                         android:textColorHint="@color/text_color"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />

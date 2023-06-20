@@ -26,28 +26,24 @@ class TrackingListViewModel @AssistedInject constructor(
     private fun handleAdd(tracking: Tracking) {
         setState { copy(asyncTracking = Loading()) }
         repository.tracking(tracking).execute {
-            val newState = copy(asyncTracking = it)
             if (it is Success) {
-                newState.asyncListTracking = Loading()
                 repository.getAllTracking().execute {listState->
                     copy(asyncListTracking = listState)
                 }
             }
-            newState
+            copy(asyncTracking = it)
         }
     }
 
     private fun handleDelete(tracking: Tracking) {
         setState { copy(asyncDelete = Loading()) }
         repository.delete(tracking).execute {
-            val newState = copy(asyncDelete = it)
             if (it is Success) {
-                newState.asyncListTracking = Loading()
                 repository.getAllTracking().execute {listState->
                     copy(asyncListTracking = listState)
                 }
             }
-            newState
+            copy(asyncDelete = it)
         }
     }
 
@@ -61,14 +57,12 @@ class TrackingListViewModel @AssistedInject constructor(
     private fun handleUpdate(newTracking: Tracking) {
         setState { copy(asyncUpdate = Loading()) }
         repository.updateTracking(newTracking).execute {
-            val newState = copy(asyncUpdate = it)
             if (it is Success) {
-                newState.asyncListTracking = Loading()
                 repository.getAllTracking().execute {listState->
                     copy(asyncListTracking = listState)
                 }
             }
-            newState
+            copy(asyncUpdate = it)
         }
     }
 

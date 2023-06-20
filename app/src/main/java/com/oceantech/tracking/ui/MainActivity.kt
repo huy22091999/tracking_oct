@@ -98,15 +98,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         trackingListViewModel.subscribe(this) {
             when (it.asyncTracking) {
                 is Success -> {
-                    Toast.makeText(
-                        this,
-                        "${it.asyncTracking.invoke()?.content} is added",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(this, "${it.asyncTracking.invoke()?.content} is added", Toast.LENGTH_SHORT).show()
                     it.asyncTracking = Loading()
                 }
                 is Fail -> {
-                    Toast.makeText(this, "Fail! Please tracking again", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Fail! Please tracking again", Toast.LENGTH_SHORT).show()
                 }
             }
         }

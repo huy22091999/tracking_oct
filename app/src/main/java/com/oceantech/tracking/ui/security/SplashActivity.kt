@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.widget.Toast
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
@@ -17,7 +19,11 @@ import javax.inject.Inject
 class SplashActivity() : TrackingBaseActivity<ActivitySplashBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
-
+    companion object{
+        const val USER = 0
+        const val VERSION = 1
+    }
+    private var state = 1
     @Inject
     lateinit var securityViewModelFactory: SecurityViewModel.Factory
 
@@ -25,13 +31,35 @@ class SplashActivity() : TrackingBaseActivity<ActivitySplashBinding>(), Security
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
-        viewModel.handle(SecurityViewAction.GetUserCurrent)
+        state = VERSION
+//        viewModel.handle(SecurityViewAction.GetUserCurrent)
+        viewModel.handle(SecurityViewAction.GetVersionName)
         viewModel.subscribe(this) {
             handleStateChange(it)
         }
     }
 
     private fun handleStateChange(it: SecurityViewState) {
+        when(state){
+            USER -> handleUser(it)
+            VERSION -> handleVersion(it)
+        }
+    }
+
+    private fun handleVersion(it: SecurityViewState) {
+        when(it.asyncVersion){
+            is Success -> {
+                val version = it.asyncVersion.invoke()?.versionName
+                val versionName = packageManager.getPackageInfo(packageName,0).versionName
+                state = USER
+                if (version == versionName) viewModel.handle(SecurityViewAction.GetUserCurrent)
+            }
+            is Fail -> {
+                Toast.makeText(this,"${it.asyncVersion.invoke()}",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun handleUser(it: SecurityViewState) {
         when (it.userCurrent) {
             is Success -> {
                 val intent = Intent(this, MainActivity::class.java)

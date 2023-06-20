@@ -48,7 +48,7 @@ class SessionManager (context: Context) {
         editor.apply()
     }
     fun getTheme() : Int {
-        return prefs.getInt(THEME, R.style.Theme_Dark)
+        return prefs.getInt(THEME, R.style.Theme_Nimpe)
     }
 
     fun saveCheckin(date : String){
