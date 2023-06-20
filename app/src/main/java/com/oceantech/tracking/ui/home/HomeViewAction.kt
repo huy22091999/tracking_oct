@@ -10,7 +10,7 @@ sealed class HomeViewAction:NimpeViewModelAction{
     object GetCurrentUser:HomeViewAction()
     object GetTrackings:HomeViewAction()
     object GetTimeSheets:HomeViewAction()
-    object GetCheckIn:HomeViewAction()
+    data class GetCheckIn(val ip:String):HomeViewAction()
     object ResetLang:HomeViewAction()
     data class SaveTracking(val content:String):HomeViewAction()
     data class UpdateTracking(val id:Int, val content:String):HomeViewAction()

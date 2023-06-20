@@ -33,7 +33,6 @@ interface MutableDataSource<T> : DataSource<T> {
  * This datasource emits the most recent value it has observed and all subsequent observed values to each subscriber.
  */
 open class BehaviorDataSource<T>(private val defaultValue: T? = null) : MutableDataSource<T> {
-
     private val behaviorRelay = createRelay()
 
     val currentValue: T?

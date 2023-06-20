@@ -10,7 +10,6 @@
     </style>
     <style name="NimpeButtonLogin">
         <item name="cornerRadius">24dp</item>
-
     </style>
     <style name="stylePopup" parent="Base.Widget.AppCompat.PopupMenu">
         <item name="android:dropDownVerticalOffset">0dip</item>

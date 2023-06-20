@@ -3,68 +3,44 @@ package com.oceantech.tracking.ui.home
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.data.model.Tracking
-import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.TimeSheetRepository
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.data.repository.UserRepository
-import com.oceantech.tracking.utils.PublishDataSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
-import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel @AssistedInject constructor(
     @Assisted state: HomeViewState,
     val repository: UserRepository,
-    val trackingRepo: TrackingRepository,
-    val timeSheetRepo:TimeSheetRepository
+    private val trackingRepo: TrackingRepository,
+    private val timeSheetRepo:TimeSheetRepository
 ) : TrackingViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     var language: Int = 1
     private var _trackings:MutableLiveData<List<Tracking>> = MutableLiveData()
     private var _timeSheets:MutableLiveData<List<TimeSheet>> = MutableLiveData()
 
-    init {
-        handleTimeSheets()
-        handleCheckIn()
-    }
     override fun handle(action: HomeViewAction) {
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang()
             is HomeViewAction.GetTrackings -> handleAllTracking()
             is HomeViewAction.GetTimeSheets -> handleTimeSheets()
-            is HomeViewAction.GetCheckIn -> handleCheckIn()
+            is HomeViewAction.GetCheckIn -> handleCheckIn(action.ip)
             is HomeViewAction.SaveTracking -> handleSaveTracking(action.content)
             is HomeViewAction.UpdateTracking -> handleUpdateTracking(action.id, action.content)
             is HomeViewAction.DeleteTracking -> handleDeleteTracking(action.id)
         }
     }
 
-    private fun handleCheckIn() {
+    private fun handleCheckIn(ip:String) {
         setState { copy(checkIn = Loading()) }
-        timeSheetRepo.checkIn().execute {
+        timeSheetRepo.checkIn(ip).execute {
             copy(checkIn = it)
-        }
-    }
-
-    val timeSheets:LiveData<List<TimeSheet>>
-        get() = _timeSheets
-    private fun handleTimeSheets() {
-        setState { copy(timeSheets = Loading()) }
-        timeSheetRepo.getAllByUser().execute {
-            it.invoke()?.let { timeSheet ->
-                _timeSheets.postValue(timeSheet)
-            }
-            copy(timeSheets = it)
         }
     }
 
@@ -82,6 +58,17 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
+    val timeSheets:LiveData<List<TimeSheet>>
+        get() = _timeSheets
+    fun handleTimeSheets() {
+        setState { copy(timeSheets = Loading()) }
+        timeSheetRepo.getAllByUser().execute {
+            it.invoke()?.let { timeSheet ->
+                _timeSheets.postValue(timeSheet)
+            }
+            copy(timeSheets = it)
+        }
+    }
     val trackings:LiveData<List<Tracking>>
         get() = _trackings
     fun handleAllTracking() {

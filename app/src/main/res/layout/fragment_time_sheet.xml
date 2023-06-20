@@ -1,14 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="#EFEFEF"
     tools:context=".ui.timesheet.TimeSheetFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/timSheetLabel"
+        android:text="@string/time_sheet"
+        android:textColor="@color/gray"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"/>
+    <!-- TODO: Update blank fragment layout -->
+    <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+    <!--        android:id="@+id/swipeRefresh"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/check_in_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/timSheetLabel">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/timSheetLabel"
+            android:numColumns="4"
+            android:paddingTop="8dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/check_in_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/check_in_container"
+            style="@style/NimpeInputLayoutLogin"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/checkInSubmit"
+            android:enabled="true"
+            android:layout_marginHorizontal="5dp"
+            android:layout_centerVertical="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkInInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/check_in" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/checkInSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/NimpeButtonLogin"
+            android:text="@string/check_in"
+            android:paddingHorizontal="15dp"
+            android:layout_marginVertical="5dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentEnd="true"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

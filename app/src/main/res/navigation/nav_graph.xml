@@ -94,6 +94,15 @@
         android:id="@+id/nav_timeSheetFragment"
         android:name="com.oceantech.tracking.ui.timesheet.TimeSheetFragment"
         android:label="fragment_time_sheet"
-        tools:layout="@layout/fragment_time_sheet" />
+        tools:layout="@layout/fragment_time_sheet" >
+        <action
+            android:id="@+id/action_nav_timeSheetFragment_to_checkInFragment"
+            app:destination="@id/checkInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkInFragment"
+        android:name="com.oceantech.tracking.ui.timesheet.CheckInFragment"
+        android:label="fragment_check_in"
+        tools:layout="@layout/fragment_check_in" />
 
 </navigation>

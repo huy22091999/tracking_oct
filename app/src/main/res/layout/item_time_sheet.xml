@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="125dp"
+    android:orientation="vertical"
+    android:layout_margin="3dp"
+    android:padding="3dp"
+    android:background="@drawable/bg_time_sheet">
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/ipLabel"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:text="Ip"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="20dp"
+        />
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/NimpeInputLayoutLogin"
+        android:id="@+id/noteLabel"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:padding="5dp"
+        android:text="Note"
+        android:gravity="top"
+        android:maxLines="3"
+        android:textStyle="italic"
+        android:textSize="18dp"
+        />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/timeLabel"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:padding="2dp"
+        android:text="time"
+        android:gravity="top"
+        android:maxLines="3"
+        android:textSize="10dp"
+        />
+</LinearLayout>

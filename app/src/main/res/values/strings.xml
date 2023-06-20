@@ -92,4 +92,5 @@
     <string name="confirm">Confirm</string>
     <string name="confirm_delete">Confirm delete</string>
     <string name="time_sheet">Time Sheet</string>
+    <string name="check_in">Check In</string>
 </resources>

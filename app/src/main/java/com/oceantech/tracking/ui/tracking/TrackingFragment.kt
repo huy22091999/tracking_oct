@@ -14,6 +14,7 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getDrawable
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -27,6 +28,7 @@ import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     private val viewModel:HomeViewModel by activityViewModel()
