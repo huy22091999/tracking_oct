@@ -1,10 +1,8 @@
 package com.oceantech.tracking.ui.tracking
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,10 +20,9 @@ import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.Tracking
-import com.oceantech.tracking.databinding.AddNewTrackingBinding
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
 import com.oceantech.tracking.ui.tracking.adapter.TrackingAdapter
-import com.oceantech.tracking.ui.tracking.adapter.TrackingItemDecoration
+import com.oceantech.tracking.ui.item_decoration.ItemDecoration
 import javax.inject.Inject
 
 class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrackingBinding>() {
@@ -48,15 +45,15 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         trackingRV = views.trackingRV
-        trackingAdapter = TrackingAdapter(deleteTracking =  {
+        trackingAdapter = TrackingAdapter(deleteTracking = {
             trackingViewModel.handle(TrackingViewAction.DeleteTracking(it))
         },
-        updateTracking = {tracking, id ->
-            trackingViewModel.handle(TrackingViewAction.UpdateTracking(tracking, id))
-        })
+            updateTracking = { tracking, id ->
+                trackingViewModel.handle(TrackingViewAction.UpdateTracking(tracking, id))
+            })
         trackingRV.adapter = trackingAdapter
         trackingRV.layoutManager = LinearLayoutManager(requireContext())
-        trackingRV.addItemDecoration(TrackingItemDecoration(20))
+        trackingRV.addItemDecoration(ItemDecoration(20))
 
         views.trackingFAB.setOnClickListener {
             saveTracking()
@@ -79,11 +76,8 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         alertDialog.show()
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            val firstName = view.findViewById<EditText>(R.id.edtFirstName).text.toString()
-            val lastName = view.findViewById<EditText>(R.id.edtLastName).text.toString()
-            val gender = view.findViewById<EditText>(R.id.edtGender).text.toString()
-            val dob = view.findViewById<EditText>(R.id.edtDob).text.toString()
-            if (firstName.isEmpty() || lastName.isEmpty() || gender.isEmpty() || dob.isEmpty()) {
+            val content = view.findViewById<EditText>(R.id.edtContent).text.toString()
+            if (content.isEmpty()) {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.requirement_add_new_tracking),
@@ -91,9 +85,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
                 ).show()
             } else {
                 trackingViewModel.handle(
-                    TrackingViewAction.SaveTracking(
-                        content = "$firstName $lastName $gender $dob"
-                    )
+                    TrackingViewAction.SaveTracking(content)
                 )
 
                 alertDialog.dismiss()

@@ -58,6 +58,7 @@ class TrackingViewModel @AssistedInject constructor(
         repository.saveTracking(content).execute {
             copy(saveTracking = it)
         }
+
     }
 
     private fun handleGetAllTracking(){

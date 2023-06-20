@@ -5,24 +5,19 @@
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/personalFragment"
+            android:icon="@drawable/personal_information"
+            android:title="@string/personal_information"/>
+        <item
             android:icon="@drawable/ic_home"
             android:id="@+id/nav_HomeFragment"
-            android:title="@string/menu_home"/>
-        <item android:id="@+id/nav_newsFragment"
-            android:icon="@drawable/ic_category"
-            android:title="@string/menu_category"/>
-        <item android:id="@+id/nav_medicalFragment"
-            android:icon="@drawable/ic_hostpital"
-            android:title="@string/menu_nearest_medical"/>
+            android:title="@string/menu_user_list"/>
         <item android:id="@+id/trackingFragment"
             android:icon="@mipmap/tracking"
             android:title="@string/menu_tracking"/>
         <item android:id="@+id/timeSheetFragment"
             android:title="@string/time_sheet"
             android:icon="@mipmap/time_sheet"/>
-        <item android:id="@+id/nav_feedbackFragment"
-            android:icon="@drawable/ic_feedback"
-            android:title="@string/menu_feedback"/>
 
 
     </group>

@@ -18,7 +18,9 @@ class UserRepository @Inject constructor(
     fun createUpdateUser(
         userName: String,
         password: String,
-        displayName: String
+        displayName: String,
+        firstName: String,
+        lastName: String
     ): Observable<TokenResponse> = api.createUpdateUser(
         User(
             null,
@@ -31,13 +33,13 @@ class UserRepository @Inject constructor(
             null,
             null,
             false,
-            null,
+            firstName,
             null,
             password,
             null,
             mutableListOf(),
             null,
-            null,
+            lastName,
             null,
             null
         )

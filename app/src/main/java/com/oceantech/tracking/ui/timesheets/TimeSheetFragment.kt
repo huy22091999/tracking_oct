@@ -22,7 +22,7 @@ import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.databinding.FragmentTimeSheetBinding
 import com.oceantech.tracking.ui.timesheets.adapter.TimeSheetAdapter
-import com.oceantech.tracking.ui.tracking.adapter.TrackingItemDecoration
+import com.oceantech.tracking.ui.item_decoration.ItemDecoration
 import javax.inject.Inject
 
 @SuppressLint("LogNotTimber")
@@ -46,7 +46,7 @@ class TimeSheetFragment @Inject constructor() : TrackingBaseFragment<FragmentTim
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         timeSheetRV = views.timeSheetRV
-        timeSheetRV.addItemDecoration(TrackingItemDecoration(20))
+        timeSheetRV.addItemDecoration(ItemDecoration(20))
         timeSheetRV.layoutManager = LinearLayoutManager(requireContext())
         timeSheetAdapter = TimeSheetAdapter()
         timeSheetRV.adapter  = timeSheetAdapter

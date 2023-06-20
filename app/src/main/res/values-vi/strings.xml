@@ -13,11 +13,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="fragment_tracking">Theo dõi</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="menu_home">Trang chủ</string>
+    <string name="menu_user_list">Danh sách User</string>
     <string name="menu_category">Danh mục tin tức</string>
     <string name="menu_nearest_medical">Cơ sở y tế gần nhất</string>
     <string name="menu_feedback">Phản hồi</string>
-    <string name="fragment_home">Trang chủ</string>
+    <string name="fragment_home">Danh sách User</string>
     <string name="feedback_to_app">Phản hồi về ứng dụng</string>
     <string name="feedback_description">Vui lòng nhập ý kiến phản hồi của bạn để góp phần làm cho ứng dụng của chúng tôi ngày càng hoàn thiện hơn.</string>
     <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
@@ -80,7 +80,7 @@
     <string name="cancel_add_new_tracking">Huỷ</string>
     <string name="create_tracking_successfully">Thêm thành công</string>
     <string name="create_tracking_failed">Thêm thất bại, vui lòng thử lại sau</string>
-    <string name="requirement_add_new_tracking">Bạn phải nhập đủ thông tin</string>
+    <string name="requirement_add_new_tracking">Bạn phải nhập nội dung</string>
     <string name="delete_tracking_successfully">Xoá thành công</string>
     <string name="delete_tracking_failed">Xóa thất bại</string>
     <string name="get_tracking_list_failed">Lấy dữ liệu thất bại. Vui lòng thử lại sau</string>
@@ -88,4 +88,7 @@
     <string name="update">Cập nhật</string>
     <string name="time_sheet">Thời gian biểu</string>
     <string name="add_new_time_sheet">Thêm thời gian biểu mới</string>
+    <string name="fragment_time_sheet">Thời gian biểu</string>
+    <string name="content">Nội Dung</string>
+    <string name="personal_information">Thông tin cá nhân</string>
 </resources>

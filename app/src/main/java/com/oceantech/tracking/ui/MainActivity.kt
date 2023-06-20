@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -32,7 +33,6 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
-import com.oceantech.tracking.di.TrackingViewModelFactory
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
@@ -99,8 +99,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     private fun setupToolbar() {
         toolbar = views.toolbar
-        toolbar.title = ""
-        views.title.text = getString(R.string.app_name)
         setSupportActionBar(toolbar)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
@@ -114,21 +112,23 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_HomeFragment,
-                R.id.nav_newsFragment,
-                R.id.nav_medicalFragment,
-                R.id.nav_feedbackFragment,
-                R.id.listNewsFragment,
-                R.id.detailNewsFragment,
-                R.id.trackingFragment
+                R.id.trackingFragment,
+                R.id.timeSheetFragment
             ), drawerLayout
         )
 
+        //Set up toolbar(action bar) with navigation
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        views.title.text = supportActionBar?.title
+
         // settings
         navView.setNavigationItemSelectedListener { menuItem ->
 
             val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
+
+            // make title of toolbar as label navigation
+            views.title.text = menuItem.title
 
             when (menuItem.itemId) {
                 R.id.exit -> {
@@ -136,6 +136,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                     homeIntent.addCategory(Intent.CATEGORY_HOME)
                     homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(homeIntent)
+
                 }
 
                 R.id.nav_change_langue -> {
@@ -251,12 +252,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     private fun updateLanguge(lang: String) {
         val menu: Menu = navView.menu
-        menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
-        menu.findItem(R.id.nav_newsFragment).title = getString(R.string.menu_category)
-        menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
-        menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
+        menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_user_list)
         menu.findItem(R.id.trackingFragment).title = getString(R.string.fragment_tracking)
         menu.findItem(R.id.timeSheetFragment).title = getString(R.string.time_sheet)
+        menu.findItem(R.id.personalFragment).title = getString(R.string.personal_information)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }

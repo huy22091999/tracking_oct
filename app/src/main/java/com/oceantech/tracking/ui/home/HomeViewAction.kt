@@ -10,4 +10,6 @@ sealed class HomeViewAction:NimpeViewModelAction{
     object ResetLang:HomeViewAction()
     data class SaveFeedback(val feedback: Feedback):HomeViewAction()
 
+    object GetAllUsers: HomeViewAction()
+
 }

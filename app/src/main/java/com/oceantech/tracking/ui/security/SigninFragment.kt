@@ -31,8 +31,9 @@ class SigninFragment : TrackingBaseFragment<FragmentSigninBinding>() {
             val userName = views.username.text.toString()
             val password = views.password.text.toString()
             val displayName = views.displayName.text.toString()
-            handleSignIn(userName, password, displayName)
-            Log.i("Register", "$userName - $password - $displayName")
+            val firstName = views.firstName.text.toString()
+            val lastName = views.lastName.text.toString()
+            handleSignIn(userName, password, displayName, firstName, lastName)
             parentFragmentManager.beginTransaction().replace(R.id.frame_layout, LoginFragment()).commit()
         }
     }
@@ -48,7 +49,7 @@ class SigninFragment : TrackingBaseFragment<FragmentSigninBinding>() {
 
         }
     }
-    private fun handleSignIn(userName: String, password: String, displayName: String){
-        viewModel.handle(SecurityViewAction.SignInAction(userName, password, displayName))
+    private fun handleSignIn(userName: String, password: String, displayName: String, firstName: String, lastName: String){
+        viewModel.handle(SecurityViewAction.SignInAction(userName, password, displayName, firstName, lastName))
     }
 }

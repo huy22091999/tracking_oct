@@ -10,51 +10,46 @@
             type="com.oceantech.tracking.data.model.Tracking" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="9dp"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="5dp">
-
-        <LinearLayout
-
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:background="@drawable/background_category_layout"
+        android:elevation="10dp">
 
 
-            <TextView
-                android:id="@+id/txtContent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill"
-                android:layout_margin="10dp"
-                android:layout_weight="8.5"
-                android:text="@{tracking.content}"
-                android:textSize="24sp"
-                android:textStyle="italic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.085"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txtContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:layout_margin="10dp"
+            android:layout_weight="8.5"
+            android:text="@{tracking.content}"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.085"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-            <ImageButton
-                android:id="@+id/imgDelTracking"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1.5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.892"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.17"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/imgDelTracking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.892"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.17"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 </layout>

@@ -9,14 +9,16 @@
     <string name="time_sheet">Time Sheet</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="fragment_time_sheet">Time Sheet</string>
     <string name="fragment_tracking">Tracking</string>
+    <string name="fragment_home">User List</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="menu_home">Home</string>
+    <string name="menu_user_list">User List</string>
     <string name="menu_category">News</string>
     <string name="menu_nearest_medical">Nearest Medical</string>
     <string name="menu_feedback">Feedback</string>
-    <string name="fragment_home">Home</string>
+
     <string name="fragment_news">News</string>
     <string name="feedback_to_app">App feedback</string>
     <string name="feedback_description">Please enter your feedback below to help make our app even better !</string>
@@ -79,12 +81,15 @@
     <string name="cancel_add_new_tracking">Cancel</string>
     <string name="create_tracking_successfully">Create successfully</string>
     <string name="create_tracking_failed">Create failed</string>
-    <string name="requirement_add_new_tracking">You must type all information</string>
+    <string name="requirement_add_new_tracking">You must type your content</string>
     <string name="delete_tracking_successfully">Delete Successfully</string>
     <string name="delete_tracking_failed">Delete Failed</string>
     <string name="get_tracking_list_failed">Get tracking list failed. Please try again later</string>
     <string name="update_tracking">Update Tracking</string>
     <string name="update">Update</string>
     <string name="add_new_time_sheet">Add new Time Sheet</string>
+    <string name="content">Content</string>
+    <string name="personal_information">Personal Information</string>
+
 
 </resources>

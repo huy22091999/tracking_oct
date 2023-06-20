@@ -16,6 +16,16 @@ class HomeViewModel @AssistedInject constructor(
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang()
+            is HomeViewAction.GetAllUsers -> handleAllUsers()
+        }
+    }
+
+    private fun handleAllUsers() {
+        setState {
+            copy(allUsers = Loading())
+        }
+        repository.getAllUsers().execute {
+            copy(allUsers = it)
         }
     }
 

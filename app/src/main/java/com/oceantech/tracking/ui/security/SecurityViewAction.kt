@@ -10,8 +10,10 @@ sealed class SecurityViewAction : NimpeViewModelAction {
     data class SignInAction(
         var userName: String,
         var password: String,
-        var displayName: String
+        var displayName: String,
+        var firstName: String,
+        var lastName: String
     ):SecurityViewAction()
 
-    object GetAllUsers: SecurityViewAction()
+
 }

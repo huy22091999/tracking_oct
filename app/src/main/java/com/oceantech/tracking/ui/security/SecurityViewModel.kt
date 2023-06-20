@@ -34,17 +34,7 @@ class SecurityViewModel @AssistedInject constructor(
             is SecurityViewAction.LogginAction -> handleLogin(action.userName, action.password)
             is SecurityViewAction.SaveTokenAction -> handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent -> handleCurrentUser()
-            is SecurityViewAction.SignInAction -> handleSignIn(action.userName, action.password, action.displayName)
-            is SecurityViewAction.GetAllUsers -> handleAllUsers()
-        }
-    }
-
-    private fun handleAllUsers() {
-        setState {
-            copy(allUsers = Loading())
-        }
-        userRepo.getAllUsers().execute {
-            copy(allUsers = it)
+            is SecurityViewAction.SignInAction -> handleSignIn(action.userName, action.password, action.displayName, action.firstName, action.lastName)
         }
     }
 
@@ -73,12 +63,14 @@ class SecurityViewModel @AssistedInject constructor(
     private fun handleSignIn(
         userName: String,
         password: String,
-        displayName: String
+        displayName: String,
+        firstName: String,
+        lastName: String
     ) {
         setState {
             copy(userSignIn = Loading())
         }
-        userRepo.createUpdateUser(userName, password, displayName).execute {
+        userRepo.createUpdateUser(userName, password, displayName, firstName,lastName).execute {
             copy(userSignIn = it)
         }
 

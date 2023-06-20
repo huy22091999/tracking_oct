@@ -1,10 +1,10 @@
-package com.oceantech.tracking.ui.tracking.adapter
+package com.oceantech.tracking.ui.item_decoration
 
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class TrackingItemDecoration(
+class ItemDecoration(
     private val distance: Int
 ) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(
