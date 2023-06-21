@@ -29,6 +29,9 @@
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
+    <string name="lable_signup">Already have an account?<font color="#3F51B5"><b> Sign in</b></font></string>
+    <string name="lable_welcome">Welcome to<font color="#48dbfb"><b> Tracking</b></font></string>
+    <string name="lable_introduce"><font color="#7f8fa6"><b>A simple app for traking</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="channel_description">Notification</string>
     <string name="category_theme">News topic</string>
@@ -54,7 +57,7 @@
     <string name="last_name">Fisrt Name</string>
     <string name="first_name">Last Name</string>
     <string name="display_name">Display name</string>
-    <string name="username">User name</string>
+    <string name="username">User name <font color="red">*</font></string>
     <string name="signin_account">Sign in</string>
     <string name="login_fail">User name or password is incorect</string>
     <string name="login_success">Loggin successfully.</string>
@@ -93,4 +96,5 @@
     <string name="confirm_delete">Confirm delete</string>
     <string name="time_sheet">Time Sheet</string>
     <string name="check_in">Check In</string>
+    <string name="checked_in">Bạn đã check in hôm nay rồi</string>
 </resources>

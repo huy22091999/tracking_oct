@@ -8,47 +8,51 @@
     android:orientation="vertical"
     tools:context=".ui.security.LoginFragment">
 
-    <androidx.core.widget.NestedScrollView
+<!--    <androidx.core.widget.NestedScrollView
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <LinearLayout
-                android:id="@+id/space"
-                android:layout_width="match_parent"
+    </androidx.core.widget.NestedScrollView>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+            <ImageView
+                android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:background="@color/nimpe_background_login"
-                android:orientation="horizontal" />
+                android:src="@drawable/attendance"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/login_container"
+                />
 
             <LinearLayout
+                android:id="@+id/login_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="-20sp"
-                android:layout_below="@id/space"
+                android:layout_alignParentBottom="true"
                 android:background="@drawable/background_login"
                 android:orientation="vertical"
+                android:layout_marginBottom="40dp"
                 android:padding="24dp">
-
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/logo_login" />
-
                 <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:text="@string/warning"
+                    android:text="@string/lable_welcome"
                     android:textColor="@color/gray"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
+                    android:textSize="35sp" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/lable_introduce"
+                    android:textColor="@color/gray"
+                    android:textSize="18sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/NimpeInputLayoutLogin"
@@ -57,11 +61,15 @@
                     android:id="@+id/username_til"
                     android:layout_marginTop="24dp"
                     app:hintEnabled="false"
-                    app:startIconDrawable="@drawable/ic_person">
+                    app:startIconDrawable="@drawable/ic_person"
+                    app:startIconTint="@color/text_color">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/username"
                         android:hint="@string/account"
+                        android:textColorHint="@color/text_color"
+                        android:textColor="@color/gray"
+                        android:singleLine="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -74,11 +82,15 @@
                     app:errorEnabled="true"
                     app:hintEnabled="false"
                     app:startIconDrawable="@drawable/ic_lock"
-                    android:id="@+id/password_til">
+                    android:id="@+id/password_til"
+                    app:startIconTint="@color/text_color">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:hint="@string/password"
+                        android:singleLine="true"
+                        android:textColorHint="@color/text_color"
+                        android:textColor="@color/gray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -117,8 +129,6 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
-        </RelativeLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 
 </RelativeLayout>

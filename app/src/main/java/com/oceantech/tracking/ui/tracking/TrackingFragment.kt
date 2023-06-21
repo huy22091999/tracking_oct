@@ -27,6 +27,7 @@ import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
 import com.oceantech.tracking.ui.home.HomeViewAction
+import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -52,6 +53,17 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             views.recyclerView.adapter = trackingAdapter
         }
         viewModel.handleAllTracking()
+        viewModel.observeViewEvents {
+            handleEvent(it)
+        }
+    }
+
+    private fun handleEvent(it: HomeViewEvent) {
+        when(it){
+            is HomeViewEvent.ResetLanguege -> {
+
+            }
+        }
     }
 
     private val showMenu:(View,Tracking) -> Unit = {view,tracking ->

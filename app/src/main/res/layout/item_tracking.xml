@@ -45,7 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:minLines="2"
-            android:text="MvRx" />
+            android:text="MvRx"
+            android:textColor="@color/text_color"/>
     </LinearLayout>
 
     <ImageView

@@ -7,6 +7,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="24dp"
+    android:background="@color/white"
     tools:context=".ui.tracking.AddOrUpTrackFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -23,11 +24,13 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:text="@string/tracking"
+        android:textColor="@color/gray"
         android:layout_height="wrap_content"/>
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_marginTop="16dp"
         style="@style/TextAppearance.AppCompat"
+        android:textColor="@color/gray"
         android:textSize="16sp"
         android:id="@+id/title2"
         android:layout_gravity="center_horizontal"
@@ -46,10 +49,12 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
+            android:textColor="@color/gray"
             android:id="@+id/tracking"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:hint="@string/tracking_hint"
+            android:textColorHint="@color/text_color"
             android:gravity="top"
             />
     </com.google.android.material.textfield.TextInputLayout>

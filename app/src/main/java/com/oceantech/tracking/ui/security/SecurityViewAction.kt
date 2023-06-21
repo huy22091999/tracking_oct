@@ -9,4 +9,5 @@ sealed class SecurityViewAction : NimpeViewModelAction {
     data class SignAction(var username:String, var displayName:String, var email:String, var firstName:String, var lastName:String, var password:String, var birthPlace:String, var university:String, var year:Int):SecurityViewAction()
     object GetUserCurrent : SecurityViewAction()
     object GetAllUser : SecurityViewAction()
+    object GetConfigApp:SecurityViewAction()
 }

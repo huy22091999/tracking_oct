@@ -18,6 +18,7 @@ import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.databinding.FragmentTimeSheetBinding
 import com.oceantech.tracking.ui.home.HomeViewAction
+import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
 
 class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
@@ -33,7 +34,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
         timeSheets = listOf()
 
         views.gridView.apply {
-            layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = TimeSheetAdapter(timeSheets)
         }
         viewModel.timeSheets.observe(viewLifecycleOwner){
@@ -48,7 +49,18 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
         views.checkInSubmit.setOnClickListener {
             checkIn()
         }
+        viewModel.observeViewEvents {
+            handleEvent(it)
+        }
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun handleEvent(event: HomeViewEvent){
+        when(event){
+            is HomeViewEvent.ResetLanguege ->{
+
+            }
+        }
     }
 
     private fun checkIn(){
@@ -59,12 +71,6 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     override fun invalidate():Unit = withState(viewModel){
         when(it.timeSheets){
             is Success -> {
-                it.timeSheets.invoke().let { timeSheet ->
-//                    timeSheets = timeSheet
-//                    adapter = TimeSheetAdapter(timeSheets)
-//                    views.gridView.adapter = adapter
-                    Log.i("Time sheet list's size:",timeSheet.size.toString())
-                }
                 dismissLoadingDialog()
             }
             is Loading -> {
@@ -79,10 +85,17 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
         when(it.checkIn){
             is Success -> {
                 dismissLoadingDialog()
-                Toast.makeText(requireContext(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
+                it.checkIn?.invoke().let { checkIn ->
+                    if(checkIn.message.isNullOrEmpty()){
+                        Toast.makeText(requireContext(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), getString(R.string.checked_in), Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
             is Fail -> {
                 dismissLoadingDialog()
+                /*Toast.makeText(requireContext(), getString(R.string.checked_in), Toast.LENGTH_SHORT).show()*/
             }
             is Loading -> {
                 viewModel.handleTimeSheets()

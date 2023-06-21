@@ -13,9 +13,7 @@ data class TimeSheet(
     @SerializedName("message")
     val message:String ? = null,
     @SerializedName("offline")
-    val offline:Boolean? = null,
-    @SerializedName("note")
-    val note: String? = null,
+    val offline:Boolean? = true,
     @SerializedName("user")
     val user: User? = null
 )

@@ -41,6 +41,11 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
                 finish()
             }
         }
+        when(it.asyncConfigApp){
+            is Success -> {
+                
+            }
+        }
     }
 
     override fun onResume() {

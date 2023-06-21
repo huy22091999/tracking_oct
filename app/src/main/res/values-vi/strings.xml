@@ -30,6 +30,9 @@
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
+    <string name="lable_signup">Bạn đã có tài khoản?<font color="#3F51B5"><b> Đăng nhập</b></font></string>
+    <string name="lable_welcome">Welcome to<font color="#48dbfb"><b> Tracking</b></font></string>
+    <string name="lable_introduce"><font color="#7f8fa6"><b>A simple app for traking</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="category_theme">Chủ đề tin tức</string>
     <string name="home_everyone">Mọi người cùng chung tay phòng chống dịch bệnh sốt xuất huyết</string>
@@ -49,7 +52,7 @@
     <string name="last_name">Tên</string>
     <string name="first_name">Họ</string>
     <string name="display_name">Tên hiển thị</string>
-    <string name="username">Tên đăng nhập</string>
+    <string name="username">Tên đăng nhập <font color="red">*</font></string>
     <string name="signin_account">Đăng kí</string>
     <string name="sign_success">Đăng kí tài khoản thành công</string>
     <string name="login_fail">Tài khoản hoặc mật khẩu không đúng. Mời bạn đăng nhập lại</string>
@@ -94,4 +97,5 @@
     <string name="confirm_delete">Confirm delete</string>
     <string name="time_sheet">Time Sheet</string>
     <string name="check_in">Check In</string>
+    <string name="checked_in">Bạn đã check in hôm nay rồi</string>
 </resources>

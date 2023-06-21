@@ -16,7 +16,6 @@ class TimeSheetAdapter(private val timeSheets:List<TimeSheet>):RecyclerView.Adap
             with(binding as ItemTimeSheetBinding){
                 binding.timeLabel.text = formatDate(timeSheet.dateAttendance.toString())
                 binding.ipLabel.text = timeSheet.ip
-                binding.noteLabel.text = timeSheet.note
             }
         }
     }

@@ -43,6 +43,9 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
         views.send.setOnClickListener {
             send()
         }
+        views.labelSignup.setOnClickListener {
+            viewModel.handleReturnLogin()
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 

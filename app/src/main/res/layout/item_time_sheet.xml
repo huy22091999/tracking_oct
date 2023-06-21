@@ -1,41 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="100dp"
-    android:layout_height="125dp"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:padding="3dp"
+    android:padding="6dp"
     android:background="@drawable/bg_time_sheet">
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/ipLabel"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="25dp"
-        android:text="Ip"
+        android:gravity="start"
         android:singleLine="true"
-        android:textStyle="bold"
-        android:gravity="center"
+        android:text="Ip"
+        android:textColor="@color/gray"
         android:textSize="20dp"
-        />
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/NimpeInputLayoutLogin"
-        android:id="@+id/noteLabel"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:padding="5dp"
-        android:text="Note"
-        android:gravity="top"
-        android:maxLines="3"
-        android:textStyle="italic"
-        android:textSize="18dp"
-        />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timeLabel"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="20dp"
+        android:gravity="end"
         android:padding="2dp"
         android:text="time"
-        android:gravity="top"
-        android:maxLines="3"
+        android:textColor="@color/text_color"
         android:textSize="10dp"
-        />
-</LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ipLabel" />
+</androidx.constraintlayout.widget.ConstraintLayout>
