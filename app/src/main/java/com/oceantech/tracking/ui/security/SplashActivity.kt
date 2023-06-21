@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.security
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,11 +20,14 @@ import javax.inject.Inject
 class SplashActivity() : TrackingBaseActivity<ActivitySplashBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
-    companion object{
+
+    companion object {
         const val USER = 0
         const val VERSION = 1
     }
+
     private var state = 1
+
     @Inject
     lateinit var securityViewModelFactory: SecurityViewModel.Factory
 
@@ -40,41 +44,49 @@ class SplashActivity() : TrackingBaseActivity<ActivitySplashBinding>(), Security
     }
 
     private fun handleStateChange(it: SecurityViewState) {
-        when(state){
+        when (state) {
             USER -> handleUser(it)
             VERSION -> handleVersion(it)
         }
     }
 
     private fun handleVersion(it: SecurityViewState) {
-        when(it.asyncVersion){
+        when (it.asyncVersion) {
             is Success -> {
-                val version = it.asyncVersion.invoke()?.versionName
-                val versionName = packageManager.getPackageInfo(packageName,0).versionName
+                val version = it.asyncVersion.invoke()?.versionName //version from api
+                val versionName = packageManager.getPackageInfo(packageName, 0).versionName //version app
                 state = USER
                 if (version == versionName) viewModel.handle(SecurityViewAction.GetUserCurrent)
+                else startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=com.zing.zalo")
+                    )
+                )
             }
             is Fail -> {
-                Toast.makeText(this,"${it.asyncVersion.invoke()}",Toast.LENGTH_SHORT).show()
+                viewModel.handle(SecurityViewAction.GetUserCurrent)
             }
         }
     }
+
+
     private fun handleUser(it: SecurityViewState) {
         when (it.userCurrent) {
             is Success -> {
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("user",it.userCurrent.invoke())
+                intent.putExtra("user", it.userCurrent.invoke())
                 Handler(Looper.getMainLooper()).postDelayed({
                     startActivity(intent)
                     finish()
-                },2000)
+                }, 2000)
             }
 
             is Fail -> {
                 Handler(Looper.getMainLooper()).postDelayed({
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
-                },2000)
+                }, 2000)
             }
         }
     }
