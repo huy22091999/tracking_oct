@@ -6,15 +6,15 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
 import java.util.*
 
+private const val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
 
 class LocalHelper {
-    private val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
-
     fun onAttach(context: Context): Context? {
-        val lang = getPersistedData(context, Locale.getDefault().getLanguage())
+        val lang = getPersistedData(context, Locale.getDefault().language)
         return setLocale(context, lang)
     }
 
@@ -24,19 +24,22 @@ class LocalHelper {
     }
 
     fun getLanguage(context: Context): String? {
-        return getPersistedData(context, Locale.getDefault().getLanguage())
-    }
-    fun setLanguage(context: Context,language: String?){
-        setLocale(context,language)
+        return getPersistedData(context, Locale.getDefault().language)
     }
 
-    fun setLocale(context: Context, language: String?): Context? {
+    fun setLanguage(context: Context, language: String?): Context? {
+        return setLocale(context, language)
+    }
+
+    private fun setLocale(context: Context, language: String?): Context? {
         persist(context, language)
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            updateResources(context, language)
-        } else updateResourcesLegacy(context, language)
+        return updateResources(context, language)
+//        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            updateResources(context, language)
+//        } else updateResourcesLegacy(context, language)
     }
 
+    //Take the default language of device
     private fun getPersistedData(context: Context, defaultLanguage: String): String? {
         val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         return preferences.getString(SELECTED_LANGUAGE, defaultLanguage)
@@ -49,26 +52,17 @@ class LocalHelper {
         editor.apply()
     }
 
+    //Use this method to change language with the devices having android version >=N
     @TargetApi(Build.VERSION_CODES.N)
     private fun updateResources(context: Context, language: String?): Context? {
-        val locale = Locale(language)
-        Locale.setDefault(locale)
-        val configuration: Configuration = context.getResources().getConfiguration()
+        val locale = language?.let { Locale(language) }
+        locale?.let { Locale.setDefault(locale) }
+        val configuration: Configuration = context.resources.configuration
         configuration.setLocale(locale)
         configuration.setLayoutDirection(locale)
         return context.createConfigurationContext(configuration)
     }
 
-    private fun updateResourcesLegacy(context: Context, language: String?): Context? {
-        val locale = Locale(language)
-        Locale.setDefault(locale)
-        val resources: Resources = context.getResources()
-        val configuration: Configuration = resources.getConfiguration()
-        configuration.locale = locale
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            configuration.setLayoutDirection(locale)
-        }
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics())
-        return context
-    }
+
+
 }

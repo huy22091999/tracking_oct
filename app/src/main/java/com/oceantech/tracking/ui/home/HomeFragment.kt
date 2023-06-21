@@ -14,8 +14,6 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.oceantech.tracking.core.TrackingBaseFragment
-import com.oceantech.tracking.data.model.User
-import com.oceantech.tracking.data.network.UserApi
 import com.oceantech.tracking.databinding.FragmentHomeBinding
 import com.oceantech.tracking.ui.home.adapter.UserAdapter
 import com.oceantech.tracking.ui.item_decoration.ItemDecoration
@@ -54,7 +52,7 @@ class HomeFragment @Inject constructor(): TrackingBaseFragment<FragmentHomeBindi
 
     private fun handleEvent(it: HomeViewEvent) {
         when (it) {
-            is HomeViewEvent.ResetLanguege -> {
+            is HomeViewEvent.ResetLanguage -> {
 
             }
         }

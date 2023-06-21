@@ -24,7 +24,7 @@
     <string name="feedback_description">Please enter your feedback below to help make our app even better !</string>
     <string name="feedback_hint">Your feedback ...</string>
     <string name="send_feedback">Send feedback</string>
-    <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
+    <string name="welcome">Welcome</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>

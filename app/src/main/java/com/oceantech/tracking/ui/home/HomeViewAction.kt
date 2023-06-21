@@ -7,7 +7,7 @@ sealed class HomeViewAction:NimpeViewModelAction{
 
     object GetCurrentUser:HomeViewAction()
     object GetCategorys:HomeViewAction()
-    object ResetLang:HomeViewAction()
+    data class ResetLang(val lang: String):HomeViewAction()
     data class SaveFeedback(val feedback: Feedback):HomeViewAction()
 
     object GetAllUsers: HomeViewAction()

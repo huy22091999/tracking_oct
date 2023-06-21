@@ -23,7 +23,7 @@
     <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
     <string name="fragment_news">Tin tức</string>
     <string name="send_feedback">Gửi phản hồi</string>
-    <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
+    <string name="welcome">Xin chào</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>

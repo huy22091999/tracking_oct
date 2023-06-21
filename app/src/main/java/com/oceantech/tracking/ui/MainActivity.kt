@@ -2,12 +2,12 @@ package com.oceantech.tracking.ui
 
 import android.annotation.SuppressLint
 import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
+import androidx.preference.PreferenceManager
 import com.airbnb.mvrx.viewModel
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
@@ -33,13 +34,16 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
+import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
 import com.oceantech.tracking.ui.tracking.TrackingViewState
+import com.oceantech.tracking.utils.changeLanguage
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory, TrackingViewModel.Factory, TimeSheetViewModel.Factory {
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
+    TrackingViewModel.Factory, TimeSheetViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -64,7 +68,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
-    lateinit var navView: NavigationView
+    private lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
@@ -75,6 +79,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         setupDrawer()
         sharedActionViewModel.test()
 
+//        localHelper.onAttach(this)
+
         homeViewModel.subscribe(this) {
             if (it.isLoadding()) {
                 views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
@@ -82,6 +88,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 views.appBarMain.contentMain.waitingView.visibility = View.GONE
         }
     }
+
+
     override fun create(S: TimeSheetViewState): TimeSheetViewModel {
         return timeSheetViewModelFactory.create(S)
     }
@@ -93,6 +101,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     override fun create(state: TrackingViewState): TrackingViewModel {
         return trackingViewModelFactory.create(state)
     }
+
     override fun getBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
     }
@@ -102,6 +111,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         setSupportActionBar(toolbar)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
+
 
     @SuppressLint("ResourceType")
     private fun setupDrawer() {
@@ -128,8 +138,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
 
             // make title of toolbar as label navigation
-            views.title.text = menuItem.title
-
+            if (menuItem != navView.menu.findItem(R.id.nav_change_langue)) {
+                views.title.text = menuItem.title
+            }
             when (menuItem.itemId) {
                 R.id.exit -> {
                     val homeIntent = Intent(Intent.ACTION_MAIN)
@@ -156,7 +167,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val res: Resources = resources
         val conf: Configuration = res.configuration
         val local = conf.locale
-        val lang = local.displayLanguage
+
+        // get the language that showing in the display
+        val lang = local.getDisplayLanguage(local)
         if (lang == "English") {
             homeViewModel.language = 0
             menuItem.title = getString(R.string.en)
@@ -173,18 +186,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     }
 
-    private fun changeLangue(lang: String) {
-        val res: Resources = resources
-        val dm: DisplayMetrics = res.displayMetrics
-        val conf: Configuration = res.configuration
-        val myLocale = Locale(lang)
-        conf.setLocale(myLocale)
-        res.updateConfiguration(conf, dm)
-        updateLanguge(lang)
-
-
-    }
-
     private fun showMenu(v: View, @MenuRes menuRes: Int) {
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.popup_window, null)
@@ -198,16 +199,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
-            changeLangue("en")
-            homeViewModel.language = 0
-            popup.dismiss()
-            homeViewModel.handle(HomeViewAction.ResetLang)
+            changeLanguage(localHelper,"en")
         }
         view.findViewById<LinearLayout>(R.id.to_lang_vi).setOnClickListener {
-            changeLangue("vi")
-            homeViewModel.language = 1
-            popup.dismiss()
-            homeViewModel.handle(HomeViewAction.ResetLang)
+            changeLanguage(localHelper,"vi")
         }
     }
 
@@ -250,15 +245,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     }
 
 
-    private fun updateLanguge(lang: String) {
-        val menu: Menu = navView.menu
-        menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_user_list)
-        menu.findItem(R.id.trackingFragment).title = getString(R.string.fragment_tracking)
-        menu.findItem(R.id.timeSheetFragment).title = getString(R.string.time_sheet)
-        menu.findItem(R.id.personalFragment).title = getString(R.string.personal_information)
-        menu.findItem(R.id.nav_change_langue).title =
-            if (lang == "en") getString(R.string.en) else getString(R.string.vi)
-    }
+
+
 
 
 

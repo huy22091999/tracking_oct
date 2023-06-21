@@ -15,7 +15,7 @@ class HomeViewModel @AssistedInject constructor(
     override fun handle(action: HomeViewAction) {
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
-            is HomeViewAction.ResetLang -> handResetLang()
+            is HomeViewAction.ResetLang -> handResetLang(action.lang)
             is HomeViewAction.GetAllUsers -> handleAllUsers()
         }
     }
@@ -29,8 +29,8 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handResetLang() {
-        _viewEvents.post(HomeViewEvent.ResetLanguege)
+    private fun handResetLang(lang: String) {
+        _viewEvents.post(HomeViewEvent.ResetLanguage(lang))
     }
     private fun handleCurrentUser() {
         setState { copy(userCurrent = Loading()) }
