@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_nav_HomeFragment_to_personalFragment"
             app:destination="@id/personalFragment" />
+        <action
+            android:id="@+id/action_nav_HomeFragment_to_publicFragment"
+            app:destination="@id/publicFragment" />
     </fragment>
     <fragment
         android:id="@+id/trackingFragment"
@@ -35,5 +38,10 @@
         android:name="com.oceantech.tracking.ui.personal.PersonalFragment"
         android:label="@string/personal_information"
         tools:layout="@layout/fragment_personal" />
+    <fragment
+        android:id="@+id/publicFragment"
+        android:name="com.oceantech.tracking.ui.public_config.PublicFragment"
+        android:label="@string/app_information"
+        tools:layout="@layout/fragment_public" />
 
 </navigation>

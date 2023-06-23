@@ -2,11 +2,14 @@ package com.oceantech.tracking.ui.security
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
+import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.ui.MainActivity
 import javax.inject.Inject
@@ -27,6 +30,7 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
         viewModel.subscribe(this) {
             handleStateChange(it)
         }
+
     }
 
     private fun handleStateChange(it: SecurityViewState) {
@@ -37,6 +41,9 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
             }
 
             is Fail -> {
+                SessionManager(applicationContext).also {
+                    it.deleteAuthToken()
+                }
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }

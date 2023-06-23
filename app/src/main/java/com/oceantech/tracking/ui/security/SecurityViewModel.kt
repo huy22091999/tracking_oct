@@ -18,13 +18,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class SecurityViewModel @AssistedInject constructor(
     @Assisted state: SecurityViewState,
     val repository: AuthRepository,
     private val userRepo: UserRepository
-) :
-    TrackingViewModel<SecurityViewState, SecurityViewAction, SecurityViewEvent>(state) {
+) : TrackingViewModel<SecurityViewState, SecurityViewAction, SecurityViewEvent>(state) {
     init {
 
     }
@@ -75,9 +73,6 @@ class SecurityViewModel @AssistedInject constructor(
         }
 
     }
-
-
-
 
     fun handleReturnSignin() {
         _viewEvents.post(SecurityViewEvent.ReturnSigninEvent)

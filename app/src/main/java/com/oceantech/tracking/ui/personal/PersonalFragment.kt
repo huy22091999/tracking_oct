@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.personal
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +14,12 @@ import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.FragmentPersonalBinding
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewModel
+import com.oceantech.tracking.ui.security.LoginActivity
+import com.oceantech.tracking.utils.handleLogOut
 
 class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
 
@@ -35,6 +39,9 @@ class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        views.btnLogOut.setOnClickListener {
+            requireActivity().handleLogOut()
+        }
     }
 
     override fun invalidate() = withState(viewModel){

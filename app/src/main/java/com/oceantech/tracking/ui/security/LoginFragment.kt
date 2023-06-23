@@ -13,6 +13,7 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
@@ -58,13 +59,15 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                     token.accessToken?.let { it1 -> sessionManager!! .saveAuthToken(it1) }
                     token.refreshToken?.let { it1 -> sessionManager!!.saveAuthTokenRefresh(it1) }
                     Log.i("Login", token.toString())
-                    viewModel.handle(SecurityViewAction.SaveTokenAction(token!!))
+                    viewModel.handle(SecurityViewAction.SaveTokenAction(token))
                 }
                 Toast.makeText(requireContext(),getString(R.string.login_success),Toast.LENGTH_LONG).show()
+                Log.i("Login", it.asyncLogin.toString())
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 activity?.finish()
             }
             is Fail->{
+                Log.i("Login", (it.asyncLogin as Fail<TokenResponse>).error.toString())
                 views.passwordTil.error=getString(R.string.login_fail)
             }
         }

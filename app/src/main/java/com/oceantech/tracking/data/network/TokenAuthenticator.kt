@@ -1,27 +1,47 @@
 package com.oceantech.tracking.data.network
 
+import android.content.Context
+import android.util.Log
+import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.UserCredentials
+import com.oceantech.tracking.ui.security.UserPreferences
 import okhttp3.Authenticator
+import okhttp3.Credentials
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
+import retrofit2.Call
 
 class TokenAuthenticator(
-    accessToken: String
-//    val context: Context,
+    accessToken: String,
+//    private val context: Context,
 //    val api: AuthApi
 ) : Authenticator {
 
     private val mAccessToken = accessToken
-    //val sessionManager = SessionManager(context.applicationContext)
 
     override fun authenticate(route: Route?, response: Response): Request {
+//        Log.i("Login", "access: $mAccessToken")
         return response.request.newBuilder()
             .header(
                 "Authorization",
-                if (!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0"
+                if (mAccessToken.isNotEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0"
             )
             .build()
     }
+
+//    private fun refreshToken(): Call<TokenResponse> = api.loginWithRefreshToken(
+//        UserCredentials(
+//            AuthApi.CLIENT_ID,
+//            AuthApi.CLIENT_SECRET,
+//            username = "",
+//            password = "",
+//            refreshToken = sessionManager.fetchAuthTokenRefresh(),
+//            AuthApi.GRANT_TYPE_REFRESH
+//        )
+//    )
+
+}
 //    override fun authenticate(route: Route?, response: Response): Request? {
 //
 //        if (sessionManager.fetchAuthTokenRefresh() != null) {
@@ -68,4 +88,4 @@ class TokenAuthenticator(
 //        return api.loginWithRefreshToken(credentials)
 //    }
 
-}
+

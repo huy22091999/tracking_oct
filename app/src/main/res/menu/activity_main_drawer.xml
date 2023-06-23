@@ -18,6 +18,10 @@
         <item android:id="@+id/timeSheetFragment"
             android:title="@string/time_sheet"
             android:icon="@mipmap/time_sheet"/>
+        <item android:id="@+id/publicFragment"
+            android:title="@string/app_information"
+            android:icon="@drawable/infor_icon"/>
+
 
 
     </group>
@@ -32,5 +36,8 @@
         <item android:title="@string/exit"
             android:id="@+id/exit"
             android:icon="@drawable/ic_exit"/>
+        <item android:id="@+id/log_out"
+            android:title="@string/log_out"
+            android:icon="@drawable/log_out_icon"/>
     </group>
 </menu>

@@ -10,6 +10,7 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
+import com.oceantech.tracking.di.NetWorkModule
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -55,6 +56,7 @@ class RemoteDataSource() {
         } else
             TokenAuthenticator("")
 
+
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(getRetrofitClient(authenticator))
@@ -63,6 +65,8 @@ class RemoteDataSource() {
             .build()
             .create(api)
     }
+
+
 
     private fun getRetrofitClient(
         authenticator: Authenticator? = null
@@ -169,4 +173,7 @@ class RemoteDataSource() {
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
+
+
+
 }

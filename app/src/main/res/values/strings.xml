@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Dengue Alert</string>
+    <string name="app_name">Tracking</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -69,7 +69,7 @@
     <string name="need_network">The Dengue Alert app needs to use mobile data to detect outbreaks around. You need to anable mobile data or Wifi in the settings.</string>
     <string name="account">User name</string>
     <string name="received">We have received your feedback</string>
-    <string name="exit">Thoát ứng dụng</string>
+    <string name="exit">Exit</string>
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">at</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
@@ -79,8 +79,8 @@
     <string name="dob">Date Of Birth</string>
     <string name="add_new_tracking">Add</string>
     <string name="cancel_add_new_tracking">Cancel</string>
-    <string name="create_tracking_successfully">Create successfully</string>
-    <string name="create_tracking_failed">Create failed</string>
+    <string name="check_in_tracking_successfully">Check in successfully</string>
+    <string name="check_in_tracking_failed">Check in failed</string>
     <string name="requirement_add_new_tracking">You must type your content</string>
     <string name="delete_tracking_successfully">Delete Successfully</string>
     <string name="delete_tracking_failed">Delete Failed</string>
@@ -90,6 +90,9 @@
     <string name="add_new_time_sheet">Add new Time Sheet</string>
     <string name="content">Content</string>
     <string name="personal_information">Personal Information</string>
+    <string name="log_out">Log out</string>
+    <string name="app_information">App Information</string>
+
 
 
 </resources>

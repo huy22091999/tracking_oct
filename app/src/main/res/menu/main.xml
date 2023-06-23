@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_list_health"
-        android:icon="@drawable/ic_hostpital"
-        android:title="List"
+        android:id="@+id/menu_list_user"
+        android:icon="@drawable/list_user"
+        android:title="@string/fragment_home"
         app:showAsAction="always" />
 </menu>

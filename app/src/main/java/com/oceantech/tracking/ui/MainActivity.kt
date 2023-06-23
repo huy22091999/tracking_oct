@@ -2,29 +2,25 @@ package com.oceantech.tracking.ui
 
 import android.annotation.SuppressLint
 import android.app.*
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.annotation.MenuRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
-import androidx.preference.PreferenceManager
 import com.airbnb.mvrx.viewModel
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
-import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewState
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.utils.LocalHelper
@@ -34,16 +30,21 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
-import com.oceantech.tracking.ui.home.HomeViewEvent
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.public_config.PublicViewModel
+import com.oceantech.tracking.ui.public_config.PublicViewState
+import com.oceantech.tracking.ui.security.LoginActivity
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
 import com.oceantech.tracking.ui.tracking.TrackingViewState
+import com.oceantech.tracking.utils.addFragmentToBackstack
 import com.oceantech.tracking.utils.changeLanguage
+import com.oceantech.tracking.utils.handleLogOut
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
-    TrackingViewModel.Factory, TimeSheetViewModel.Factory {
+    TrackingViewModel.Factory, TimeSheetViewModel.Factory, PublicViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -64,6 +65,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     @Inject
     lateinit var timeSheetViewModelFactory: TimeSheetViewModel.Factory
 
+    @Inject
+    lateinit var publicViewModelFactory: PublicViewModel.Factory
+
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
@@ -79,16 +83,17 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         setupDrawer()
         sharedActionViewModel.test()
 
-//        localHelper.onAttach(this)
-
         homeViewModel.subscribe(this) {
             if (it.isLoadding()) {
                 views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
             } else
                 views.appBarMain.contentMain.waitingView.visibility = View.GONE
         }
-    }
 
+    }
+    override fun create(state: PublicViewState): PublicViewModel {
+        return publicViewModelFactory.create(state)
+    }
 
     override fun create(S: TimeSheetViewState): TimeSheetViewModel {
         return timeSheetViewModelFactory.create(S)
@@ -132,15 +137,16 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         navView.setupWithNavController(navController)
         views.title.text = supportActionBar?.title
 
+        // make title of toolbar as label navigation
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            views.title.text = destination.label
+        }
+
         // settings
         navView.setNavigationItemSelectedListener { menuItem ->
 
             val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
 
-            // make title of toolbar as label navigation
-            if (menuItem != navView.menu.findItem(R.id.nav_change_langue)) {
-                views.title.text = menuItem.title
-            }
             when (menuItem.itemId) {
                 R.id.exit -> {
                     val homeIntent = Intent(Intent.ACTION_MAIN)
@@ -153,7 +159,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.nav_change_langue -> {
                     showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
                 }
-
+                R.id.log_out -> {
+                    handleLogOut()
+                }
                 else -> {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     handled
@@ -163,7 +171,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
         val menu: Menu = navView.menu
         val menuItem = menu.findItem(R.id.nav_change_langue)
-        val actionView: View = MenuItemCompat.getActionView(menuItem)
+        val actionView: View = menuItem.actionView!!
         val res: Resources = resources
         val conf: Configuration = res.configuration
         val local = conf.locale
@@ -178,8 +186,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             menuItem.title = getString(R.string.vi)
             homeViewModel.language = 1
         }
-        var buttonShowMenu = actionView as AppCompatImageView
-        buttonShowMenu.setImageDrawable(getDrawable(R.drawable.ic_drop))
+        val buttonShowMenu = actionView as AppCompatImageView
+        buttonShowMenu.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_drop))
         buttonShowMenu.setOnClickListener {
             showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
         }
@@ -217,7 +225,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return true
     }
 
-    fun navigateTo(fragmentId: Int) {
+    private fun navigateTo(fragmentId: Int) {
         navController.navigate(fragmentId)
     }
 
@@ -232,8 +240,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 return true
             }
 
-            R.id.menu_list_health -> {
-
+            R.id.menu_list_user -> {
+                navigateTo(R.id.nav_HomeFragment)
                 return true
             }
 
@@ -243,9 +251,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
         return super.onOptionsItemSelected(item)
     }
-
-
-
 
 
 

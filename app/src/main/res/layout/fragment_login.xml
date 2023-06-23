@@ -17,11 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+
             <LinearLayout
                 android:id="@+id/space"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:background="@color/nimpe_background_login"
+                android:background="#F3CC6C"
                 android:orientation="horizontal" />
 
             <LinearLayout
@@ -78,9 +79,10 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
-                        android:hint="@string/password"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password"
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton

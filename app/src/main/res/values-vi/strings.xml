@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Dengue Alert</string>
+    <string name="app_name">Tracking</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -78,8 +78,8 @@
     <string name="dob">Ngày Sinh</string>
     <string name="add_new_tracking">Thêm</string>
     <string name="cancel_add_new_tracking">Huỷ</string>
-    <string name="create_tracking_successfully">Thêm thành công</string>
-    <string name="create_tracking_failed">Thêm thất bại, vui lòng thử lại sau</string>
+    <string name="check_in_tracking_successfully">Check in thành công</string>
+    <string name="check_in_tracking_failed">Check in thất bại, vui lòng thử lại sau</string>
     <string name="requirement_add_new_tracking">Bạn phải nhập nội dung</string>
     <string name="delete_tracking_successfully">Xoá thành công</string>
     <string name="delete_tracking_failed">Xóa thất bại</string>
@@ -91,4 +91,7 @@
     <string name="fragment_time_sheet">Thời gian biểu</string>
     <string name="content">Nội Dung</string>
     <string name="personal_information">Thông tin cá nhân</string>
+    <string name="log_out">Đăng xuất</string>
+    <string name="app_information">Thông tin</string>
+
 </resources>

@@ -1,8 +1,10 @@
 package com.oceantech.tracking.data.repository
 
+import android.content.Context
 import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.model.UserCredentials
 import com.oceantech.tracking.data.network.AuthApi
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.security.UserPreferences
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -12,8 +14,10 @@ import javax.inject.Singleton
 @Singleton
 class AuthRepository @Inject constructor(
     val api: AuthApi,
-    private val preferences: UserPreferences
+    private val preferences: UserPreferences,
+    val context: Context
 ) {
+//    private val sessionManager = SessionManager(context)
     fun login(username: String, password: String): Observable<TokenResponse> = api.oauth(
         UserCredentials(
             AuthApi.CLIENT_ID,
@@ -30,7 +34,6 @@ class AuthRepository @Inject constructor(
         }
         preferences.saveAccessTokens(tokens.accessToken, tokens.refreshToken)
     }
-
 
 
 }

@@ -23,6 +23,8 @@ import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
 import com.oceantech.tracking.ui.tracking.adapter.TrackingAdapter
 import com.oceantech.tracking.ui.item_decoration.ItemDecoration
+import com.oceantech.tracking.utils.setupRecycleView
+import com.oceantech.tracking.utils.showToast
 import javax.inject.Inject
 
 class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrackingBinding>() {
@@ -32,6 +34,8 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
     private lateinit var trackingAdapter: TrackingAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //get all tracking when fragment is creating status
         trackingViewModel.handle(TrackingViewAction.GetAllTracking())
     }
 
@@ -47,18 +51,15 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         trackingRV = views.trackingRV
         trackingAdapter = TrackingAdapter(deleteTracking = {
             trackingViewModel.handle(TrackingViewAction.DeleteTracking(it))
-        },
-            updateTracking = { tracking, id ->
-                trackingViewModel.handle(TrackingViewAction.UpdateTracking(tracking, id))
-            })
-        trackingRV.adapter = trackingAdapter
-        trackingRV.layoutManager = LinearLayoutManager(requireContext())
-        trackingRV.addItemDecoration(ItemDecoration(20))
+        }, updateTracking = { tracking, id ->
+            trackingViewModel.handle(TrackingViewAction.UpdateTracking(tracking, id))
+        })
+
+        setupRecycleView(trackingRV, trackingAdapter, requireContext())
 
         views.trackingFAB.setOnClickListener {
             saveTracking()
         }
-
 
     }
 
@@ -75,19 +76,15 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             .create()
         alertDialog.show()
 
+        // make alert dialog not dismiss when content is not typed
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val content = view.findViewById<EditText>(R.id.edtContent).text.toString()
             if (content.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.requirement_add_new_tracking),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(requireContext(), getString(R.string.requirement_add_new_tracking))
             } else {
                 trackingViewModel.handle(
                     TrackingViewAction.SaveTracking(content)
                 )
-
                 alertDialog.dismiss()
             }
 
@@ -107,56 +104,38 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
                 views.trackingPB.visibility = View.GONE
                 views.trackingRV.visibility = View.VISIBLE
                 views.trackingFAB.visibility = View.VISIBLE
-                trackingAdapter.setListTracking(it.getAllTracking.invoke()!!)
-                trackingAdapter.notifyDataSetChanged()
+                it.getAllTracking.invoke()?.let { listTracking ->
+                    trackingAdapter.setListTracking(listTracking)
+                    trackingAdapter.notifyDataSetChanged()
+                }
             }
 
             is Fail -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.get_tracking_list_failed),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(requireContext(), getString(R.string.get_tracking_list_failed))
                 Log.i("Tracking", (it.getAllTracking as Fail<List<Tracking>>).error.toString())
             }
         }
         when (it.saveTracking) {
             is Success -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.create_tracking_successfully),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(requireContext(), getString(R.string.check_in_tracking_successfully))
                 it.saveTracking = Uninitialized
                 trackingViewModel.handle(TrackingViewAction.GetAllTracking())
             }
 
             is Fail -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.create_tracking_failed),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(requireContext(), getString(R.string.check_in_tracking_failed))
                 Log.i("Tracking", (it.saveTracking as Fail<Tracking>).error.toString())
             }
         }
         when (it.deleteTracking) {
             is Success -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.delete_tracking_successfully),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(requireContext(), getString(R.string.delete_tracking_successfully))
                 it.deleteTracking = Uninitialized
                 trackingViewModel.handle(TrackingViewAction.GetAllTracking())
             }
 
             is Fail -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.delete_tracking_failed),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast(requireContext(), getString(R.string.delete_tracking_failed))
                 Log.i("Tracking", (it.deleteTracking as Fail<Tracking>).error.toString())
             }
         }

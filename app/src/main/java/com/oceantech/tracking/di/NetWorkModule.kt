@@ -32,8 +32,9 @@ object NetWorkModule {
     @Provides
     fun providerAuthRepository(
         userPreferences: UserPreferences,
-        api: AuthApi
-    ): AuthRepository = AuthRepository(api, userPreferences)
+        api: AuthApi,
+        context: Context
+    ): AuthRepository = AuthRepository(api, userPreferences, context)
 
 
     @Provides
@@ -68,4 +69,14 @@ object NetWorkModule {
         api: TimeSheetApi
     ) = TimeSheetRepository(api)
 
+    @Provides
+    fun providerPublicApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(PublicApi::class.java, context)
+
+    @Provides
+    fun providerPublicRepository(
+        api: PublicApi
+    ) = PublicRepository(api)
 }
