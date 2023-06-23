@@ -73,6 +73,9 @@ class SecurityViewModel @AssistedInject constructor(
     }
 
     fun handleReturnSignin() {
+        setState {
+            copy(asyncSign = Uninitialized)
+        }
         _viewEvents.post(SecurityViewEvent.ReturnSigninEvent)
     }
     fun handleReturnResetPass() {
@@ -80,6 +83,9 @@ class SecurityViewModel @AssistedInject constructor(
     }
 
     fun handleReturnLogin(){
+        setState {
+            copy(asyncLogin = Uninitialized)
+        }
         _viewEvents.post(SecurityViewEvent.ReturnLoginEvent)
     }
 

@@ -20,7 +20,33 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Nimpe.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Nimpe.AppBarOverlay" parent="Theme.AppCompat.DayNight">
+        <item name="backgroundTint">@color/white</item>
+        <item name="itemTextColor">@color/black</item>
+        <item name="itemIconTint">@color/black</item>
+    </style>
+    <style name="Theme.Nimpe.PopupOverlay" parent="Theme.AppCompat.DayNight">
+        <item name="backgroundTint">@color/white</item>
+        <item name="itemTextColor">@color/black</item>
+        <item name="itemIconTint">@color/black</item>
+    </style>
 
-    <style name="Theme.Nimpe.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="TrackingDrawer" parent="Theme.AppCompat.DayNight">
+        <item name="backgroundTint">@color/white</item>
+        <item name="itemIconTint">@color/black</item>
+        <item name="itemTextColor">@color/black</item>
+    </style>
+
+    <style name="TrackingText">
+        <item name="android:textColor">@color/gray</item>
+        <item name="iconTint">@color/gray</item>
+    </style>
+
+    <style name="TrackingPopup">
+        <item name="background">@color/popup_light</item>
+    </style>
+
+    <style name="TrackingBackgroundFragment">
+        <item name="background">@color/background_light</item>
+    </style>
 </resources>

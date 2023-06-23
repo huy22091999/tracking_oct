@@ -17,11 +17,9 @@ tools:openDrawer="start">
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@color/white"
     android:fitsSystemWindows="true"
-    app:itemIconTint="@color/about_background_dark_color"
-    app:itemTextColor="@color/about_background_dark_color"
-    app:menu="@menu/activity_main_drawer" >
+    android:theme="@style/TrackingDrawer"
+    app:menu="@menu/activity_main_drawer">
 
 </com.google.android.material.navigation.NavigationView>
 

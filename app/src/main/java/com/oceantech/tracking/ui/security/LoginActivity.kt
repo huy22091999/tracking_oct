@@ -35,13 +35,13 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     private fun handleEvent(event: SecurityViewEvent) {
         when (event) {
             is SecurityViewEvent.ReturnSigninEvent -> {
-                addFragmentToBackstack(R.id.frame_layout, SigninFragment::class.java)
+                addFragmentToBackstack(R.id.frame_layout, SigninFragment::class.java, SigninFragment::class.java.simpleName)
             }
             is SecurityViewEvent.ReturnResetpassEvent -> {
-                addFragmentToBackstack(R.id.frame_layout, ResetPasswordFragment::class.java)
+                addFragmentToBackstack(R.id.frame_layout, ResetPasswordFragment::class.java, ResetPasswordFragment::class.java.simpleName)
             }
             is SecurityViewEvent.ReturnLoginEvent -> {
-                addFragmentToBackstack(R.id.frame_layout, LoginFragment::class.java)
+                addFragmentToBackstack(R.id.frame_layout, LoginFragment::class.java,LoginFragment::class.java.simpleName)
             }
         }
     }
@@ -52,5 +52,9 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
 
     override fun create(initialState: SecurityViewState): SecurityViewModel {
         return securityviewmodelFactory.create(initialState)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }

@@ -97,4 +97,15 @@
     <string name="time_sheet">Time Sheet</string>
     <string name="check_in">Check In</string>
     <string name="checked_in">Bạn đã check in hôm nay rồi</string>
+    <string name="back">Quay lại</string>
+    <string name="register">Đăng kí</string>
+    <string name="login_error">Tài khoản hoặc mật khẩu không chính xác, \nbạn có muốn đăng kí ?</string>
+    <string name="signin_success_confirm">Đăng kí thành công, \nbạn có muốn đăng nhập ?</string>
+    <string name="update_notify">Đã có bản cập nhập mới nhất, \nbạn có muốn cập nhật ngay ?</string>
+    <string name="update_now">Cập nhật ngay</string>
+    <string name="dark">Dark Theme</string>
+    <string name="light">Light Theme</string>
+    <string name="theme">Theme</string>
+    <string name="menu_theme">Theme</string>
+    <string name="remind_later">Remind later</string>
 </resources>

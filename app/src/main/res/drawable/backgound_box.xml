@@ -2,11 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#CA252525" />
+            <solid android:color="@color/popup_dark" />
 <!--            <corners android:radius="2dp" />-->
             <stroke
                 android:width="2dp"
-                android:color="#CA252525" />
+                android:color="@color/popup_dark" />
         </shape>
     </item>
 
@@ -16,11 +16,11 @@
         android:right="2dp"
         android:top="2dp">
         <shape android:shape="rectangle">
-            <solid android:color="#4D4D4D" />
+            <solid android:color="@color/popup_light" />
 <!--            <corners android:radius="2dp" />-->
             <stroke
                 android:width="2dp"
-                android:color="#CA252525" />
+                android:color="@color/popup_dark" />
         </shape>
     </item>
 </layer-list>

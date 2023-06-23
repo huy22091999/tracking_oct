@@ -12,4 +12,8 @@
     <color name="blue">#3F51B5</color>
     <color name="red">#E91E63</color>
     <color name="text_color">#777777</color>
+    <color name="popup_dark">#474787</color>
+    <color name="popup_light">#d1ccc0</color>
+    <color name="background_dark">#57606f</color>
+    <color name="background_light">#f1f2f6</color>
 </resources>

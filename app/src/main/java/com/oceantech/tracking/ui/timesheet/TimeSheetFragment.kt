@@ -20,11 +20,11 @@ import com.oceantech.tracking.databinding.FragmentTimeSheetBinding
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
+import java.net.NetworkInterface
 
 class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     private val viewModel:HomeViewModel by activityViewModel()
     private lateinit var timeSheets:List<TimeSheet>
-    private lateinit var adapter: TimeSheetAdapter
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -37,14 +37,6 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = TimeSheetAdapter(timeSheets)
         }
-        viewModel.timeSheets.observe(viewLifecycleOwner){
-            views.gridView.apply {
-                timeSheets = it
-                adapter = TimeSheetAdapter(timeSheets)
-                adapter = adapter
-            }
-        }
-        viewModel.handleTimeSheets()
 
         views.checkInSubmit.setOnClickListener {
             checkIn()
@@ -64,13 +56,32 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     }
 
     private fun checkIn(){
-        val ip:String = views.checkInInput.text.toString()
-        viewModel.handle(HomeViewAction.GetCheckIn(ip))
+        viewModel.handle(HomeViewAction.GetCheckIn(getIPAddress()))
+    }
+
+    private fun getIPAddress(): String {
+        val interfaces = NetworkInterface.getNetworkInterfaces()
+        while (interfaces.hasMoreElements()) {
+            val networkInterface = interfaces.nextElement()
+            val addresses = networkInterface.inetAddresses
+            while (addresses.hasMoreElements()) {
+                val address = addresses.nextElement()
+                if (!address.isLoopbackAddress && address.hostAddress.contains(":").not()) {
+                    return address.hostAddress
+                }
+            }
+        }
+        return ""
     }
 
     override fun invalidate():Unit = withState(viewModel){
         when(it.timeSheets){
             is Success -> {
+                it.timeSheets.invoke()?.let { timeSheets ->
+                    views.gridView.apply {
+                        adapter = TimeSheetAdapter(timeSheets)
+                    }
+                }
                 dismissLoadingDialog()
             }
             is Loading -> {
@@ -95,7 +106,6 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
             }
             is Fail -> {
                 dismissLoadingDialog()
-                /*Toast.makeText(requireContext(), getString(R.string.checked_in), Toast.LENGTH_SHORT).show()*/
             }
             is Loading -> {
                 viewModel.handleTimeSheets()

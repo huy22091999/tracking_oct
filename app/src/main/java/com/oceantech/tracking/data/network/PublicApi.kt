@@ -5,6 +5,6 @@ import io.reactivex.Observable
 import retrofit2.http.GET
 
 interface PublicApi {
-    @GET("/public/config-app")
+    @GET("public/config-app")
     fun getConfigApp():Observable<Version>
 }

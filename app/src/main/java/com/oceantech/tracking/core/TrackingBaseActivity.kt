@@ -26,6 +26,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -72,6 +73,8 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate Activity ${javaClass.simpleName}")
+
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         nimpeComponent = DaggerTrackingComponent.factory().create(this)
         val timeForInjection = measureTimeMillis {

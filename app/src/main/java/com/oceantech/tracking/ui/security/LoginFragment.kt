@@ -1,19 +1,23 @@
 package com.oceantech.tracking.ui.security
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.network.SessionManager
+import com.oceantech.tracking.databinding.DialogLoginBinding
 import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
 import javax.inject.Inject
@@ -25,6 +29,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
     }
     lateinit var username:String
     lateinit var password:String
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         views.loginSubmit.setOnClickListener {
             loginSubmit()
@@ -37,6 +42,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         }
         super.onViewCreated(view, savedInstanceState)
     }
+
     private fun loginSubmit()
     {
         username=views.username.text.toString().trim()
@@ -47,6 +53,25 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         {
             viewModel.handle(SecurityViewAction.LogginAction(username,password))
         }
+    }
+
+    private fun createDialog():AlertDialog{
+        val builder = AlertDialog.Builder(requireContext())
+        val view:ViewBinding = DialogLoginBinding.inflate(LayoutInflater.from(requireContext()))
+        builder.setView(view.root)
+
+        val alertDialog = builder.create()
+
+        with(view as DialogLoginBinding){
+            view.returnSignIn.setOnClickListener {
+                alertDialog.dismiss()
+                viewModel.handleReturnSignin()
+            }
+            view.back.setOnClickListener {
+                alertDialog.dismiss()
+            }
+        }
+        return alertDialog
     }
 
     override fun invalidate(): Unit = withState(viewModel){
@@ -68,7 +93,11 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             }
             is Fail->{
                 views.passwordTil.error=getString(R.string.login_fail)
+                createDialog().show()
                 dismissLoadingDialog()
+            }
+            is Uninitialized -> {
+                createDialog().dismiss()
             }
         }
     }

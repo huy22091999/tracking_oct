@@ -1,12 +1,21 @@
 package com.oceantech.tracking.utils
 
+import android.app.AlertDialog
+import android.content.Context
 import android.location.Location
 import android.os.Build
 import android.util.Log
+import android.view.LayoutInflater
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
+import androidx.fragment.app.commitNow
+import androidx.viewbinding.ViewBinding
+import com.oceantech.tracking.databinding.DialogLoginBinding
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -47,10 +56,13 @@ fun <T : Fragment> AppCompatActivity.addFragmentToBackstack(
     tag: String? = null,
     allowStateLoss: Boolean = false,
     option: ((FragmentTransaction) -> Unit)? = null) {
-    supportFragmentManager.commitTransaction(allowStateLoss) {
+    supportFragmentManager
+        .commitTransaction(allowStateLoss) {
         option?.invoke(this)
-        replace(frameId, fragmentClass,null, tag).addToBackStack(tag)
+        replace(frameId, fragmentClass, null, tag)
+            .addToBackStack(tag)
     }
+
 }
 fun validateEmail(email: String): Boolean {
     val emailRegex = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
@@ -66,3 +78,4 @@ fun formatDate(input:String):String{
     val formattedDate: String = formatter2.format(date)
     return formattedDate
 }
+

@@ -21,9 +21,12 @@ class HomeViewModel @AssistedInject constructor(
     private val timeSheetRepo:TimeSheetRepository
 ) : TrackingViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     var language: Int = 1
-    private var _trackings:MutableLiveData<List<Tracking>> = MutableLiveData()
-    private var _timeSheets:MutableLiveData<List<TimeSheet>> = MutableLiveData()
+    var theme: Int = 1
 
+    init {
+        handleAllTracking()
+        handleTimeSheets()
+    }
     override fun handle(action: HomeViewAction) {
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
@@ -58,25 +61,15 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
-    val timeSheets:LiveData<List<TimeSheet>>
-        get() = _timeSheets
     fun handleTimeSheets() {
         setState { copy(timeSheets = Loading()) }
         timeSheetRepo.getAllByUser().execute {
-            it.invoke()?.let { timeSheet ->
-                _timeSheets.postValue(timeSheet)
-            }
             copy(timeSheets = it)
         }
     }
-    val trackings:LiveData<List<Tracking>>
-        get() = _trackings
     fun handleAllTracking() {
         setState { copy(allTracking = Loading()) }
         trackingRepo.getAllByUser().execute {
-            it.invoke()?.let { tracking ->
-                _trackings.postValue(tracking)
-            }
             copy(allTracking = it)
         }
     }
@@ -100,6 +93,9 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
+    fun handleReturnTracking(){
+        _viewEvents.post(HomeViewEvent.ReturnTracking)
+    }
     @AssistedFactory
     interface Factory {
         fun create(initialState: HomeViewState): HomeViewModel

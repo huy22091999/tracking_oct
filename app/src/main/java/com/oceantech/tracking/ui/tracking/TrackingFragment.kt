@@ -47,12 +47,6 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = trackingAdapter
         }
-
-        viewModel.trackings.observe(viewLifecycleOwner){
-            trackingAdapter = TrackingAdapter(it,requireContext(), showMenu)
-            views.recyclerView.adapter = trackingAdapter
-        }
-        viewModel.handleAllTracking()
         viewModel.observeViewEvents {
             handleEvent(it)
         }
@@ -85,9 +79,11 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
 
         view.findViewById<MaterialTextView>(R.id.to_track_update).setOnClickListener {
             viewModel.handleReturnUpdate(tracking.content!!, tracking.id!!)
+            popup.dismiss()
         }
 
         view.findViewById<MaterialTextView>(R.id.to_track_delete).setOnClickListener {
+            popup.dismiss()
             AlertDialog.Builder(requireContext())
                 .setTitle(R.string.confirm)
                 .setMessage(R.string.confirm_delete)
@@ -105,6 +101,11 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     override fun invalidate():Unit = withState(viewModel){
         when(it.allTracking){
             is Success -> {
+                it.allTracking.invoke()?.let { trackings ->
+                    views.recyclerView.apply {
+                        adapter = TrackingAdapter(trackings,requireContext(), showMenu)
+                    }
+                }
                 dismissLoadingDialog()
             }
             is Loading -> {

@@ -1,5 +1,6 @@
 package com.oceantech.tracking.ui.security
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -15,6 +17,7 @@ import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.network.SessionManager
+import com.oceantech.tracking.databinding.DialogLoginBinding
 import com.oceantech.tracking.databinding.FragmentSigninBinding
 import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.utils.validateEmail
@@ -78,13 +81,34 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
         }
     }
 
+    private fun createDialog(): AlertDialog {
+        val builder = AlertDialog.Builder(requireContext())
+        val view: ViewBinding = DialogLoginBinding.inflate(LayoutInflater.from(requireContext()))
+        builder.setView(view.root)
+
+        val alertDialog = builder.create()
+
+        with(view as DialogLoginBinding){
+            view.dialogTitle.text = getString(R.string.signin_success_confirm)
+            view.returnSignIn.text = getString(R.string.ok)
+            view.returnSignIn.setOnClickListener {
+                alertDialog.dismiss()
+                viewModel.handleReturnLogin()
+            }
+            view.back.setOnClickListener {
+                alertDialog.dismiss()
+            }
+        }
+        return alertDialog
+    }
+
     override fun invalidate():Unit = withState(viewModel){
         when(it.asyncSign){
             is Success ->{
                 Log.i("Test Sign", "Success $username - $password")
                 Toast.makeText(requireActivity(),getString(R.string.sign_success), Toast.LENGTH_SHORT).show()
                 dismissLoadingDialog()
-                viewModel.handleReturnLogin()
+                createDialog().show()
             }
             is Loading ->{
                 showLoadingDialog()

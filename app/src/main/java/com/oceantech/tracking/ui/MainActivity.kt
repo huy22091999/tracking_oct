@@ -7,11 +7,14 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.annotation.MenuRes
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
@@ -70,6 +73,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
+
         sharedActionViewModel = viewModelProvider.get(TestViewModel::class.java)
         setContentView(views.root)
         setupToolbar()
@@ -90,10 +94,14 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
     }
 
+
     private fun handleEvents(viewEvent: HomeViewEvent) {
         when(viewEvent){
             is HomeViewEvent.ReturnUpdateTracking ->{
                 navigateTo(R.id.nav_trackingFragment, viewEvent.id, viewEvent.content)
+            }
+            is HomeViewEvent.ReturnTracking -> {
+                navigateTo(R.id.nav_allTrackingFragment)
             }
         }
     }
@@ -124,14 +132,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_HomeFragment,
-                R.id.nav_newsFragment,
-                R.id.nav_medicalFragment,
                 R.id.nav_trackingFragment,
                 R.id.nav_allTrackingFragment,
                 R.id.nav_timeSheetFragment,
-                R.id.nav_feedbackFragment,
-                R.id.listNewsFragment,
-                R.id.detailNewsFragment
             ), drawerLayout
         )
 
@@ -153,6 +156,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
                 R.id.nav_change_langue -> {
                     showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
+                }
+
+                R.id.nav_change_theme -> {
+                    showMenuTheme(findViewById(R.id.nav_change_theme), R.menu.menu_main)
                 }
 
                 R.id.logout -> {
@@ -177,7 +184,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         if (lang == "English") {
             homeViewModel.language = 0
             menuItem.title = getString(R.string.en)
-
         } else {
             menuItem.title = getString(R.string.vi)
             homeViewModel.language = 1
@@ -222,6 +228,36 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             homeViewModel.language = 1
             popup.dismiss()
             homeViewModel.handle(HomeViewAction.ResetLang)
+        }
+    }
+
+    private fun showMenuTheme(v: View, @MenuRes menuRes: Int) {
+        val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.popup_theme, null)
+        val popup = PopupWindow(
+            view,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            true
+        )
+        popup.elevation = 20F
+        popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
+        popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
+        view.findViewById<LinearLayout>(R.id.to_light_theme).setOnClickListener {
+//            changeTheme("light")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            recreate()
+            homeViewModel.theme = 0
+            popup.dismiss()
+            homeViewModel.handle(HomeViewAction.ResetTheme)
+        }
+        view.findViewById<LinearLayout>(R.id.to_dark_theme).setOnClickListener {
+//            changeTheme("dark")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            recreate()
+            homeViewModel.theme = 1
+            popup.dismiss()
+            homeViewModel.handle(HomeViewAction.ResetTheme)
         }
     }
 
@@ -271,10 +307,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun updateLanguge(lang: String) {
         val menu: Menu = navView.menu
         menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
-        menu.findItem(R.id.nav_newsFragment).title = getString(R.string.menu_category)
-        menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
-        menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
-        menu.findItem(R.id.nav_trackingFragment).title = getString(R.string.menu_tracking)
+        menu.findItem(R.id.nav_allTrackingFragment).title = getString(R.string.menu_tracking)
         menu.findItem(R.id.nav_timeSheetFragment).title = getString(R.string.time_sheet)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)

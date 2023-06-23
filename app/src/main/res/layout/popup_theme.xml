@@ -3,9 +3,8 @@
     android:layout_width="180dp"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
     <LinearLayout
-        android:id="@+id/to_lang_en"
+        android:id="@+id/to_light_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0.1dip"
@@ -14,7 +13,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/img_flag_en" />
+            android:src="@drawable/sun" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -23,11 +22,11 @@
             style="@style/TrackingText"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="4dp"
-            android:text="@string/en" />
+            android:text="@string/light" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/to_lang_vi"
+        android:id="@+id/to_dark_theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp">
@@ -35,7 +34,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/img_flag_vi" />
+            android:src="@drawable/moon" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -44,7 +43,7 @@
             style="@style/TrackingText"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="4dp"
-            android:text="@string/vi" />
+            android:text="@string/dark" />
     </LinearLayout>
-</LinearLayout>
 
+</LinearLayout>

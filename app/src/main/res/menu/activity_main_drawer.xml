@@ -7,19 +7,11 @@
         <item
             android:icon="@drawable/ic_home"
             android:id="@+id/nav_HomeFragment"
-            android:title="@string/menu_home"/>
-        <!--<item android:id="@+id/nav_newsFragment"
-            android:icon="@drawable/ic_category"
-            android:title="@string/menu_category"/>
-        <item android:id="@+id/nav_medicalFragment"
-            android:icon="@drawable/ic_hostpital"
-            android:title="@string/menu_nearest_medical"/>
-        <item android:id="@+id/nav_feedbackFragment"
-            android:icon="@drawable/ic_feedback"
-            android:title="@string/menu_feedback"/>-->
+            android:title="@string/menu_home"
+            />
         <item android:id="@+id/nav_allTrackingFragment"
             android:icon="@drawable/img_tracking"
-            android:title="@string/tracking"/>
+            android:title="@string/menu_tracking"/>
         <item android:id="@+id/nav_timeSheetFragment"
             android:icon="@drawable/timesheet"
             android:title="@string/time_sheet"
@@ -33,6 +25,13 @@
             app:actionViewClass="androidx.appcompat.widget.AppCompatImageView"
             app:actionProviderClass="android.widget.ShareActionProvider">
         </item>
+        <item
+            android:title="@string/theme"
+            android:icon="@drawable/theme"
+            android:id="@+id/nav_change_theme"
+            app:actionViewClass="androidx.appcompat.widget.AppCompatImageView"
+            app:actionProviderClass="android.widget.ShareActionProvider"
+            />
         <item
             android:id="@+id/logout"
             android:title="@string/logout"

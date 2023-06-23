@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.oceantech.tracking.MainActivity">
+    <item
+        android:icon="@drawable/sun"
+        android:id="@+id/action_light"
+        app:showAsAction="collapseActionView"
+        android:title="light" />
+    <item
+        android:id="@+id/action_dark"
+        android:icon="@drawable/moon"
+        app:showAsAction="collapseActionView"
+        android:title="dark"/>
+</menu>

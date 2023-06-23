@@ -11,6 +11,13 @@
     <style name="NimpeButtonLogin">
         <item name="cornerRadius">24dp</item>
     </style>
+    <style name="DialogButton">
+        <item name="cornerRadius">13dp</item>
+        <item name="backgroundColor">@color/teal_200</item>
+    </style>
+    <style name="TrackingTextDialog">
+        <item name="android:textColor">@color/gray</item>
+    </style>
     <style name="stylePopup" parent="Base.Widget.AppCompat.PopupMenu">
         <item name="android:dropDownVerticalOffset">0dip</item>
         <item name="android:dropDownHorizontalOffset">20dp</item>

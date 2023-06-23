@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
@@ -83,6 +84,10 @@ class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding
         when(it.asyncSaveTracking){
             is Success -> {
                 Toast.makeText(requireActivity(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
+                viewModel.handleReturnTracking()
+            }
+            is Loading -> {
+                viewModel.handleAllTracking()
             }
             is Fail -> {
                 Log.e("Test Save Tracking: ", "Fail")
@@ -91,6 +96,10 @@ class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding
         when(it.asyncUpdateTracking){
             is Success -> {
                 Toast.makeText(requireActivity(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
+                viewModel.handleReturnTracking()
+            }
+            is Loading -> {
+                viewModel.handleAllTracking()
             }
             is Fail -> {
                 Log.e("Test Save Tracking: ", "Fail")
