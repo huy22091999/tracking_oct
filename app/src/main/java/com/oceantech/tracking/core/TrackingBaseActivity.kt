@@ -64,7 +64,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Mav
                 viewEvents
                     .observe()
                     .flowOn(Dispatchers.Main)
-                    .collect {
+                    .onEach {
                         hideWaitingView()
                         observer(it)
                     }
