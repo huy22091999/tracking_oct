@@ -19,17 +19,24 @@ import com.oceantech.tracking.ui.security.SecurityViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
+
 @SuppressLint("LogNotTimber")
 class TrackingViewModel @AssistedInject constructor(
     @Assisted trackingState: TrackingViewState,
     private val repository: TrackingRepository
-): TrackingViewModel<TrackingViewState, TrackingViewAction, TrackingViewEvent>(trackingState) {
+) : TrackingViewModel<TrackingViewState, TrackingViewAction, TrackingViewEvent>(trackingState) {
 
+    private val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Log.i("Tracking", throwable.toString())
+    }
 
     override fun handle(action: TrackingViewAction) {
-        when(action){
+        when (action) {
             is TrackingViewAction.SaveTracking -> handleSaveTracking(action.content)
             is TrackingViewAction.GetAllTracking -> handleGetAllTracking()
             is TrackingViewAction.DeleteTracking -> handleDeleteTracking(action.id)
@@ -39,7 +46,9 @@ class TrackingViewModel @AssistedInject constructor(
 
 
     private fun handleUpdateTracking(tracking: Tracking, id: Int) {
-        setState { copy(updateTracking = Loading()) }
+        setState {
+            copy(updateTracking = Loading())
+        }
         repository.updateTracking(tracking, id).execute {
             copy(updateTracking = it)
         }
@@ -51,10 +60,9 @@ class TrackingViewModel @AssistedInject constructor(
         repository.deleteTracking(id).execute {
             copy(deleteTracking = it)
         }
-
     }
 
-    private fun handleSaveTracking(content: String){
+    private fun handleSaveTracking(content: String) {
         setState { copy(saveTracking = Loading()) }
         repository.saveTracking(content).execute {
             copy(saveTracking = it)
@@ -62,15 +70,16 @@ class TrackingViewModel @AssistedInject constructor(
 
     }
 
-    private fun handleGetAllTracking(){
-        setState { copy(getAllTracking = Loading())}
+    private fun handleGetAllTracking() {
+        setState { copy(getAllTracking = Loading()) }
         repository.getAllTracking().execute {
             copy(getAllTracking = it)
         }
+
     }
 
     @AssistedFactory
-    interface Factory{
+    interface Factory {
         fun create(state: TrackingViewState): com.oceantech.tracking.ui.tracking.TrackingViewModel
     }
 

@@ -8,5 +8,4 @@ import com.oceantech.tracking.data.model.TimeSheet
 data class TimeSheetViewState(
     val checkInState: Async<TimeSheet> = Uninitialized,
     val getAllTimeSheetState: Async<List<TimeSheet>> = Uninitialized
-):MavericksState {
-}
+):MavericksState

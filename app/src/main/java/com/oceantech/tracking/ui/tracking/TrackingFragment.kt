@@ -34,6 +34,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         private const val GET_ALL = 1
         private const val DELETE = 2
         private const val SAVE = 3
+        private const val UPDATE = 4
     }
 
     private var state: Int = 0
@@ -60,6 +61,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             state = DELETE
         }, updateTracking = { tracking, id ->
             trackingViewModel.handle(TrackingViewAction.UpdateTracking(tracking, id))
+            state = UPDATE
         })
 
         setupRecycleView(trackingRV, trackingAdapter, requireContext())
@@ -104,6 +106,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             GET_ALL -> handleGetAllTracking(it)
             DELETE -> handleDeleteTracking(it)
             SAVE -> handleSaveTracking(it)
+            UPDATE -> handleUpdateTracking(it)
         }
     }
 
@@ -139,7 +142,6 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         when (state.saveTracking) {
             is Success -> {
                 showToast(requireContext(), getString(R.string.check_in_tracking_successfully))
-
                 trackingViewModel.handle(TrackingViewAction.GetAllTracking())
                 this.state = GET_ALL
             }
@@ -167,6 +169,17 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             }
 
             else -> {}
+        }
+    }
+
+    private fun handleUpdateTracking(state: TrackingViewState){
+        when(state.updateTracking){
+            is Success ->{
+                trackingViewModel.handle(TrackingViewAction.GetAllTracking())
+                this.state = GET_ALL
+            }
+            else -> {
+            }
         }
     }
 

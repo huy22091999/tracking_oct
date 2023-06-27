@@ -55,8 +55,8 @@ class TrackingAdapter(
                 setTitle(context.getString(R.string.update_tracking))
                 setView(view)
                 setPositiveButton(context.getString(R.string.update)){ dialog, which ->
-                    tracking.content = edtContent.text.toString()
-                    updateTracking(tracking, tracking.id!!)
+                    val newTracking = tracking.copy(content = edtContent.text.toString() )
+                    updateTracking(newTracking, newTracking.id!!)
                 }
                 setNegativeButton(context.getString(R.string.Cancel), null)
             }.create().show()

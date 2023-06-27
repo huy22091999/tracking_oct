@@ -12,10 +12,12 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 
-class TimeSheetAdapter: RecyclerView.Adapter<TimeSheetAdapter.TimeSheetViewHolder>() {
+class TimeSheetAdapter : RecyclerView.Adapter<TimeSheetAdapter.TimeSheetViewHolder>() {
 
     private var listTimeSheet: List<TimeSheet> = mutableListOf()
-    class TimeSheetViewHolder(private val _binding: TimeSheetItemBinding): RecyclerView.ViewHolder(_binding.root){
+
+    class TimeSheetViewHolder(private val _binding: TimeSheetItemBinding) :
+        RecyclerView.ViewHolder(_binding.root) {
         val binding: TimeSheetItemBinding
             get() = _binding
     }
@@ -25,11 +27,15 @@ class TimeSheetAdapter: RecyclerView.Adapter<TimeSheetAdapter.TimeSheetViewHolde
             TimeSheetItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
-    fun setListTimeSheet(listTimeSheet: List<TimeSheet>){
-        this.listTimeSheet = listTimeSheet.onEach { timeSheet ->
-            timeSheet.dateAttendance = timeSheet.dateAttendance?.toLocalDate(timeSheet.dateAttendance!!)
+
+    fun setListTimeSheet(listTimeSheet: List<TimeSheet>) {
+        val timeSheets = mutableListOf<TimeSheet>()
+        listTimeSheet.onEach { timeSheet ->
+            timeSheets.add(timeSheet.copy(dateAttendance = timeSheet.dateAttendance?.toLocalDate(timeSheet.dateAttendance)))
         }
+        this.listTimeSheet = timeSheets
     }
+
     override fun getItemCount(): Int {
         return listTimeSheet.size
     }
