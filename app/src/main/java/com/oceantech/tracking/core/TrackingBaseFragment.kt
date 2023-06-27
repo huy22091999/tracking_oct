@@ -231,7 +231,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMaverickFragment() {
                 viewEvents
                     .observe()
                     .flowOn(Dispatchers.Main)
-                    .onEach {
+                    .collect {
                         dismissLoadingDialog()
                         observer(it)
                     }
