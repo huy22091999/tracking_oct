@@ -7,9 +7,13 @@ import com.oceantech.tracking.ui.security.UserPreferences
 import com.oceantech.tracking.utils.LocalHelper
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import java.sql.Time
 
 @Module
+@InstallIn(SingletonComponent::class)
 object NetWorkModule {
     @Provides
     fun providerLocaleHelper(): LocalHelper = LocalHelper()
@@ -19,13 +23,13 @@ object NetWorkModule {
 
 
     @Provides
-    fun providerUserPreferences(context: Context): UserPreferences = UserPreferences(context)
+    fun providerUserPreferences(@ApplicationContext context: Context): UserPreferences = UserPreferences(context)
 
 
     @Provides
     fun providerAuthApi(
         remoteDataSource: RemoteDataSource,
-        context: Context
+        @ApplicationContext context: Context
     ) = remoteDataSource.buildApi(AuthApi::class.java, context)
 
 
@@ -33,14 +37,14 @@ object NetWorkModule {
     fun providerAuthRepository(
         userPreferences: UserPreferences,
         api: AuthApi,
-        context: Context
+        @ApplicationContext context: Context
     ): AuthRepository = AuthRepository(api, userPreferences, context)
 
 
     @Provides
     fun providerUserApi(
         remoteDataSource: RemoteDataSource,
-        context: Context
+        @ApplicationContext context: Context
     ) = remoteDataSource.buildApi(UserApi::class.java, context)
 
     @Provides
@@ -51,7 +55,7 @@ object NetWorkModule {
     @Provides
     fun providerTrackingApi(
         remoteDataSource: RemoteDataSource,
-        context: Context
+        @ApplicationContext context: Context
     ) = remoteDataSource.buildApi(TrackingApi::class.java, context)
 
     @Provides
@@ -62,7 +66,7 @@ object NetWorkModule {
     @Provides
     fun providerTimeSheetApi(
         remoteDataSource: RemoteDataSource,
-        context: Context
+        @ApplicationContext context: Context
     ) = remoteDataSource.buildApi(TimeSheetApi::class.java, context)
     @Provides
     fun providerTimeSheetRepository(
@@ -72,7 +76,7 @@ object NetWorkModule {
     @Provides
     fun providerPublicApi(
         remoteDataSource: RemoteDataSource,
-        context: Context
+        @ApplicationContext context: Context
     ) = remoteDataSource.buildApi(PublicApi::class.java, context)
 
     @Provides

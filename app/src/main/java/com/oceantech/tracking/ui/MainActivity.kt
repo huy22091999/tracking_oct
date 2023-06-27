@@ -9,12 +9,14 @@ import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import androidx.activity.viewModels
 import androidx.annotation.MenuRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
@@ -42,7 +44,9 @@ import com.oceantech.tracking.ui.tracking.TrackingViewState
 import com.oceantech.tracking.utils.addFragmentToBackstack
 import com.oceantech.tracking.utils.changeLanguage
 import com.oceantech.tracking.utils.handleLogOut
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
     TrackingViewModel.Factory, TimeSheetViewModel.Factory, PublicViewModel.Factory {
     companion object {
@@ -51,7 +55,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     private val homeViewModel: HomeViewModel by viewModel()
 
-    private lateinit var sharedActionViewModel: TestViewModel
+    private val testViewModel: TestViewModel by viewModels {
+        SavedStateViewModelFactory(application, this)
+    }
 
     @Inject
     lateinit var localHelper: LocalHelper
@@ -75,15 +81,12 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
-        sharedActionViewModel = viewModelProvider[TestViewModel::class.java]
         setContentView(views.root)
         setupToolbar()
         setupDrawer()
-        sharedActionViewModel.test()
-
-        homeViewModel.subscribe(this) {
+        testViewModel.test()
+        homeViewModel.onEach{
             if (it.isLoadding()) {
                 views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
             } else
@@ -179,12 +182,12 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         // get the language that showing in the display
         val lang = local.getDisplayLanguage(local)
         if (lang == "English") {
-            homeViewModel.language = 0
+//            homeViewModel.language = 0
             menuItem.title = getString(R.string.en)
 
         } else {
             menuItem.title = getString(R.string.vi)
-            homeViewModel.language = 1
+//            homeViewModel.language = 1
         }
         val buttonShowMenu = actionView as AppCompatImageView
         buttonShowMenu.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_drop))

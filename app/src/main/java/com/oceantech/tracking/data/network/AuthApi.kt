@@ -3,6 +3,7 @@ package com.oceantech.tracking.data.network
 import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.model.UserCredentials
 import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -11,7 +12,7 @@ interface AuthApi {
     @POST("oauth/token")
     fun loginWithRefreshToken(@Body credentials: UserCredentials):Call<TokenResponse>
     @POST("oauth/token")
-    fun oauth(@Body credentials: UserCredentials): Observable<TokenResponse>
+    suspend fun oauth(@Body credentials: UserCredentials): TokenResponse
     companion object {
         val CLIENT_ID = "core_client" //"core_client"
 

@@ -17,6 +17,7 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang(action.lang)
             is HomeViewAction.GetAllUsers -> handleAllUsers()
+            else -> {}
         }
     }
 
@@ -44,7 +45,7 @@ class HomeViewModel @AssistedInject constructor(
         fun create(initialState: HomeViewState): HomeViewModel
     }
 
-    companion object : MvRxViewModelFactory<HomeViewModel, HomeViewState> {
+    companion object : MavericksViewModelFactory<HomeViewModel, HomeViewState> {
         @JvmStatic
         override fun create(
             viewModelContext: ViewModelContext,

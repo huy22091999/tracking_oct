@@ -3,33 +3,28 @@ package com.oceantech.tracking
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.oceantech.tracking.di.DaggerTrackingComponent
-import com.oceantech.tracking.di.TrackingComponent
+import com.airbnb.mvrx.Mavericks
 import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.utils.LocalHelper
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
 
-
+/*
+    Use HiltAndroidApp so that we don't need inject function
+*/
+@HiltAndroidApp
 open class TrackingApplication : Application() {
-    val trackingComponent: TrackingComponent by lazy {
-        initializeComponent()
-    }
 
     @Inject
     lateinit var localHelper: LocalHelper
-    open fun initializeComponent(): TrackingComponent {
-        // Creates an instance of AppComponent using its Factory constructor
-        // We pass the applicationContext that will be used as Context in the graph
-        return DaggerTrackingComponent.factory().create(applicationContext)
-    }
+
 
     override fun onCreate() {
+        Mavericks.initialize(this)
         super.onCreate()
-        trackingComponent.inject(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
@@ -53,6 +48,8 @@ open class TrackingApplication : Application() {
             getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
+
+
 
 }
 

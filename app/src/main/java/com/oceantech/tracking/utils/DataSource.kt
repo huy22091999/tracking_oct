@@ -19,10 +19,16 @@ package com.oceantech.tracking.utils
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.rx2.asFlow
 
 interface DataSource<T> {
-    fun observe(): Observable<T>
+    fun observe(): Flow<T>
 }
 
 interface MutableDataSource<T> : DataSource<T> {
@@ -32,15 +38,15 @@ interface MutableDataSource<T> : DataSource<T> {
 /**
  * This datasource emits the most recent value it has observed and all subsequent observed values to each subscriber.
  */
-open class BehaviorDataSource<T>(private val defaultValue: T? = null) : MutableDataSource<T> {
+open class BehaviorDataSource<T: Any>(private val defaultValue: T? = null) : MutableDataSource<T> {
 
     private val behaviorRelay = createRelay()
 
     val currentValue: T?
         get() = behaviorRelay.value
 
-    override fun observe(): Observable<T> {
-        return behaviorRelay.hide().observeOn(AndroidSchedulers.mainThread())
+    override fun observe(): Flow<T> {
+        return (behaviorRelay.hide() as ObservableSource<T>).asFlow().flowOn(Dispatchers.Main)
     }
 
     override fun post(value: T) {
@@ -59,15 +65,18 @@ open class BehaviorDataSource<T>(private val defaultValue: T? = null) : MutableD
 /**
  * This datasource only emits all subsequent observed values to each subscriber.
  */
-open class PublishDataSource<T> : MutableDataSource<T> {
+open class PublishDataSource<T: Any> : MutableDataSource<T> {
 
     private val publishRelay = PublishRelay.create<T>()
 
-    override fun observe(): Observable<T> {
-        return publishRelay.hide().observeOn(AndroidSchedulers.mainThread())
+    override fun observe(): Flow<T> {
+        return (publishRelay.hide() as ObservableSource<T>).asFlow().flowOn(Dispatchers.Main)
     }
 
     override fun post(value: T) {
         publishRelay.accept(value!!)
+
     }
+
 }
+

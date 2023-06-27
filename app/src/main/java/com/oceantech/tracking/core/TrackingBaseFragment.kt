@@ -27,19 +27,27 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
-import com.airbnb.mvrx.BaseMvRxFragment
-import com.oceantech.tracking.di.DaggerTrackingComponent
-import com.oceantech.tracking.di.HasScreenInjector
-import com.oceantech.tracking.di.TrackingComponent
+import com.airbnb.mvrx.MavericksView
+import dagger.hilt.android.scopes.ActivityScoped
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 import timber.log.Timber
-abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInjector {
+
+abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMaverickFragment() {
 
     protected val nimpeBaseActivity: TrackingBaseActivity<*> by lazy {
         activity as TrackingBaseActivity<*>
@@ -49,7 +57,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
      * Navigator and other common objects
      * ========================================================================================== */
 
-    private lateinit var screenComponent: TrackingComponent
+
 
 //    protected lateinit var navigator: Navigator
 //    protected lateinit var errorFormatter: ErrorFormatter
@@ -84,7 +92,6 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
      * ========================================================================================== */
 
     override fun onAttach(context: Context) {
-        screenComponent = DaggerTrackingComponent.factory().create(context)
         super.onAttach(context)
     }
 
@@ -137,9 +144,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
         super.onDestroy()
     }
 
-    override fun injector(): TrackingComponent{
-        return screenComponent
-    }
+
 
     /* ==========================================================================================
      * Restorable
@@ -221,14 +226,18 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
      * ========================================================================================== */
 
     protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T) -> Unit) {
-        viewEvents
-                .observe()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    dismissLoadingDialog()
-                    observer(it)
-                }
-                .disposeOnDestroyView()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED){
+                viewEvents
+                    .observe()
+                    .flowOn(Dispatchers.Main)
+                    .collect {
+                        dismissLoadingDialog()
+                        observer(it)
+                    }
+            }
+        }
+
     }
 
     /* ==========================================================================================

@@ -7,9 +7,14 @@ import com.oceantech.tracking.ui.home.HomeFragment
 import com.oceantech.tracking.ui.home.TestViewModel
 import dagger.Binds
 import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
 
 @Module
+@InstallIn(ViewModelComponent::class)
 interface ViewModelModule {
     @Binds
     fun bindViewModelFactory(factory: TrackingViewModelFactory): ViewModelProvider.Factory
@@ -18,5 +23,7 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(TestViewModel::class)
     fun bindViewModel(viewModel: TestViewModel): ViewModel
+
+
 
 }

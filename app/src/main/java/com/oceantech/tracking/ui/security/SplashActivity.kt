@@ -12,9 +12,10 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.ui.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
@@ -23,11 +24,10 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     lateinit var securityViewModelFactory: SecurityViewModel.Factory
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         viewModel.handle(SecurityViewAction.GetUserCurrent)
-        viewModel.subscribe(this) {
+        viewModel.onEach {
             handleStateChange(it)
         }
 
@@ -47,6 +47,8 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
+
+            else -> {}
         }
     }
 

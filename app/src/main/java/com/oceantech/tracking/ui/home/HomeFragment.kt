@@ -21,9 +21,11 @@ import com.oceantech.tracking.databinding.FragmentHomeBinding
 import com.oceantech.tracking.ui.home.adapter.UserAdapter
 import com.oceantech.tracking.ui.item_decoration.ItemDecoration
 import com.oceantech.tracking.utils.setupRecycleView
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @SuppressLint("LogNotTimber")
+@AndroidEntryPoint
 class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBinding>() {
 
     private val viewModel: HomeViewModel by activityViewModel()
@@ -50,8 +52,6 @@ class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBind
         userAdapter = UserAdapter()
         setupRecycleView(usersRV, userAdapter, requireContext())
 
-
-
     }
 
     private fun handleEvent(it: HomeViewEvent) {
@@ -59,6 +59,8 @@ class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBind
             is HomeViewEvent.ResetLanguage -> {
 
             }
+
+            else -> {}
         }
     }
 
@@ -82,6 +84,8 @@ class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBind
             is Fail -> {
                 Log.i("User", it.allUsers.error.toString())
             }
+
+            else -> {}
         }
     }
 

@@ -8,6 +8,10 @@ import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.security.UserPreferences
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,17 +21,22 @@ class AuthRepository @Inject constructor(
     private val preferences: UserPreferences,
     val context: Context
 ) {
-//    private val sessionManager = SessionManager(context)
-    fun login(username: String, password: String): Observable<TokenResponse> = api.oauth(
-        UserCredentials(
-            AuthApi.CLIENT_ID,
-            AuthApi.CLIENT_SECRET,
-            username,
-            password,
-            null,
-            AuthApi.GRANT_TYPE_PASSWORD
+    //    private val sessionManager = SessionManager(context)
+    fun login(username: String, password: String): Flow<TokenResponse> = flow {
+        emit(
+            api.oauth(
+                UserCredentials(
+                    AuthApi.CLIENT_ID,
+                    AuthApi.CLIENT_SECRET,
+                    username,
+                    password,
+                    null,
+                    AuthApi.GRANT_TYPE_PASSWORD
+                )
+            )
         )
-    ).subscribeOn(Schedulers.io())
+    }.flowOn(Dispatchers.IO)
+
     suspend fun saveAccessTokens(tokens: TokenResponse) {
         if (tokens.accessToken == null || tokens.refreshToken == null) {
             return

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.repository.TimeSheetRepository
@@ -45,7 +45,7 @@ class TimeSheetViewModel @AssistedInject constructor(
         fun create(S: TimeSheetViewState): TimeSheetViewModel
     }
 
-    companion object : MvRxViewModelFactory<TimeSheetViewModel, TimeSheetViewState>{
+    companion object : MavericksViewModelFactory<TimeSheetViewModel, TimeSheetViewState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: TimeSheetViewState

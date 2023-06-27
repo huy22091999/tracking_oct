@@ -89,7 +89,7 @@ class SecurityViewModel @AssistedInject constructor(
         fun create(initialState: SecurityViewState): SecurityViewModel
     }
 
-    companion object : MvRxViewModelFactory<SecurityViewModel, SecurityViewState> {
+    companion object : MavericksViewModelFactory<SecurityViewModel, SecurityViewState> {
         @JvmStatic
         override fun create(
             viewModelContext: ViewModelContext,

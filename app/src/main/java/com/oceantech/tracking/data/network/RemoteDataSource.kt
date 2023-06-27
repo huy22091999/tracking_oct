@@ -13,6 +13,7 @@ import com.google.gson.stream.JsonWriter
 import com.oceantech.tracking.di.NetWorkModule
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
+import org.reactivestreams.FlowAdapters
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory

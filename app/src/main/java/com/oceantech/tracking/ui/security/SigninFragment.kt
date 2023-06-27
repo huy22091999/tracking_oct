@@ -47,6 +47,7 @@ class SigninFragment : TrackingBaseFragment<FragmentSigninBinding>() {
                 Toast.makeText(requireContext(), "Register failed", Toast.LENGTH_SHORT).show()
             }
 
+            else -> {}
         }
     }
     private fun handleSignIn(userName: String, password: String, displayName: String, firstName: String, lastName: String){

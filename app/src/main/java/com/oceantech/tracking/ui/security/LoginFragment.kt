@@ -17,8 +17,8 @@ import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
     private val viewModel:SecurityViewModel by activityViewModel()
@@ -70,6 +70,8 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                 Log.i("Login", (it.asyncLogin as Fail<TokenResponse>).error.toString())
                 views.passwordTil.error=getString(R.string.login_fail)
             }
+
+            else -> {}
         }
 
     }

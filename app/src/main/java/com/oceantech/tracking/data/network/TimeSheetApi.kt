@@ -2,14 +2,15 @@ package com.oceantech.tracking.data.network
 
 import android.database.Observable
 import com.oceantech.tracking.data.model.TimeSheet
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface TimeSheetApi {
 
     @GET("time-sheets/check-in")
-    fun checkIn(@Query("ip") ip: String): io.reactivex.Observable<TimeSheet>
+    suspend fun checkIn(@Query("ip") ip: String): TimeSheet
 
     @GET("time-sheets")
-    fun getAllTimeSheets(): io.reactivex.Observable<List<TimeSheet>>
+    suspend fun getAllTimeSheets(): List<TimeSheet>
 }

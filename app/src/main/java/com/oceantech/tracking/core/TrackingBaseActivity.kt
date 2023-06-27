@@ -16,6 +16,7 @@
 
 package com.oceantech.tracking.core
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -24,6 +25,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.MenuRes
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -31,16 +33,22 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
-import com.oceantech.tracking.di.DaggerTrackingComponent
-import com.oceantech.tracking.di.HasScreenInjector
-import com.oceantech.tracking.di.TrackingComponent
+import com.airbnb.mvrx.MavericksView
+import com.oceantech.tracking.TrackingApplication
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.system.measureTimeMillis
 
-abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), HasScreenInjector {
+
+abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), MavericksView {
 
     protected lateinit var views: VB
 
@@ -49,14 +57,20 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     protected val viewModelProvider
         get() = ViewModelProvider(this, viewModelFactory)
 
+    @SuppressLint("CheckResult")
     protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
-        viewEvents
-            .observe()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                hideWaitingView()
-                observer(it)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED){
+                viewEvents
+                    .observe()
+                    .flowOn(Dispatchers.Main)
+                    .collect {
+                        hideWaitingView()
+                        observer(it)
+                    }
             }
+        }
+
     }
 
     private lateinit var fragmentFactory: FragmentFactory
@@ -67,20 +81,19 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
     private var savedInstanceState: Bundle? = null
 
-    private lateinit var nimpeComponent: TrackingComponent
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate Activity ${javaClass.simpleName}")
 
-        nimpeComponent = DaggerTrackingComponent.factory().create(this)
-        val timeForInjection = measureTimeMillis {
-            injectWith(nimpeComponent)
-        }
-        Timber.v("Injecting dependencies into ${javaClass.simpleName} took $timeForInjection ms")
-        fragmentFactory = nimpeComponent.fragmentFactory()
-        viewModelFactory = nimpeComponent.viewModelFactory()
-        supportFragmentManager.fragmentFactory = fragmentFactory
+//        val factoryComponent = TrackingApplication.component()
+//        val timeForInjection = measureTimeMillis {
+//            injectWith(nimpeComponent)
+//        }
+//        Timber.v("Injecting dependencies into ${javaClass.simpleName} took $timeForInjection ms")
+//        fragmentFactory = factoryComponent.fragmentFactory()
+//        viewModelFactory = factoryComponent.viewModelFactory()
+//        supportFragmentManager.fragmentFactory = fragmentFactory
         super.onCreate(savedInstanceState)
 
         doBeforeSetContentView()
@@ -154,18 +167,19 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         }
     }
 
-    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
 
         Timber.w("onMultiWindowModeChanged. isInMultiWindowMode: $isInMultiWindowMode")
 //        bugReporter.inMultiWindowMode = isInMultiWindowMode
     }
 
-    override fun injector(): TrackingComponent {
-        return nimpeComponent
-    }
+//    override fun injector(): TrackingComponent {
+//        return nimpeComponent
+//    }
 
-    protected open fun injectWith(injector: TrackingComponent) = Unit
+//    protected open fun injectWith(injector: TrackingComponent) = Unit
 
     protected fun createFragment(fragmentClass: Class<out Fragment>, args: Bundle?): Fragment {
         return fragmentFactory.instantiate(classLoader, fragmentClass.name).apply {
@@ -329,6 +343,12 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
     @MenuRes
     open fun getMenuRes() = -1
+
+    /**
+    Does not do something, just use invalidate() in fragments because fragments show UI of components.
+    Activity just show fragments
+     */
+    final override fun invalidate() = Unit
 
 
 }

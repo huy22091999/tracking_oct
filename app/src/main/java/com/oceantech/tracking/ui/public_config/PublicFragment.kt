@@ -1,5 +1,6 @@
 package com.oceantech.tracking.ui.public_config
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,7 +15,9 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.ConfigApp
 import com.oceantech.tracking.databinding.FragmentPublicBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 
 class PublicFragment : TrackingBaseFragment<FragmentPublicBinding>() {
 
@@ -32,6 +35,7 @@ class PublicFragment : TrackingBaseFragment<FragmentPublicBinding>() {
         return FragmentPublicBinding.inflate(inflater, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun invalidate(): Unit = withState(publicViewModel){
         when(it.config){
             is Success -> {
@@ -40,8 +44,10 @@ class PublicFragment : TrackingBaseFragment<FragmentPublicBinding>() {
                 }
             }
             is Fail -> {
-                Log.i("Public", (it.config as Fail<ConfigApp>).error.toString())
+                Log.i("Public", it.config.error.toString())
             }
+
+            else -> {}
         }
     }
 

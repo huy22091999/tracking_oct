@@ -3,13 +3,14 @@ package com.oceantech.tracking.ui.public_config
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.MavericksViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.repository.PublicRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.collect
 import javax.inject.Singleton
 
 
@@ -25,7 +26,7 @@ class PublicViewModel @AssistedInject constructor(
 
     private fun handleGetConfigApp() {
         setState { copy(config = Loading()) }
-        publicRepository.getConfigApp().execute {
+        publicRepository.getConfigApp().execute{
             copy(config = it)
         }
     }
@@ -35,7 +36,8 @@ class PublicViewModel @AssistedInject constructor(
         fun create(state: PublicViewState): PublicViewModel
     }
 
-    companion object: MvRxViewModelFactory<PublicViewModel, PublicViewState>{
+
+    companion object : MavericksViewModelFactory<PublicViewModel, PublicViewState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: PublicViewState

@@ -17,21 +17,21 @@
 package com.oceantech.tracking.core
 
 import com.airbnb.mvrx.Async
-import com.airbnb.mvrx.BaseMvRxViewModel
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
-import com.airbnb.mvrx.MvRxState
+import com.airbnb.mvrx.MavericksState
+import com.airbnb.mvrx.MavericksViewModel
 import com.airbnb.mvrx.Success
 import com.oceantech.tracking.utils.DataSource
 import com.oceantech.tracking.utils.PublishDataSource
 import io.reactivex.Observable
 import io.reactivex.Single
 
-abstract class TrackingViewModel<S : MvRxState, VA : NimpeViewModelAction, VE : NimpeViewEvents>(initialState: S)
-    : BaseMvRxViewModel<S>(initialState, false) {
+abstract class TrackingViewModel<S : MavericksState, VA : NimpeViewModelAction, VE : NimpeViewEvents>(initialState: S)
+    : MavericksViewModel<S>(initialState) {
 
-    interface Factory<S : MvRxState> {
-        fun create(state: S): BaseMvRxViewModel<S>
+    interface Factory<S : MavericksState> {
+        fun create(state: S): MavericksViewModel<S>
     }
 
     // Used to post transient events to the View
@@ -43,7 +43,7 @@ abstract class TrackingViewModel<S : MvRxState, VA : NimpeViewModelAction, VE : 
      * so you can use this in a switchMap or a flatMap
      */
     // False positive
-    @Suppress("USELESS_CAST", "NULLABLE_TYPE_PARAMETER_AGAINST_NOT_NULL_TYPE_PARAMETER")
+    @Suppress("USELESS_CAST")
     fun <T> Single<T>.toAsync(stateReducer: S.(Async<T>) -> S): Single<Async<T>> {
         setState { stateReducer(Loading()) }
         return map { Success(it) as Async<T> }
@@ -56,7 +56,7 @@ abstract class TrackingViewModel<S : MvRxState, VA : NimpeViewModelAction, VE : 
      * so you can use this in a switchMap or a flatMap
      */
     // False positive
-    @Suppress("USELESS_CAST", "NULLABLE_TYPE_PARAMETER_AGAINST_NOT_NULL_TYPE_PARAMETER")
+    @Suppress("USELESS_CAST")
     fun <T> Observable<T>.toAsync(stateReducer: S.(Async<T>) -> S): Observable<Async<T>> {
         setState { stateReducer(Loading()) }
         return map { Success(it) as Async<T> }

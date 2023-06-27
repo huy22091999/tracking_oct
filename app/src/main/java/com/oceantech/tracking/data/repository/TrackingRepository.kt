@@ -6,6 +6,10 @@ import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.TrackingApi
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -20,23 +24,28 @@ class TrackingRepository @Inject constructor(
     private val api: TrackingApi
 ) {
 
-    fun getAllTracking(): io.reactivex.Observable<List<Tracking>> =
-        api.getAllTracking().subscribeOn(Schedulers.io())
+    fun getAllTracking(): Flow<List<Tracking>> = flow {
+        emit(api.getAllTracking())
+    }.flowOn(Dispatchers.IO)
 
-    fun saveTracking(content: String): io.reactivex.Observable<Tracking> =
-        api.saveTracking(
+    fun saveTracking(content: String): Flow<Tracking> = flow {
+        emit( api.saveTracking(
             Tracking(
                 content,
-                Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2023-06-19T01:41:45.341Z")).toString(),
+                Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2023-06-19T01:41:45.341Z"))
+                    .toString(),
                 null,
                 null
             )
-        ).subscribeOn(Schedulers.io())
+        ))
+    }.flowOn(Dispatchers.IO)
 
-    fun updateTracking(tracking: Tracking, id: Int): io.reactivex.Observable<Tracking> =
-        api.updateTracking(tracking, id).subscribeOn(Schedulers.io())
+    fun updateTracking(tracking: Tracking, id: Int): Flow<Tracking> = flow {
+        emit(api.updateTracking(tracking, id))
+    }.flowOn(Dispatchers.IO)
 
-    fun deleteTracking(id: Int): io.reactivex.Observable<Tracking> =
-        api.deleteTracking(id).subscribeOn(Schedulers.io())
+    fun deleteTracking(id: Int): Flow<Tracking> = flow {
+        emit( api.deleteTracking(id))
+    }.flowOn(Dispatchers.IO)
 
 }

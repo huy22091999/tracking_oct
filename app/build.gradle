@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -40,6 +41,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]//
+
     }
     buildFeatures {
         viewBinding true
@@ -58,7 +60,7 @@ dependencies {
     def autofill_version = "1.1.0"
     def work_version = '2.8.1'
     def arch_version = '2.1.0'
-    def lifecycle_version = '2.4.0'
+    def lifecycle_version = '2.6.1'
     def rxbinding_version = '3.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -70,8 +72,12 @@ dependencies {
     //noinspection GradleDependency
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
 
+    // Annotation processor
+    //noinspection LifecycleAnnotationProcessorWithJava8
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
@@ -92,9 +98,10 @@ dependencies {
     // About page
     implementation 'io.github.medyo:android-about-page:2.0.0'
 
-    //Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    //Coroutines with Transform Observable to Flow
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.7.1'
 
     // Android Jetpack Paging 3.0
     implementation 'androidx.paging:paging-runtime-ktx:3.1.1'
@@ -120,7 +127,7 @@ dependencies {
     //Rxjava
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
     //mvrx
-    implementation 'com.airbnb.android:mvrx:1.5.1'
+//    implementation 'com.airbnb.android:mvrx:1.5.1'
     // material
     runtimeOnly 'com.google.android.material:material:1.3.0'
     // dagger
@@ -158,5 +165,18 @@ dependencies {
     // optional - Multiprocess support
     implementation "androidx.work:work-multiprocess:$work_version"
 
+    //Maverick
+    implementation 'com.airbnb.android:mavericks:3.0.3'
 
+    //Dagger Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+
+    //Call Adapter with Flow Kotlin for Retrofit 2
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

@@ -60,6 +60,8 @@ class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
                 views.txtPersonDisplayName.visibility = View.GONE
                 views.imgPerson.visibility = View.GONE
             }
+
+            else -> {}
         }
     }
 
