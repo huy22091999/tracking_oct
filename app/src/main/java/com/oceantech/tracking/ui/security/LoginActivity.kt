@@ -55,6 +55,11 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        val fragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
+        if(fragment is SigninFragment || fragment is ResetPasswordFragment){
+            viewModel.handleReturnLogin()
+        } else {
+            super.onBackPressed()
+        }
     }
 }

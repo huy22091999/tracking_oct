@@ -1,4 +1,4 @@
-package com.oceantech.tracking.ui.home
+package com.oceantech.tracking.data.home
 
 import android.os.Bundle
 import android.util.Log
@@ -28,9 +28,6 @@ class HomeFragment @Inject constructor(val api: UserApi) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        views.homeToCategory.setOnClickListener {
-            //(activity as MainActivity).navigateTo(R.id.action_FirstFragment_to_newsFragment)
-        }
         viewModel.observeViewEvents {
             handleEvent(it)
         }
@@ -38,11 +35,9 @@ class HomeFragment @Inject constructor(val api: UserApi) :
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 Log.e("Test", "onResponse: $response")
             }
-
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.e("Test", "onResponse: ${t.stackTrace}")
             }
-
         })
     }
 
@@ -50,7 +45,7 @@ class HomeFragment @Inject constructor(val api: UserApi) :
         when (it) {
             is HomeViewEvent.ResetLanguege -> {
                 views.title.text = getString(R.string.home_everyone)
-                views.homeToCategory.text = getString(R.string.home_button)
+                //views.homeToCategory.text = getString(R.string.home_button)
             }
         }
     }

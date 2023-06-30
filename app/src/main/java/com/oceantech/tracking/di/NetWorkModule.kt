@@ -3,6 +3,7 @@ package com.oceantech.tracking.di
 import android.content.Context
 import com.oceantech.tracking.data.network.*
 import com.oceantech.tracking.data.repository.AuthRepository
+import com.oceantech.tracking.data.repository.ImageRepository
 import com.oceantech.tracking.data.repository.PublicRepository
 import com.oceantech.tracking.data.repository.TimeSheetRepository
 import com.oceantech.tracking.data.repository.TrackingRepository
@@ -82,4 +83,15 @@ object NetWorkModule {
     fun providerPublicRepository(
         api: PublicApi
     ):PublicRepository = PublicRepository(api)
+
+    @Provides
+    fun providerImageApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(ImageApi::class.java,context)
+
+    @Provides
+    fun providerImageRepository(
+        api: ImageApi
+    ):ImageRepository = ImageRepository(api)
 }

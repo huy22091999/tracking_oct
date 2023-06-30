@@ -9,20 +9,6 @@
     android:background="@drawable/bg_time_sheet">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/ipLabel"
-        android:layout_width="0dp"
-        android:layout_height="25dp"
-        android:gravity="start"
-        android:singleLine="true"
-        android:text="Ip"
-        android:textColor="@color/gray"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timeLabel"
         android:layout_width="0dp"
         android:layout_height="20dp"
@@ -31,7 +17,8 @@
         android:text="time"
         android:textColor="@color/text_color"
         android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ipLabel" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

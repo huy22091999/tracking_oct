@@ -19,7 +19,8 @@ tools:openDrawer="start">
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
     android:theme="@style/TrackingDrawer"
-    app:menu="@menu/activity_main_drawer">
+    app:menu="@menu/activity_main_drawer"
+    >
 
 </com.google.android.material.navigation.NavigationView>
 

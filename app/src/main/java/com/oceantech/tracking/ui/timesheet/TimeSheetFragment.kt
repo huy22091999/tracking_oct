@@ -82,20 +82,16 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
                         adapter = TimeSheetAdapter(timeSheets)
                     }
                 }
-                dismissLoadingDialog()
             }
             is Loading -> {
                 Log.e("state of time sheets:", "loading")
-                showLoadingDialog()
             }
             is Fail -> {
                 Log.e("state of time sheets:", "fail")
-                dismissLoadingDialog()
             }
         }
         when(it.checkIn){
             is Success -> {
-                dismissLoadingDialog()
                 it.checkIn?.invoke().let { checkIn ->
                     if(checkIn.message.isNullOrEmpty()){
                         Toast.makeText(requireContext(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
@@ -105,11 +101,10 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
                 }
             }
             is Fail -> {
-                dismissLoadingDialog()
             }
             is Loading -> {
                 viewModel.handleTimeSheets()
-                showLoadingDialog()
+                Toast.makeText(requireContext(), getString(R.string.checked_in), Toast.LENGTH_SHORT).show()
             }
         }
     }

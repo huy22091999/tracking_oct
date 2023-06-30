@@ -43,6 +43,7 @@ import com.oceantech.tracking.ui.home.HomeFragmentDirections
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.security.LoginActivity
+import com.oceantech.tracking.ui.security.SplashActivity
 import com.oceantech.tracking.ui.security.UserPreferences
 import com.oceantech.tracking.ui.tracking.AddOrUpTrackFragment
 import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
@@ -165,7 +166,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.logout -> {
                     val sessionManager = SessionManager(this@MainActivity)
                     sessionManager.clearAuthToken()
-                    startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+                    startActivity(Intent(this@MainActivity, SplashActivity::class.java))
+                    finishAffinity()
                 }
                 else -> {
                     drawerLayout.closeDrawer(GravityCompat.START)
@@ -215,7 +217,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             true
         )
         popup.elevation = 20F
-        popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
+        //popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
             changeLangue("en")
@@ -241,23 +243,19 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             true
         )
         popup.elevation = 20F
-        popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
+        //popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_light_theme).setOnClickListener {
 //            changeTheme("light")
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             recreate()
-            homeViewModel.theme = 0
             popup.dismiss()
-            homeViewModel.handle(HomeViewAction.ResetTheme)
         }
         view.findViewById<LinearLayout>(R.id.to_dark_theme).setOnClickListener {
 //            changeTheme("dark")
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             recreate()
-            homeViewModel.theme = 1
             popup.dismiss()
-            homeViewModel.handle(HomeViewAction.ResetTheme)
         }
     }
 
@@ -309,8 +307,14 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
         menu.findItem(R.id.nav_allTrackingFragment).title = getString(R.string.menu_tracking)
         menu.findItem(R.id.nav_timeSheetFragment).title = getString(R.string.time_sheet)
+        menu.findItem(R.id.nav_change_theme).title = getString(R.string.theme)
+        menu.findItem(R.id.logout).title = getString(R.string.logout)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 }
 

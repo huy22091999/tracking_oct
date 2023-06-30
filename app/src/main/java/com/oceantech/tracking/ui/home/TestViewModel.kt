@@ -1,4 +1,4 @@
-package com.oceantech.tracking.ui.home
+package com.oceantech.tracking.data.home
 
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject

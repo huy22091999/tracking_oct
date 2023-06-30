@@ -1,4 +1,4 @@
-package com.oceantech.tracking.ui.home
+package com.oceantech.tracking.data.home
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.Loading
@@ -13,7 +13,8 @@ data class HomeViewState(
     val asyncDeleteTracking:Async<Tracking> = Uninitialized,
     val allTracking: Async<List<Tracking>> = Uninitialized,
     val timeSheets:Async<List<TimeSheet>> = Uninitialized,
-    val checkIn:Async<TimeSheet> = Uninitialized
+    val checkIn:Async<TimeSheet> = Uninitialized,
+    val allUsers:Async<List<User>> = Uninitialized
 
 ) : MvRxState {
     fun isLoadding() =
@@ -23,6 +24,7 @@ data class HomeViewState(
             asyncDeleteTracking is Loading ||
             allTracking is Loading ||
             timeSheets is Loading ||
-            checkIn is Loading
+            checkIn is Loading ||
+            allUsers is Loading
 
 }

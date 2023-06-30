@@ -1,4 +1,4 @@
-package com.oceantech.tracking.ui.home
+package com.oceantech.tracking.data.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -21,11 +21,11 @@ class HomeViewModel @AssistedInject constructor(
     private val timeSheetRepo:TimeSheetRepository
 ) : TrackingViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     var language: Int = 1
-    var theme: Int = 1
 
     init {
         handleAllTracking()
         handleTimeSheets()
+        handleAllUsers()
     }
     override fun handle(action: HomeViewAction) {
         when (action) {
@@ -37,6 +37,14 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.SaveTracking -> handleSaveTracking(action.content)
             is HomeViewAction.UpdateTracking -> handleUpdateTracking(action.id, action.content)
             is HomeViewAction.DeleteTracking -> handleDeleteTracking(action.id)
+            is HomeViewAction.GetAllUsers -> handleAllUsers()
+        }
+    }
+
+    private fun handleAllUsers() {
+        setState { copy(allUsers = Loading()) }
+        repository.getAllUser().execute {
+            copy(allUsers = it)
         }
     }
 
@@ -85,6 +93,27 @@ class HomeViewModel @AssistedInject constructor(
     }
     fun handleReturnUpdate(content:String, id:Int){
         _viewEvents.post(HomeViewEvent.ReturnUpdateTracking(content, id))
+    }
+
+    fun handleRemoveStateOfAdd(){
+        setState {
+            copy(asyncSaveTracking = Uninitialized)
+        }
+    }
+    fun handleRemoveStateOfUpdate(){
+        setState {
+            copy(asyncUpdateTracking = Uninitialized)
+        }
+    }
+    fun handleRemoveStateOfDelete(){
+        setState {
+            copy(asyncDeleteTracking = Uninitialized)
+        }
+    }
+    fun handleRemoveStateOfCheckIn(){
+        setState {
+            copy(checkIn = Uninitialized)
+        }
     }
     private fun handleCurrentUser() {
         setState { copy(userCurrent = Loading()) }
