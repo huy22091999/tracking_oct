@@ -1,60 +1,72 @@
 package com.oceantech.tracking.ui.user
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
+import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.databinding.FragmentUserBinding
+import com.oceantech.tracking.ui.home.HomeViewAction
+import com.oceantech.tracking.ui.home.HomeViewEvent
+import com.oceantech.tracking.ui.home.HomeViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
+    private val viewModel: HomeViewModel by activityViewModel()
+    private lateinit var adapter:UserAdapter
+    private lateinit var users:List<User>
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UserFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class UserFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentUserBinding
+        = FragmentUserBinding.inflate(layoutInflater, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        users = listOf()
+        adapter = UserAdapter(requireContext(), users)
+
+        views.users.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = adapter
+        }
+
+        viewModel.observeViewEvents {
+            handleEvent(it)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user, container, false)
+    private fun handleEvent(it: HomeViewEvent) {
+        when(it){
+            is HomeViewEvent.ResetLanguege -> {
+                views.title.text = requireContext().getString(R.string.users)
+                viewModel.handle(HomeViewAction.GetAllUsers)
+            }
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun invalidate():Unit = withState(viewModel){
+        when(it.allUsers){
+            is Success -> {
+                it.allUsers.invoke()?.let { data ->
+                    users = data
+                    adapter = UserAdapter(requireContext(), data)
+                    views.users.adapter = adapter
                 }
+                dismissLoadingDialog()
             }
+            is Fail -> {
+                dismissLoadingDialog()
+            }
+            is Loading -> {
+                showLoadingDialog()
+            }
+        }
     }
 }

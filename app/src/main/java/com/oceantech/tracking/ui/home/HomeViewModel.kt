@@ -1,4 +1,4 @@
-package com.oceantech.tracking.data.home
+package com.oceantech.tracking.ui.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData

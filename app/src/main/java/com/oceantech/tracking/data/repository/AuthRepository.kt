@@ -34,5 +34,4 @@ class AuthRepository @Inject constructor(
     suspend fun clearAccessToken(){
         preferences.clear()
     }
-
 }

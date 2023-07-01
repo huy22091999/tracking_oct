@@ -29,6 +29,8 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
     }
     lateinit var username:String
     lateinit var password:String
+    private var hasShowDialog = false
+    private lateinit var dialog:AlertDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         views.loginSubmit.setOnClickListener {
@@ -40,7 +42,20 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         views.labelResetPassword.setOnClickListener {
             viewModel.handleReturnResetPass()
         }
+        dialog = createDialog()
+//        views.username.setOnClickListener {
+//            views.usernameTil.error = null
+//            views.passwordTil.error = null
+//        }
+//        views.password.setOnClickListener {
+//            views.usernameTil.error = null
+//            views.passwordTil.error = null
+//        }
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun loginSubmit()
@@ -64,14 +79,27 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
 
         with(view as DialogLoginBinding){
             view.returnSignIn.setOnClickListener {
+                hasShowDialog = true
                 alertDialog.dismiss()
+                viewModel.handleRemoveStateError()
                 viewModel.handleReturnSignin()
             }
             view.back.setOnClickListener {
+                hasShowDialog = true
                 alertDialog.dismiss()
+                viewModel.handleRemoveStateError()
+                views.usernameTil.error = null
+                views.passwordTil.error = null
             }
         }
         return alertDialog
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if(dialog != null || dialog.isShowing){
+            dialog.dismiss()
+        }
     }
 
     override fun invalidate(): Unit = withState(viewModel){
@@ -93,11 +121,12 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             }
             is Fail->{
                 views.passwordTil.error=getString(R.string.login_fail)
-                createDialog().show()
+                views.passwordTil.editText?.text?.clear()
+                dialog.show()
                 dismissLoadingDialog()
             }
             is Uninitialized -> {
-                createDialog().dismiss()
+                dialog.dismiss()
             }
         }
     }

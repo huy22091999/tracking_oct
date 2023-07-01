@@ -65,6 +65,12 @@ class SecurityViewModel @AssistedInject constructor(
             copy(asyncLogin=it)
         }
     }
+
+    fun handleRemoveStateError(){
+        setState {
+            copy(asyncLogin = Uninitialized)
+        }
+    }
     private fun handleSaveToken(tokenResponse: TokenResponse)
     {
         this.viewModelScope.async {

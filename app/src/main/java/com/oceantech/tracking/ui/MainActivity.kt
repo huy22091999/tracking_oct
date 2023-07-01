@@ -39,17 +39,10 @@ import javax.inject.Inject
 
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.network.SessionManager
-import com.oceantech.tracking.ui.home.HomeFragmentDirections
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.TestViewModel
-import com.oceantech.tracking.ui.security.LoginActivity
 import com.oceantech.tracking.ui.security.SplashActivity
-import com.oceantech.tracking.ui.security.UserPreferences
-import com.oceantech.tracking.ui.tracking.AddOrUpTrackFragment
 import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
-import com.oceantech.tracking.utils.addFragmentToBackstack
-import kotlinx.coroutines.launch
-
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
@@ -101,6 +94,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             is HomeViewEvent.ReturnUpdateTracking ->{
                 navigateTo(R.id.nav_trackingFragment, viewEvent.id, viewEvent.content)
             }
+            is HomeViewEvent.ReturnAddTracking -> {
+                navigateTo(R.id.nav_trackingFragment)
+            }
             is HomeViewEvent.ReturnTracking -> {
                 navigateTo(R.id.nav_allTrackingFragment)
             }
@@ -132,10 +128,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_HomeFragment,
-                R.id.nav_trackingFragment,
                 R.id.nav_allTrackingFragment,
+                R.id.nav_trackingFragment,
                 R.id.nav_timeSheetFragment,
+                R.id.nav_userFragment
             ), drawerLayout
         )
 
@@ -304,7 +300,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     private fun updateLanguge(lang: String) {
         val menu: Menu = navView.menu
-        menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
+        menu.findItem(R.id.nav_userFragment).title = getString(R.string.users)
         menu.findItem(R.id.nav_allTrackingFragment).title = getString(R.string.menu_tracking)
         menu.findItem(R.id.nav_timeSheetFragment).title = getString(R.string.time_sheet)
         menu.findItem(R.id.nav_change_theme).title = getString(R.string.theme)

@@ -10,8 +10,12 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
+import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.UserCredentials
+import io.reactivex.Observable
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,20 +25,33 @@ import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.util.*
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
+import javax.inject.Inject
 
 @Singleton
-class RemoteDataSource() {
+class RemoteDataSource {
     companion object {
         private const val BASE_URL =
             "http://android-tracking.oceantech.com.vn/mita/"
         private const val DEFAULT_USER_AGENT = "Nimpe-Android"
         private const val DEFAULT_CONTENT_TYPE = "application/json"
+    }
+
+    private fun buildAuthApi():AuthApi{
+        val gson = GsonBuilder().setLenient().create()
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .callbackExecutor(Executors.newSingleThreadExecutor())
+            .client(getRetrofitClient())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(AuthApi::class.java)
     }
     fun <Api> buildApi(
         api: Class<Api>,
@@ -46,12 +63,13 @@ class RemoteDataSource() {
             .create()
 
         val sessionManager = SessionManager(context.applicationContext)
-        var authenticator: TokenAuthenticator? =null
+        var authenticator: TokenAuthenticator? = null
+
 
         authenticator = if (sessionManager.fetchAuthToken() != null) {
-            TokenAuthenticator(sessionManager.fetchAuthToken()!!)
+            TokenAuthenticator(sessionManager.fetchAuthToken()!!, buildAuthApi(), sessionManager)
         } else
-            TokenAuthenticator("")
+            TokenAuthenticator("",buildAuthApi(), sessionManager)
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)

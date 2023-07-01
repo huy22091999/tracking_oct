@@ -1,4 +1,4 @@
-package com.oceantech.tracking.data.home
+package com.oceantech.tracking.ui.home
 
 import com.oceantech.tracking.core.NimpeViewModelAction
 import com.oceantech.tracking.data.model.Feedback

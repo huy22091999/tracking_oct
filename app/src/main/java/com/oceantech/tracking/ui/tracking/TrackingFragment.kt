@@ -30,9 +30,10 @@ import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
+import javax.inject.Inject
 
-class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
-    private val viewModel:HomeViewModel by activityViewModel()
+class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrackingBinding>() {
+    private val viewModel: HomeViewModel by activityViewModel()
     private lateinit var trackingAdapter:TrackingAdapter
     private lateinit var trackings:List<Tracking>
     override fun getBinding(
@@ -43,6 +44,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         super.onViewCreated(view, savedInstanceState)
         trackings = listOf()
         trackingAdapter = TrackingAdapter(trackings,requireContext(), showMenu)
+
         views.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = trackingAdapter
@@ -59,6 +61,10 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             }
         }
     }
+    override fun onResume() {
+        super.onResume()
+        viewModel.handleAllTracking()
+    }
 
     private val showMenu:(View,Tracking) -> Unit = {view,tracking ->
         showMenu(view,tracking)
@@ -74,7 +80,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             true
         )
         popup.elevation = 20F
-        popup.setBackgroundDrawable(getDrawable(requireActivity(),R.drawable.backgound_box))
+//        popup.setBackgroundDrawable(getDrawable(requireActivity(),R.drawable.backgound_box))
         popup.showAsDropDown(v, 5, -5, Gravity.CENTER_HORIZONTAL)
 
         view.findViewById<MaterialTextView>(R.id.to_track_update).setOnClickListener {
@@ -122,6 +128,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
                     Log.i("state of deleted: ", "success delete tracking id ${it.id}")
                 }
                 dismissLoadingDialog()
+                viewModel.handleRemoveStateOfDelete()
             }
             is Loading -> {
                 viewModel.handleAllTracking()

@@ -1,4 +1,4 @@
-package com.oceantech.tracking.data.home
+package com.oceantech.tracking.ui.home
 
 import android.os.Bundle
 import android.util.Log

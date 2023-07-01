@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp"
-    android:background="@color/white"
     tools:context=".ui.security.SigninFragment">
 
     <com.google.android.material.textview.MaterialTextView

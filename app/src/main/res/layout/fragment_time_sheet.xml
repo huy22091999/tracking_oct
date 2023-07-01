@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
-    android:background="@color/background_light"
+    android:theme="@style/TrackingFragment"
     tools:context=".ui.timesheet.TimeSheetFragment">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -51,6 +51,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/timSheetLabel"
             android:numColumns="4"
+            tools:listitem="@layout/item_time_sheet"
             android:paddingTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 

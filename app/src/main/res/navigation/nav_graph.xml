@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_HomeFragment">
+    app:startDestination="@id/nav_allTrackingFragment">
 
     <fragment
-        android:id="@+id/nav_HomeFragment"
-        android:name="com.oceantech.tracking.ui.home.HomeFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_home">
+        android:id="@+id/nav_allTrackingFragment"
+        android:name="com.oceantech.tracking.ui.tracking.TrackingFragment"
+        android:label="fragment_all_tracking"
+        tools:layout="@layout/fragment_tracking" >
         <action
-            android:id="@+id/action_nav_HomeFragment_to_trackingFragment"
+            android:id="@+id/action_nav_allTrackingFragment_to_nav_trackingFragment"
             app:destination="@id/nav_trackingFragment" />
         <action
-            android:id="@+id/action_nav_HomeFragment_to_allTrackingFragment"
-            app:destination="@id/nav_allTrackingFragment" />
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_timeSheetFragment"
+            android:id="@+id/action_nav_allTrackingFragment_to_nav_timeSheetFragment"
             app:destination="@id/nav_timeSheetFragment" />
+        <action
+            android:id="@+id/action_nav_allTrackingFragment_to_userFragment"
+            app:destination="@id/nav_userFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_trackingFragment"
         android:name="com.oceantech.tracking.ui.tracking.AddOrUpTrackFragment"
@@ -33,15 +34,9 @@
             android:name="content"
             app:argType="string"
             android:defaultValue='" "' />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_allTrackingFragment"
-        android:name="com.oceantech.tracking.ui.tracking.TrackingFragment"
-        android:label="fragment_all_tracking"
-        tools:layout="@layout/fragment_tracking" >
         <action
-            android:id="@+id/action_nav_allTrackingFragment_to_nav_trackingFragment"
-            app:destination="@id/nav_trackingFragment" />
+            android:id="@+id/action_nav_trackingFragment_to_nav_allTrackingFragment"
+            app:destination="@id/nav_allTrackingFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_timeSheetFragment"
@@ -49,4 +44,9 @@
         android:label="fragment_time_sheet"
         tools:layout="@layout/fragment_time_sheet" >
     </fragment>
+    <fragment
+        android:id="@+id/nav_userFragment"
+        android:name="com.oceantech.tracking.ui.user.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" />
 </navigation>

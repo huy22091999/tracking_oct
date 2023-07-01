@@ -15,6 +15,7 @@ interface AuthApi {
     fun oauth(@Body credentials: UserCredentials): Observable<TokenResponse>
 
     companion object {
+
         val CLIENT_ID = "core_client" //"core_client"
 
         val CLIENT_SECRET = "secret" //"secret"

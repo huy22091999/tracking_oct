@@ -4,17 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
-        <item
-            android:icon="@drawable/ic_home"
-            android:id="@+id/nav_HomeFragment"
-            android:title="@string/menu_home"
-            />
         <item android:id="@+id/nav_allTrackingFragment"
             android:icon="@drawable/img_tracking"
             android:title="@string/menu_tracking"/>
         <item android:id="@+id/nav_timeSheetFragment"
             android:icon="@drawable/timesheet"
             android:title="@string/time_sheet"
+            />
+        <item
+            android:icon="@drawable/img_users"
+            android:id="@+id/nav_userFragment"
+            android:title="@string/users"
             />
     </group>
     <group android:id="@+id/lang" >

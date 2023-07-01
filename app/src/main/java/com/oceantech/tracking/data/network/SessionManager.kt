@@ -7,7 +7,7 @@ import com.oceantech.tracking.R
 /**
  * Session manager to save and fetch data from SharedPreferences
  */
-class SessionManager(context: Context) {
+class SessionManager(private val context: Context) {
 
     private var prefs: SharedPreferences =
         context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)

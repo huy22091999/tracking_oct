@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
@@ -23,7 +24,7 @@ import com.oceantech.tracking.ui.home.HomeViewModel
 
 
 class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding>() {
-    private val viewModel:HomeViewModel by activityViewModel()
+    private val viewModel: HomeViewModel by activityViewModel()
     private var id:Int = -1
     private var content:String = ""
     private val arg:AddOrUpTrackFragmentArgs by navArgs()
@@ -70,7 +71,7 @@ class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding
         viewModel.handle(HomeViewAction.UpdateTracking(id, content))
     }
 
-    private fun handleEvent(it:HomeViewEvent){
+    private fun handleEvent(it: HomeViewEvent){
         when(it){
             is HomeViewEvent.ResetLanguege ->{
                 views.title2.text = getString(R.string.tracking_description)
@@ -85,24 +86,32 @@ class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding
             is Success -> {
                 Toast.makeText(requireActivity(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
                 viewModel.handleReturnTracking()
+                viewModel.handleRemoveStateOfAdd()
             }
             is Loading -> {
                 viewModel.handleAllTracking()
             }
             is Fail -> {
                 Log.e("Test Save Tracking: ", "Fail")
+            }
+            is Uninitialized -> {
+
             }
         }
         when(it.asyncUpdateTracking){
             is Success -> {
                 Toast.makeText(requireActivity(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
                 viewModel.handleReturnTracking()
+                viewModel.handleRemoveStateOfUpdate()
             }
             is Loading -> {
                 viewModel.handleAllTracking()
             }
             is Fail -> {
                 Log.e("Test Save Tracking: ", "Fail")
+            }
+            is Uninitialized ->{
+
             }
         }
     }

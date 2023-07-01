@@ -4,16 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.security.LoginFragment">
-
-<!--    <androidx.core.widget.NestedScrollView
-        android:fitsSystemWindows="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </androidx.core.widget.NestedScrollView>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +25,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-20sp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/background_login"
                 android:orientation="vertical"
                 android:layout_marginBottom="40dp"
                 android:padding="24dp">
@@ -88,11 +79,13 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:hint="@string/password"
+                        android:inputType="textPassword"
                         android:singleLine="true"
                         android:textColorHint="@color/text_color"
                         android:textColor="@color/gray"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton

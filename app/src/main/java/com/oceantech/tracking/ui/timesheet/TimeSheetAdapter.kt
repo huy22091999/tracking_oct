@@ -11,7 +11,7 @@ import com.oceantech.tracking.databinding.ItemTimeSheetBinding
 import com.oceantech.tracking.utils.formatDate
 
 class TimeSheetAdapter(private val timeSheets:List<TimeSheet>):RecyclerView.Adapter<TimeSheetAdapter.TimeSheetHolder>() {
-    class TimeSheetHolder(val binding:ViewBinding):RecyclerView.ViewHolder(binding.root){
+    class TimeSheetHolder(private val binding:ViewBinding):RecyclerView.ViewHolder(binding.root){
         fun bindHolder(timeSheet:TimeSheet){
             with(binding as ItemTimeSheetBinding){
                 binding.timeLabel.text = formatDate(timeSheet.dateAttendance.toString())

@@ -23,7 +23,7 @@ import com.oceantech.tracking.ui.home.HomeViewModel
 import java.net.NetworkInterface
 
 class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
-    private val viewModel:HomeViewModel by activityViewModel()
+    private val viewModel: HomeViewModel by activityViewModel()
     private lateinit var timeSheets:List<TimeSheet>
     override fun getBinding(
         inflater: LayoutInflater,
@@ -82,6 +82,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
                         adapter = TimeSheetAdapter(timeSheets)
                     }
                 }
+                viewModel.handleRemoveStateOfCheckIn()
             }
             is Loading -> {
                 Log.e("state of time sheets:", "loading")
@@ -99,12 +100,13 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
                         Toast.makeText(requireContext(), getString(R.string.checked_in), Toast.LENGTH_SHORT).show()
                     }
                 }
+                viewModel.handleRemoveStateOfCheckIn()
             }
             is Fail -> {
+                Toast.makeText(requireContext(), getString(R.string.checked_in), Toast.LENGTH_SHORT).show()
             }
             is Loading -> {
                 viewModel.handleTimeSheets()
-                Toast.makeText(requireContext(), getString(R.string.checked_in), Toast.LENGTH_SHORT).show()
             }
         }
     }
