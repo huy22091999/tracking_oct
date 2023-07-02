@@ -93,5 +93,20 @@
     <string name="personal_information">Thông tin cá nhân</string>
     <string name="log_out">Đăng xuất</string>
     <string name="app_information">Thông tin</string>
+    <string name="load_users_failed">Lấy dữ liệu Users thất bại</string>
+
+    <string name="delete">Xóa</string>
+    <string name="edit">Sửa</string>
+    <string name="add_tracking_successfully">Thêm theo dõi mới thành công</string>
+    <string name="add_tracking_failed">Thêm theo dõi thất bại</string>
+    <string name="server_error_message">Server đang bị lỗi. Rất xin lỗi tới người dùng</string>
+    <string name="input_error_message">Hãy nhập đủ và đúng thông tin yêu cầu</string>
+    <string name="request_error_message">Yêu cầu của bạn không tồn tại trên hệ thống</string>
+    <string name="forbidden_error_message">Bạn không có quyền truy cập</string>
+    <string name="authorization_error_message">Kiểm tra lại xác thực của bạn</string>
+    <string name="update_app_successfully">Cập nhật app thành công</string>
+    <string name="cancel_app_update">Bạn đã hoãn cập nhật</string>
+    <string name="update_app_failed">Hệ thống cập nhật đang có lỗi</string>
+
 
 </resources>

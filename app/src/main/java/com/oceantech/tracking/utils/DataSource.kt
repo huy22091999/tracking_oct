@@ -75,7 +75,6 @@ open class PublishDataSource<T: Any> : MutableDataSource<T> {
 
     override fun post(value: T) {
         publishRelay.accept(value!!)
-
     }
 
 }

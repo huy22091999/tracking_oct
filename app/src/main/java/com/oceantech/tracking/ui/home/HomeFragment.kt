@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toolbar
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Fail
@@ -20,8 +21,11 @@ import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.databinding.FragmentHomeBinding
 import com.oceantech.tracking.ui.home.adapter.UserAdapter
 import com.oceantech.tracking.ui.item_decoration.ItemDecoration
+import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.setupRecycleView
+import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @SuppressLint("LogNotTimber")
@@ -29,7 +33,6 @@ import javax.inject.Inject
 class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBinding>() {
 
     private val viewModel: HomeViewModel by activityViewModel()
-    private lateinit var usersRV: RecyclerView
     private lateinit var userAdapter: UserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,49 +47,32 @@ class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.observeViewEvents {
-            handleEvent(it)
-        }
-        usersRV = views.usersRV
         userAdapter = UserAdapter()
-        setupRecycleView(usersRV, userAdapter, requireContext())
-
-    }
-
-    private fun handleEvent(it: HomeViewEvent) {
-        when (it) {
-            is HomeViewEvent.ResetLanguage -> {
-
-            }
-
-            else -> {}
+        setupRecycleView(views.usersRV, userAdapter, requireContext(), distance = 10)
+        viewModel.onEach {
+            views.userPB.isVisible = it.isLoading() || it.allUsers is Fail
+            views.usersRV.isVisible = !it.isLoading() && it.allUsers is Success
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun invalidate(): Unit = withState(viewModel) {
         when (it.allUsers) {
-            is Loading -> {
-                views.userPB.visibility = View.VISIBLE
-                views.usersRV.visibility = View.GONE
-            }
-
             is Success -> {
-                views.userPB.visibility = View.GONE
-                views.usersRV.visibility = View.VISIBLE
                 it.allUsers.invoke().let { users ->
                     userAdapter.setListUsers(users)
                     userAdapter.notifyDataSetChanged()
                 }
             }
-
             is Fail -> {
-                Log.i("User", it.allUsers.error.toString())
-            }
+                it.allUsers.error.message?.let { error ->
+                    checkError(error)
+                }
 
+            }
             else -> {}
         }
+
     }
 
 }

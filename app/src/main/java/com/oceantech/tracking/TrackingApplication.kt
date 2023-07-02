@@ -13,7 +13,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /*
-    Use HiltAndroidApp so that we don't need inject function
+    Use HiltAndroidApp so that we don't need to inject function
 */
 @HiltAndroidApp
 open class TrackingApplication : Application() {

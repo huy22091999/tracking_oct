@@ -92,7 +92,21 @@
     <string name="personal_information">Personal Information</string>
     <string name="log_out">Log out</string>
     <string name="app_information">App Information</string>
-
+    <string name="load_users_failed">Load users failed</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add_tracking_successfully">Add Tracking Successfully</string>
+    <string name="add_tracking_failed">Add Tracking Failed</string>
+    <string name="user_id"
+        translatable="false">Id: %s</string>
+    <string name="server_error_message">There is problem with server. Very sorry to users</string>
+    <string name="input_error_message">Please input full of required information and correct type of information</string>
+    <string name="request_error_message">Your request doesn\'t exist</string>
+    <string name="forbidden_error_message">You are not allowed to access</string>
+    <string name="authorization_error_message">Please check again your authorization</string>
+    <string name="update_app_successfully">Update successfully</string>
+    <string name="cancel_app_update">You canceled the update</string>
+    <string name="update_app_failed">Something error with updating</string>
 
 
 </resources>

@@ -1,22 +1,27 @@
 package com.oceantech.tracking.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Notification
 import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Build
+import android.util.Log
+import android.widget.RemoteViews
 import android.widget.Toast
+import androidx.annotation.LayoutRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.oceantech.tracking.R
 import com.oceantech.tracking.data.network.SessionManager
-import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.ui.item_decoration.ItemDecoration
 import com.oceantech.tracking.ui.security.LoginActivity
-import com.oceantech.tracking.ui.timesheets.adapter.TimeSheetAdapter
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -30,11 +35,13 @@ fun Location?.toText(): String {
         "Unknown location"
     }
 }
+
 @RequiresApi(Build.VERSION_CODES.O)
 fun Date.format(format: String? = null): String {
     val ld = toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     return ld.format(DateTimeFormatter.ofPattern(format ?: "dd/MM/yyyy"))
 }
+
 fun AppCompatActivity.addFragment(
     frameId: Int,
     fragment: Fragment,
@@ -42,7 +49,11 @@ fun AppCompatActivity.addFragment(
 ) {
     supportFragmentManager.commitTransaction(allowStateLoss) { add(frameId, fragment) }
 }
-inline fun androidx.fragment.app.FragmentManager.commitTransaction(allowStateLoss: Boolean = false, func: FragmentTransaction.() -> FragmentTransaction) {
+
+inline fun androidx.fragment.app.FragmentManager.commitTransaction(
+    allowStateLoss: Boolean = false,
+    func: FragmentTransaction.() -> FragmentTransaction
+) {
     val transaction = beginTransaction().func()
     if (allowStateLoss) {
         transaction.commitAllowingStateLoss()
@@ -50,15 +61,17 @@ inline fun androidx.fragment.app.FragmentManager.commitTransaction(allowStateLos
         transaction.commit()
     }
 }
+
 fun <T : Fragment> AppCompatActivity.addFragmentToBackstack(
     frameId: Int,
     fragmentClass: Class<T>,
     tag: String? = null,
     allowStateLoss: Boolean = false,
-    option: ((FragmentTransaction) -> Unit)? = null) {
+    option: ((FragmentTransaction) -> Unit)? = null
+) {
     supportFragmentManager.commitTransaction(allowStateLoss) {
         option?.invoke(this)
-        replace(frameId, fragmentClass,null, tag).addToBackStack(tag)
+        replace(frameId, fragmentClass, null, tag).addToBackStack(tag)
     }
 }
 
@@ -73,25 +86,34 @@ fun String.toLocalDate(isoDateTime: String): String {
 
     return normalDateTime.format(normalFormat)
 }
+
 //Update language of app
-fun Activity.changeLanguage(localHelper: LocalHelper, language: String){
+fun Activity.changeLanguage(localHelper: LocalHelper, language: String) {
     localHelper.setLanguage(baseContext, language)
     val intent = Intent(this, this.javaClass)
     startActivity(intent)
     finish()
 }
 
-fun showToast(context: Context, content: String){
+fun showToast(context: Context, content: String) {
     Toast.makeText(context, content, Toast.LENGTH_SHORT).show()
 }
+
 //set up the recycle view
-fun <T: RecyclerView.ViewHolder, R: RecyclerView.Adapter<T>> setupRecycleView(rv: RecyclerView, adapter: R, context: Context){
+fun <T : RecyclerView.ViewHolder, R : RecyclerView.Adapter<T>> setupRecycleView(
+    rv: RecyclerView,
+    adapter: R,
+    context: Context,
+    distance: Int = 20
+) {
+
     rv.adapter = adapter
-    rv.addItemDecoration(ItemDecoration(20))
-    rv.layoutManager = LinearLayoutManager(context)
+    rv.addItemDecoration(ItemDecoration(distance))
+    rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
 }
 
-fun Activity.handleLogOut(){
+fun Activity.handleLogOut() {
     SessionManager(applicationContext).also {
         it.deleteAuthToken()
     }
@@ -100,3 +122,52 @@ fun Activity.handleLogOut(){
     startActivity(intent)
     finish()
 }
+
+fun createNotification(
+    id: String,
+    context: Context,
+    contentTitle: String,
+    contentText: String,
+    @LayoutRes layoutId: Int,
+    progress: Long = 0,
+    max: Long = 0
+): Notification {
+    val views = RemoteViews(context.packageName, layoutId)
+    if(progress > 0 && max > 0) views.setProgressBar(R.id.downloadPB, max.toInt(), progress.toInt(), false)
+    return NotificationCompat.Builder(context, id)
+        .setContentTitle(contentTitle)
+        .setSmallIcon(R.drawable.download_icon)
+        .setContentText(contentText)
+        .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+        .setCustomContentView(views)
+        .build()
+}
+
+@SuppressLint("LogNotTimber")
+fun Fragment.checkError(errorCode: String){
+    val context = this.requireContext()
+    val name = this::class.java.simpleName
+    when(errorCode){
+        "HTTP 500 " -> {
+            showToast(context, context.getString(R.string.server_error_message))
+            Log.i(name, errorCode)
+        }
+        "HTTP 400 " -> {
+            showToast(context, getString(R.string.input_error_message))
+            Log.i(name, errorCode)
+        }
+        "HTTP 404 " -> {
+            showToast(context, getString(R.string.request_error_message))
+            Log.i(name, errorCode)
+        }
+        "HTTP 403 " -> {
+            showToast(context, getString(R.string.forbidden_error_message))
+            Log.i(name, errorCode)
+        }
+        "HTTP 401 " -> {
+            showToast(context, getString(R.string.authorization_error_message))
+            Log.i(name, errorCode)
+        }
+    }
+}
+

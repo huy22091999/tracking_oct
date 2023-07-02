@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -17,6 +18,7 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.databinding.FragmentTimeSheetBinding
 import com.oceantech.tracking.ui.timesheets.adapter.TimeSheetAdapter
+import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.setupRecycleView
 import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +31,6 @@ class TimeSheetFragment @Inject constructor() : TrackingBaseFragment<FragmentTim
 
     private val timeSheetViewModel: TimeSheetViewModel by activityViewModel()
     private lateinit var timeSheetAdapter: TimeSheetAdapter
-    private lateinit var timeSheetRV: RecyclerView
 
     companion object{
         private const val GET_ALL = 123
@@ -52,12 +53,17 @@ class TimeSheetFragment @Inject constructor() : TrackingBaseFragment<FragmentTim
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        timeSheetRV = views.timeSheetRV
         timeSheetAdapter = TimeSheetAdapter()
-        setupRecycleView(timeSheetRV, timeSheetAdapter, requireContext())
+        setupRecycleView(views.timeSheetRV, timeSheetAdapter, requireContext())
         views.fabAddTimeSheet.setOnClickListener {
             timeSheetViewModel.handle(TimeSheetViewAction.CheckInAction(ip = Random.nextInt().toString()))
             stateTimeSheet = CHECK_IN
+        }
+
+        timeSheetViewModel.onEach {
+            views.timeSheetPB.isVisible = it.isLoading() || it.getAllTimeSheetState is Fail
+            views.timeSheetRV.isVisible= !it.isLoading() && it.getAllTimeSheetState is Success
+            views.fabAddTimeSheet.isVisible = !it.isLoading() && it.getAllTimeSheetState is Success
         }
     }
 
@@ -71,29 +77,17 @@ class TimeSheetFragment @Inject constructor() : TrackingBaseFragment<FragmentTim
     @SuppressLint("NotifyDataSetChanged")
     private fun handleGetAll(state: TimeSheetViewState){
         when (state.getAllTimeSheetState) {
-            is Loading -> {
-                views.timeSheetPB.visibility = View.VISIBLE
-                views.timeSheetRV.visibility = View.GONE
-                views.fabAddTimeSheet.visibility = View.GONE
-            }
             is Success -> {
-                views.timeSheetPB.visibility = View.GONE
-                views.timeSheetRV.visibility = View.VISIBLE
-                views.fabAddTimeSheet.visibility = View.VISIBLE
                 state.getAllTimeSheetState.invoke().let { timeSheets ->
                     timeSheetAdapter.setListTimeSheet(timeSheets)
                     timeSheetAdapter.notifyDataSetChanged()
                 }
-//                state.copy(getAllTimeSheetState = Uninitialized)
             }
-
             is Fail -> {
-                Log.i(
-                    "TimeSheets",
-                    state.getAllTimeSheetState.error.toString()
-                )
+                state.getAllTimeSheetState.error.message?.let {error ->
+                    checkError(error)
+                }
             }
-
             else -> {}
         }
     }
@@ -105,10 +99,11 @@ class TimeSheetFragment @Inject constructor() : TrackingBaseFragment<FragmentTim
                 timeSheetViewModel.handle(TimeSheetViewAction.AllTimeSheets)
                 stateTimeSheet = GET_ALL
             }
-
             is Fail -> {
-                showToast(requireContext(), getString(R.string.check_in_tracking_failed))
-                Log.i("TimeSheets", state.checkInState.error.toString())
+                state.checkInState.error.message?.let {error ->
+                    checkError(error)
+                }
+
             }
 
             else -> {}

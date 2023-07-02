@@ -30,7 +30,6 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
         viewModel.onEach {
             handleStateChange(it)
         }
-
     }
 
     private fun handleStateChange(it: SecurityViewState) {

@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_category_layout"
-        android:elevation="10dp">
+        android:orientation="horizontal">
 
 
         <com.google.android.material.textview.MaterialTextView
@@ -26,18 +26,21 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_weight="8.5"
+            android:fontFamily="@font/roboto"
             android:text="@{tracking.content}"
             android:textSize="24sp"
-            android:textStyle="italic" />
+            android:textStyle="normal" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/imgDelTracking"
+        <ImageView
+            android:id="@+id/imgMore"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1.5"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
+            app:srcCompat="@drawable/more" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

@@ -30,7 +30,7 @@ class TrackingRepository @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     fun saveTracking(content: String): Flow<Tracking> = flow {
-        emit( api.saveTracking(
+        emit(api.saveTracking(
             Tracking(
                 content,
                 Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2023-06-19T01:41:45.341Z"))

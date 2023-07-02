@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.MenuRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -17,34 +19,46 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.SavedStateViewModelFactory
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.airbnb.mvrx.viewModel
-import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.ui.home.HomeViewState
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.utils.LocalHelper
 import com.google.android.material.navigation.NavigationView
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.common.IntentSenderForResultStarter
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.oceantech.tracking.databinding.ActivityMainBinding
 import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
-import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.public_config.PublicViewModel
 import com.oceantech.tracking.ui.public_config.PublicViewState
-import com.oceantech.tracking.ui.security.LoginActivity
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
 import com.oceantech.tracking.ui.tracking.TrackingViewState
-import com.oceantech.tracking.utils.addFragmentToBackstack
 import com.oceantech.tracking.utils.changeLanguage
+import com.oceantech.tracking.utils.createNotification
 import com.oceantech.tracking.utils.handleLogOut
+import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
@@ -74,6 +88,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     @Inject
     lateinit var publicViewModelFactory: PublicViewModel.Factory
 
+    // Create update manager
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateType = AppUpdateType.IMMEDIATE
+
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
@@ -83,17 +101,29 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+
+        //Register install listener for flexible update for update manager, just for flexible update
+        if(updateType == AppUpdateType.FLEXIBLE){
+            appUpdateManager.registerListener(installStatusListener)
+        }
+
+
+
+        checkForUpdate() // check update with update type is immediate update
         setupToolbar()
         setupDrawer()
         testViewModel.test()
-        homeViewModel.onEach{
-            if (it.isLoadding()) {
+        homeViewModel.onEach {
+            if (it.isLoading()) {
                 views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
             } else
                 views.appBarMain.contentMain.waitingView.visibility = View.GONE
         }
 
     }
+
+
     override fun create(state: PublicViewState): PublicViewModel {
         return publicViewModelFactory.create(state)
     }
@@ -162,9 +192,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.nav_change_langue -> {
                     showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
                 }
+
                 R.id.log_out -> {
                     handleLogOut()
                 }
+
                 else -> {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     handled
@@ -182,12 +214,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         // get the language that showing in the display
         val lang = local.getDisplayLanguage(local)
         if (lang == "English") {
-//            homeViewModel.language = 0
             menuItem.title = getString(R.string.en)
 
         } else {
             menuItem.title = getString(R.string.vi)
-//            homeViewModel.language = 1
         }
         val buttonShowMenu = actionView as AppCompatImageView
         buttonShowMenu.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_drop))
@@ -197,7 +227,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     }
 
-    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+    @SuppressLint("InflateParams")
+    private fun showMenu(v: View , @MenuRes menuRes: Int ) {
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.popup_window, null)
         val popup = PopupWindow(
@@ -210,10 +241,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
-            changeLanguage(localHelper,"en")
+            changeLanguage(localHelper, "en")
         }
         view.findViewById<LinearLayout>(R.id.to_lang_vi).setOnClickListener {
-            changeLanguage(localHelper,"vi")
+            changeLanguage(localHelper, "vi")
         }
     }
 
@@ -252,11 +283,100 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 super.onOptionsItemSelected(item)
             }
         }
-        return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Check that the update is not stuck and interrupted by user who quiting app when in progress.
+     * Should execute this check at all entry points into the app.
+     * Just use for immediate update.
+     */
+    override fun onResume() {
+        super.onResume()
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            // Check that update is in progress
+            if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    activityResultLauncher,
+                    AppUpdateOptions.newBuilder(updateType).build()
+                )
+            }
+        }
+    }
 
+    // Handle the immediate update
+    private fun checkForUpdate() {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            val updateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            val updateAllowed = when (updateType) {
+                AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
+                AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
+                else -> false
+            }
+            if (updateAvailable && updateAllowed) {
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    activityResultLauncher,
+                    AppUpdateOptions.newBuilder(updateType).build()
+                )
+            }
+        }
+    }
 
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+            when (it.resultCode) {
+                RESULT_OK -> {
+                    showToast(this, getString(R.string.update_app_successfully))
+                }
 
+                RESULT_CANCELED -> {
+                    showToast(this, getString(R.string.cancel_app_update))
+                }
+
+                com.google.android.play.core.install.model.ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
+                    showToast(this, getString(R.string.update_app_failed))
+                }
+            }
+        }
+
+    //Use listener for flexible update
+    private val installStatusListener = InstallStateUpdatedListener { state ->
+        when (state.installStatus()) {
+            InstallStatus.DOWNLOADING -> {
+                val downloaded = state.bytesDownloaded()
+                val total = state.totalBytesToDownload()
+                createNotification(
+                    NOTIFICATION_CHANNEL_ID,
+                    applicationContext,
+                    "Update",
+                    "Downloading",
+                    R.layout.download_update_layout,
+                    downloaded,
+                    total
+                )
+            }
+
+            InstallStatus.DOWNLOADED -> {
+                showToast(
+                    applicationContext,
+                    "Download update successfully. Restart app in 5 seconds"
+                )
+                lifecycleScope.launch {
+                    delay(5.seconds)
+                    appUpdateManager.completeUpdate()
+                }
+            }
+
+            else -> {}
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(updateType == AppUpdateType.FLEXIBLE){
+            appUpdateManager.unregisterListener(installStatusListener)
+        }
+    }
 }
 
