@@ -1,4 +1,4 @@
-package com.oceantech.tracking.ui.public_config
+package com.oceantech.tracking.ui.information
 
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.FragmentViewModelContext
@@ -10,17 +10,15 @@ import com.oceantech.tracking.data.repository.PublicRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.collect
-import javax.inject.Singleton
 
 
-class PublicViewModel @AssistedInject constructor(
-    @Assisted state: PublicViewState,
+class InfoViewModel @AssistedInject constructor(
+    @Assisted state: InfoViewState,
     private val publicRepository: PublicRepository
-): TrackingViewModel<PublicViewState, PublicViewAction, PublicViewEvent>(state) {
-    override fun handle(action: PublicViewAction) {
+): TrackingViewModel<InfoViewState, InfoViewAction, InfoViewEvent>(state) {
+    override fun handle(action: InfoViewAction) {
         when(action){
-            is PublicViewAction.GetConfigApp -> handleGetConfigApp()
+            is InfoViewAction.GetConfigApp -> handleGetConfigApp()
         }
     }
 
@@ -33,15 +31,15 @@ class PublicViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory{
-        fun create(state: PublicViewState): PublicViewModel
+        fun create(state: InfoViewState): InfoViewModel
     }
 
 
-    companion object : MavericksViewModelFactory<PublicViewModel, PublicViewState> {
+    companion object : MavericksViewModelFactory<InfoViewModel, InfoViewState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: PublicViewState
-        ): PublicViewModel? {
+            state: InfoViewState
+        ): InfoViewModel? {
             val factory = when(viewModelContext){
                 is ActivityViewModelContext -> viewModelContext.activity as? Factory
                 is FragmentViewModelContext -> viewModelContext.fragment as? Factory

@@ -20,7 +20,6 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.databinding.FragmentHomeBinding
 import com.oceantech.tracking.ui.home.adapter.UserAdapter
-import com.oceantech.tracking.ui.item_decoration.ItemDecoration
 import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.setupRecycleView
 import com.oceantech.tracking.utils.showToast

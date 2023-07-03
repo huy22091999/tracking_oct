@@ -5,9 +5,11 @@ import android.app.Activity
 import android.app.Notification
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.location.Location
 import android.os.Build
 import android.util.Log
+import android.view.View
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.annotation.LayoutRes
@@ -20,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.network.SessionManager
-import com.oceantech.tracking.ui.item_decoration.ItemDecoration
 import com.oceantech.tracking.ui.security.LoginActivity
 import java.time.Instant
 import java.time.LocalDateTime
@@ -106,7 +107,6 @@ fun <T : RecyclerView.ViewHolder, R : RecyclerView.Adapter<T>> setupRecycleView(
     context: Context,
     distance: Int = 20
 ) {
-
     rv.adapter = adapter
     rv.addItemDecoration(ItemDecoration(distance))
     rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -168,6 +168,21 @@ fun Fragment.checkError(errorCode: String){
             showToast(context, getString(R.string.authorization_error_message))
             Log.i(name, errorCode)
         }
+    }
+}
+class ItemDecoration(
+    private val distance: Int
+) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        outRect.bottom = distance
+        outRect.top = distance
+        outRect.right = distance
+        outRect.left = distance
     }
 }
 

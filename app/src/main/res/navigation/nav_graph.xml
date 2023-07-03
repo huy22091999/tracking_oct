@@ -40,8 +40,8 @@
         tools:layout="@layout/fragment_personal" />
     <fragment
         android:id="@+id/publicFragment"
-        android:name="com.oceantech.tracking.ui.public_config.PublicFragment"
+        android:name="com.oceantech.tracking.ui.information.InfoFragment"
         android:label="@string/app_information"
-        tools:layout="@layout/fragment_public" />
+        tools:layout="@layout/fragment_info" />
 
 </navigation>

@@ -43,8 +43,8 @@ import javax.inject.Inject
 
 import com.oceantech.tracking.R
 import com.oceantech.tracking.ui.home.TestViewModel
-import com.oceantech.tracking.ui.public_config.PublicViewModel
-import com.oceantech.tracking.ui.public_config.PublicViewState
+import com.oceantech.tracking.ui.information.InfoViewModel
+import com.oceantech.tracking.ui.information.InfoViewState
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
@@ -60,7 +60,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
-    TrackingViewModel.Factory, TimeSheetViewModel.Factory, PublicViewModel.Factory {
+    TrackingViewModel.Factory, TimeSheetViewModel.Factory, InfoViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -84,7 +84,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     lateinit var timeSheetViewModelFactory: TimeSheetViewModel.Factory
 
     @Inject
-    lateinit var publicViewModelFactory: PublicViewModel.Factory
+    lateinit var mInfoViewModelFactory: InfoViewModel.Factory
 
     // Create update manager
     private lateinit var appUpdateManager: AppUpdateManager
@@ -122,8 +122,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     }
 
 
-    override fun create(state: PublicViewState): PublicViewModel {
-        return publicViewModelFactory.create(state)
+    override fun create(state: InfoViewState): InfoViewModel {
+        return mInfoViewModelFactory.create(state)
     }
 
     override fun create(S: TimeSheetViewState): TimeSheetViewModel {
