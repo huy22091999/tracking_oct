@@ -107,6 +107,8 @@
     <string name="update_app_successfully">Cập nhật app thành công</string>
     <string name="cancel_app_update">Bạn đã hoãn cập nhật</string>
     <string name="update_app_failed">Hệ thống cập nhật đang có lỗi</string>
+    <string name="restart_app_update">Tải update thành công, app sẽ khởi động lại trong 5s</string>
+    <string name="downloading">Đang tải xuống</string>
 
 
 </resources>

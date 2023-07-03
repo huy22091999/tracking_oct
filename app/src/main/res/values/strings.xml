@@ -107,6 +107,8 @@
     <string name="update_app_successfully">Update successfully</string>
     <string name="cancel_app_update">You canceled the update</string>
     <string name="update_app_failed">Something error with updating</string>
+    <string name="restart_app_update">Download update successfully. Restart app in 5 seconds</string>
+    <string name="downloading">Downloading</string>
 
 
 </resources>

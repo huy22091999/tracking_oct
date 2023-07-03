@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.MenuRes
@@ -32,7 +31,6 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
-import com.google.android.play.core.common.IntentSenderForResultStarter
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
@@ -104,7 +102,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
 
         //Register install listener for flexible update for update manager, just for flexible update
-        if(updateType == AppUpdateType.FLEXIBLE){
+        if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.registerListener(installStatusListener)
         }
 
@@ -228,7 +226,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     }
 
     @SuppressLint("InflateParams")
-    private fun showMenu(v: View , @MenuRes menuRes: Int ) {
+    private fun showMenu(v: View, @MenuRes menuRes: Int) {
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.popup_window, null)
         val popup = PopupWindow(
@@ -349,8 +347,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 createNotification(
                     NOTIFICATION_CHANNEL_ID,
                     applicationContext,
-                    "Update",
-                    "Downloading",
+                    getString(R.string.update),
+                    getString(R.string.downloading),
                     R.layout.download_update_layout,
                     downloaded,
                     total
@@ -360,7 +358,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             InstallStatus.DOWNLOADED -> {
                 showToast(
                     applicationContext,
-                    "Download update successfully. Restart app in 5 seconds"
+                    getString(R.string.restart_app_update)
                 )
                 lifecycleScope.launch {
                     delay(5.seconds)
@@ -372,9 +370,12 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
     }
 
+    /**
+     * Unregister listener for flexible update
+     */
     override fun onDestroy() {
         super.onDestroy()
-        if(updateType == AppUpdateType.FLEXIBLE){
+        if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.unregisterListener(installStatusListener)
         }
     }
