@@ -5,9 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.security.LoginActivity">
-    <FrameLayout
+    <fragment
         android:id="@+id/frame_layout"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph_security" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@
     </style>
     <style name="NimpeButtonLogin">
         <item name="cornerRadius">24dp</item>
+        <item name="backgroundTint">#81ecec</item>
     </style>
     <style name="DialogButton">
         <item name="cornerRadius">13dp</item>

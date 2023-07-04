@@ -15,6 +15,7 @@ import com.oceantech.tracking.BuildConfig
 import com.oceantech.tracking.R
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.databinding.DialogLoginBinding
 import com.oceantech.tracking.ui.MainActivity
@@ -38,6 +39,8 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
         viewModel.subscribe(this) {
             handleStateChange(it)
         }
+
+
     }
 
     override fun onResume() {

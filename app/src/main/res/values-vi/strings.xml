@@ -110,4 +110,32 @@
     <string name="menu_theme">Giao diện</string>
     <string name="remind_later">Nhắc tôi sau</string>
     <string name="users">Người dùng</string>
+    <string name="birthday">Ngày sinh</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
+    <string name="email_not_correct">Email không đúng định dạng</string>
+    <string name="confirm_password_not_correct">Xác nhận mật khẩu không đúng.</string>
+    <string name="lock_account">Lock Account</string>
+    <string name="level">Level</string>
+    <string name="amount_of_leave_days">Số ngày nghỉ</string>
+    <string name="trackings_of_participations">Số ngày trackings/\nSố ngày tham gia</string>
+    <string name="update_profile">Chỉnh sửa thông tin</string>
+    <string name="profile">Profile</string>
+
+    <string-array name="gender_spin">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+    </string-array>
+
+    <string-array name="year_spinner">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>Đã tốt nghiệp</item>
+    </string-array>
 </resources>

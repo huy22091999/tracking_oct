@@ -38,11 +38,14 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.security.SplashActivity
 import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
+import com.oceantech.tracking.ui.user.UserFragmentDirections
+
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
@@ -92,7 +95,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun handleEvents(viewEvent: HomeViewEvent) {
         when(viewEvent){
             is HomeViewEvent.ReturnUpdateTracking ->{
-                navigateTo(R.id.nav_trackingFragment, viewEvent.id, viewEvent.content)
+                navigateTo(R.id.nav_trackingFragment, id = viewEvent.id, content = viewEvent.content)
+            }
+            is HomeViewEvent.ReturnProfile -> {
+                Log.e("action in user fragment:", "main")
+                navigateTo(R.id.nav_detailUserFragment)
             }
             is HomeViewEvent.ReturnAddTracking -> {
                 navigateTo(R.id.nav_trackingFragment)
@@ -131,7 +138,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.nav_allTrackingFragment,
                 R.id.nav_trackingFragment,
                 R.id.nav_timeSheetFragment,
-                R.id.nav_userFragment
+                R.id.nav_userFragment,
+                R.id.nav_detailUserFragment
             ), drawerLayout
         )
 
@@ -140,7 +148,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
         // settings
         navView.setNavigationItemSelectedListener { menuItem ->
-
             val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
 
             when (menuItem.itemId) {
@@ -266,14 +273,20 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return true
     }
 
-    private fun navigateTo(fragmentId: Int, id:Int? = null,content:String ? = null) {
+    @SuppressLint("LogNotTimber")
+    private fun navigateTo(fragmentId: Int, id:Int? = null, content:String ? = null, user:User ? = null) {
         if(id != null){
             val direction = TrackingFragmentDirections.actionNavAllTrackingFragmentToNavTrackingFragment(id, content!!)
             navController.navigate(direction)
-        } else {
+        }
+//        else if(id == null && user != null) {
+//            val direction = UserFragmentDirections.actionNavUserFragmentToDetailUserFragment(user)
+//            Log.e("action in user fragment:", "navigate")
+//            navController.navigate(direction)
+//        }
+        else {
             navController.navigate(fragmentId)
         }
-        //navController.navigate(fragmentId)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

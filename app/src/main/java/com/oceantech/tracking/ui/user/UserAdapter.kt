@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.user
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,10 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.ItemUserBinding
 
-class UserAdapter (private val context: Context, private val users:List<User>)
-    :RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter (private val context: Context,
+                   private val users:List<User>,
+                   private val action:(User) ->Unit
+    ):RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     class UserViewHolder(private val context: Context, private val binding:ViewBinding):RecyclerView.ViewHolder(binding.root){
         fun onBind(user: User){
             with(binding as ItemUserBinding){
@@ -31,5 +34,9 @@ class UserAdapter (private val context: Context, private val users:List<User>)
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.onBind(user = users[position])
+        holder.itemView.setOnClickListener {
+            Log.i("selected item:", users[position].email.toString())
+            action(users[position])
+        }
     }
 }

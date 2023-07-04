@@ -3,17 +3,22 @@ package com.oceantech.tracking.ui.security
 import android.os.Bundle
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.airbnb.mvrx.viewModel
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseActivity
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.ActivityLoginBinding
+import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
 import com.oceantech.tracking.utils.addFragmentToBackstack
 import javax.inject.Inject
 
 class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {
 
     val viewModel: SecurityViewModel by viewModel()
+    private lateinit var navController: NavController
 
     @Inject
     lateinit var securityviewmodelFactory: SecurityViewModel.Factory
@@ -21,9 +26,10 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
-        supportFragmentManager.commit {
-            add<LoginFragment>(R.id.frame_layout)
-        }
+        navController = findNavController(R.id.frame_layout)
+//        supportFragmentManager.commit {
+//            add<LoginFragment>(R.id.frame_layout)
+//        }
         viewModel.observeViewEvents {
             if (it != null) {
                 handleEvent(it)
@@ -35,13 +41,16 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     private fun handleEvent(event: SecurityViewEvent) {
         when (event) {
             is SecurityViewEvent.ReturnSigninEvent -> {
-                addFragmentToBackstack(R.id.frame_layout, SigninFragment::class.java, SigninFragment::class.java.simpleName)
+                navigateTo(R.id.signinFragment)
             }
             is SecurityViewEvent.ReturnResetpassEvent -> {
-                addFragmentToBackstack(R.id.frame_layout, ResetPasswordFragment::class.java, ResetPasswordFragment::class.java.simpleName)
+                navigateTo(R.id.resetPasswordFragment)
             }
             is SecurityViewEvent.ReturnLoginEvent -> {
-                addFragmentToBackstack(R.id.frame_layout, LoginFragment::class.java,LoginFragment::class.java.simpleName)
+                navigateTo(R.id.loginFragment)
+            }
+            is SecurityViewEvent.ReturnNextSignInEvent -> {
+                navigateTo(R.id.nextSigninFragment, event.user)
             }
         }
     }
@@ -54,12 +63,12 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
         return securityviewmodelFactory.create(initialState)
     }
 
-    override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
-        if(fragment is SigninFragment || fragment is ResetPasswordFragment){
-            viewModel.handleReturnLogin()
+    private fun navigateTo(fragmentId: Int, user: User? = null) {
+        if(user != null){
+            val direction = SigninFragmentDirections.actionSigninFragmentToNextSigninFragment(user)
+            navController.navigate(direction)
         } else {
-            super.onBackPressed()
+            navController.navigate(fragmentId)
         }
     }
 }

@@ -16,27 +16,8 @@ class UserRepository @Inject constructor(
     fun getCurrentUser(): Observable<User> = api.getCurrentUser().subscribeOn(Schedulers.io())
     fun getString(): String = "test part"
     fun sign(
-        username:String,displayName:String, email:String,firstName:String,lastName:String, password:String, birthPlace:String, university:String, year: Int,
-    ):Observable<TokenResponse> = api.sign(User(
-        null,
-        username,
-        true,
-        birthPlace,
-        false,
-        password,
-        displayName,
-        null,
-        email,
-        firstName,
-        null,
-        false,
-        lastName,
-        password,
-        null,
-        mutableListOf(),
-        university,
-        year
-    )).subscribeOn(Schedulers.io())
+        user: User
+    ):Observable<TokenResponse> = api.sign(user).subscribeOn(Schedulers.io())
 
     fun getAllUser():Observable<List<User>> = api.getAllUser().subscribeOn(Schedulers.io())
 }

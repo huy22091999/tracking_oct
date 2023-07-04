@@ -1,6 +1,8 @@
 package com.oceantech.tracking.ui.user
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,15 +24,17 @@ class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
     private val viewModel: HomeViewModel by activityViewModel()
     private lateinit var adapter:UserAdapter
     private lateinit var users:List<User>
+    private var role:String = "ROLE_USER"
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentUserBinding
         = FragmentUserBinding.inflate(layoutInflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.handle(HomeViewAction.GetAllUsers)
 
         users = listOf()
-        adapter = UserAdapter(requireContext(), users)
+        adapter = UserAdapter(requireContext(), users, action)
 
         views.users.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -51,12 +55,18 @@ class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
         }
     }
 
+    private val action:(User) -> Unit = { user ->
+        if(role == "ROLE_ADMIN"){
+            viewModel.handleReturnProfile(user)
+        }
+    }
+
     override fun invalidate():Unit = withState(viewModel){
         when(it.allUsers){
             is Success -> {
                 it.allUsers.invoke()?.let { data ->
                     users = data
-                    adapter = UserAdapter(requireContext(), data)
+                    adapter = UserAdapter(requireContext(), data, action)
                     views.users.adapter = adapter
                 }
                 dismissLoadingDialog()
@@ -66,6 +76,16 @@ class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
             }
             is Loading -> {
                 showLoadingDialog()
+            }
+        }
+        when(it.userCurrent){
+            is Success -> {
+                it.userCurrent?.invoke().let { user ->
+//                    if(user.roles?.last()?.authority == "ROLE_ADMIN"){
+//
+//                    }
+                    role = user.roles?.last()?.authority.toString()
+                }
             }
         }
     }

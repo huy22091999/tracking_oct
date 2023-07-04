@@ -21,41 +21,28 @@ class TokenAuthenticator (
 
     private var mAccessToken = accessToken
     override fun authenticate(route: Route?, response: Response): Request {
-        if(response.code == 200){
-            var accessToken = ""
-            var refreshToken = ""
-            getUpdatedToken().enqueue(object : Callback<TokenResponse>{
-                override fun onResponse(
-                    call: Call<TokenResponse>,
-                    response: retrofit2.Response<TokenResponse>
-                ) {
-                    if(response.body()?.accessToken != null){
-                        accessToken = response.body()?.accessToken.toString()
-                        refreshToken = response.body()?.refreshToken.toString()
-                        sessionManager.saveAuthToken(accessToken)
-                        sessionManager.saveAuthTokenRefresh(refreshToken)
-                    }
-                }
-
-                override fun onFailure(call: Call<TokenResponse>, t: Throwable) {
-                }
-            })
-            return response.request.newBuilder()
-                .header(
-                    "Authorization",
-                    "Bearer $accessToken"
-                )
+        return when(response.code){
+            200 -> response.request.newBuilder()
+                .header("Authorization",
+                    "Bearer $mAccessToken")
                 .build()
+            401 -> {
+                response.request.newBuilder()
+                    .header("Authorization",
+                        if (!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0")
+                    .build()
+            }
+            else -> {
+                sessionManager.clearAuthToken()
+                response.request.newBuilder()
+                    .header("Authorization",
+                        if (!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0")
+                    .build()
+            }
         }
-        return response.request.newBuilder()
-            .header(
-                "Authorization",
-                if(!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0"
-            )
-            .build()
     }
 
-    private fun getUpdatedToken(): Call<TokenResponse> {
+    private fun getUpdatedToken(): TokenResponse? {
         val credentials =
             UserCredentials(
                 AuthApi.CLIENT_ID,
@@ -66,7 +53,12 @@ class TokenAuthenticator (
                 AuthApi.GRANT_TYPE_REFRESH
             )
 
-        return api.loginWithRefreshToken(credentials)
+        val response = api.loginWithRefreshToken(credentials).execute()
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
     }
 }
 

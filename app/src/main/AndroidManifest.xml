@@ -20,7 +20,7 @@
     <application
         android:name="com.oceantech.tracking.TrackingApplication"
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/calendar"
         android:label="@string/tracking"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"

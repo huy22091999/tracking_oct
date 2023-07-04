@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_nav_allTrackingFragment_to_userFragment"
             app:destination="@id/nav_userFragment" />
+        <action
+            android:id="@+id/action_nav_allTrackingFragment_to_detailUserFragment"
+            app:destination="@id/nav_detailUserFragment" />
     </fragment>
 
     <fragment
@@ -48,5 +51,57 @@
         android:id="@+id/nav_userFragment"
         android:name="com.oceantech.tracking.ui.user.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_nav_userFragment_to_detailUserFragment"
+            app:destination="@id/nav_detailUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_detailUserFragment"
+        android:name="com.oceantech.tracking.ui.profile.DetailUserFragment"
+        android:label="fragment_detail_user"
+        tools:layout="@layout/fragment_detail_user" >
+        <action
+            android:id="@+id/action_detailUserFragment_to_nav_userFragment"
+            app:destination="@id/nav_userFragment" />
+        <argument
+            android:name="info_user"
+            app:argType="com.oceantech.tracking.data.model.User"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_nav_detailUserFragment_to_signinFragment2"
+            app:destination="@id/signinFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/signinFragment2"
+        android:name="com.oceantech.tracking.ui.security.SigninFragment"
+        android:label="fragment_signin"
+        tools:layout="@layout/fragment_signin" >
+        <action
+            android:id="@+id/action_signinFragment2_to_nextSigninFragment2"
+            app:destination="@id/nextSigninFragment2" />
+        <argument
+            android:name="user"
+            app:argType="com.oceantech.tracking.data.model.User"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/nextSigninFragment2"
+        android:name="com.oceantech.tracking.ui.security.NextSigninFragment"
+        android:label="fragment_next_signin"
+        tools:layout="@layout/fragment_next_signin" >
+        <action
+            android:id="@+id/action_nextSigninFragment2_to_nav_detailUserFragment"
+            app:destination="@id/nav_detailUserFragment" />
+        <action
+            android:id="@+id/action_nextSigninFragment2_to_signinFragment2"
+            app:destination="@id/signinFragment2" />
+        <argument
+            android:name="user"
+            app:argType="com.oceantech.tracking.data.model.User"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

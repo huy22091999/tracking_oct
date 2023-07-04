@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.PublicRepository
 import com.oceantech.tracking.data.repository.UserRepository
@@ -28,7 +29,7 @@ class SecurityViewModel @AssistedInject constructor(
         when(action){
             is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
-            is SecurityViewAction.SignAction -> handleSign(action.username, action.displayName, action.email, action.firstName, action.lastName, action.password, action.birthPlace, action.university, action.year)
+            is SecurityViewAction.SignAction -> handleSign(action.user)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
             is SecurityViewAction.GetConfigApp -> handleConfigApp()
         }
@@ -48,11 +49,11 @@ class SecurityViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handleSign(username: String, displayName: String, email: String, firstName: String, lastName: String, password: String, birthPlace:String, university:String, year:Int) {
+    private fun handleSign(user:User) {
         setState {
             copy(asyncSign = Loading())
         }
-        userRepo.sign(username,displayName,email,firstName,lastName,password, birthPlace, university, year).execute {
+        userRepo.sign(user).execute {
             copy(asyncSign = it)
         }
     }
@@ -71,6 +72,7 @@ class SecurityViewModel @AssistedInject constructor(
             copy(asyncLogin = Uninitialized)
         }
     }
+
     private fun handleSaveToken(tokenResponse: TokenResponse)
     {
         this.viewModelScope.async {
@@ -93,6 +95,10 @@ class SecurityViewModel @AssistedInject constructor(
             copy(asyncLogin = Uninitialized)
         }
         _viewEvents.post(SecurityViewEvent.ReturnLoginEvent)
+    }
+
+    fun handleReturnNextSignIn(user:User){
+        _viewEvents.post(SecurityViewEvent.ReturnNextSignInEvent(user))
     }
 
     fun getString()="test"

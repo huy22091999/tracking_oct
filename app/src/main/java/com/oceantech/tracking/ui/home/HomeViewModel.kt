@@ -7,6 +7,7 @@ import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.data.model.Tracking
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.TimeSheetRepository
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.data.repository.UserRepository
@@ -26,6 +27,7 @@ class HomeViewModel @AssistedInject constructor(
         handleAllTracking()
         handleTimeSheets()
         handleAllUsers()
+        handleCurrentUser()
     }
     override fun handle(action: HomeViewAction) {
         when (action) {
@@ -125,6 +127,11 @@ class HomeViewModel @AssistedInject constructor(
     fun handleReturnTracking(){
         _viewEvents.post(HomeViewEvent.ReturnTracking)
     }
+
+    fun handleReturnProfile(user: User){
+        _viewEvents.post(HomeViewEvent.ReturnProfile(user))
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(initialState: HomeViewState): HomeViewModel

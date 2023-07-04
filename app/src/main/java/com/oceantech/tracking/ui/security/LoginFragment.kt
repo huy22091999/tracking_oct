@@ -37,25 +37,19 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             loginSubmit()
         }
         views.labelSigin.setOnClickListener {
+            viewModel.handleRemoveStateError()
+            views.usernameTil.error = null
+            views.passwordTil.error = null
             viewModel.handleReturnSignin()
         }
         views.labelResetPassword.setOnClickListener {
+            viewModel.handleRemoveStateError()
+            views.usernameTil.error = null
+            views.passwordTil.error = null
             viewModel.handleReturnResetPass()
         }
         dialog = createDialog()
-//        views.username.setOnClickListener {
-//            views.usernameTil.error = null
-//            views.passwordTil.error = null
-//        }
-//        views.password.setOnClickListener {
-//            views.usernameTil.error = null
-//            views.passwordTil.error = null
-//        }
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun loginSubmit()

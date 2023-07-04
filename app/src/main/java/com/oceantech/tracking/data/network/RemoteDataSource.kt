@@ -65,7 +65,6 @@ class RemoteDataSource {
         val sessionManager = SessionManager(context.applicationContext)
         var authenticator: TokenAuthenticator? = null
 
-
         authenticator = if (sessionManager.fetchAuthToken() != null) {
             TokenAuthenticator(sessionManager.fetchAuthToken()!!, buildAuthApi(), sessionManager)
         } else

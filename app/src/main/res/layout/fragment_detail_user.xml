@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.DetailUserFragment"
+    android:theme="@style/TrackingFragment">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+
+        <TableLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TableRow
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/email" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/email"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/email" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/username" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/username"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/email" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/display_name" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/display_name"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/display_name" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/first_name" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/first_name"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/first_name" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/last_name" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lastname"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/last_name" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/gender" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/gender"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/gender" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/university" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/university"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/university" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/year" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/year"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/year" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/level" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/level"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/level" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/amount_of_leave_days" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/amount_of_leave_days"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/amount_of_leave_days" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20dp"
+                android:weightSum="3">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TrackingText"
+                    android:layout_weight="1"
+                    android:text="@string/trackings_of_participations" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/trackings"
+                    style="@style/TrackingText"
+                    android:layout_weight="2"
+                    android:text="@string/trackings_of_participations" />
+            </TableRow>
+        </TableLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/lockButton"
+                style="@style/NimpeButtonLogin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:paddingHorizontal="15dp"
+                android:text="@string/lock_account"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/updateButton"
+                style="@style/NimpeButtonLogin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:paddingHorizontal="15dp"
+                android:text="@string/update_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,7 +80,7 @@
     <string name="at">at</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
     <string name="birth_place">Nơi sinh</string>
-    <string name="gender">Giới tính</string>
+    <string name="gender">Gender</string>
     <string name="tracking_success">Success</string>
     <string name="university">University</string>
     <string name="year">Year</string>
@@ -109,4 +109,32 @@
     <string name="menu_theme">Theme</string>
     <string name="remind_later">Remind later</string>
     <string name="users">Users</string>
+    <string name="birthday">Birthday</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="email_not_correct">Incorrect email format</string>
+    <string name="confirm_password_not_correct">Confirm password is incorrect</string>
+    <string name="lock_account">Lock Account</string>
+    <string name="level">Level</string>
+    <string name="amount_of_leave_days">Amount of leave days</string>
+    <string name="trackings_of_participations">Trackings/\nParticipation</string>
+    <string name="update_profile">Update information</string>
+    <string name="profile">Profile</string>
+
+    <string-array name="gender_spin">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Another</item>
+    </string-array>
+
+    <string-array name="year_spinner">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>Graduated</item>
+    </string-array>
 </resources>

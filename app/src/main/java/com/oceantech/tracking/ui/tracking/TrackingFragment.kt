@@ -112,13 +112,10 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
                         adapter = TrackingAdapter(trackings,requireContext(), showMenu)
                     }
                 }
-                dismissLoadingDialog()
             }
             is Loading -> {
-                showLoadingDialog()
             }
             is Fail -> {
-                dismissLoadingDialog()
             }
         }
         when(it.asyncDeleteTracking){
@@ -127,15 +124,12 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
                     Toast.makeText(requireContext(), getString(R.string.delete_success), Toast.LENGTH_SHORT).show()
                     Log.i("state of deleted: ", "success delete tracking id ${it.id}")
                 }
-                dismissLoadingDialog()
                 viewModel.handleRemoveStateOfDelete()
             }
             is Loading -> {
                 viewModel.handleAllTracking()
-                showLoadingDialog()
             }
             is Fail -> {
-                dismissLoadingDialog()
             }
         }
     }

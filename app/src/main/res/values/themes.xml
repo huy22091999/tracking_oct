@@ -57,4 +57,8 @@
     <style name="TrackingItem" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="android:background">@color/white</item>
     </style>
+
+    <style name="SpinnerInputLayoutLogin" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="background">@drawable/background_spinner</item>
+    </style>
 </resources>
