@@ -40,9 +40,43 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.UpdateTracking -> handleUpdateTracking(action.id, action.content)
             is HomeViewAction.DeleteTracking -> handleDeleteTracking(action.id)
             is HomeViewAction.GetAllUsers -> handleAllUsers()
+            is HomeViewAction.BlockUser -> handleBlockUser(action.id)
+            is HomeViewAction.EditTokenDevice -> handleTokenDevice(action.tokenDevice)
+            is HomeViewAction.UpdateMyself -> handleUpdateMyself(action.user)
+            is HomeViewAction.EditUser -> handleEditUser(action.user)
         }
     }
 
+    private fun handleEditUser(user: User) {
+        setState { copy(asyncEditUser = Loading()) }
+        repository.edit(user).execute {
+            copy(asyncEditUser = it)
+        }
+    }
+
+    private fun handleUpdateMyself(user: User) {
+        setState { copy(asyncUpdateMySelf = Loading()) }
+        repository.updateMyself(user).execute {
+            copy(asyncUpdateMySelf = it)
+        }
+    }
+
+    private fun handleTokenDevice(tokenDevice: String) {
+        setState { copy(asyncTokenDevice = Loading()) }
+        repository.edit(tokenDevice).execute {
+            copy(asyncTokenDevice = it)
+        }
+    }
+
+    fun handleRemoveStateBlockUser() = setState { copy(asyncBlockUser = Uninitialized) }
+    private fun handleBlockUser(id: Int) {
+        setState { copy(asyncBlockUser = Loading()) }
+        repository.blockUser(id).execute {
+            copy(asyncBlockUser = it)
+        }
+    }
+
+    fun handleRemoveStateAllUsers() = setState { copy(allUsers = Uninitialized) }
     private fun handleAllUsers() {
         setState { copy(allUsers = Loading()) }
         repository.getAllUser().execute {
@@ -128,8 +162,20 @@ class HomeViewModel @AssistedInject constructor(
         _viewEvents.post(HomeViewEvent.ReturnTracking)
     }
 
-    fun handleReturnProfile(user: User){
-        _viewEvents.post(HomeViewEvent.ReturnProfile(user))
+    fun handleReturnDetailUser(user: User){
+        _viewEvents.post(HomeViewEvent.ReturnDetailUser(user))
+    }
+
+    fun handleReturnUsers() {
+        _viewEvents.post(HomeViewEvent.ReturnListUsers)
+    }
+
+    fun handleReturnUpdateInfo(user: User){
+        _viewEvents.post(HomeViewEvent.ReturnUpdateInfo(user))
+    }
+
+    fun handleNextUpdateInfo(user: User){
+        _viewEvents.post(HomeViewEvent.ReturnNextUpdate(user))
     }
 
     @AssistedFactory

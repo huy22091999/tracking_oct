@@ -91,10 +91,12 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
         if(!firstName.isNullOrEmpty() && !lastName.isNullOrEmpty() && !birthPlace.isNullOrEmpty() && !university.isNullOrEmpty()){
             val user = User(null,
                 null,
-                null,
+                true,
                 birthPlace,
                 false,
                 null,
+                0,
+                0,
                 null,
                 null,
                 null,
@@ -104,6 +106,7 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
                 lastName,
                 null,
                 null,
+                listOf(),
                 null,
                 university,
                 year.toInt()

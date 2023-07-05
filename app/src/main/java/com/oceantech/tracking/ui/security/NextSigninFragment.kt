@@ -16,8 +16,12 @@ import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.network.getDeviceToken
 import com.oceantech.tracking.databinding.FragmentNextSigninBinding
 import com.oceantech.tracking.utils.validateEmail
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NextSigninFragment : TrackingBaseFragment<FragmentNextSigninBinding>() {
     private val viewModel:SecurityViewModel by activityViewModel()
@@ -34,6 +38,7 @@ class NextSigninFragment : TrackingBaseFragment<FragmentNextSigninBinding>() {
     lateinit var university:String
     lateinit var birthPlace:String
     lateinit var year:String
+    lateinit var tokenDevice:String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,36 +67,47 @@ class NextSigninFragment : TrackingBaseFragment<FragmentNextSigninBinding>() {
         birthPlace = user.birthPlace.toString()
         year = user.year.toString()
 
+
         if(displayName.isNullOrEmpty()) views.displayName.error = requireContext().getString(R.string.username_not_empty)
-        if(validateEmail(email)) views.email.error = requireContext().getString(R.string.email_not_correct)
+        if(!validateEmail(email)) views.email.error = requireContext().getString(R.string.email_not_correct)
         if(userName.isNullOrEmpty()) views.username.error = requireContext().getString(R.string.username_not_empty)
         if(password.isNullOrEmpty()) views.password.error = requireContext().getString(R.string.username_not_empty)
         if(confirmPassword.isNullOrEmpty()) views.confrimPassword.error = requireContext().getString(R.string.username_not_empty)
         if (password != confirmPassword) views.confrimPassword.error = requireContext().getString(R.string.confirm_password_not_correct)
-        if (!displayName.isNullOrEmpty() || !validateEmail(email) || userName.isNullOrEmpty() || password.isNullOrEmpty() || confirmPassword.isNullOrEmpty()){
-            val newUser = User(null,
-                userName,
-                true,
-                birthPlace,
-                false,
-                confirmPassword,
-                displayName,
-                null,
-                email,
-                firstName,
-                gender,
-                true,
-                lastName,
-                password,
-                null,
-                listOf(),
-                university,
-                year.toInt()
-            )
+        if (!displayName.isNullOrEmpty() || validateEmail(email) || userName.isNullOrEmpty() || password.isNullOrEmpty() || confirmPassword.isNullOrEmpty()){
+            CoroutineScope(Dispatchers.Main).launch {
+                val token = getDeviceToken(requireContext())
+                if (token != null) {
+                    tokenDevice = token
 
-            viewModel.handle(
-                SecurityViewAction.SignAction(newUser)
-            )
+                    val newUser = User(null,
+                        userName,
+                        true,
+                        birthPlace,
+                        false,
+                        confirmPassword,
+                        0,
+                        0,
+                        displayName,
+                        null,
+                        email,
+                        firstName,
+                        gender,
+                        true,
+                        lastName,
+                        password,
+                        null,
+                        listOf(),
+                        tokenDevice,
+                        university,
+                        year.toInt()
+                    )
+
+                    viewModel.handle(
+                        SecurityViewAction.SignAction(newUser)
+                    )
+                }
+            }
         }
     }
 

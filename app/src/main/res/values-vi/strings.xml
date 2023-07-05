@@ -120,6 +120,8 @@
     <string name="trackings_of_participations">Số ngày trackings/\nSố ngày tham gia</string>
     <string name="update_profile">Chỉnh sửa thông tin</string>
     <string name="profile">Profile</string>
+    <string name="block_account_success">Khóa tài khoản thành công.</string>
+    <string name="block_account_fail">Khóa tài khoản thất bại.</string>
 
     <string-array name="gender_spin">
         <item>Nam</item>

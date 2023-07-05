@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.user.DetailUserFragment"
+    tools:context=".ui.profile.MyProfileFragment"
     android:theme="@style/TrackingFragment">
 
     <ProgressBar
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        >
+        android:visibility="gone">
 
         <TableLayout
             android:layout_width="0dp"
@@ -232,20 +232,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/lockButton"
-                style="@style/NimpeButtonLogin"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:paddingHorizontal="15dp"
-                android:text="@string/lock_account"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/updateButton"

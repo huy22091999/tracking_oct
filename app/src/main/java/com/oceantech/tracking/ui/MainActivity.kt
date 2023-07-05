@@ -95,17 +95,33 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun handleEvents(viewEvent: HomeViewEvent) {
         when(viewEvent){
             is HomeViewEvent.ReturnUpdateTracking ->{
-                navigateTo(R.id.nav_trackingFragment, id = viewEvent.id, content = viewEvent.content)
+                views.title.text = getString(R.string.tracking)
+                navigateTo(R.id.nav_trackingFragment, id = viewEvent.id, content = viewEvent.content,user = null)
             }
-            is HomeViewEvent.ReturnProfile -> {
-                Log.e("action in user fragment:", "main")
-                navigateTo(R.id.nav_detailUserFragment)
+            is HomeViewEvent.ReturnDetailUser-> {
+                views.title.text = getString(R.string.users)
+                val direction = UserFragmentDirections.actionNavUserFragmentToDetailUserFragment(viewEvent.user)
+                navController.navigate(direction)
             }
             is HomeViewEvent.ReturnAddTracking -> {
+                views.title.text = getString(R.string.tracking)
                 navigateTo(R.id.nav_trackingFragment)
             }
             is HomeViewEvent.ReturnTracking -> {
+                views.title.text = getString(R.string.tracking)
                 navigateTo(R.id.nav_allTrackingFragment)
+            }
+            is HomeViewEvent.ReturnListUsers ->{
+                views.title.text = getString(R.string.tracking)
+                navigateTo(R.id.nav_userFragment)
+            }
+            is HomeViewEvent.ReturnUpdateInfo -> {
+                views.title.text = getString(R.string.update_profile)
+                navigateTo(R.id.nav_updateProfileFragment)
+            }
+            is HomeViewEvent.ReturnNextUpdate -> {
+                views.title.text = getString(R.string.update_profile)
+                navigateTo(R.id.nav_nextUpdateFragment)
             }
         }
     }
@@ -139,7 +155,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 R.id.nav_trackingFragment,
                 R.id.nav_timeSheetFragment,
                 R.id.nav_userFragment,
-                R.id.nav_detailUserFragment
+                R.id.nav_detailUserFragment,
+                R.id.nav_myProfileFragment
             ), drawerLayout
         )
 
@@ -279,11 +296,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             val direction = TrackingFragmentDirections.actionNavAllTrackingFragmentToNavTrackingFragment(id, content!!)
             navController.navigate(direction)
         }
-//        else if(id == null && user != null) {
-//            val direction = UserFragmentDirections.actionNavUserFragmentToDetailUserFragment(user)
-//            Log.e("action in user fragment:", "navigate")
-//            navController.navigate(direction)
-//        }
         else {
             navController.navigate(fragmentId)
         }
@@ -301,13 +313,16 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             }
 
             R.id.menu_list_health -> {
+                views.title.text = getString(R.string.tracking)
                 navigateTo(R.id.nav_trackingFragment)
                 return true
             }
             else -> {
+                views.title.text = getString(R.string.tracking)
                 super.onOptionsItemSelected(item)
             }
         }
+        views.title.text = getString(R.string.tracking)
         return super.onOptionsItemSelected(item)
     }
 

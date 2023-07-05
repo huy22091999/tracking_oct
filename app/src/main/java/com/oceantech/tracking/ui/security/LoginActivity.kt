@@ -11,8 +11,6 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.ActivityLoginBinding
-import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
-import com.oceantech.tracking.utils.addFragmentToBackstack
 import javax.inject.Inject
 
 class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {

@@ -21,25 +21,30 @@ class TokenAuthenticator (
 
     private var mAccessToken = accessToken
     override fun authenticate(route: Route?, response: Response): Request {
-        return when(response.code){
-            200 -> response.request.newBuilder()
-                .header("Authorization",
-                    "Bearer $mAccessToken")
-                .build()
-            401 -> {
-                response.request.newBuilder()
-                    .header("Authorization",
-                        if (!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0")
-                    .build()
-            }
-            else -> {
-                sessionManager.clearAuthToken()
-                response.request.newBuilder()
-                    .header("Authorization",
-                        if (!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0")
-                    .build()
-            }
-        }
+        return response.request.newBuilder()
+            .header("Authorization",
+                if (!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0")
+            .build()
+
+//        when(response.code){
+//            200 -> response.request.newBuilder()
+//                .header("Authorization",
+//                    "Bearer $mAccessToken")
+//                .build()
+//            401 -> {
+//                response.request.newBuilder()
+//                    .header("Authorization",
+//                        if (!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0")
+//                    .build()
+//            }
+//            else -> {
+//                sessionManager.clearAuthToken()
+//                response.request.newBuilder()
+//                    .header("Authorization",
+//                        if (!mAccessToken.isNullOrEmpty()) "Bearer $mAccessToken" else "Basic Y29yZV9jbGllbnQ6c2VjcmV0")
+//                    .build()
+//            }
+//        }
     }
 
     private fun getUpdatedToken(): TokenResponse? {

@@ -14,17 +14,24 @@ data class HomeViewState(
     val allTracking: Async<List<Tracking>> = Uninitialized,
     val timeSheets:Async<List<TimeSheet>> = Uninitialized,
     val checkIn:Async<TimeSheet> = Uninitialized,
-    val allUsers:Async<List<User>> = Uninitialized
+    val allUsers:Async<List<User>> = Uninitialized,
+    val asyncBlockUser:Async<User> = Uninitialized,
+    val asyncTokenDevice:Async<User> = Uninitialized,
+    val asyncUpdateMySelf:Async<User> = Uninitialized,
+    val asyncEditUser:Async<User> = Uninitialized
 
 ) : MvRxState {
     fun isLoadding() =
-            userCurrent is Loading ||
-            asyncSaveTracking is Loading ||
-            asyncUpdateTracking is Loading ||
-            asyncDeleteTracking is Loading ||
-            allTracking is Loading ||
-            timeSheets is Loading ||
-            checkIn is Loading ||
-            allUsers is Loading
-
+        userCurrent is Loading ||
+                asyncSaveTracking is Loading ||
+                asyncUpdateTracking is Loading ||
+                asyncDeleteTracking is Loading ||
+                allTracking is Loading ||
+                timeSheets is Loading ||
+                checkIn is Loading ||
+                allUsers is Loading ||
+                asyncBlockUser is Loading  ||
+                asyncTokenDevice is Loading ||
+                asyncUpdateMySelf is Loading ||
+                asyncEditUser is Loading
 }

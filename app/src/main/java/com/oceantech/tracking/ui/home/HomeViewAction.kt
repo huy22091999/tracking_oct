@@ -17,5 +17,8 @@ sealed class HomeViewAction:NimpeViewModelAction{
     data class SaveTracking(val content:String): HomeViewAction()
     data class UpdateTracking(val id:Int, val content:String): HomeViewAction()
     data class DeleteTracking(val id:Int): HomeViewAction()
-
+    data class BlockUser(val id:Int):HomeViewAction()
+    data class EditTokenDevice(val tokenDevice:String):HomeViewAction()
+    data class UpdateMyself(val user: User):HomeViewAction()
+    data class EditUser(val user: User):HomeViewAction()
 }

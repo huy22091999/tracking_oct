@@ -113,12 +113,14 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="email_not_correct">Incorrect email format</string>
     <string name="confirm_password_not_correct">Confirm password is incorrect</string>
-    <string name="lock_account">Lock Account</string>
+    <string name="lock_account">Block Account</string>
     <string name="level">Level</string>
     <string name="amount_of_leave_days">Amount of leave days</string>
     <string name="trackings_of_participations">Trackings/\nParticipation</string>
     <string name="update_profile">Update information</string>
     <string name="profile">Profile</string>
+    <string name="block_account_success">Block account success</string>
+    <string name="block_account_fail">Block account fail</string>
 
     <string-array name="gender_spin">
         <item>Male</item>

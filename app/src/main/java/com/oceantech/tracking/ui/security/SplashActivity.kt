@@ -112,6 +112,8 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
 
             is Fail -> {
                 startActivity(Intent(this, LoginActivity::class.java))
+                val sessionManager = SessionManager(this@SplashActivity)
+                sessionManager.clearAuthToken()
                 finish()
             }
         }

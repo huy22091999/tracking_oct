@@ -20,8 +20,8 @@
             android:id="@+id/action_nav_allTrackingFragment_to_userFragment"
             app:destination="@id/nav_userFragment" />
         <action
-            android:id="@+id/action_nav_allTrackingFragment_to_detailUserFragment"
-            app:destination="@id/nav_detailUserFragment" />
+            android:id="@+id/action_nav_allTrackingFragment_to_myProfileFragment"
+            app:destination="@id/nav_myProfileFragment" />
     </fragment>
 
     <fragment
@@ -58,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_detailUserFragment"
-        android:name="com.oceantech.tracking.ui.profile.DetailUserFragment"
+        android:name="com.oceantech.tracking.ui.user.DetailUserFragment"
         android:label="fragment_detail_user"
         tools:layout="@layout/fragment_detail_user" >
         <action
@@ -66,42 +66,48 @@
             app:destination="@id/nav_userFragment" />
         <argument
             android:name="info_user"
-            app:argType="com.oceantech.tracking.data.model.User"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:argType="com.oceantech.tracking.data.model.User" />
         <action
-            android:id="@+id/action_nav_detailUserFragment_to_signinFragment2"
-            app:destination="@id/signinFragment2" />
+            android:id="@+id/action_nav_detailUserFragment_to_updateProfileFragment"
+            app:destination="@id/nav_updateProfileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/signinFragment2"
-        android:name="com.oceantech.tracking.ui.security.SigninFragment"
-        android:label="fragment_signin"
-        tools:layout="@layout/fragment_signin" >
+        android:id="@+id/nav_myProfileFragment"
+        android:name="com.oceantech.tracking.ui.profile.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" >
         <action
-            android:id="@+id/action_signinFragment2_to_nextSigninFragment2"
-            app:destination="@id/nextSigninFragment2" />
-        <argument
-            android:name="user"
-            app:argType="com.oceantech.tracking.data.model.User"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            android:id="@+id/action_nav_myProfileFragment_to_updateProfileFragment"
+            app:destination="@id/nav_updateProfileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/nextSigninFragment2"
-        android:name="com.oceantech.tracking.ui.security.NextSigninFragment"
-        android:label="fragment_next_signin"
-        tools:layout="@layout/fragment_next_signin" >
+        android:id="@+id/nav_updateProfileFragment"
+        android:name="com.oceantech.tracking.ui.profile.UpdateProfileFragment"
+        android:label="fragment_update_profile"
+        tools:layout="@layout/fragment_update_profile" >
         <action
-            android:id="@+id/action_nextSigninFragment2_to_nav_detailUserFragment"
+            android:id="@+id/action_updateProfileFragment_to_nav_detailUserFragment"
             app:destination="@id/nav_detailUserFragment" />
         <action
-            android:id="@+id/action_nextSigninFragment2_to_signinFragment2"
-            app:destination="@id/signinFragment2" />
+            android:id="@+id/action_updateProfileFragment_to_nav_myProfileFragment"
+            app:destination="@id/nav_myProfileFragment" />
+        <action
+            android:id="@+id/action_updateProfileFragment_to_nextUpdateFragment"
+            app:destination="@id/nav_nextUpdateFragment" />
         <argument
             android:name="user"
-            app:argType="com.oceantech.tracking.data.model.User"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:argType="com.oceantech.tracking.data.model.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_nextUpdateFragment"
+        android:name="com.oceantech.tracking.ui.profile.NextUpdateFragment"
+        android:label="fragment_next_update"
+        tools:layout="@layout/fragment_next_update" >
+        <action
+            android:id="@+id/action_nextUpdateFragment_to_nav_myProfileFragment"
+            app:destination="@id/nav_myProfileFragment" />
+        <action
+            android:id="@+id/action_nextUpdateFragment_to_nav_detailUserFragment"
+            app:destination="@id/nav_detailUserFragment" />
     </fragment>
 </navigation>

@@ -57,7 +57,7 @@ class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
 
     private val action:(User) -> Unit = { user ->
         if(role == "ROLE_ADMIN"){
-            viewModel.handleReturnProfile(user)
+            viewModel.handleReturnDetailUser(user)
         }
     }
 
@@ -66,24 +66,21 @@ class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
             is Success -> {
                 it.allUsers.invoke()?.let { data ->
                     users = data
-                    adapter = UserAdapter(requireContext(), data, action)
+                    val activeUsers: List<User> = users.filter { user ->
+                        user.active == true
+                    }
+                    adapter = UserAdapter(requireContext(), activeUsers, action)
                     views.users.adapter = adapter
                 }
-                dismissLoadingDialog()
             }
             is Fail -> {
-                dismissLoadingDialog()
             }
             is Loading -> {
-                showLoadingDialog()
             }
         }
         when(it.userCurrent){
             is Success -> {
                 it.userCurrent?.invoke().let { user ->
-//                    if(user.roles?.last()?.authority == "ROLE_ADMIN"){
-//
-//                    }
                     role = user.roles?.last()?.authority.toString()
                 }
             }
