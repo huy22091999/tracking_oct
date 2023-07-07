@@ -79,7 +79,6 @@ class NextSigninFragment : TrackingBaseFragment<FragmentNextSigninBinding>() {
                 val token = getDeviceToken(requireContext())
                 if (token != null) {
                     tokenDevice = token
-
                     val newUser = User(null,
                         userName,
                         true,

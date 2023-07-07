@@ -4,6 +4,7 @@ import android.content.Context
 import com.oceantech.tracking.data.network.*
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.ImageRepository
+import com.oceantech.tracking.data.repository.NotificationRepository
 import com.oceantech.tracking.data.repository.PublicRepository
 import com.oceantech.tracking.data.repository.TimeSheetRepository
 import com.oceantech.tracking.data.repository.TrackingRepository
@@ -24,7 +25,6 @@ object NetWorkModule {
 
     @Provides
     fun providerUserPreferences(context: Context): UserPreferences = UserPreferences(context)
-
 
     @Provides
     fun providerAuthApi(
@@ -94,4 +94,15 @@ object NetWorkModule {
     fun providerImageRepository(
         api: ImageApi
     ):ImageRepository = ImageRepository(api)
+
+    @Provides
+    fun providerNotificationApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(NotificationApi::class.java,context)
+
+    @Provides
+    fun providerNotificationRepository(
+        api:NotificationApi
+    ):NotificationRepository = NotificationRepository(api)
 }

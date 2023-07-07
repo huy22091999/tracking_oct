@@ -3,11 +3,13 @@ package com.oceantech.tracking
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.IntentFilter
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.oceantech.tracking.di.DaggerTrackingComponent
 import com.oceantech.tracking.di.TrackingComponent
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.ui.home.NetworkBroadcast
 import com.oceantech.tracking.utils.LocalHelper
 import timber.log.Timber
 import javax.inject.Inject
@@ -17,6 +19,7 @@ open class TrackingApplication : Application() {
     val trackingComponent: TrackingComponent by lazy {
         initializeComponent()
     }
+    private var networkChangeReceiver: NetworkBroadcast? = null
 
     @Inject
     lateinit var localHelper: LocalHelper
@@ -35,6 +38,15 @@ open class TrackingApplication : Application() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
+        networkChangeReceiver = NetworkBroadcast()
+        val filter = IntentFilter()
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(networkChangeReceiver, filter)
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        unregisterReceiver(networkChangeReceiver)
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {

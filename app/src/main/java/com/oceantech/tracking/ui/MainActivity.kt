@@ -42,8 +42,11 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.profile.MyProfileFragmentDirections
+import com.oceantech.tracking.ui.profile.UpdateProfileFragmentDirections
 import com.oceantech.tracking.ui.security.SplashActivity
 import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
+import com.oceantech.tracking.ui.user.DetailUserFragmentDirections
 import com.oceantech.tracking.ui.user.UserFragmentDirections
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
@@ -98,6 +101,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 views.title.text = getString(R.string.tracking)
                 navigateTo(R.id.nav_trackingFragment, id = viewEvent.id, content = viewEvent.content,user = null)
             }
+            is HomeViewEvent.ReturnAddTracking -> {
+                navigateTo(R.id.nav_trackingFragment)
+            }
             is HomeViewEvent.ReturnDetailUser-> {
                 views.title.text = getString(R.string.users)
                 val direction = UserFragmentDirections.actionNavUserFragmentToDetailUserFragment(viewEvent.user)
@@ -115,13 +121,23 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 views.title.text = getString(R.string.tracking)
                 navigateTo(R.id.nav_userFragment)
             }
+            is HomeViewEvent.ReturnEditInfo -> {
+                views.title.text = getString(R.string.update_profile)
+                val direction = DetailUserFragmentDirections.actionNavDetailUserFragmentToUpdateProfileFragment(viewEvent.user)
+                navController.navigate(direction)
+            }
             is HomeViewEvent.ReturnUpdateInfo -> {
                 views.title.text = getString(R.string.update_profile)
-                navigateTo(R.id.nav_updateProfileFragment)
+                val direction = MyProfileFragmentDirections.actionNavMyProfileFragmentToUpdateProfileFragment(viewEvent.user)
+                navController.navigate(direction)
             }
             is HomeViewEvent.ReturnNextUpdate -> {
                 views.title.text = getString(R.string.update_profile)
-                navigateTo(R.id.nav_nextUpdateFragment)
+                val direction = UpdateProfileFragmentDirections.actionUpdateProfileFragmentToNextUpdateFragment(viewEvent.user)
+                navController.navigate(direction)
+            }
+            is HomeViewEvent.ReturnProfile -> {
+                navigateTo(R.id.nav_myProfileFragment)
             }
         }
     }
@@ -190,6 +206,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                     finishAffinity()
                 }
                 else -> {
+                    views.title.text = getString(R.string.tracking)
                     drawerLayout.closeDrawer(GravityCompat.START)
                     handled
                 }
@@ -312,11 +329,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 return true
             }
 
-            R.id.menu_list_health -> {
-                views.title.text = getString(R.string.tracking)
-                navigateTo(R.id.nav_trackingFragment)
-                return true
-            }
+//            R.id.menu_list_health -> {
+//                views.title.text = getString(R.string.tracking)
+//                navigateTo(R.id.nav_trackingFragment)
+//                return true
+//            }
             else -> {
                 views.title.text = getString(R.string.tracking)
                 super.onOptionsItemSelected(item)

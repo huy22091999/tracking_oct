@@ -122,6 +122,8 @@
     <string name="profile">Profile</string>
     <string name="block_account_success">Khóa tài khoản thành công.</string>
     <string name="block_account_fail">Khóa tài khoản thất bại.</string>
+    <string name="network_connected">Đã kết nối mạng</string>
+    <string name="network_disconnected">Đã mất kết nối mạng</string>
 
     <string-array name="gender_spin">
         <item>Nam</item>

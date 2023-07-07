@@ -71,6 +71,10 @@ class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding
         viewModel.handle(HomeViewAction.UpdateTracking(id, content))
     }
 
+//    private fun updateCountDayTracking(){
+//        viewModel.handle(HomeViewAction.UpdateMyself())
+//    }
+
     private fun handleEvent(it: HomeViewEvent){
         when(it){
             is HomeViewEvent.ResetLanguege ->{

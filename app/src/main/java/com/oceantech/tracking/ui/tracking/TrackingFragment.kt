@@ -49,6 +49,9 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             layoutManager = LinearLayoutManager(requireContext())
             adapter = trackingAdapter
         }
+        views.imageView.setOnClickListener {
+            viewModel.handleReturnAddTracking()
+        }
         viewModel.observeViewEvents {
             handleEvent(it)
         }

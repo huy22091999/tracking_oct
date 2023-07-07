@@ -23,7 +23,7 @@ interface UserApi {
     fun edit(@Path("tokenDevice") tokenDevice:String):Observable<User>
     @GET("users/get-all-user")
     fun getAllUser():Observable<List<User>>
-    @POST("update-myself")
+    @POST("users/update-myself")
     fun updateMyself(@Body user: User):Observable<User>
     @POST("users/update/{id}")
     fun edit(@Body user: User):Observable<User>

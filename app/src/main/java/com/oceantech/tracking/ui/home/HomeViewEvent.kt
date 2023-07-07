@@ -12,6 +12,8 @@ sealed class HomeViewEvent:NimpeViewEvents{
     object ReturnAddTracking: HomeViewEvent()
     object ReturnTracking: HomeViewEvent()
     object Logout: HomeViewEvent()
+    data class ReturnEditInfo(val user: User):HomeViewEvent()
     data class ReturnUpdateInfo(val user: User):HomeViewEvent()
     data class ReturnNextUpdate(val user: User):HomeViewEvent()
+    object ReturnProfile:HomeViewEvent()
 }

@@ -43,7 +43,7 @@ class DetailUserFragment : TrackingBaseFragment<FragmentDetailUserBinding>() {
             Log.e("id of account now:", "${user.id!!.toInt()}")
         }
         views.updateButton.setOnClickListener {
-            viewModel.handleReturnUpdateInfo(user)
+            viewModel.handleReturnEditInfo(user)
         }
     }
 

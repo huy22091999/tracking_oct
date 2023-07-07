@@ -121,6 +121,8 @@
     <string name="profile">Profile</string>
     <string name="block_account_success">Block account success</string>
     <string name="block_account_fail">Block account fail</string>
+    <string name="network_connected">Network is connected</string>
+    <string name="network_disconnected">Network is disconnected</string>
 
     <string-array name="gender_spin">
         <item>Male</item>

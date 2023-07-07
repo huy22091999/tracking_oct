@@ -23,8 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
             android:layout_width="0dp"
@@ -57,6 +56,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/user_name_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/username" />
@@ -74,6 +74,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/display_name_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/display_name" />
@@ -91,6 +92,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/last_name_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/first_name" />
@@ -108,6 +110,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/first_name_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/last_name" />
@@ -125,6 +128,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/gender_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/gender" />
@@ -142,6 +146,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/university_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/university" />
@@ -159,6 +164,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/year_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/year" />
@@ -193,6 +199,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/leave_days_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/amount_of_leave_days" />
@@ -210,6 +217,7 @@
                 android:weightSum="3">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tracking_days_label"
                     style="@style/TrackingText"
                     android:layout_weight="1"
                     android:text="@string/trackings_of_participations" />

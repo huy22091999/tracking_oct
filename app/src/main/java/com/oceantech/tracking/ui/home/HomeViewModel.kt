@@ -130,7 +130,9 @@ class HomeViewModel @AssistedInject constructor(
     fun handleReturnUpdate(content:String, id:Int){
         _viewEvents.post(HomeViewEvent.ReturnUpdateTracking(content, id))
     }
-
+    fun handleReturnAddTracking(){
+        _viewEvents.post(HomeViewEvent.ReturnAddTracking)
+    }
     fun handleRemoveStateOfAdd(){
         setState {
             copy(asyncSaveTracking = Uninitialized)
@@ -176,6 +178,12 @@ class HomeViewModel @AssistedInject constructor(
 
     fun handleNextUpdateInfo(user: User){
         _viewEvents.post(HomeViewEvent.ReturnNextUpdate(user))
+    }
+    fun handleReturnProfile(){
+        _viewEvents.post(HomeViewEvent.ReturnProfile)
+    }
+    fun handleReturnEditInfo(user: User){
+        _viewEvents.post(HomeViewEvent.ReturnEditInfo(user))
     }
 
     @AssistedFactory
