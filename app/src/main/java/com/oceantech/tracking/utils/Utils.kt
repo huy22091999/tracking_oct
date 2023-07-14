@@ -96,7 +96,9 @@ fun String.toLocalDate(isoDateTime: String): String {
 // Convert normal date time to ISO Instant
 fun toIsoInstant(localDate: String): String {
     val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-    return ZonedDateTime.parse(localDate, formatter).toInstant().toString()
+    val date = LocalDate.parse(localDate, formatter)
+    val zonedDateTime = date.atStartOfDay(ZoneId.systemDefault())
+    return zonedDateTime.toInstant().toString()
 }
 
 
