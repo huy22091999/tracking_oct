@@ -6,8 +6,10 @@ import androidx.fragment.app.commit
 import com.airbnb.mvrx.viewModel
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseActivity
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivityLoginBinding
 import com.oceantech.tracking.utils.addFragmentToBackstack
+import com.oceantech.tracking.utils.changeDarkMode
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 @AndroidEntryPoint
@@ -16,10 +18,13 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     private val viewModel: SecurityViewModel by viewModel()
 
     @Inject
+    lateinit var sessionManager: SessionManager
+    @Inject
     lateinit var securityViewModelFactory: SecurityViewModel.Factory
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
+        changeDarkMode(sessionManager.getDarkMode())
         supportFragmentManager.commit {
             add<LoginFragment>(R.id.frame_layout)
         }

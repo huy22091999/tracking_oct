@@ -12,6 +12,7 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.utils.changeDarkMode
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,9 +24,13 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     @Inject
     lateinit var securityViewModelFactory: SecurityViewModel.Factory
 
+    @Inject
+    lateinit var sessionManager: SessionManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
+        changeDarkMode(sessionManager.getDarkMode())
         viewModel.handle(SecurityViewAction.GetUserCurrent)
         viewModel.onEach {
             handleStateChange(it)
@@ -40,9 +45,7 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
             }
 
             is Fail -> {
-                SessionManager(applicationContext).also {
-                    it.deleteAuthToken()
-                }
+                sessionManager.deleteAuthToken()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
@@ -62,4 +65,5 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     override fun create(initialState: SecurityViewState): SecurityViewModel {
         return securityViewModelFactory.create(initialState)
     }
+
 }

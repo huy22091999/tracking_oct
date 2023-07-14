@@ -7,20 +7,22 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:fitsSystemWindows="false"
 tools:openDrawer="start">
-<include
-    android:id="@+id/content_main"
-    layout="@layout/content_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
-<com.google.android.material.navigation.NavigationView
+
+    <include
+        android:id="@+id/content_main"
+        layout="@layout/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.navigation.NavigationView
     android:id="@+id/nav_view"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
-    app:itemIconTint="@color/about_background_dark_color"
-    app:itemTextColor="@color/about_background_dark_color"
-    app:menu="@menu/activity_main_drawer" >
+    app:itemIconTint="?attr/colorOnSurface"
+    app:itemTextColor="?attr/colorOnSurface"
+    app:menu="@menu/activity_main_drawer">
 
 </com.google.android.material.navigation.NavigationView>
 

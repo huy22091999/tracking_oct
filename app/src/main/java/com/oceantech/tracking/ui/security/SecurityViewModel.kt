@@ -32,7 +32,19 @@ class SecurityViewModel @AssistedInject constructor(
             is SecurityViewAction.LogginAction -> handleLogin(action.userName, action.password)
             is SecurityViewAction.SaveTokenAction -> handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent -> handleCurrentUser()
-            is SecurityViewAction.SignInAction -> handleSignIn(action.userName, action.password, action.displayName, action.firstName, action.lastName)
+            is SecurityViewAction.SignInAction -> handleSignIn(
+                action.userName,
+                action.password,
+                action.displayName,
+                action.firstName,
+                action.lastName,
+                action.gender,
+                action.dob,
+                action.email,
+                action.university,
+                action.year,
+                action.confirmPassword
+            )
         }
     }
 
@@ -63,12 +75,27 @@ class SecurityViewModel @AssistedInject constructor(
         password: String,
         displayName: String,
         firstName: String,
-        lastName: String
+        lastName: String,
+        gender: String,
+        dob: String,
+        email : String,
+        university: String,
+        year: Int,
+        confirmPassword: String
     ) {
         setState {
             copy(userSignIn = Loading())
         }
-        userRepo.createUpdateUser(userName, password, displayName, firstName,lastName).execute {
+        userRepo.createUpdateUser(
+            userName,
+            password,
+            displayName,
+            firstName,
+            lastName,
+            gender, dob, email, university,
+            year,
+            confirmPassword
+        ).execute {
             copy(userSignIn = it)
         }
 

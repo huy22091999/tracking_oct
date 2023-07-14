@@ -24,7 +24,7 @@
     <string name="feedback_description">Please enter your feedback below to help make our app even better !</string>
     <string name="feedback_hint">Your feedback ...</string>
     <string name="send_feedback">Send feedback</string>
-    <string name="welcome">Welcome</string>
+    <string name="welcome">Hello, Welcome to Tracking</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
@@ -97,8 +97,7 @@
     <string name="edit">Edit</string>
     <string name="add_tracking_successfully">Add Tracking Successfully</string>
     <string name="add_tracking_failed">Add Tracking Failed</string>
-    <string name="user_id"
-        translatable="false">Id: %s</string>
+    <string name="user_id" translatable="false">Id: %s</string>
     <string name="server_error_message">There is problem with server. Very sorry to users</string>
     <string name="input_error_message">Please input full of required information and correct type of information</string>
     <string name="request_error_message">Your request doesn\'t exist</string>
@@ -109,6 +108,24 @@
     <string name="update_app_failed">Something error with updating</string>
     <string name="restart_app_update">Download update successfully. Restart app in 5 seconds</string>
     <string name="downloading">Downloading</string>
-
+    <string name="user_email" translatable="false">Email: %s</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="university">University</string>
+    <string name="sign_in_year">Year</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="user_first_name">First Name: %s</string>
+    <string name="user_last_name">Last Name: %s</string>
+    <string name="user_dob">Date Of Birth: %s</string>
+    <string name="user_birth_place">Birth Place: %s</string>
+    <string name="user_student_year">Year: %s</string>
+    <string name="user_university">University: %s</string>
+    <string name="user_count_day_checkin">Check In Days: %s</string>
+    <string name="user_count_day_tracking">Tracking Days: %s</string>
+    <string name="lock_account">Lock Account</string>
+    <string name="user_info">User Info</string>
+    <string name="update_user">Update User</string>
+    <string name="update_user_successfully">Update User Successfully</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="update_profile">Update Profile</string>
 
 </resources>

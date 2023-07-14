@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.oceantech.tracking.MainActivity">
     <item
-
         android:icon="@drawable/img_flag_vi"
         android:id="@+id/action_en"
         app:showAsAction="collapseActionView"

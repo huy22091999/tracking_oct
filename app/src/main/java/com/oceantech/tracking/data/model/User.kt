@@ -1,6 +1,12 @@
 package com.oceantech.tracking.data.model
 
+import android.os.Build
+import android.os.Parcel
+import android.os.Parcelable
+import androidx.annotation.RequiresApi
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 import java.util.*
 
 data class User(
@@ -25,7 +31,7 @@ data class User(
     @SerializedName("email")
     val email: String? = null,
     @SerializedName("hasPhoto")
-    val hasPhoto: Boolean = false,
+    val hasPhoto: Boolean? = null,
 
     @SerializedName("firstName")
     val firstName: String? = null,
@@ -44,8 +50,13 @@ data class User(
     @SerializedName("university")
     val university: String? = null,
     @SerializedName("year")
-    val year: Int? = null
-
-
-
+    val year: Int? = null,
+    @SerializedName("countDayCheckin")
+    val countDayCheckIn: Int? = null,
+    @SerializedName("countDayTracking")
+    val countDayTracking: Int? = null,
+    @SerializedName("tokenDevice")
+    val tokenDevice: String? = null
 )
+
+

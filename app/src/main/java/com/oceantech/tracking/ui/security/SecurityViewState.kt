@@ -10,7 +10,7 @@ import com.oceantech.tracking.data.model.User
 data class SecurityViewState(
     val asyncLogin: Async<TokenResponse> = Uninitialized,
     val userCurrent: Async<User> = Uninitialized,
-    val userSignIn: Async<TokenResponse> = Uninitialized,
+    val userSignIn: Async<User> = Uninitialized,
 
 ) : MavericksState {
     fun isLoading() = asyncLogin is Loading

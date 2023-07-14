@@ -2,6 +2,7 @@ package com.oceantech.tracking.ui.home
 
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -17,7 +18,10 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang(action.lang)
             is HomeViewAction.GetAllUsers -> handleAllUsers()
-            else -> {}
+            is HomeViewAction.GetDevice -> handleGetDevice(action.tokenDevice)
+            is HomeViewAction.GetBlockUser -> handleGetBlockUser(action.id)
+            is HomeViewAction.UpdateMyself -> handleUpdateMyself(action.user)
+            is HomeViewAction.UpdateUser -> handleUpdateUser(action.user, action.id)
         }
     }
 
@@ -37,6 +41,34 @@ class HomeViewModel @AssistedInject constructor(
         setState { copy(userCurrent = Loading()) }
         repository.getCurrentUser().execute {
             copy(userCurrent = it)
+        }
+    }
+
+    private fun handleUpdateUser(user: User, id: Int) {
+        setState { copy(updateUser = Loading()) }
+        repository.updateUser(user, id).execute {
+            copy(updateUser = it)
+        }
+    }
+
+    private fun handleUpdateMyself(user: User) {
+        setState { copy(updateMyself = Loading()) }
+        repository.updateMyself(user).execute {
+            copy(updateMyself = it)
+        }
+    }
+
+    private fun handleGetBlockUser(id: Int) {
+        setState { copy(blockUser = Loading()) }
+        repository.getBlockUser(id).execute {
+            copy(blockUser = it)
+        }
+    }
+
+    private fun handleGetDevice(tokenDevice: String) {
+        setState { copy(device = Loading()) }
+        repository.getDevice(tokenDevice).execute {
+            copy(device = it)
         }
     }
 

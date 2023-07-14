@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_category_layout"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:elevation="?attr/elevation">
 
 
         <com.google.android.material.textview.MaterialTextView
@@ -29,7 +30,8 @@
             android:fontFamily="@font/roboto"
             android:text="@{tracking.content}"
             android:textSize="24sp"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            android:textColor="?attr/colorOnSurface"/>
 
         <ImageView
             android:id="@+id/imgMore"

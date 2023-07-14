@@ -17,17 +17,26 @@ import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.utils.changeDarkMode
+import com.oceantech.tracking.utils.checkError
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
-    private val viewModel:SecurityViewModel by activityViewModel()
+    private val viewModel: SecurityViewModel by activityViewModel()
+
+    @Inject
+    lateinit var sessionManager: SessionManager
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentLoginBinding {
-        return FragmentLoginBinding.inflate(inflater,container,false)
+        return FragmentLoginBinding.inflate(inflater, container, false)
     }
-    lateinit var username:String
-    lateinit var password:String
+
+    lateinit var username: String
+    lateinit var password: String
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        changeDarkMode(sessionManager.getDarkMode())
         views.loginSubmit.setOnClickListener {
             loginSubmit()
         }
@@ -39,36 +48,46 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         }
         super.onViewCreated(view, savedInstanceState)
     }
-    private fun loginSubmit()
-    {
-        username=views.userName.text.toString().trim()
-        password=views.password.text.toString().trim()
-        if(username.isNullOrEmpty()) views.usernameTil.error=getString(R.string.username_not_empty)
-        if(password.isNullOrEmpty()) views.passwordTil.error=getString(R.string.username_not_empty)
-        if (!username.isNullOrEmpty()&&!password.isNullOrEmpty())
-        {
-            viewModel.handle(SecurityViewAction.LogginAction(username,password))
+
+    private fun loginSubmit() {
+        username = views.userName.text.toString().trim()
+        password = views.password.text.toString().trim()
+        if (username.isNullOrEmpty()) views.usernameTil.error =
+            getString(R.string.username_not_empty)
+        if (password.isNullOrEmpty()) views.passwordTil.error =
+            getString(R.string.username_not_empty)
+        if (!username.isNullOrEmpty() && !password.isNullOrEmpty()) {
+            viewModel.handle(SecurityViewAction.LogginAction(username, password))
         }
     }
 
-    override fun invalidate(): Unit = withState(viewModel){
-        when(it.asyncLogin){
-            is Success ->{
-                it.asyncLogin.invoke()?.let { token->
-                    val sessionManager = context?.let { it1 -> SessionManager(it1.applicationContext) }
-                    token.accessToken?.let { it1 -> sessionManager!! .saveAuthToken(it1) }
+    override fun invalidate(): Unit = withState(viewModel) {
+        when (it.asyncLogin) {
+            is Success -> {
+                it.asyncLogin.invoke()?.let { token ->
+                    val sessionManager =
+                        context?.let { it1 -> SessionManager(it1.applicationContext) }
+                    token.accessToken?.let { it1 -> sessionManager!!.saveAuthToken(it1) }
                     token.refreshToken?.let { it1 -> sessionManager!!.saveAuthTokenRefresh(it1) }
-                    Log.i("Login", token.toString())
+                    Timber.tag("Login").i(token.toString())
                     viewModel.handle(SecurityViewAction.SaveTokenAction(token))
                 }
-                Toast.makeText(requireContext(),getString(R.string.login_success),Toast.LENGTH_LONG).show()
-                Log.i("Login", it.asyncLogin.toString())
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.login_success),
+                    Toast.LENGTH_LONG
+                ).show()
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 activity?.finish()
             }
-            is Fail->{
-                Log.i("Login", (it.asyncLogin as Fail<TokenResponse>).error.toString())
-                views.passwordTil.error=getString(R.string.login_fail)
+
+            is Fail -> {
+                it.asyncLogin.error.message?.let { it1 ->
+                    checkError(it1)
+                    Log.i("Login", it1)
+
+                }
+                views.passwordTil.error = getString(R.string.login_fail)
             }
 
             else -> {}

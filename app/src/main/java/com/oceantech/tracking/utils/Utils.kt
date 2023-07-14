@@ -12,20 +12,26 @@ import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.security.LoginActivity
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -87,6 +93,12 @@ fun String.toLocalDate(isoDateTime: String): String {
 
     return normalDateTime.format(normalFormat)
 }
+// Convert normal date time to ISO Instant
+fun toIsoInstant(localDate: String): String {
+    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    return ZonedDateTime.parse(localDate, formatter).toInstant().toString()
+}
+
 
 //Update language of app
 fun Activity.changeLanguage(localHelper: LocalHelper, language: String) {
@@ -133,7 +145,12 @@ fun createNotification(
     max: Long = 0
 ): Notification {
     val views = RemoteViews(context.packageName, layoutId)
-    if(progress > 0 && max > 0) views.setProgressBar(R.id.downloadPB, max.toInt(), progress.toInt(), false)
+    if (progress > 0 && max > 0) views.setProgressBar(
+        R.id.downloadPB,
+        max.toInt(),
+        progress.toInt(),
+        false
+    )
     return NotificationCompat.Builder(context, id)
         .setContentTitle(contentTitle)
         .setSmallIcon(R.drawable.download_icon)
@@ -144,32 +161,37 @@ fun createNotification(
 }
 
 @SuppressLint("LogNotTimber")
-fun Fragment.checkError(errorCode: String){
+fun Fragment.checkError(errorCode: String) {
     val context = this.requireContext()
     val name = this::class.java.simpleName
-    when(errorCode){
+    when (errorCode) {
         "HTTP 500 " -> {
             showToast(context, context.getString(R.string.server_error_message))
             Log.i(name, errorCode)
         }
+
         "HTTP 400 " -> {
             showToast(context, getString(R.string.input_error_message))
             Log.i(name, errorCode)
         }
+
         "HTTP 404 " -> {
             showToast(context, getString(R.string.request_error_message))
             Log.i(name, errorCode)
         }
+
         "HTTP 403 " -> {
             showToast(context, getString(R.string.forbidden_error_message))
             Log.i(name, errorCode)
         }
+
         "HTTP 401 " -> {
             showToast(context, getString(R.string.authorization_error_message))
             Log.i(name, errorCode)
         }
     }
 }
+
 class ItemDecoration(
     private val distance: Int
 ) : RecyclerView.ItemDecoration() {
@@ -186,3 +208,27 @@ class ItemDecoration(
     }
 }
 
+
+object DarkModeUtils {
+    var isDarkMode: Boolean = false
+}
+
+fun changeDarkMode(isDarkMode: Boolean) {
+    AppCompatDelegate.setDefaultNightMode(
+        if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+    )
+}
+
+// this function will make us can press on user item when press back button to home fragment
+internal fun Fragment.handleBackPressedEvent(controller: NavController) {
+    requireActivity().apply {
+        onBackPressedDispatcher.addCallback {
+            when (controller.currentDestination?.id) {
+                R.id.nav_HomeFragment -> finish()
+                R.id.modifyUserFragment -> controller.navigate(R.id.userInfoFragment)
+                R.id.modifyPersonalFragment -> controller.navigate(R.id.personalFragment)
+                else -> controller.navigate(R.id.nav_HomeFragment)
+            }
+        }
+    }
+}

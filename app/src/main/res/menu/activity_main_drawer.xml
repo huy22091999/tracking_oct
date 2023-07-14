@@ -14,13 +14,14 @@
             android:title="@string/menu_user_list"/>
         <item android:id="@+id/trackingFragment"
             android:icon="@mipmap/tracking"
-            android:title="@string/menu_tracking"/>
+            android:title="@string/menu_tracking" />
         <item android:id="@+id/timeSheetFragment"
             android:title="@string/time_sheet"
-            android:icon="@mipmap/time_sheet"/>
+            android:icon="@mipmap/time_sheet" />
         <item android:id="@+id/publicFragment"
             android:title="@string/app_information"
             android:icon="@drawable/infor_icon"/>
+
 
 
 
@@ -33,6 +34,10 @@
             app:actionViewClass="androidx.appcompat.widget.AppCompatImageView"
             app:actionProviderClass="android.widget.ShareActionProvider">
         </item>
+        <item android:id="@+id/dark_mode"
+            android:title="@string/dark_mode"
+            android:icon="@mipmap/dark_mode_icon"
+            app:actionViewClass="androidx.appcompat.widget.SwitchCompat"/>
         <item android:title="@string/exit"
             android:id="@+id/exit"
             android:icon="@drawable/ic_exit"/>

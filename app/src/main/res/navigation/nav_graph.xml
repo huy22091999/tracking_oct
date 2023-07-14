@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_nav_HomeFragment_to_publicFragment"
             app:destination="@id/publicFragment" />
+        <action
+            android:id="@+id/action_nav_HomeFragment_to_userInfoFragment"
+            app:destination="@id/userInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/trackingFragment"
@@ -37,11 +40,37 @@
         android:id="@+id/personalFragment"
         android:name="com.oceantech.tracking.ui.personal.PersonalFragment"
         android:label="@string/personal_information"
-        tools:layout="@layout/fragment_personal" />
+        tools:layout="@layout/fragment_personal" >
+        <action
+            android:id="@+id/action_personalFragment_to_modifyPersonalFragment"
+            app:destination="@id/modifyPersonalFragment" />
+    </fragment>
     <fragment
         android:id="@+id/publicFragment"
         android:name="com.oceantech.tracking.ui.information.InfoFragment"
         android:label="@string/app_information"
         tools:layout="@layout/fragment_info" />
+    <fragment
+        android:id="@+id/userInfoFragment"
+        android:name="com.oceantech.tracking.ui.home.user.UserInfoFragment"
+        android:label="@string/user_info"
+        tools:layout="@layout/fragment_user_info">
+        <action
+            android:id="@+id/action_userInfoFragment_to_modifyUserFragment"
+            app:destination="@id/modifyUserFragment" />
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/modifyUserFragment"
+        android:name="com.oceantech.tracking.ui.home.user.ModifyUserFragment"
+        android:label="@string/update_user"
+        tools:layout="@layout/fragment_modify_user">
+    </fragment>
+    <fragment
+        android:id="@+id/modifyPersonalFragment"
+        android:name="com.oceantech.tracking.ui.personal.ModifyPersonalFragment"
+        android:label="@string/update_profile"
+        tools:layout="@layout/fragment_modify_personal" />
 
 </navigation>

@@ -25,6 +25,9 @@ object NetWorkModule {
     @Provides
     fun providerUserPreferences(@ApplicationContext context: Context): UserPreferences = UserPreferences(context)
 
+    @Provides
+    fun providerSessionManager(@ApplicationContext context: Context): SessionManager = SessionManager(context)
+
 
     @Provides
     fun providerAuthApi(

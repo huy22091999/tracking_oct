@@ -11,78 +11,101 @@
     <androidx.core.widget.NestedScrollView
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?attr/backgroundColor"
             >
 
             <LinearLayout
                 android:id="@+id/space"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="#F3CC6C"
-                android:orientation="horizontal" />
+                android:layout_height="100dp"
+                android:layout_marginTop="50dp"
+                android:background="?attr/backgroundColor"
+                android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="-20sp"
-                android:layout_below="@id/space"
-                android:background="@drawable/background_login"
-                android:orientation="vertical"
-                android:padding="24dp">
+<!--                <ImageView-->
+<!--                    android:layout_width="120dp"-->
+<!--                    android:layout_height="120dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:background="@mipmap/tracking_login_icon" />-->
 
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/tracking_login_icon" />
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:layout_marginStart="8dp"-->
+<!--                    android:fontFamily="@font/roboto"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:text="@string/app_name"-->
+<!--                    android:textColor="?attr/colorOnBackground"-->
+<!--                    android:textSize="30sp"-->
+<!--                    android:textStyle="bold" />-->
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="start"
                     android:layout_marginTop="16dp"
-                    android:gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:gravity="center_horizontal"
                     android:text="@string/welcome"
-                    android:textColor="@color/gray"
-                    android:textSize="28sp"
+                    android:textAlignment="textStart"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/space"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_login"
+                android:orientation="vertical"
+                android:padding="24dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/username_til"
                     style="@style/NimpeInputLayoutLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/username_til"
                     android:layout_marginTop="24dp"
+                    android:textColor="?attr/colorOnBackground"
                     app:hintEnabled="false"
                     app:startIconDrawable="@drawable/ic_person">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/userName"
-                        android:hint="@string/account"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:hint="@string/account"
+                        android:textColor="?attr/colorOnBackground" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password_til"
                     style="@style/NimpeInputLayoutLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:textColor="?attr/colorOnBackground"
                     app:errorEnabled="true"
                     app:hintEnabled="false"
                     app:startIconDrawable="@drawable/ic_lock"
-                    android:id="@+id/password_til">
+                    app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:textColor="?attr/colorOnBackground" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -104,7 +127,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
                     android:text="@string/lable_signing"
-                    android:textColor="@color/gray"
+                    android:textColor="?attr/colorOnBackground"
                     android:textSize="16sp" />
 
                 <com.google.android.material.textview.MaterialTextView

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="user"
+            type="com.oceantech.tracking.data.model.User" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.home.user.UserInfoActivity"
+        android:theme="@style/Theme.Nimpe.NoActionBar"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="2.5"
+                android:src="@mipmap/background_personal"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="7.5"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@{user.displayName}"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="22sp"
+                    android:fontFamily="@font/roboto"
+                    android:textStyle="bold"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@{user.gender}"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/roboto"
+                    android:textStyle="normal"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="@{user.email}"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/roboto"
+                    android:textStyle="normal"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/background_category_layout"
+            android:elevation="5dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/user_first_name(user.firstName)}"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/user_last_name(user.lastName)}"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"/>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/user_university(user.university)}"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"/>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/user_student_year(user.year)}"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/user_count_day_checkin(Integer.toString(user.countDayCheckIn))}"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/user_count_day_tracking(Integer.toString(user.countDayTracking))}"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"/>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/edit"
+            android:textSize="20sp"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/white"
+            android:textStyle="bold|italic"
+            android:id="@+id/edtProfile"
+            style="@style/NimpeInputLayoutLogin"
+            android:background="@drawable/edit_background"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/lock_account"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto"
+            android:textStyle="bold|italic"
+            android:id="@+id/edtLock"
+            android:textSize="20sp"
+            style="@style/NimpeInputLayoutLogin"
+            android:background="@drawable/log_out_background"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</layout>

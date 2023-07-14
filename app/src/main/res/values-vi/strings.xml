@@ -23,7 +23,7 @@
     <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
     <string name="fragment_news">Tin tức</string>
     <string name="send_feedback">Gửi phản hồi</string>
-    <string name="welcome">Xin chào</string>
+    <string name="welcome">"Xin chào, chào mừng bạn tới với Tracking "</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
@@ -109,6 +109,24 @@
     <string name="update_app_failed">Hệ thống cập nhật đang có lỗi</string>
     <string name="restart_app_update">Tải update thành công, app sẽ khởi động lại trong 5s</string>
     <string name="downloading">Đang tải xuống</string>
+    <string name="dark_mode">Nền tối</string>
+    <string name="university">Trường</string>
+    <string name="sign_in_year">Năm thứ mấy</string>
+    <string name="confirm_password">Nhập lại mật khẩu</string>
+    <string name="user_first_name">Tên: %s</string>
+    <string name="user_last_name">Họ: %s</string>
+    <string name="user_dob">Ngày sinh: %s</string>
+    <string name="user_birth_place">Nơi sinh: %s</string>
+    <string name="user_student_year">Năm thứ: %s</string>
+    <string name="user_university">Trường: %s</string>
+    <string name="user_count_day_checkin">Số ngày check in: %s</string>
+    <string name="user_count_day_tracking">Số ngày Tracking: %s</string>
+    <string name="lock_account">Khóa tài khoản</string>
+    <string name="user_info">Thông tin User</string>
+    <string name="update_user">Chỉnh sửa thông tin</string>
+    <string name="update_user_successfully">Cập nhật User thành công</string>
+    <string name="edit_profile">Chỉnh sửa thông tin</string>
+    <string name="update_profile">"Cập nhật thông tin "</string>
 
 
 </resources>

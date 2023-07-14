@@ -1,14 +1,18 @@
-package com.oceantech.tracking.ui.home.adapter
+package com.oceantech.tracking.ui.home.user.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.UserItemBinding
+import com.oceantech.tracking.utils.showToast
 
-class UserAdapter: RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter(
+    private val showUserInformation: (User) -> Unit
+): RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     private var listUsers: List<User> = emptyList()
+    private var authority: String = ""
     class UserViewHolder(private val _binding: UserItemBinding): RecyclerView.ViewHolder(_binding.root){
         val binding: UserItemBinding
             get() = _binding
@@ -20,6 +24,9 @@ class UserAdapter: RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
         )
     }
 
+    fun setAuthority(authority: String){
+        this.authority = authority
+    }
     fun setListUsers(listUsers: List<User>){
         this.listUsers = listUsers
     }
@@ -30,5 +37,13 @@ class UserAdapter: RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = listUsers[position]
         holder.binding.user = user
+        if (authority == "ROLE_ADMIN"){
+            holder.binding.root.apply {
+                setOnClickListener {
+                    showUserInformation(user)
+                }
+            }
+        }
+
     }
 }

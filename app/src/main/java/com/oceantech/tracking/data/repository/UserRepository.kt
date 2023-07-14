@@ -27,8 +27,14 @@ class UserRepository @Inject constructor(
         password: String,
         displayName: String,
         firstName: String,
-        lastName: String
-    ): Flow<TokenResponse> = flow {
+        lastName: String,
+        gender: String,
+        dob: String,
+        email: String,
+        university: String,
+        year: Int,
+        confirmPassword: String
+    ): Flow<User> = flow {
         emit(
             api.createUpdateUser(
                 User(
@@ -37,26 +43,50 @@ class UserRepository @Inject constructor(
                     true,
                     null,
                     false,
-                    null,
+                    confirmPassword,
                     displayName,
-                    null,
-                    null,
+                    dob,
+                    email,
                     false,
                     firstName,
                     null,
                     password,
                     null,
                     mutableListOf(),
-                    null,
+                    gender,
                     lastName,
-                    null,
-                    null
+                    university,
+                    year
                 )
             )
         )
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.Main)
 
     fun getAllUsers(): Flow<List<User>> = flow {
         emit(api.getAllUsers())
+    }.flowOn(Dispatchers.IO)
+
+    fun getDevice(tokenDevice: String) : Flow<User> = flow {
+        emit(
+            api.getDevice(tokenDevice)
+        )
+    }.flowOn(Dispatchers.IO)
+
+    fun getBlockUser(id: Int): Flow<User> = flow {
+        emit(
+            api.getBlockUser(id)
+        )
+    }.flowOn(Dispatchers.IO)
+
+    fun updateMyself(user: User): Flow<User> = flow {
+        emit(
+            api.updateMyself(user)
+        )
+    }.flowOn(Dispatchers.IO)
+
+    fun updateUser(user: User, id : Int): Flow<User> = flow {
+        emit(
+            api.updateUser(user, id)
+        )
     }.flowOn(Dispatchers.IO)
 }

@@ -18,87 +18,129 @@
 
         <!-- TODO: Update blank fragment layout -->
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgPerson"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/person_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.099" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtFullName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FullName"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/personInfor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.804" />
-
-        <LinearLayout
-            android:id="@+id/personInfor"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:background="@drawable/background_category_layout"
-            android:elevation="10dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgPerson"
-            app:layout_constraintVertical_bias="0.479">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtPersonId"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Id"
-                android:textSize="20sp"
-                android:textStyle="italic" />
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_weight="2">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtPersonDisplayName"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgPerson"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:src="@drawable/person_icon"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtFullName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7.5"
+                    android:text="FullName"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnBackground"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"/>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/personInfor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Id"
-                android:textSize="20sp"
-                android:textStyle="italic" />
+                android:layout_height="0dp"
+                android:background="@drawable/background_category_layout"
+                android:elevation="?attr/elevation"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="6">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtPersonUsermame"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtPersonId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Id"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtPersonDisplayName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Id"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:textColor="?attr/colorOnSurface"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtPersonUsermame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Id"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:textColor="?attr/colorOnSurface"/>
+
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Id"
-                android:textSize="20sp"
-                android:textStyle="italic" />
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="2">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnEditProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/edit_profile"
+                    android:textColor="@color/white"
+                    android:background="@drawable/edit_background"
+                    android:textSize="16sp"
+                    android:textStyle="bold|italic"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    style="@style/NimpeInputLayoutLogin" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLogOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/log_out"
+                    android:textColor="@color/white"
+                    android:background="@drawable/log_out_background"
+                    style="@style/NimpeInputLayoutLogin"
+                    android:textSize="20sp"
+                    android:textStyle="bold|italic"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp" />
 
 
-        </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_category"
-            android:text="@string/log_out"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/personInfor"
-            android:id="@+id/btnLogOut"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <ProgressBar
             android:id="@+id/personPB"
@@ -109,7 +151,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="?attr/colorPrimary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

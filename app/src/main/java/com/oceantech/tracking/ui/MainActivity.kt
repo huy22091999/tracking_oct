@@ -5,21 +5,29 @@ import android.app.*
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.media.VolumeShaper
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import android.widget.Switch
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.MenuRes
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.airbnb.mvrx.viewModel
@@ -42,6 +50,7 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.information.InfoViewModel
 import com.oceantech.tracking.ui.information.InfoViewState
@@ -49,8 +58,11 @@ import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
 import com.oceantech.tracking.ui.tracking.TrackingViewState
+import com.oceantech.tracking.utils.DarkModeUtils
+import com.oceantech.tracking.utils.changeDarkMode
 import com.oceantech.tracking.utils.changeLanguage
 import com.oceantech.tracking.utils.createNotification
+import com.oceantech.tracking.utils.handleBackPressedEvent
 import com.oceantech.tracking.utils.handleLogOut
 import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,6 +85,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     @Inject
     lateinit var localHelper: LocalHelper
+
+    @Inject
+    lateinit var sessionManager: SessionManager
 
     @Inject
     lateinit var homeViewModelFactory: HomeViewModel.Factory
@@ -99,13 +114,17 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
+        sessionManager.getDarkMode().let {
+            DarkModeUtils.isDarkMode = it
+            changeDarkMode(it)
+        }
+
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
 
         //Register install listener for flexible update for update manager, just for flexible update
         if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.registerListener(installStatusListener)
         }
-
 
 
         checkForUpdate() // check update with update type is immediate update
@@ -184,7 +203,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                     homeIntent.addCategory(Intent.CATEGORY_HOME)
                     homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(homeIntent)
-
+                    finish()
                 }
 
                 R.id.nav_change_langue -> {
@@ -193,6 +212,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
                 R.id.log_out -> {
                     handleLogOut()
+                }
+
+                R.id.dark_mode -> {
+                    handleDarkMode(menuItem)
                 }
 
                 else -> {
@@ -223,6 +246,14 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
         }
 
+        menu.findItem(R.id.dark_mode).let { item ->
+            (item.actionView as SwitchCompat).apply{
+                setOnClickListener {
+                    handleDarkMode(item)
+                }
+                isChecked = DarkModeUtils.isDarkMode
+            }
+        }
     }
 
     @SuppressLint("InflateParams")
@@ -283,8 +314,18 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
     }
 
+    private fun handleDarkMode(menuItem: MenuItem) {
+        DarkModeUtils.isDarkMode = !DarkModeUtils.isDarkMode
+        (menuItem.actionView!! as SwitchCompat).apply {
+            isChecked = DarkModeUtils.isDarkMode
+        }
+        changeDarkMode(DarkModeUtils.isDarkMode)
+        recreate()
+    }
+
+
     /**
-     * Check that the update is not stuck and interrupted by user who quiting app when in progress.
+     * Check that the update is not stuck and interrupted by user who quiting app when in update progress.
      * Should execute this check at all entry points into the app.
      * Just use for immediate update.
      */
@@ -378,6 +419,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.unregisterListener(installStatusListener)
         }
+        sessionManager.saveDarkMode(DarkModeUtils.isDarkMode)
     }
 }
 

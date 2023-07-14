@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.security.SigninFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="user"
+            type="com.oceantech.tracking.data.model.User" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,16 +18,6 @@
         android:paddingStart="24dp"
         android:paddingEnd="24dp">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:text="@string/signin"
-            android:textColor="@color/gray"
-            android:textSize="28sp"
-            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_marginTop="8dp"
@@ -41,10 +34,11 @@
                 android:layout_marginTop="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/first_name"
+                    android:id="@+id/edit_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/first_name" />
+                    android:hint="@string/first_name"
+                    android:text="@{user.firstName}"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/NimpeInputLayoutLogin"
@@ -55,10 +49,11 @@
                 android:layout_marginTop="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/last_name"
+                    android:id="@+id/edit_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/last_name" />
+                    android:hint="@string/last_name"
+                    android:text="@{user.lastName}"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -68,14 +63,14 @@
             android:layout_marginTop="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/display_name"
+                android:id="@+id/edit_display_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/display_name" />
+                android:hint="@string/display_name"
+                android:text="@{user.displayName}"/>
 
         </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2">
@@ -89,11 +84,12 @@
                 android:layout_marginEnd="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dob"
+                    android:id="@+id/edit_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/dob"
-                    android:inputType="datetime" />
+                    android:inputType="date"
+                    android:text="@{user.dob}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -105,10 +101,11 @@
                 android:layout_marginTop="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/gender"
+                    android:id="@+id/edit_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/gender" />
+                    android:hint="@string/gender"
+                    android:text="@{user.dob}"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -119,10 +116,11 @@
             android:layout_marginTop="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
+                android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email" />
+                android:hint="@string/email"
+                android:text="@{user.email}"/>
 
         </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
@@ -139,10 +137,11 @@
                 android:layout_marginEnd="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/university"
+                    android:id="@+id/edit_university"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/university" />
+                    android:hint="@string/university"
+                    android:text="@{user.university}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,72 +154,39 @@
                 android:layout_marginStart="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/student_year"
+                    android:id="@+id/edit_student_year"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/sign_in_year"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:text="@{Integer.toString(user.year)}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/NimpeInputLayoutLogin"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/username" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/NimpeInputLayoutLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:errorEnabled="true"
-            app:passwordToggleEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/NimpeInputLayoutLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:errorEnabled="true"
-            app:passwordToggleEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/rePassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/confirm_password"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/send"
-            style="@style/NimpeButtonLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:layout_marginTop="8dp"
-            android:padding="12dp"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
-            android:text="@string/signin_account" />
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/updateInfo"
+                style="@style/NimpeInputLayoutLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="16dp"
+                android:paddingStart="40dp"
+                android:paddingEnd="40dp"
+                android:text="@string/update"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/edit_background"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
 
-
-</LinearLayout>
+</layout>
