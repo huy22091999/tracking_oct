@@ -1,8 +1,6 @@
 package com.oceantech.tracking.ui.security
 
 import android.os.Bundle
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.airbnb.mvrx.viewModel

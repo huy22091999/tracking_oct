@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.tracking
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.databinding.FragmentAddOrUpTrackingBinding
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
+import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
@@ -45,6 +47,9 @@ class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding
                 saveTracking()
             }
         }
+        views.backLayout.setOnClickListener{
+            viewModel.handleReturnTracking()
+        }
         id = arg.id
         if(id != -1){
             views.tracking.setText(arg.content)
@@ -70,10 +75,6 @@ class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding
         content = views.tracking.text.toString().trim()
         viewModel.handle(HomeViewAction.UpdateTracking(id, content))
     }
-
-//    private fun updateCountDayTracking(){
-//        viewModel.handle(HomeViewAction.UpdateMyself())
-//    }
 
     private fun handleEvent(it: HomeViewEvent){
         when(it){

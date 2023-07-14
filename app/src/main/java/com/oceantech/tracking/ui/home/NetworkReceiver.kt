@@ -8,13 +8,13 @@ import android.net.NetworkInfo
 import android.widget.Toast
 import com.oceantech.tracking.R
 
-class NetworkBroadcast:BroadcastReceiver() {
+class NetworkReceiver:BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
 
         if (activeNetwork != null && activeNetwork.isConnected) {
-            Toast.makeText(context, context.getString(R.string.network_connected), Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, context.getString(R.string.network_connected), Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, context.getString(R.string.network_disconnected), Toast.LENGTH_SHORT).show()
         }

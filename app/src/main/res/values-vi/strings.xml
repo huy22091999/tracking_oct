@@ -79,7 +79,7 @@
     <string name="exit">Thoát ứng dụng</string>
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">lúc</string>
-    <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="feedback_empty">Tracking đang bị trống.</string>
     <string name="birth_place">Nơi sinh</string>
     <string name="gender">Giới tính</string>
     <string name="tracking_success">Thành công.</string>
@@ -106,6 +106,7 @@
     <string name="update_now">Cập nhật ngay</string>
     <string name="dark">Giao diện tối</string>
     <string name="light">Giao diện sáng</string>
+    <string name="follow_system">Theo hệ thống</string>
     <string name="theme">Giao diện</string>
     <string name="menu_theme">Giao diện</string>
     <string name="remind_later">Nhắc tôi sau</string>
@@ -124,6 +125,7 @@
     <string name="block_account_fail">Khóa tài khoản thất bại.</string>
     <string name="network_connected">Đã kết nối mạng</string>
     <string name="network_disconnected">Đã mất kết nối mạng</string>
+    <string name="language">Ngôn ngữ</string>
 
     <string-array name="gender_spin">
         <item>Nam</item>

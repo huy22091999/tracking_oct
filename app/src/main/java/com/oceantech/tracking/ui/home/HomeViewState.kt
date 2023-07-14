@@ -18,7 +18,8 @@ data class HomeViewState(
     val asyncBlockUser:Async<User> = Uninitialized,
     val asyncTokenDevice:Async<User> = Uninitialized,
     val asyncUpdateMySelf:Async<User> = Uninitialized,
-    val asyncEditUser:Async<User> = Uninitialized
+    val asyncEditUser:Async<User> = Uninitialized,
+    val asyncLogout:Async<Unit> = Uninitialized
 
 ) : MvRxState {
     fun isLoadding() =

@@ -13,4 +13,9 @@
         android:icon="@drawable/moon"
         app:showAsAction="collapseActionView"
         android:title="dark"/>
+    <item
+        android:id="@+id/action_system"
+        android:icon="@drawable/theme_follow_system"
+        app:showAsAction="collapseActionView"
+        android:title="system"/>
 </menu>

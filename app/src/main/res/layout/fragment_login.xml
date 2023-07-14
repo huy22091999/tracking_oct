@@ -74,7 +74,10 @@
                     app:hintEnabled="false"
                     app:startIconDrawable="@drawable/ic_lock"
                     android:id="@+id/password_til"
-                    app:startIconTint="@color/text_color">
+                    app:startIconTint="@color/text_color"
+                    app:endIconDrawable="@drawable/ic_view"
+                    app:endIconTint="@color/text_color"
+                    app:endIconMode="password_toggle">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"

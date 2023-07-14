@@ -7,47 +7,47 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
+import com.google.android.material.navigation.NavigationView
+import com.oceantech.tracking.R
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
-import com.oceantech.tracking.ui.home.HomeViewAction
-import com.oceantech.tracking.ui.home.HomeViewState
-import com.oceantech.tracking.ui.home.HomeViewModel
-import com.oceantech.tracking.utils.LocalHelper
-import com.google.android.material.navigation.NavigationView
-import com.oceantech.tracking.databinding.ActivityMainBinding
-import java.util.*
-import javax.inject.Inject
-
-import com.oceantech.tracking.R
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
+import com.oceantech.tracking.databinding.ActivityMainBinding
+import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewEvent
+import com.oceantech.tracking.ui.home.HomeViewModel
+import com.oceantech.tracking.ui.home.HomeViewState
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.profile.MyProfileFragmentDirections
+import com.oceantech.tracking.ui.profile.NextUpdateFragmentDirections
 import com.oceantech.tracking.ui.profile.UpdateProfileFragmentDirections
+import com.oceantech.tracking.ui.security.LoginActivity
+import com.oceantech.tracking.ui.security.SecurityViewState
 import com.oceantech.tracking.ui.security.SplashActivity
 import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
 import com.oceantech.tracking.ui.user.DetailUserFragmentDirections
 import com.oceantech.tracking.ui.user.UserFragmentDirections
+import com.oceantech.tracking.utils.LocalHelper
+import java.util.*
+import javax.inject.Inject
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
     companion object {
@@ -72,6 +72,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
         sharedActionViewModel = viewModelProvider.get(TestViewModel::class.java)
@@ -80,63 +81,67 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         setupDrawer()
         sharedActionViewModel.test()
 
-        homeViewModel.subscribe(this) {
-            if (it.isLoadding()) {
-                views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
-            } else
-                views.appBarMain.contentMain.waitingView.visibility = View.GONE
-        }
+//        homeViewModel.subscribe(this) {
+//            if (it.isLoadding()) {
+//                views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
+//            } else
+//                views.appBarMain.contentMain.waitingView.visibility = View.GONE
+//        }
 
         homeViewModel.observeViewEvents {
             if(it!=null){
                 handleEvents(it)
             }
         }
-    }
 
+        homeViewModel.subscribe(this) {
+            handleStateChange(it)
+        }
+    }
 
     private fun handleEvents(viewEvent: HomeViewEvent) {
         when(viewEvent){
             is HomeViewEvent.ReturnUpdateTracking ->{
-                views.title.text = getString(R.string.tracking)
+                views.appBar.visibility = View.GONE
                 navigateTo(R.id.nav_trackingFragment, id = viewEvent.id, content = viewEvent.content,user = null)
             }
+
             is HomeViewEvent.ReturnAddTracking -> {
+                views.appBar.visibility = View.GONE
                 navigateTo(R.id.nav_trackingFragment)
             }
+
             is HomeViewEvent.ReturnDetailUser-> {
-                views.title.text = getString(R.string.users)
-                val direction = UserFragmentDirections.actionNavUserFragmentToDetailUserFragment(viewEvent.user)
+                views.appBar.visibility = View.GONE
+                val direction = UserFragmentDirections.actionNavUserFragmentToDetailUserFragment(viewEvent.user,isMyself = false)
                 navController.navigate(direction)
             }
-            is HomeViewEvent.ReturnAddTracking -> {
-                views.title.text = getString(R.string.tracking)
-                navigateTo(R.id.nav_trackingFragment)
-            }
+
             is HomeViewEvent.ReturnTracking -> {
-                views.title.text = getString(R.string.tracking)
+                views.appBar.visibility = View.VISIBLE
                 navigateTo(R.id.nav_allTrackingFragment)
             }
+
             is HomeViewEvent.ReturnListUsers ->{
-                views.title.text = getString(R.string.tracking)
+                views.appBar.visibility = View.VISIBLE
                 navigateTo(R.id.nav_userFragment)
             }
+
             is HomeViewEvent.ReturnEditInfo -> {
-                views.title.text = getString(R.string.update_profile)
-                val direction = DetailUserFragmentDirections.actionNavDetailUserFragmentToUpdateProfileFragment(viewEvent.user)
-                navController.navigate(direction)
+                navigateTo(id = null, content = null, user = viewEvent.user, isMyself = false)
             }
+
             is HomeViewEvent.ReturnUpdateInfo -> {
-                views.title.text = getString(R.string.update_profile)
-                val direction = MyProfileFragmentDirections.actionNavMyProfileFragmentToUpdateProfileFragment(viewEvent.user)
-                navController.navigate(direction)
+                navigateTo(id = null, content = null, user = viewEvent.user, isMyself = true)
             }
+
             is HomeViewEvent.ReturnNextUpdate -> {
-                views.title.text = getString(R.string.update_profile)
-                val direction = UpdateProfileFragmentDirections.actionUpdateProfileFragmentToNextUpdateFragment(viewEvent.user)
+                val direction = UpdateProfileFragmentDirections.actionUpdateProfileFragmentToNextUpdateFragment(viewEvent.user, isMyself = viewEvent.isMyself)
                 navController.navigate(direction)
             }
+
             is HomeViewEvent.ReturnProfile -> {
+                views.appBar.visibility = View.VISIBLE
                 navigateTo(R.id.nav_myProfileFragment)
             }
         }
@@ -200,10 +205,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 }
 
                 R.id.logout -> {
-                    val sessionManager = SessionManager(this@MainActivity)
-                    sessionManager.clearAuthToken()
-                    startActivity(Intent(this@MainActivity, SplashActivity::class.java))
-                    finishAffinity()
+                    homeViewModel.handle(HomeViewAction.Logout)
+//                    val sessionManager = SessionManager(this@MainActivity)
+//                    sessionManager.clearAuthToken()
+//                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+//                    finishAffinity()
                 }
                 else -> {
                     views.title.text = getString(R.string.tracking)
@@ -220,13 +226,14 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val conf: Configuration = res.configuration
         val local = conf.locale
         val lang = local.displayLanguage
-        if (lang == "English") {
-            homeViewModel.language = 0
-            menuItem.title = getString(R.string.en)
-        } else {
-            menuItem.title = getString(R.string.vi)
-            homeViewModel.language = 1
-        }
+        menuItem.title = getString(R.string.language)
+//        if (lang == "English") {
+//            homeViewModel.language = 0
+//            menuItem.title = getString(R.string.en)
+//        } else {
+//            menuItem.title = getString(R.string.vi)
+//            homeViewModel.language = 1
+//        }
         var buttonShowMenu = actionView as AppCompatImageView
         buttonShowMenu.setImageDrawable(getDrawable(R.drawable.ic_drop))
         buttonShowMenu.setOnClickListener {
@@ -241,6 +248,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val myLocale = Locale(lang)
         conf.setLocale(myLocale)
         res.updateConfiguration(conf, dm)
+        val sessionManager = SessionManager(this@MainActivity)
+        sessionManager.saveAppLanguage(lang)
         updateLanguge(lang)
     }
 
@@ -254,7 +263,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             true
         )
         popup.elevation = 20F
-        //popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
             changeLangue("en")
@@ -270,6 +278,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     private fun showMenuTheme(v: View, @MenuRes menuRes: Int) {
         val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.popup_theme, null)
@@ -279,23 +288,32 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             LinearLayout.LayoutParams.WRAP_CONTENT,
             true
         )
+
         popup.elevation = 20F
-        //popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_light_theme).setOnClickListener {
-//            changeTheme("light")
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            recreate()
+            setupTheme(AppCompatDelegate.MODE_NIGHT_NO)
             popup.dismiss()
         }
         view.findViewById<LinearLayout>(R.id.to_dark_theme).setOnClickListener {
-//            changeTheme("dark")
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            recreate()
+            setupTheme(AppCompatDelegate.MODE_NIGHT_YES)
+            popup.dismiss()
+        }
+        view.findViewById<LinearLayout>(R.id.to_system_theme).setOnClickListener {
+            setupTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             popup.dismiss()
         }
     }
 
+    private fun setupTheme(modeTheme:Int){
+        AppCompatDelegate.setDefaultNightMode(modeTheme)
+        val sessionManager = SessionManager(this@MainActivity)
+        sessionManager.saveAppTheme(modeTheme.toString())
+        val i = Intent(this@MainActivity, MainActivity::class.java)
+        overridePendingTransition(0, 0)
+        startActivity(i)
+        overridePendingTransition(0, 0)
+    }
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -307,14 +325,36 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return true
     }
 
-    @SuppressLint("LogNotTimber")
-    private fun navigateTo(fragmentId: Int, id:Int? = null, content:String ? = null, user:User ? = null) {
+    private fun navigateTo(fragmentId: Int? = null, id:Int? = null, content:String ? = null, user:User ? = null, isMyself: Boolean? = null) {
         if(id != null){
             val direction = TrackingFragmentDirections.actionNavAllTrackingFragmentToNavTrackingFragment(id, content!!)
             navController.navigate(direction)
         }
+        if(user != null && id == null){
+            if(isMyself == true){
+                if (navController.currentDestination?.id == R.id.nav_myProfileFragment){
+                    views.appBar.visibility = View.GONE
+                    val direction = MyProfileFragmentDirections.actionNavMyProfileFragmentToUpdateProfileFragment(user,isMyself = true)
+                    navController.navigate(direction)
+                }
+                if(navController.currentDestination?.id == R.id.nav_nextUpdateFragment){
+                    views.appBar.visibility = View.GONE
+                    val direction = NextUpdateFragmentDirections.actionNavNextUpdateFragmentToNavUpdateProfileFragment(user, isMyself = true)
+                    navController.navigate(direction)
+                }
+            }
+            if(isMyself == false){
+                if (navController.currentDestination?.id == R.id.nav_detailUserFragment) {
+                    val direction = DetailUserFragmentDirections.actionNavDetailUserFragmentToUpdateProfileFragment(user,isMyself = false)
+                    navController.navigate(direction)
+                } else {
+                    val direction = NextUpdateFragmentDirections.actionNavNextUpdateFragmentToNavUpdateProfileFragment(user,isMyself = false)
+                    navController.navigate(direction)
+                }
+            }
+        }
         else {
-            navController.navigate(fragmentId)
+            navController.navigate(fragmentId!!)
         }
     }
 
@@ -328,12 +368,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 }
                 return true
             }
-
-//            R.id.menu_list_health -> {
-//                views.title.text = getString(R.string.tracking)
-//                navigateTo(R.id.nav_trackingFragment)
-//                return true
-//            }
             else -> {
                 views.title.text = getString(R.string.tracking)
                 super.onOptionsItemSelected(item)
@@ -350,12 +384,35 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         menu.findItem(R.id.nav_timeSheetFragment).title = getString(R.string.time_sheet)
         menu.findItem(R.id.nav_change_theme).title = getString(R.string.theme)
         menu.findItem(R.id.logout).title = getString(R.string.logout)
-        menu.findItem(R.id.nav_change_langue).title =
-            if (lang == "en") getString(R.string.en) else getString(R.string.vi)
+        menu.findItem(R.id.nav_change_langue).title = getString(R.string.language)
+        //    if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
+        //visible appBar
+        if (navController.currentDestination?.id == R.id.nav_allTrackingFragment
+            || navController.currentDestination?.id == R.id.nav_timeSheetFragment
+            || navController.currentDestination?.id == R.id.nav_myProfileFragment
+            || navController.currentDestination?.id == R.id.nav_userFragment) {
+            views.appBar.visibility = View.VISIBLE
+            views.title.text = getString(R.string.tracking)
+        }
+    }
+
+    private fun handleStateChange(it: HomeViewState){
+        when(it.asyncLogout){
+            is Success -> {
+                val sessionManager = SessionManager(this@MainActivity)
+                sessionManager.clearAuthToken()
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                finishAffinity()
+                homeViewModel.removeStateLogout()
+            }
+            is Fail -> {
+
+            }
+        }
     }
 }
 

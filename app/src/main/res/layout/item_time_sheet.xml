@@ -5,13 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:padding="9dp"
     android:theme="@style/TrackingItem">
+
+    <FrameLayout
+        android:id="@+id/tracking_image"
+        android:layout_width="10dp"
+        android:layout_height="35dp"
+        android:background="#FFC312"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timeLabel"
         android:layout_width="0dp"
         android:layout_height="20dp"
+        android:layout_margin="9dp"
         android:gravity="end"
         android:padding="2dp"
         android:text="time"
@@ -19,6 +29,6 @@
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tracking_image"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

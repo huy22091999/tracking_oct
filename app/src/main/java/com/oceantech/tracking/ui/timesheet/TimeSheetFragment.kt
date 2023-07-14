@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.airbnb.mvrx.Fail
@@ -31,6 +33,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     ): FragmentTimeSheetBinding = FragmentTimeSheetBinding.inflate(inflater,container,false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         timeSheets = listOf()
 
         views.gridView.apply {
@@ -95,7 +98,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
             is Success -> {
                 it.checkIn?.invoke().let { checkIn ->
                     if(checkIn.message.isNullOrEmpty()){
-                        Toast.makeText(requireContext(), getString(R.string.tracking_success), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), checkIn.message, Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(requireContext(), getString(R.string.checked_in), Toast.LENGTH_SHORT).show()
                     }

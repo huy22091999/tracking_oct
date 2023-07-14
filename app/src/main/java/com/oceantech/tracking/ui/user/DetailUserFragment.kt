@@ -23,6 +23,7 @@ class DetailUserFragment : TrackingBaseFragment<FragmentDetailUserBinding>() {
     private val viewModel:HomeViewModel by activityViewModel()
     private val args: DetailUserFragmentArgs by navArgs()
     private lateinit var user: User
+    private var isMyself:Boolean = false
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -33,6 +34,7 @@ class DetailUserFragment : TrackingBaseFragment<FragmentDetailUserBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         user = args.infoUser!!
+
         setData(user)
 
         views.container.visibility = View.VISIBLE
@@ -44,6 +46,9 @@ class DetailUserFragment : TrackingBaseFragment<FragmentDetailUserBinding>() {
         }
         views.updateButton.setOnClickListener {
             viewModel.handleReturnEditInfo(user)
+        }
+        views.backLayout.setOnClickListener {
+            viewModel.handleReturnUsers()
         }
     }
 
@@ -57,6 +62,7 @@ class DetailUserFragment : TrackingBaseFragment<FragmentDetailUserBinding>() {
             gender.text = user.gender
             university.text = user.university
             year.text = user.year.toString()
+            trackings.text = "${user.countDayTracking} / ${user.countDayCheckin}"
         }
     }
 
@@ -80,5 +86,4 @@ class DetailUserFragment : TrackingBaseFragment<FragmentDetailUserBinding>() {
             }
         }
     }
-
 }

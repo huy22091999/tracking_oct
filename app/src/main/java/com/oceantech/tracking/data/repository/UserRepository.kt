@@ -20,5 +20,5 @@ class UserRepository @Inject constructor(
     fun sign(user: User):Observable<TokenResponse> = api.sign(user).subscribeOn(Schedulers.io())
     fun getAllUser():Observable<List<User>> = api.getAllUser().subscribeOn(Schedulers.io())
     fun updateMyself(user: User):Observable<User> = api.updateMyself(user).subscribeOn(Schedulers.io())
-    fun edit(user: User):Observable<User> = api.edit(user).subscribeOn(Schedulers.io())
+    fun edit(id:Int, user: User):Observable<User> = api.edit(id,user).subscribeOn(Schedulers.io())
 }

@@ -7,253 +7,379 @@
     tools:context=".ui.profile.MyProfileFragment"
     android:theme="@style/TrackingFragment">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/updateButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/edit"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:id="@+id/full_name"
+        android:textColor="@color/gray"
+        android:textSize="27dp"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
-        android:layout_width="0dp"
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="email"
+        android:id="@+id/email"
+        android:textColor="@color/text_color"
+        android:textSize="17dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/full_name" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/email">
 
-        <TableLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TableRow
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TrackingItem"
+                >
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/email" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/email"
-                    style="@style/TrackingText"
-                    android:layout_weight="2"
-                    android:text="@string/email" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/user_name_label"
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/username" />
+                    android:id="@+id/userNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:textColor="@color/text_color"
+                    android:gravity="start|center"
+                    android:text="@string/username"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="17dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/username"
-                    style="@style/TrackingText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/email" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/display_name_label"
+                    android:gravity="end|center"
+                    android:text="@string/email"
                     style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/display_name" />
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    android:layout_marginRight="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/userNameLabel"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TrackingItem">
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_marginLeft="17dp"
+                    android:id="@+id/displayNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/display_name"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/display_name"
-                    style="@style/TrackingText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/display_name" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
+                    android:gravity="end|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/email"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/displayNameLabel"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TrackingItem">
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/last_name_label"
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/first_name" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/first_name"
-                    style="@style/TrackingText"
+                    android:layout_marginLeft="17dp"
+                    android:id="@+id/genderLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/first_name" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/first_name_label"
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/last_name" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/lastname"
-                    style="@style/TrackingText"
-                    android:layout_weight="2"
-                    android:text="@string/last_name" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/gender_label"
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/gender" />
+                    android:gravity="start|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/gender"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/gender"
-                    style="@style/TrackingText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/gender" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
+                    android:gravity="end|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/email"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/genderLabel"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TrackingItem">
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/university_label"
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/university" />
+                    android:layout_marginLeft="17dp"
+                    android:id="@+id/universityLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/university"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/university"
-                    style="@style/TrackingText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/university" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
+                    android:gravity="end|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/email"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/universityLabel"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TrackingItem">
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/year_label"
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/year" />
+                    android:layout_marginLeft="17dp"
+                    android:id="@+id/yearLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/year"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/year"
-                    style="@style/TrackingText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/year" />
-            </TableRow>
+                    android:gravity="end|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/email"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/yearLabel"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TrackingItem">
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/level" />
+                    android:layout_marginLeft="17dp"
+                    android:id="@+id/imageView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="start|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/level"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/level"
-                    style="@style/TrackingText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/level" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
-
+                    android:gravity="end|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/level"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView7"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TrackingItem">
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/leave_days_label"
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/amount_of_leave_days" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/amount_of_leave_days"
-                    style="@style/TrackingText"
+                    android:layout_marginLeft="17dp"
+                    android:id="@+id/leaveDaysLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/amount_of_leave_days" />
-            </TableRow>
-
-            <TableRow
-                android:layout_marginTop="13dp"
-                android:paddingHorizontal="20dp"
-                android:weightSum="3">
+                    android:gravity="start|center"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/amount_of_leave_days"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tracking_days_label"
-                    style="@style/TrackingText"
-                    android:layout_weight="1"
-                    android:text="@string/trackings_of_participations" />
+                    android:id="@+id/leave_days"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="end|center"
+                    android:layout_marginRight="30dp"
+                    android:text="0"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/leaveDaysLabel"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="70dp"
+            app:cardCornerRadius="20dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:theme="@style/TrackingItem">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/trackingDaysLabel"
+                    android:textColor="@color/text_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:gravity="start|center"
+                    android:text="@string/trackings_of_participations"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/trackings"
-                    style="@style/TrackingText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:text="@string/trackings_of_participations" />
-            </TableRow>
-        </TableLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/updateButton"
-                style="@style/NimpeButtonLogin"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:paddingHorizontal="15dp"
-                android:text="@string/update_profile"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:gravity="end|center"
+                    android:layout_marginRight="30dp"
+                    android:text="0/0"
+                    android:textColor="@color/text_color"
+                    android:textSize="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/trackingDaysLabel"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

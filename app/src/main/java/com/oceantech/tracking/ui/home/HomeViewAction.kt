@@ -20,5 +20,6 @@ sealed class HomeViewAction:NimpeViewModelAction{
     data class BlockUser(val id:Int):HomeViewAction()
     data class EditTokenDevice(val tokenDevice:String):HomeViewAction()
     data class UpdateMyself(val user: User):HomeViewAction()
-    data class EditUser(val user: User):HomeViewAction()
+    data class EditUser(val id:Int,val user: User):HomeViewAction()
+    object Logout:HomeViewAction()
 }

@@ -8,6 +8,13 @@
         <item name="boxStrokeColor">@color/boxstroke_outline</item>
         <item name="android:layout_height">48dp</item>
     </style>
+
+    <style name="TrackingTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <!-- Các thuộc tính style cho TextInputLayout -->
+        <item name="hintEnabled">true</item>
+        <item name="boxStrokeColor">@color/teal_200</item>
+    </style>
+
     <style name="NimpeButtonLogin">
         <item name="cornerRadius">24dp</item>
         <item name="backgroundTint">#81ecec</item>

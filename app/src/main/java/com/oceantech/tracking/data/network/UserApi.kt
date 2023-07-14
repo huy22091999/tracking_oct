@@ -26,5 +26,5 @@ interface UserApi {
     @POST("users/update-myself")
     fun updateMyself(@Body user: User):Observable<User>
     @POST("users/update/{id}")
-    fun edit(@Body user: User):Observable<User>
+    fun edit(@Path("id") id:Int, @Body user: User):Observable<User>
 }

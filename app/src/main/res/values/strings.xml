@@ -78,14 +78,14 @@
     <string name="exit">Thoát ứng dụng</string>
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">at</string>
-    <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="feedback_empty">Tracking is empty.</string>
     <string name="birth_place">Nơi sinh</string>
     <string name="gender">Gender</string>
     <string name="tracking_success">Success</string>
     <string name="university">University</string>
     <string name="year">Year</string>
     <string name="birthPlace">Birth Place</string>
-    <string name="please_wait">Xin chờ</string>
+    <string name="please_wait">Waiting...</string>
     <string name="delete_success">Delete success</string>
     <string name="logout">Logout</string>
     <string name="update">Update Tracking</string>
@@ -96,15 +96,16 @@
     <string name="confirm_delete">Confirm delete</string>
     <string name="time_sheet">Time Sheet</string>
     <string name="check_in">Check In</string>
-    <string name="checked_in">Bạn đã check in hôm nay rồi</string>
-    <string name="back">Quay lại</string>
-    <string name="register">Đăng kí</string>
-    <string name="login_error">Tài khoản hoặc mật khẩu không chính xác, \nbạn có muốn đăng kí ?</string>
-    <string name="signin_success_confirm">Đăng kí thành công, \nbạn có muốn đăng nhập ?</string>
-    <string name="update_notify">Đã có bản cập nhập mới nhất, \nbạn có muốn cập nhật ngay ?</string>
-    <string name="update_now">Cập nhật ngay</string>
+    <string name="checked_in">You have checked in today.</string>
+    <string name="back">Return</string>
+    <string name="register">Sign in</string>
+    <string name="login_error">Username or password is incorrect, \ndo you want to sign in ?</string>
+    <string name="signin_success_confirm">Sign in success, \ndo you want to login ?</string>
+    <string name="update_notify">There is a new update version, \ndo you want to update now ?</string>
+    <string name="update_now">Update \nnow</string>
     <string name="dark">Dark Theme</string>
     <string name="light">Light Theme</string>
+    <string name="follow_system">Follow system</string>
     <string name="theme">Theme</string>
     <string name="menu_theme">Theme</string>
     <string name="remind_later">Remind later</string>
@@ -123,6 +124,7 @@
     <string name="block_account_fail">Block account fail</string>
     <string name="network_connected">Network is connected</string>
     <string name="network_disconnected">Network is disconnected</string>
+    <string name="language">Language</string>
 
     <string-array name="gender_spin">
         <item>Male</item>

@@ -75,13 +75,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textColorHint="@color/text_color">
+        android:textColorHint="@color/text_color"
+        app:endIconDrawable="@drawable/ic_view"
+        app:endIconTint="@color/text_color"
+        app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
+            android:inputType="textPassword"
             android:singleLine="true"
             android:textColor="@color/gray"
             />
@@ -93,13 +97,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textColorHint="@color/text_color">
+        android:textColorHint="@color/text_color"
+        app:endIconDrawable="@drawable/ic_view"
+        app:endIconTint="@color/text_color"
+        app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/confrimPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/confirm_password"
+            android:inputType="textPassword"
             android:singleLine="true"
             android:textColor="@color/gray"
             />

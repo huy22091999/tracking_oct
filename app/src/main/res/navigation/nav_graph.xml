@@ -70,6 +70,10 @@
         <action
             android:id="@+id/action_nav_detailUserFragment_to_updateProfileFragment"
             app:destination="@id/nav_updateProfileFragment" />
+        <argument
+            android:name="isMyself"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/nav_myProfileFragment"
@@ -97,6 +101,10 @@
         <argument
             android:name="user"
             app:argType="com.oceantech.tracking.data.model.User" />
+        <argument
+            android:name="isMyself"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/nav_nextUpdateFragment"
@@ -111,6 +119,18 @@
             app:destination="@id/nav_detailUserFragment" />
         <argument
             android:name="user"
-            app:argType="com.oceantech.tracking.data.model.User" />
+            app:argType="com.oceantech.tracking.data.model.User"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="isMyself"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_nav_nextUpdateFragment_to_nav_updateProfileFragment"
+            app:destination="@id/nav_updateProfileFragment" />
+        <action
+            android:id="@+id/action_nav_nextUpdateFragment_to_nav_userFragment"
+            app:destination="@id/nav_userFragment" />
     </fragment>
 </navigation>

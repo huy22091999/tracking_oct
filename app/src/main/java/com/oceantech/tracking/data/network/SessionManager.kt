@@ -2,6 +2,7 @@ package com.oceantech.tracking.data.network
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.model.User
 
@@ -16,8 +17,8 @@ class SessionManager(private val context: Context) {
     companion object {
         const val USER_TOKEN = "user_token"
         const val TOKEN_REFRESH="refresh_token"
-        const val USER_NAME = "user_name"
-        const val PASSWORD ="password"
+        const val LANGUAGE = "app_language"
+        const val THEME = "app_theme"
     }
 
     /**
@@ -39,25 +40,30 @@ class SessionManager(private val context: Context) {
         editor.putString(USER_TOKEN, token)
         editor.apply()
     }
-    fun saveUserName(userName: String) {
+    fun saveAppTheme(theme: String) {
         val editor = prefs.edit()
-        editor.putString(USER_NAME, userName)
+        editor.putString(THEME, theme)
         editor.apply()
     }
-    fun fetchUserName(): String? {
-        return prefs.getString(USER_NAME, null)
+    fun fetchAppTheme(): String? {
+        return prefs.getString(THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM.toString())
     }
-    fun savePassWord(token: String) {
+
+    fun saveAppLanguage(language:String){
         val editor = prefs.edit()
-        editor.putString(PASSWORD, token)
+        editor.putString(LANGUAGE, language)
         editor.apply()
     }
-    fun fetchPassword(): String? {
-        return prefs.getString(PASSWORD, null)
+
+    fun fetchAppLanguage(): String? {
+        return prefs.getString(LANGUAGE, "vi")
     }
+
     fun clearAuthToken(){
         val editor = prefs.edit()
-        editor.clear()
+        //editor.clear()
+        editor.putString(TOKEN_REFRESH, null)
+        editor.putString(USER_TOKEN, null)
         editor.apply()
     }
 }

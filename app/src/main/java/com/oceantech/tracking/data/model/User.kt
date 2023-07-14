@@ -14,7 +14,7 @@ data class User(
     @SerializedName("birthPlace")
     var birthPlace: String? = null,
     @SerializedName("changePass")
-    val changePass: Boolean? = null,
+    var changePass: Boolean? = null,
     @SerializedName("confirmPassword")
     var confirmPassword: String? = null,
     @SerializedName("countDayCheckin")

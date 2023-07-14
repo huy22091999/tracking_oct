@@ -44,9 +44,10 @@
         <activity
             android:name="com.oceantech.tracking.ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Nimpe.NoActionBar"/>
+            android:theme="@style/Theme.Nimpe.NoActionBar">
+        </activity>
         <receiver
-            android:name=".ui.home.NetworkBroadcast"
+            android:name=".ui.home.NetworkReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>

@@ -1,16 +1,20 @@
 package com.oceantech.tracking.ui.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.navigation.fragment.navArgs
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.FragmentUpdateProfileBinding
+import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
 import okhttp3.internal.userAgent
 
@@ -18,11 +22,14 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
     private val viewModel:HomeViewModel by activityViewModel()
     lateinit var newFirstName:String
     lateinit var newLastName:String
-    lateinit var newGender:String
+    private var newGender:String = EnMale
     lateinit var newBirthday:String
     lateinit var newBirthPlace:String
     lateinit var newUniversity:String
-    lateinit var newYear:String
+    private var newYear:String = "1"
+
+
+    var isUpdateMyself:Boolean = false
 
     lateinit var user:User
 
@@ -34,6 +41,10 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.observeViewEvents {
+            handleEvents(it)
+        }
 
         val genderAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,resources.getStringArray(R.array.gender_spin))
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -48,7 +59,30 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
         }
 
         user = args.user
+        isUpdateMyself = args.isMyself
         setData()
+
+        views.backLayout.setOnClickListener {
+            if(isUpdateMyself){
+                viewModel.handleReturnProfile()
+            }
+            else viewModel.handleReturnUsers()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable("user", user)
+    }
+    private fun handleEvents(it: HomeViewEvent) {
+        when(it){
+            is HomeViewEvent.ResetLanguege -> {
+                setData()
+            }
+            is HomeViewEvent.ResetTheme -> {
+                setData()
+            }
+        }
     }
 
     private fun setData() {
@@ -93,7 +127,9 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
                 this.birthPlace = newBirthPlace
                 this.university = newUniversity
             }
-            viewModel.handleNextUpdateInfo(user)
+
+            viewModel.handleNextUpdateInfo(user,isUpdateMyself)
+            Log.i("check data: ", user.toString())
             views.apply {
                 firstName.error = null
                 lastName.error = null

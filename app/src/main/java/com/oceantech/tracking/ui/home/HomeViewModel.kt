@@ -9,6 +9,7 @@ import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.TimeSheetRepository
+import com.oceantech.tracking.data.repository.TokenRepository
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
@@ -19,7 +20,8 @@ class HomeViewModel @AssistedInject constructor(
     @Assisted state: HomeViewState,
     val repository: UserRepository,
     private val trackingRepo: TrackingRepository,
-    private val timeSheetRepo:TimeSheetRepository
+    private val timeSheetRepo:TimeSheetRepository,
+    private val tokenRepo:TokenRepository
 ) : TrackingViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
     var language: Int = 1
 
@@ -33,6 +35,7 @@ class HomeViewModel @AssistedInject constructor(
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang()
+            is HomeViewAction.ResetTheme -> handleResetTheme()
             is HomeViewAction.GetTrackings -> handleAllTracking()
             is HomeViewAction.GetTimeSheets -> handleTimeSheets()
             is HomeViewAction.GetCheckIn -> handleCheckIn(action.ip)
@@ -43,16 +46,37 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.BlockUser -> handleBlockUser(action.id)
             is HomeViewAction.EditTokenDevice -> handleTokenDevice(action.tokenDevice)
             is HomeViewAction.UpdateMyself -> handleUpdateMyself(action.user)
-            is HomeViewAction.EditUser -> handleEditUser(action.user)
+            is HomeViewAction.EditUser -> handleEditUser(action.id,action.user)
+            is HomeViewAction.Logout -> handleLogout()
         }
     }
 
-    private fun handleEditUser(user: User) {
+    private fun handleLogout() {
+        setState {
+            copy(asyncLogout = Loading())
+        }
+        tokenRepo.revokeToken().execute {
+            copy(asyncLogout = it)
+        }
+    }
+
+    fun removeStateLogout(){
+        setState {
+            copy(asyncLogout = Uninitialized)
+        }
+    }
+
+    private fun handleResetTheme() {
+        _viewEvents.post(HomeViewEvent.ResetTheme)
+    }
+
+    private fun handleEditUser(id:Int, user: User) {
         setState { copy(asyncEditUser = Loading()) }
-        repository.edit(user).execute {
+        repository.edit(id,user).execute {
             copy(asyncEditUser = it)
         }
     }
+    fun handleRemoveStateEditUser() = setState { copy(asyncEditUser = Uninitialized) }
 
     private fun handleUpdateMyself(user: User) {
         setState { copy(asyncUpdateMySelf = Loading()) }
@@ -60,6 +84,7 @@ class HomeViewModel @AssistedInject constructor(
             copy(asyncUpdateMySelf = it)
         }
     }
+    fun handleRemoveStateUpdateMySelf() = setState { copy(asyncUpdateMySelf = Uninitialized) }
 
     private fun handleTokenDevice(tokenDevice: String) {
         setState { copy(asyncTokenDevice = Loading()) }
@@ -176,8 +201,8 @@ class HomeViewModel @AssistedInject constructor(
         _viewEvents.post(HomeViewEvent.ReturnUpdateInfo(user))
     }
 
-    fun handleNextUpdateInfo(user: User){
-        _viewEvents.post(HomeViewEvent.ReturnNextUpdate(user))
+    fun handleNextUpdateInfo(user: User,isMyself:Boolean){
+        _viewEvents.post(HomeViewEvent.ReturnNextUpdate(user, isMyself))
     }
     fun handleReturnProfile(){
         _viewEvents.post(HomeViewEvent.ReturnProfile)

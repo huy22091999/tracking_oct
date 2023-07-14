@@ -24,6 +24,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.MenuRes
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -108,6 +109,11 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         }
     }
 
+    override fun recreate() {
+        super.recreate()
+        Timber.i("recreate Activity ${javaClass.simpleName}")
+    }
+
     /**
      * This method has to be called for the font size setting be supported correctly.
      */
@@ -126,7 +132,6 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     override fun onResume() {
         super.onResume()
         Timber.i("onResume Activity ${javaClass.simpleName}")
-
     }
 
     private val postResumeScheduledActions = mutableListOf<() -> Unit>()
@@ -156,6 +161,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
 

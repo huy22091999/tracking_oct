@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,8 +41,10 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentTrackingBinding = FragmentTrackingBinding.inflate(inflater, container, false)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         trackings = listOf()
         trackingAdapter = TrackingAdapter(trackings,requireContext(), showMenu)
 
@@ -49,9 +52,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             layoutManager = LinearLayoutManager(requireContext())
             adapter = trackingAdapter
         }
-        views.imageView.setOnClickListener {
-            viewModel.handleReturnAddTracking()
-        }
+
         viewModel.observeViewEvents {
             handleEvent(it)
         }
@@ -115,10 +116,9 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
                         adapter = TrackingAdapter(trackings,requireContext(), showMenu)
                     }
                 }
-            }
-            is Loading -> {
-            }
-            is Fail -> {
+                views.imageView.setOnClickListener {
+                    viewModel.handleReturnAddTracking()
+                }
             }
         }
         when(it.asyncDeleteTracking){

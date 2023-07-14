@@ -7,6 +7,7 @@ import com.oceantech.tracking.data.repository.ImageRepository
 import com.oceantech.tracking.data.repository.NotificationRepository
 import com.oceantech.tracking.data.repository.PublicRepository
 import com.oceantech.tracking.data.repository.TimeSheetRepository
+import com.oceantech.tracking.data.repository.TokenRepository
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.data.repository.UserRepository
 import com.oceantech.tracking.ui.security.UserPreferences
@@ -105,4 +106,15 @@ object NetWorkModule {
     fun providerNotificationRepository(
         api:NotificationApi
     ):NotificationRepository = NotificationRepository(api)
+
+    @Provides
+    fun providerTokenApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(TokenApi::class.java, context)
+
+    @Provides
+    fun providerTokenRepository(
+        api: TokenApi
+    ):TokenRepository = TokenRepository(api)
 }

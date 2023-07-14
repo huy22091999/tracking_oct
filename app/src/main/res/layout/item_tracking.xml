@@ -10,12 +10,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/TrackingItem"
-        android:padding="13dp">
-        <androidx.appcompat.widget.AppCompatImageView
+        android:theme="@style/TrackingItem">
+        <FrameLayout
             android:id="@+id/tracking_image"
-            android:layout_width="50dp"
-            android:layout_height="70dp"
+            android:layout_width="20dp"
+            android:layout_height="80dp"
+            android:background="#FFC312"
             android:layout_gravity="center_vertical"
             android:src="@drawable/img_tracking_color"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -57,13 +57,14 @@
 
         <ImageView
             android:id="@+id/circleImageView"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_update"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/img_next"
+            android:layout_marginRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/red"
-            android:theme="@style/TrackingItem"/>
+            android:theme="@style/TrackingItem"
+            app:tint="@color/text_color" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
