@@ -3,6 +3,7 @@ package com.oceantech.tracking.data.network
 import android.content.Context
 import android.content.SharedPreferences
 import com.oceantech.tracking.R
+import java.util.Locale
 
 
 /**
@@ -17,6 +18,7 @@ class SessionManager(context: Context) {
         const val USER_TOKEN = "user_token"
         const val TOKEN_REFRESH = "refresh_token"
         const val DARK_MODE = "dark_mode"
+        const val LANGUAGE = "language"
     }
 
     /**
@@ -55,4 +57,12 @@ class SessionManager(context: Context) {
     }
 
     fun getDarkMode(): Boolean = prefs.getBoolean(DARK_MODE, false)
+
+    fun saveLanguage(language: String) {
+        val editor = prefs.edit()
+        editor.putString(LANGUAGE, language)
+        editor.apply()
+    }
+
+    fun getLanguage() : String? = prefs.getString(LANGUAGE, Locale.getDefault().language)
 }

@@ -14,37 +14,20 @@ import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.databinding.TrackingItemBinding
 import com.oceantech.tracking.ui.tracking.TrackingViewAction
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
+import com.oceantech.tracking.utils.TrackingBaseAdapter
 
 class TrackingAdapter(
     private val deleteTracking: (Int) -> Unit,
     private val updateTracking: (Tracking, Int) -> Unit
-) : RecyclerView.Adapter<TrackingAdapter.TrackingViewHolder>() {
+) : TrackingBaseAdapter<TrackingItemBinding, Tracking>() {
 
-    private var listTracking: List<Tracking> = emptyList()
-
-    class TrackingViewHolder(private val _binding: TrackingItemBinding) :
-        RecyclerView.ViewHolder(_binding.root) {
-        val binding: TrackingItemBinding
-            get() = _binding
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackingViewHolder {
-        return TrackingViewHolder(
-            TrackingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
-    }
-
-    override fun getItemCount(): Int {
-        return listTracking.size
-    }
-
-    fun setListTracking(listTracking: List<Tracking>) {
-        this.listTracking = listTracking
+    override fun getBinding(parent: ViewGroup): TrackingItemBinding {
+        return TrackingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 
     @SuppressLint("InflateParams")
-    override fun onBindViewHolder(holder: TrackingViewHolder, position: Int) {
-        val tracking = listTracking[position]
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val tracking = list[position]
         holder.binding.tracking = tracking
 
         holder.binding.imgMore.setOnClickListener {

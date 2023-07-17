@@ -1,12 +1,17 @@
 package com.oceantech.tracking.ui.security
 
+import android.content.Context
 import android.content.Intent
+import android.inputmethodservice.InputMethodService
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
@@ -19,10 +24,12 @@ import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.utils.changeDarkMode
 import com.oceantech.tracking.utils.checkError
+import com.oceantech.tracking.utils.registerNetworkReceiver
+import com.oceantech.tracking.utils.unregisterNetworkReceiver
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
-
+@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
     private val viewModel: SecurityViewModel by activityViewModel()
@@ -35,10 +42,16 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
 
     lateinit var username: String
     lateinit var password: String
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         changeDarkMode(sessionManager.getDarkMode())
         views.loginSubmit.setOnClickListener {
-            loginSubmit()
+            val inputMethod = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethod.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+            views.loginPB.visibility = View.VISIBLE
+            registerNetworkReceiver {
+                loginSubmit()
+            }
         }
         views.labelSigin.setOnClickListener {
             viewModel.handleReturnSignin()
@@ -60,6 +73,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             viewModel.handle(SecurityViewAction.LogginAction(username, password))
         }
     }
+
 
     override fun invalidate(): Unit = withState(viewModel) {
         when (it.asyncLogin) {
@@ -93,5 +107,10 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             else -> {}
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterNetworkReceiver()
     }
 }

@@ -15,13 +15,13 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.oceantech.tracking.R
@@ -31,7 +31,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -93,6 +92,7 @@ fun String.toLocalDate(isoDateTime: String): String {
 
     return normalDateTime.format(normalFormat)
 }
+
 // Convert normal date time to ISO Instant
 fun toIsoInstant(localDate: String): String {
     val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -102,9 +102,13 @@ fun toIsoInstant(localDate: String): String {
 }
 
 
-//Update language of app
-fun Activity.changeLanguage(localHelper: LocalHelper, language: String) {
-    localHelper.setLanguage(baseContext, language)
+
+/**
+ * Update language of app.
+ * Starting activity will attach new base context having configuration of language that we choose
+ */
+fun AppCompatActivity.changeLanguage(sessionManager: SessionManager, language: String) {
+    sessionManager.saveLanguage(language)
     val intent = Intent(this, this.javaClass)
     startActivity(intent)
     finish()
@@ -194,23 +198,6 @@ fun Fragment.checkError(errorCode: String) {
     }
 }
 
-class ItemDecoration(
-    private val distance: Int
-) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(
-        outRect: Rect,
-        view: View,
-        parent: RecyclerView,
-        state: RecyclerView.State
-    ) {
-        outRect.bottom = distance
-        outRect.top = distance
-        outRect.right = distance
-        outRect.left = distance
-    }
-}
-
-
 object DarkModeUtils {
     var isDarkMode: Boolean = false
 }
@@ -222,15 +209,41 @@ fun changeDarkMode(isDarkMode: Boolean) {
 }
 
 // this function will make us can press on user item when press back button to home fragment
-internal fun Fragment.handleBackPressedEvent(controller: NavController) {
+internal fun Fragment.handleBackPressedEvent(
+    controller: NavController,
+    handleAction: () -> Unit
+) {
     requireActivity().apply {
         onBackPressedDispatcher.addCallback {
             when (controller.currentDestination?.id) {
                 R.id.nav_HomeFragment -> finish()
-                R.id.modifyUserFragment -> controller.navigate(R.id.userInfoFragment)
-                R.id.modifyPersonalFragment -> controller.navigate(R.id.personalFragment)
+                R.id.modifyUserFragment -> showDialog(requireContext(), handleAction){
+                    controller.navigate(R.id.userInfoFragment)
+                }
+                R.id.modifyPersonalFragment ->  showDialog(requireContext(), handleAction){
+                    controller.navigate(R.id.personalFragment)
+                }
                 else -> controller.navigate(R.id.nav_HomeFragment)
             }
         }
     }
+
+}
+
+private fun showDialog(
+    context: Context,
+    handleAction: () -> Unit,
+    navigate: () -> Unit
+) {
+    AlertDialog.Builder(context)
+        .setCancelable(true)
+        .setTitle(context.getString(R.string.save_the_change_title_dialog))
+        .setNegativeButton(context.getString(R.string.no)) { dialog, which ->
+            navigate()
+        }
+        .setPositiveButton(context.getText(R.string.yes)) { dialog, which ->
+            handleAction()
+        }
+        .create()
+        .show()
 }

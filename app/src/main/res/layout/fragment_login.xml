@@ -141,6 +141,13 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <ProgressBar
+                    android:id="@+id/loginPB"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible" />
             </LinearLayout>
         </RelativeLayout>
 

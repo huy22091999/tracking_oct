@@ -10,12 +10,14 @@ import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivityLoginBinding
 import com.oceantech.tracking.utils.addFragmentToBackstack
 import com.oceantech.tracking.utils.changeDarkMode
+import com.oceantech.tracking.utils.registerNetworkReceiver
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 @AndroidEntryPoint
 class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
+
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -58,5 +60,6 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     override fun create(initialState: SecurityViewState): SecurityViewModel {
         return securityViewModelFactory.create(initialState)
     }
+
 
 }

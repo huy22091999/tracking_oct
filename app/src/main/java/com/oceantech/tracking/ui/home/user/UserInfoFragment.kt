@@ -52,8 +52,7 @@ class UserInfoFragment @Inject constructor(): TrackingBaseFragment<FragmentUserI
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.i("info", "onViewCreated")
-        handleBackPressedEvent(findNavController())
-
+        handleBackPressedEvent(findNavController()){}
         views.edtProfile.setOnClickListener {
             val bundle = bundleOf(UPDATE_ID to views.user?.id)
             findNavController().navigate(R.id.modifyUserFragment, bundle)

@@ -127,5 +127,11 @@
     <string name="update_user_successfully">Update User Successfully</string>
     <string name="edit_profile">Edit profile</string>
     <string name="update_profile">Update Profile</string>
+    <string name="save_the_change_title_dialog">Do you want to save the change?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="network_requirement">Please turn your network on</string>
+    <string name="check_network">Please check your network</string>
+    <string name="notification">Notifications</string>
 
 </resources>

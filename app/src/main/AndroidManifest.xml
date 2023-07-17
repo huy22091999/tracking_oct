@@ -19,6 +19,9 @@
         android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
 
     <application
         android:name=".TrackingApplication"
@@ -49,6 +52,8 @@
             android:configChanges="uiMode"
             android:exported="true"
             android:theme="@style/Theme.Nimpe.NoActionBar" />
+
+
     </application>
 
 </manifest>

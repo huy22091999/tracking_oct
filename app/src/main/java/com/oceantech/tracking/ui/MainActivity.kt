@@ -2,22 +2,19 @@ package com.oceantech.tracking.ui
 
 import android.annotation.SuppressLint
 import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.media.VolumeShaper
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import android.widget.Switch
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.MenuRes
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SwitchCompat
@@ -27,7 +24,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.airbnb.mvrx.viewModel
@@ -54,15 +50,17 @@ import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.TestViewModel
 import com.oceantech.tracking.ui.information.InfoViewModel
 import com.oceantech.tracking.ui.information.InfoViewState
+import com.oceantech.tracking.ui.notifications.NotificationViewModel
+import com.oceantech.tracking.ui.notifications.NotificationViewState
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
 import com.oceantech.tracking.ui.tracking.TrackingViewState
 import com.oceantech.tracking.utils.DarkModeUtils
+import com.oceantech.tracking.utils.TrackingContextWrapper
 import com.oceantech.tracking.utils.changeDarkMode
 import com.oceantech.tracking.utils.changeLanguage
 import com.oceantech.tracking.utils.createNotification
-import com.oceantech.tracking.utils.handleBackPressedEvent
 import com.oceantech.tracking.utils.handleLogOut
 import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,7 +70,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
-    TrackingViewModel.Factory, TimeSheetViewModel.Factory, InfoViewModel.Factory {
+    TrackingViewModel.Factory, TimeSheetViewModel.Factory, InfoViewModel.Factory, NotificationViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -82,6 +80,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private val testViewModel: TestViewModel by viewModels {
         SavedStateViewModelFactory(application, this)
     }
+
 
     @Inject
     lateinit var localHelper: LocalHelper
@@ -100,6 +99,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     @Inject
     lateinit var mInfoViewModelFactory: InfoViewModel.Factory
+
+    @Inject
+    lateinit var notificationViewModelFactory: NotificationViewModel.Factory
 
     // Create update manager
     private lateinit var appUpdateManager: AppUpdateManager
@@ -126,7 +128,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             appUpdateManager.registerListener(installStatusListener)
         }
 
-
         checkForUpdate() // check update with update type is immediate update
         setupToolbar()
         setupDrawer()
@@ -139,7 +140,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
 
     }
-
+    override fun create(state: NotificationViewState): NotificationViewModel {
+        return notificationViewModelFactory.create(state)
+    }
 
     override fun create(state: InfoViewState): InfoViewModel {
         return mInfoViewModelFactory.create(state)
@@ -247,7 +250,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
 
         menu.findItem(R.id.dark_mode).let { item ->
-            (item.actionView as SwitchCompat).apply{
+            (item.actionView as SwitchCompat).apply {
                 setOnClickListener {
                     handleDarkMode(item)
                 }
@@ -270,10 +273,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         popup.setBackgroundDrawable(getDrawable(R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
-            changeLanguage(localHelper, "en")
+            changeLanguage(sessionManager, "en")
         }
         view.findViewById<LinearLayout>(R.id.to_lang_vi).setOnClickListener {
-            changeLanguage(localHelper, "vi")
+            changeLanguage(sessionManager, "vi")
+
         }
     }
 
@@ -323,6 +327,15 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         recreate()
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun attachBaseContext(context: Context?) {
+        val prefs = context?.getSharedPreferences(
+            context.getString(R.string.app_name),
+            Context.MODE_PRIVATE
+        )
+        val language = prefs?.getString(SessionManager.LANGUAGE, Locale.getDefault().language)
+        super.attachBaseContext(language?.let { TrackingContextWrapper.wrap(context, it) })
+    }
 
     /**
      * Check that the update is not stuck and interrupted by user who quiting app when in update progress.
@@ -421,5 +434,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
         sessionManager.saveDarkMode(DarkModeUtils.isDarkMode)
     }
+
+
+
 }
 

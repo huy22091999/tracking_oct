@@ -1,12 +1,14 @@
 package com.oceantech.tracking.ui.tracking
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +22,7 @@ import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
 import com.oceantech.tracking.ui.tracking.adapter.TrackingAdapter
 import com.oceantech.tracking.utils.checkError
+import com.oceantech.tracking.utils.registerNetworkReceiver
 import com.oceantech.tracking.utils.setupRecycleView
 import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,12 +44,16 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
     }
 
     private var state: Int = 0
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //get all tracking when fragment is creating status
-        trackingViewModel.handle(TrackingViewAction.GetAllTracking())
-        state = GET_ALL
+        //get all tracking when fragment is creating status and network is on
+        registerNetworkReceiver {
+            trackingViewModel.handle(TrackingViewAction.GetAllTracking())
+            state = GET_ALL
+        }
+
     }
 
     override fun getBinding(
@@ -122,7 +129,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         when (state.getAllTracking) {
             is Success -> {
                 state.getAllTracking.invoke().let { listTracking ->
-                    trackingAdapter.setListTracking(listTracking)
+                    trackingAdapter.list = listTracking
                     trackingAdapter.notifyDataSetChanged()
                 }
             }

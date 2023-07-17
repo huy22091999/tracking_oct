@@ -21,6 +21,9 @@
         <item android:id="@+id/publicFragment"
             android:title="@string/app_information"
             android:icon="@drawable/infor_icon"/>
+        <item android:id="@+id/notificationFragment"
+            android:icon="@drawable/notification_icon"
+            android:title="@string/notification"/>
 
 
 

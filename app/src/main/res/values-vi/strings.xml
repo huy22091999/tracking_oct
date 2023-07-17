@@ -127,6 +127,12 @@
     <string name="update_user_successfully">Cập nhật User thành công</string>
     <string name="edit_profile">Chỉnh sửa thông tin</string>
     <string name="update_profile">"Cập nhật thông tin "</string>
+    <string name="save_the_change_title_dialog">Bạn có muốn lưu sự thay đổi không ?</string>
+    <string name="no">Không</string>
+    <string name="yes">Có</string>
+    <string name="network_requirement">Xin vui lòng kết nối mạng</string>
+    <string name="check_network">Xin vui lòng kiểm tra lại kết nối</string>
+    <string name="notification">Thông báo</string>
 
 
 </resources>

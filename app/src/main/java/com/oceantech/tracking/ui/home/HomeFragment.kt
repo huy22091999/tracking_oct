@@ -2,11 +2,13 @@ package com.oceantech.tracking.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.airbnb.mvrx.Fail
@@ -19,7 +21,9 @@ import com.oceantech.tracking.databinding.FragmentHomeBinding
 import com.oceantech.tracking.ui.home.user.UserInfoFragment
 import com.oceantech.tracking.ui.home.user.adapter.UserAdapter
 import com.oceantech.tracking.utils.checkError
+import com.oceantech.tracking.utils.registerNetworkReceiver
 import com.oceantech.tracking.utils.setupRecycleView
+import com.oceantech.tracking.utils.unregisterNetworkReceiver
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -35,10 +39,12 @@ class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBind
         private const val GET_ALL_USER = 1
         private const val GET_USER_CURRENT = 2
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel.handle(HomeViewAction.GetCurrentUser)
-        stateUser = GET_USER_CURRENT
-
+        registerNetworkReceiver {
+            viewModel.handle(HomeViewAction.GetCurrentUser)
+            stateUser = GET_USER_CURRENT
+        }
         super.onCreate(savedInstanceState)
 
     }
@@ -60,7 +66,7 @@ class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBind
         setupRecycleView(views.usersRV, userAdapter, requireContext(), distance = 10)
         viewModel.onEach {
             views.userPB.isVisible = it.isLoading() || it.allUsers is Fail
-            views.usersRV.isVisible = !it.isLoading() && it.allUsers is Success
+            views.usersRV.isVisible = it.allUsers is Success
         }
     }
 
@@ -76,7 +82,7 @@ class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBind
         when(val allUsers = state.allUsers){
             is Success -> {
                 allUsers.invoke().let { users ->
-                    userAdapter.setListUsers(users)
+                    userAdapter.list = users
                     userAdapter.notifyDataSetChanged()
                 }
 
@@ -108,5 +114,10 @@ class HomeFragment @Inject constructor() : TrackingBaseFragment<FragmentHomeBind
             }
             else -> {}
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterNetworkReceiver()
     }
 }

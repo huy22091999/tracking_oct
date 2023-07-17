@@ -2,12 +2,14 @@ package com.oceantech.tracking.ui.personal
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.airbnb.mvrx.Fail
@@ -26,15 +28,20 @@ import com.oceantech.tracking.ui.security.LoginActivity
 import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.handleBackPressedEvent
 import com.oceantech.tracking.utils.handleLogOut
+import com.oceantech.tracking.utils.registerNetworkReceiver
+import com.oceantech.tracking.utils.unregisterNetworkReceiver
 
 class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
 
     private val viewModel: HomeViewModel by activityViewModel()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.handle(HomeViewAction.GetCurrentUser)
-        Log.i("Personal", "Personal Fragment onCreate")
+        registerNetworkReceiver {
+            viewModel.handle(HomeViewAction.GetCurrentUser)
+        }
+
     }
 
     override fun getBinding(
@@ -46,13 +53,14 @@ class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i("Personal", "Personal Fragment onViewCreated")
-        handleBackPressedEvent(findNavController())
         viewModel.onEach {
             views.personPB.isVisible = it.isLoading() || it.userCurrent is Fail
             views.personInfor.isVisible = it.userCurrent is Success
             views.txtPersonDisplayName.isVisible = it.userCurrent is Success
             views.imgPerson.isVisible = it.userCurrent is Success
+            views.btnEditProfile.isVisible = it.userCurrent is Success
+            views.btnLogOut.isVisible = it.userCurrent is Success
+            views.txtFullName.isVisible = it.userCurrent is Success
         }
         views.btnLogOut.setOnClickListener {
             requireActivity().handleLogOut()
@@ -83,5 +91,10 @@ class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
         views.txtFullName.text = "${user.firstName} ${user.lastName}"
         views.txtPersonUsermame.text = "Username: ${user.username}"
         views.txtPersonDisplayName.text = "Display Name: ${user.displayName}"
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterNetworkReceiver()
     }
 }

@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_nav_HomeFragment_to_userInfoFragment"
             app:destination="@id/userInfoFragment" />
+        <action
+            android:id="@+id/action_nav_HomeFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/trackingFragment"
@@ -72,5 +75,10 @@
         android:name="com.oceantech.tracking.ui.personal.ModifyPersonalFragment"
         android:label="@string/update_profile"
         tools:layout="@layout/fragment_modify_personal" />
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.oceantech.tracking.ui.notifications.NotificationFragment"
+        android:label="@string/notification"
+        tools:layout="@layout/fragment_notification" />
 
 </navigation>

@@ -19,6 +19,7 @@ import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.ui.home.HomeViewState
 import com.oceantech.tracking.ui.home.user.ModifyUserFragment
 import com.oceantech.tracking.utils.checkError
+import com.oceantech.tracking.utils.handleBackPressedEvent
 import com.oceantech.tracking.utils.showToast
 
 
@@ -36,7 +37,6 @@ class ModifyPersonalFragment : TrackingBaseFragment<FragmentModifyPersonalBindin
         super.onCreate(savedInstanceState)
         viewModel.handle(HomeViewAction.GetCurrentUser)
         modifyState = GET_MYSELF
-        Log.i("Personal", "Modify Personal Fragment onCreate")
 
     }
 
@@ -49,23 +49,30 @@ class ModifyPersonalFragment : TrackingBaseFragment<FragmentModifyPersonalBindin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handleBackPressedEvent(findNavController()){
+            updateMyself()
+        }
         views.updateInfo.setOnClickListener {
-            val updateMyself = views.user?.copy(
-                firstName = views.editFirstName.text.toString(),
-                lastName = views.editLastName.text.toString(),
-                displayName = views.editDisplayName.text.toString(),
-                dob = views.editDob.text.toString(),
-                gender = views.editGender.text.toString(),
-                email = views.editEmail.text.toString(),
-                university = views.editUniversity.text.toString(),
-                year = views.editStudentYear.text.toString().toInt()
-            )
-            updateMyself?.let {myself ->
-                viewModel.handle(HomeViewAction.UpdateMyself(myself))
-                modifyState = MODIFY_MYSELF
-            }
+            updateMyself()
         }
 
+    }
+
+    private fun updateMyself() {
+        val updateMyself = views.user?.copy(
+            firstName = views.editFirstName.text.toString(),
+            lastName = views.editLastName.text.toString(),
+            displayName = views.editDisplayName.text.toString(),
+            dob = views.editDob.text.toString(),
+            gender = views.editGender.text.toString(),
+            email = views.editEmail.text.toString(),
+            university = views.editUniversity.text.toString(),
+            year = views.editStudentYear.text.toString().toInt()
+        )
+        updateMyself?.let {myself ->
+            viewModel.handle(HomeViewAction.UpdateMyself(myself))
+            modifyState = MODIFY_MYSELF
+        }
     }
 
     override fun invalidate(): Unit = withState(viewModel){

@@ -19,6 +19,7 @@ import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.ui.home.HomeViewState
 import com.oceantech.tracking.utils.checkError
+import com.oceantech.tracking.utils.handleBackPressedEvent
 import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -50,21 +51,11 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handleBackPressedEvent(findNavController()){
+            updateUser()
+        }
         views.updateInfo.setOnClickListener {
-            val updateUser = views.user?.copy(
-                firstName = views.editFirstName.text.toString(),
-                lastName = views.editLastName.text.toString(),
-                displayName = views.editDisplayName.text.toString(),
-                dob = views.editDob.text.toString(),
-                gender = views.editGender.text.toString(),
-                email = views.editEmail.text.toString(),
-                university = views.editUniversity.text.toString(),
-                year = views.editStudentYear.text.toString().toInt()
-            )
-            updateUser?.id?.let {id ->
-                homeViewModel.handle(HomeViewAction.UpdateUser(updateUser, id))
-                stateModify = UPDATE_ID_USER
-            }
+            updateUser()
         }
     }
 
@@ -98,6 +89,23 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
                 blockUser.error.message?.let { checkError(it) }
             }
             else -> {}
+        }
+    }
+
+    private fun updateUser(){
+        val updateUser = views.user?.copy(
+            firstName = views.editFirstName.text.toString(),
+            lastName = views.editLastName.text.toString(),
+            displayName = views.editDisplayName.text.toString(),
+            dob = views.editDob.text.toString(),
+            gender = views.editGender.text.toString(),
+            email = views.editEmail.text.toString(),
+            university = views.editUniversity.text.toString(),
+            year = views.editStudentYear.text.toString().toInt()
+        )
+        updateUser?.id?.let {id ->
+            homeViewModel.handle(HomeViewAction.UpdateUser(updateUser, id))
+            stateModify = UPDATE_ID_USER
         }
     }
 }

@@ -10,7 +10,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.sql.Time
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,10 +22,12 @@ object NetWorkModule {
 
 
     @Provides
-    fun providerUserPreferences(@ApplicationContext context: Context): UserPreferences = UserPreferences(context)
+    fun providerUserPreferences(@ApplicationContext context: Context): UserPreferences =
+        UserPreferences(context)
 
     @Provides
-    fun providerSessionManager(@ApplicationContext context: Context): SessionManager = SessionManager(context)
+    fun providerSessionManager(@ApplicationContext context: Context): SessionManager =
+        SessionManager(context)
 
 
     @Provides
@@ -71,6 +72,7 @@ object NetWorkModule {
         remoteDataSource: RemoteDataSource,
         @ApplicationContext context: Context
     ) = remoteDataSource.buildApi(TimeSheetApi::class.java, context)
+
     @Provides
     fun providerTimeSheetRepository(
         api: TimeSheetApi
@@ -86,4 +88,15 @@ object NetWorkModule {
     fun providerPublicRepository(
         api: PublicApi
     ) = PublicRepository(api)
+
+    @Provides
+    fun providerNotificationApi(
+        remoteDataSource: RemoteDataSource,
+        @ApplicationContext context: Context
+    ) = remoteDataSource.buildApi(NotificationApi::class.java, context)
+
+    @Provides
+    fun providerNotificationRepository(
+        api: NotificationApi
+    ) = NotificationRepository(api)
 }
