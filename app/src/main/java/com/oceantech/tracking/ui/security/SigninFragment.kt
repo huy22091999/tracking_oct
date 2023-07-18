@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 
 class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSigninBinding>() {
-    val viewModel:SecurityViewModel by activityViewModel()
+    val viewModel: SecurityViewModel by activityViewModel()
     //lateinit var user:User
     lateinit var firstName:String
     lateinit var lastName:String

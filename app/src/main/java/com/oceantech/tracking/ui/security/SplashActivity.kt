@@ -15,6 +15,7 @@ import androidx.viewbinding.ViewBinding
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
+import com.google.android.gms.ads.MobileAds
 import com.oceantech.tracking.R
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity

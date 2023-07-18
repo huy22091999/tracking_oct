@@ -1,8 +1,11 @@
 package com.oceantech.tracking.ui.home
 
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.observe
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TimeSheet
@@ -26,9 +29,6 @@ class HomeViewModel @AssistedInject constructor(
     var language: Int = 1
 
     init {
-        handleAllTracking()
-        handleTimeSheets()
-        handleAllUsers()
         handleCurrentUser()
     }
     override fun handle(action: HomeViewAction) {
@@ -44,7 +44,7 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.DeleteTracking -> handleDeleteTracking(action.id)
             is HomeViewAction.GetAllUsers -> handleAllUsers()
             is HomeViewAction.BlockUser -> handleBlockUser(action.id)
-            is HomeViewAction.EditTokenDevice -> handleTokenDevice(action.tokenDevice)
+            is HomeViewAction.EditTokenDevice -> handleTokenDevice(action.lifecycleOwner)
             is HomeViewAction.UpdateMyself -> handleUpdateMyself(action.user)
             is HomeViewAction.EditUser -> handleEditUser(action.id,action.user)
             is HomeViewAction.Logout -> handleLogout()
@@ -86,10 +86,16 @@ class HomeViewModel @AssistedInject constructor(
     }
     fun handleRemoveStateUpdateMySelf() = setState { copy(asyncUpdateMySelf = Uninitialized) }
 
-    private fun handleTokenDevice(tokenDevice: String) {
-        setState { copy(asyncTokenDevice = Loading()) }
-        repository.edit(tokenDevice).execute {
-            copy(asyncTokenDevice = it)
+    fun handleTokenDevice(lifecycleOwner: LifecycleOwner) {
+        repository.hasTokenDevice.observe(lifecycleOwner){hasToken ->
+            if(hasToken){
+                repository.tokenDevice.observe(lifecycleOwner){tokenDevice ->
+                    setState { copy(asyncTokenDevice = Loading()) }
+                    repository.edit(tokenDevice).execute {
+                        copy(asyncTokenDevice = it)
+                    }
+                }
+            }
         }
     }
 

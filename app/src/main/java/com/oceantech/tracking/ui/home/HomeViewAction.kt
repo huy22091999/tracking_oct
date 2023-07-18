@@ -1,5 +1,6 @@
 package com.oceantech.tracking.ui.home
 
+import androidx.lifecycle.LifecycleOwner
 import com.oceantech.tracking.core.NimpeViewModelAction
 import com.oceantech.tracking.data.model.Feedback
 import com.oceantech.tracking.data.model.Tracking
@@ -18,7 +19,7 @@ sealed class HomeViewAction:NimpeViewModelAction{
     data class UpdateTracking(val id:Int, val content:String): HomeViewAction()
     data class DeleteTracking(val id:Int): HomeViewAction()
     data class BlockUser(val id:Int):HomeViewAction()
-    data class EditTokenDevice(val tokenDevice:String):HomeViewAction()
+    data class EditTokenDevice(val lifecycleOwner: LifecycleOwner):HomeViewAction()
     data class UpdateMyself(val user: User):HomeViewAction()
     data class EditUser(val id:Int,val user: User):HomeViewAction()
     object Logout:HomeViewAction()

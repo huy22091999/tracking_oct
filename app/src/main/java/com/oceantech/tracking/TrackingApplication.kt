@@ -68,6 +68,5 @@ open class TrackingApplication : Application() {
             getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
-
 }
 

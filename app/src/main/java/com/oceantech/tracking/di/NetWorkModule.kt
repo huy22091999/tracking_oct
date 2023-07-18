@@ -49,8 +49,9 @@ object NetWorkModule {
 
     @Provides
     fun providerUserRepository(
-        api: UserApi
-    ): UserRepository = UserRepository(api)
+        api: UserApi,
+        context: Context
+    ): UserRepository = UserRepository(api, context)
 
     @Provides
     fun providerTrackingApi(

@@ -18,15 +18,16 @@ import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.getDeviceToken
 import com.oceantech.tracking.databinding.FragmentNextSigninBinding
+import com.oceantech.tracking.ui.security.NextSigninFragmentArgs
 import com.oceantech.tracking.utils.validateEmail
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class NextSigninFragment : TrackingBaseFragment<FragmentNextSigninBinding>() {
-    private val viewModel:SecurityViewModel by activityViewModel()
+    private val viewModel: SecurityViewModel by activityViewModel()
     private lateinit var user:User
-    private val arg:NextSigninFragmentArgs by navArgs()
+    private val arg: NextSigninFragmentArgs by navArgs()
     lateinit var displayName:String
     lateinit var email:String
     lateinit var userName:String

@@ -8,6 +8,7 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.PublicRepository
 import com.oceantech.tracking.data.repository.UserRepository
+import com.oceantech.tracking.ui.home.HomeViewAction
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -20,20 +21,28 @@ class SecurityViewModel @AssistedInject constructor(
     private val userRepo: UserRepository,
     private val publicRepo: PublicRepository
 ) :
-    TrackingViewModel<SecurityViewState,SecurityViewAction,SecurityViewEvent>(state) {
+    TrackingViewModel<SecurityViewState, SecurityViewAction, SecurityViewEvent>(state) {
     init {
 
     }
 
     override fun handle(action: SecurityViewAction) {
         when(action){
-            is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
-            is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
+            is SecurityViewAction.LogginAction ->handleLogin(action.userName,action.password)
+            is SecurityViewAction.SaveTokenAction ->handleSaveToken(action.token)
             is SecurityViewAction.SignAction -> handleSign(action.user)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
             is SecurityViewAction.GetConfigApp -> handleConfigApp()
+            //is SecurityViewAction.EditTokenDevice -> handleTokenDevice()
         }
     }
+
+//    private fun handleTokenDevice() {
+//        setState { copy(asyncTokenDevice = Loading()) }
+//        userRepo.edit().execute {
+//            copy(asyncTokenDevice = it)
+//        }
+//    }
 
     private fun handleConfigApp() {
         setState { copy(asyncConfigApp = Loading()) }

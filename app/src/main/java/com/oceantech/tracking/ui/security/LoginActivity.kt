@@ -9,6 +9,7 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.ActivityLoginBinding
+import com.oceantech.tracking.ui.security.SigninFragmentDirections
 import javax.inject.Inject
 
 class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {

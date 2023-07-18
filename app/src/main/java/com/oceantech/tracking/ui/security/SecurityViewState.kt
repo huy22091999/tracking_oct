@@ -11,13 +11,15 @@ import com.oceantech.tracking.data.model.Version
 
 data class SecurityViewState (
     var asyncLogin: Async<TokenResponse> = Uninitialized,
-    var asyncSign:Async<TokenResponse> = Uninitialized,
+    var asyncSign:Async<User> = Uninitialized,
     var userCurrent:Async<User> = Uninitialized,
     val asyncSaveTracking:Async<Tracking> = Uninitialized,
-    val asyncConfigApp:Async<Version> = Uninitialized
+    val asyncConfigApp:Async<Version> = Uninitialized,
+    val asyncTokenDevice:Async<User> = Uninitialized,
     ):MvRxState{
         fun isLoading()= asyncLogin is Loading
                 || asyncSign is Loading
                 || userCurrent is Loading
                 || asyncSaveTracking is Loading
+                ||  asyncTokenDevice is Loading
     }

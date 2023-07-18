@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
@@ -46,10 +47,14 @@ import com.oceantech.tracking.ui.tracking.TrackingFragmentDirections
 import com.oceantech.tracking.ui.user.DetailUserFragmentDirections
 import com.oceantech.tracking.ui.user.UserFragmentDirections
 import com.oceantech.tracking.utils.LocalHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory, LifecycleOwner {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -81,12 +86,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         setupDrawer()
         sharedActionViewModel.test()
 
-//        homeViewModel.subscribe(this) {
-//            if (it.isLoadding()) {
-//                views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
-//            } else
-//                views.appBarMain.contentMain.waitingView.visibility = View.GONE
-//        }
+        CoroutineScope(Dispatchers.Main).launch {
+            homeViewModel.handleTokenDevice(this@MainActivity)
+        }
 
         homeViewModel.observeViewEvents {
             if(it!=null){

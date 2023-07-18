@@ -33,7 +33,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     ): FragmentTimeSheetBinding = FragmentTimeSheetBinding.inflate(inflater,container,false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        viewModel.handle(HomeViewAction.GetTimeSheets)
         timeSheets = listOf()
 
         views.gridView.apply {

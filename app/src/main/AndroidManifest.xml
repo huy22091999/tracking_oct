@@ -27,6 +27,18 @@
         android:theme="@style/Theme.Nimpe"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4347201915048498~6120388314"
+            />
+        <service android:name=".ui.fcm.MyFirebaseMessagingService"
+            android:exported="true"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
         <activity
             android:name="com.oceantech.tracking.ui.security.LoginActivity"
             android:exported="true"

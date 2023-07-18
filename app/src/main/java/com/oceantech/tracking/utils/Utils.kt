@@ -1,6 +1,8 @@
 package com.oceantech.tracking.utils
 
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.location.Location
 import android.os.Build
@@ -8,12 +10,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import androidx.viewbinding.ViewBinding
+import com.oceantech.tracking.R
 import com.oceantech.tracking.databinding.DialogLoginBinding
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -42,7 +46,7 @@ fun AppCompatActivity.addFragment(
 ) {
     supportFragmentManager.commitTransaction(allowStateLoss) { add(frameId, fragment) }
 }
-inline fun androidx.fragment.app.FragmentManager.commitTransaction(allowStateLoss: Boolean = false, func: FragmentTransaction.() -> FragmentTransaction) {
+inline fun FragmentManager.commitTransaction(allowStateLoss: Boolean = false, func: FragmentTransaction.() -> FragmentTransaction) {
     val transaction = beginTransaction().func()
     if (allowStateLoss) {
         transaction.commitAllowingStateLoss()
@@ -77,5 +81,34 @@ fun formatDate(input:String):String{
     val formatter2 = SimpleDateFormat("dd/MM/yyyy-HH:mm")
     val formattedDate: String = formatter2.format(date)
     return formattedDate
+}
+
+fun showNotification(context: Context,title:String, body:String){
+    val builder = NotificationCompat.Builder(context, "tracking_oct")
+
+    builder.apply {
+        setSmallIcon(R.drawable.ic_notification)
+        setContentTitle(title)
+        setContentText(body)
+        priority = NotificationCompat.PRIORITY_MAX
+    }
+
+    //big text style
+    val style = NotificationCompat.BigTextStyle()
+    style.bigText(title)
+    style.setBigContentTitle(title)
+    style.setSummaryText(body)
+
+    builder.setStyle(style)
+
+    val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        val channel = NotificationChannel("tracking_oct", "tracking_oct", NotificationManager.IMPORTANCE_HIGH)
+        manager.createNotificationChannel(channel)
+        builder.setChannelId("tracking_oct")
+    }
+
+    manager.notify(Random().nextInt(), builder.build())
 }
 
