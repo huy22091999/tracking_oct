@@ -50,7 +50,7 @@ open class BehaviorDataSource<T: Any>(private val defaultValue: T? = null) : Mut
     }
 
     override fun post(value: T) {
-        behaviorRelay.accept(value!!)
+        behaviorRelay.accept(value)
     }
 
     private fun createRelay(): BehaviorRelay<T> {
@@ -74,7 +74,7 @@ open class PublishDataSource<T: Any> : MutableDataSource<T> {
     }
 
     override fun post(value: T) {
-        publishRelay.accept(value!!)
+        publishRelay.accept(value)
     }
 
 }

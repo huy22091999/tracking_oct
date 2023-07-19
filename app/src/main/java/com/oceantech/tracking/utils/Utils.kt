@@ -3,6 +3,7 @@ package com.oceantech.tracking.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -13,6 +14,7 @@ import android.view.View
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -24,9 +26,11 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.messaging.FirebaseMessaging
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.security.LoginActivity
+import timber.log.Timber
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -95,7 +99,7 @@ fun String.toLocalDate(isoDateTime: String): String {
 
 // Convert normal date time to ISO Instant
 fun toIsoInstant(localDate: String): String {
-    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy" )
     val date = LocalDate.parse(localDate, formatter)
     val zonedDateTime = date.atStartOfDay(ZoneId.systemDefault())
     return zonedDateTime.toInstant().toString()
@@ -131,10 +135,15 @@ fun <T : RecyclerView.ViewHolder, R : RecyclerView.Adapter<T>> setupRecycleView(
 
 }
 
+
 fun Activity.handleLogOut() {
     SessionManager(applicationContext).also {
         it.deleteAuthToken()
     }
+    FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener {
+        Timber.tag("LogOut").i("Token deleted")
+    }
+
     val intent = Intent(this, LoginActivity::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     startActivity(intent)
@@ -146,23 +155,30 @@ fun createNotification(
     context: Context,
     contentTitle: String,
     contentText: String,
-    @LayoutRes layoutId: Int,
+    @LayoutRes layoutId: Int = 0,
     progress: Long = 0,
-    max: Long = 0
+    max: Long = 0,
+    pendingIntent: PendingIntent? = null,
+    @DrawableRes iconId: Int = 0
 ): Notification {
-    val views = RemoteViews(context.packageName, layoutId)
-    if (progress > 0 && max > 0) views.setProgressBar(
-        R.id.downloadPB,
-        max.toInt(),
-        progress.toInt(),
-        false
-    )
+    var views: RemoteViews? = null
+    if (layoutId != 0) {
+        views = RemoteViews(context.packageName, layoutId)
+        if (progress > 0 && max > 0) views.setProgressBar(
+            R.id.downloadPB,
+            max.toInt(),
+            progress.toInt(),
+            false
+        )
+    }
+
     return NotificationCompat.Builder(context, id)
         .setContentTitle(contentTitle)
-        .setSmallIcon(R.drawable.download_icon)
+        .setSmallIcon(iconId)
         .setContentText(contentText)
         .setStyle(NotificationCompat.DecoratedCustomViewStyle())
         .setCustomContentView(views)
+        .setContentIntent(pendingIntent)
         .build()
 }
 

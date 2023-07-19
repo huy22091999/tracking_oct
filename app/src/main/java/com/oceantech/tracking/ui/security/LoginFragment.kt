@@ -16,6 +16,7 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
+import com.google.firebase.messaging.FirebaseMessaging
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.TokenResponse
@@ -85,6 +86,10 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                     token.refreshToken?.let { it1 -> sessionManager!!.saveAuthTokenRefresh(it1) }
                     Timber.tag("Login").i(token.toString())
                     viewModel.handle(SecurityViewAction.SaveTokenAction(token))
+                }
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
+                    val result = task.result
+                    Log.i("Login", result)
                 }
                 Toast.makeText(
                     requireContext(),

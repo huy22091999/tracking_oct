@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface UserApi {
@@ -22,8 +23,8 @@ interface UserApi {
     @GET("users/get-all-user")
     suspend fun getAllUsers(): List<User>
 
-    @GET("users/token-device/{tokenDevice}")
-    suspend fun getDevice(@Path("tokenDevice") tokenDevice: String): User
+    @GET("users/")
+    suspend fun getDevice(@Query("tokenDevice") tokenDevice: String): User
 
     @GET("users/block/{id}")
     suspend fun getBlockUser(@Path("id") id: Int): User

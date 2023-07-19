@@ -1,6 +1,9 @@
 package com.oceantech.tracking.ui.security
 
+import android.bluetooth.BluetoothAdapter
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import com.airbnb.mvrx.viewModel
@@ -14,6 +17,7 @@ import com.oceantech.tracking.utils.registerNetworkReceiver
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 @AndroidEntryPoint
+
 class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
@@ -23,6 +27,7 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
     lateinit var sessionManager: SessionManager
     @Inject
     lateinit var securityViewModelFactory: SecurityViewModel.Factory
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
@@ -30,6 +35,7 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
         supportFragmentManager.commit {
             add<LoginFragment>(R.id.frame_layout)
         }
+
         viewModel.observeViewEvents {
             if (it != null) {
                 handleEvent(it)
@@ -39,6 +45,7 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleEvent(event: SecurityViewEvent) {
         when (event) {
             is SecurityViewEvent.ReturnSigninEvent -> {

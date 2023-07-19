@@ -133,5 +133,6 @@
     <string name="network_requirement">Please turn your network on</string>
     <string name="check_network">Please check your network</string>
     <string name="notification">Notifications</string>
+    <string name="noti_channel_id" translatable="false">nimpe_channel_id</string>
 
 </resources>

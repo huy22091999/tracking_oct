@@ -71,9 +71,6 @@ import kotlin.time.Duration.Companion.seconds
 @AndroidEntryPoint
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
     TrackingViewModel.Factory, TimeSheetViewModel.Factory, InfoViewModel.Factory, NotificationViewModel.Factory {
-    companion object {
-        const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
-    }
 
     private val homeViewModel: HomeViewModel by viewModel()
 
@@ -399,7 +396,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 val downloaded = state.bytesDownloaded()
                 val total = state.totalBytesToDownload()
                 createNotification(
-                    NOTIFICATION_CHANNEL_ID,
+                    getString(R.string.noti_channel_id),
                     applicationContext,
                     getString(R.string.update),
                     getString(R.string.downloading),

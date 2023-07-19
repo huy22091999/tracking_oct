@@ -52,6 +52,15 @@
             android:configChanges="uiMode"
             android:exported="true"
             android:theme="@style/Theme.Nimpe.NoActionBar" />
+        <service android:name=".core.TrackingCloudServices"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="@string/noti_channel_id"/>
+        </service>
 
 
     </application>

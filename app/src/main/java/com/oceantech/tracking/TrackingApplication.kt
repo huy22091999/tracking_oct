@@ -40,7 +40,7 @@ open class TrackingApplication : Application() {
         val descriptionText = getString(R.string.channel_description)
         val importance = NotificationManager.IMPORTANCE_HIGH
 
-        val channel = NotificationChannel(MainActivity.NOTIFICATION_CHANNEL_ID, name, importance).apply {
+        val channel = NotificationChannel(getString(R.string.noti_channel_id), name, importance).apply {
             description = descriptionText
         }
         // Register the channel with the system
