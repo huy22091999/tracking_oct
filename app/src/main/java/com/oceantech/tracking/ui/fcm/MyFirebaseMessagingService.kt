@@ -8,7 +8,6 @@ import com.oceantech.tracking.utils.showNotification
 class MyFirebaseMessagingService:FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d("refresh token firebase:", token)
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
@@ -19,6 +18,4 @@ class MyFirebaseMessagingService:FirebaseMessagingService() {
 
         showNotification(this,title!!,content!!)
     }
-
-
 }

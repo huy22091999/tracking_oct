@@ -19,6 +19,7 @@ import androidx.fragment.app.commitNow
 import androidx.viewbinding.ViewBinding
 import com.oceantech.tracking.R
 import com.oceantech.tracking.databinding.DialogLoginBinding
+import com.oceantech.tracking.ui.MainActivity
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -83,8 +84,8 @@ fun formatDate(input:String):String{
     return formattedDate
 }
 
-fun showNotification(context: Context,title:String, body:String){
-    val builder = NotificationCompat.Builder(context, "tracking_oct")
+fun showNotification(context: Context,title:String, body:String) {
+    val builder = NotificationCompat.Builder(context, MainActivity.NOTIFICATION_CHANNEL_ID)
 
     builder.apply {
         setSmallIcon(R.drawable.ic_notification)
@@ -100,14 +101,8 @@ fun showNotification(context: Context,title:String, body:String){
     style.setSummaryText(body)
 
     builder.setStyle(style)
-
     val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-        val channel = NotificationChannel("tracking_oct", "tracking_oct", NotificationManager.IMPORTANCE_HIGH)
-        manager.createNotificationChannel(channel)
-        builder.setChannelId("tracking_oct")
-    }
+    builder.setChannelId(MainActivity.NOTIFICATION_CHANNEL_ID)
 
     manager.notify(Random().nextInt(), builder.build())
 }

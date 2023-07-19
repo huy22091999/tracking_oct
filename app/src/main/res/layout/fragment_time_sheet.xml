@@ -24,14 +24,15 @@
             android:layout_marginBottom="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <com.google.android.material.button.MaterialButton
+        <!--<com.google.android.material.button.MaterialButton
+            android:visibility="gone"
             android:id="@+id/checkInSubmit"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/NimpeButtonLogin"
             android:text="@string/check_in"
-            />
+            />-->
     </RelativeLayout>
 
     <!-- TODO: Update blank fragment layout -->
@@ -43,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/titleContainer">
+        android:layout_below="@+id/titleContainer"
+        android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/grid_view"
@@ -56,5 +58,140 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
     </androidx.core.widget.NestedScrollView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/titleContainer"
+        >
 
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/pre_month"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:padding="8dp"
+                android:src="@drawable/baseline_arrow_back" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/monthLabel"
+                style="@style/TrackingText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_toStartOf="@+id/next_month"
+                android:layout_toEndOf="@+id/pre_month"
+                android:gravity="center"
+                android:text="October"
+                android:textSize="22dp"
+                android:textStyle="bold|italic" />
+
+            <ImageView
+                android:id="@+id/next_month"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/baseline_navigate_next_24" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/week_container"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:weightSum="7"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TrackingText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sun"
+                android:textSize="16dp"
+                android:textStyle="bold|italic" />
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TrackingText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Mon"
+                android:textSize="16dp"
+                android:textStyle="bold|italic" />
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TrackingText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Tue"
+                android:textSize="16dp"
+                android:textStyle="bold|italic" />
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TrackingText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Wed"
+                android:textSize="16dp"
+                android:textStyle="bold|italic" />
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TrackingText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Thur"
+                android:textSize="16dp"
+                android:textStyle="bold|italic" />
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TrackingText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Fri"
+                android:textSize="16dp"
+                android:textStyle="bold|italic" />
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TrackingText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sat"
+                android:textSize="16dp"
+                android:textStyle="bold|italic" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/week_container" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/checkInSubmit"
+            style="@style/NimpeButtonLogin"
+            android:layout_marginRight="30dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/check_in"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/calendar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>
