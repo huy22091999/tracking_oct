@@ -8,6 +8,7 @@
     android:padding="12dp"
     tools:context=".ui.security.NextSigninFragment">
 
+
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -137,4 +138,12 @@
         android:paddingEnd="40dp"
         android:text="@string/signin" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="right"
+        android:src="@drawable/new_moon"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="-90dp"
+        />
 </LinearLayout>

@@ -1,7 +1,10 @@
 package com.oceantech.tracking.ui.tracking
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.GnssAntennaInfo.Listener
 import android.os.Bundle
 import android.util.Log
@@ -9,11 +12,13 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +27,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
@@ -41,7 +47,6 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentTrackingBinding = FragmentTrackingBinding.inflate(inflater, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -57,7 +62,6 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             handleEvent(it)
         }
     }
-
     private fun handleEvent(it: HomeViewEvent) {
         when(it){
             is HomeViewEvent.ResetLanguege -> {
@@ -71,39 +75,47 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
     }
 
     private val showMenu:(View,Tracking) -> Unit = {view,tracking ->
-        showMenu(view,tracking)
+        showBottomDialog(tracking)
     }
 
-    private fun showMenu(v: View, tracking: Tracking) {
-        val inflater = requireActivity().getSystemService(AppCompatActivity.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.popup_tracking, null)
-        val popup = PopupWindow(
-            view,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
-        popup.elevation = 20F
-//        popup.setBackgroundDrawable(getDrawable(requireActivity(),R.drawable.backgound_box))
-        popup.showAsDropDown(v, 5, -5, Gravity.CENTER_HORIZONTAL)
+    private fun showBottomDialog(tracking: Tracking){
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.bottom_sheet_tracking_layout)
 
-        view.findViewById<MaterialTextView>(R.id.to_track_update).setOnClickListener {
+        val updateSubmit:MaterialButton = dialog.findViewById(R.id.option_update)
+        val deleteSubmit:MaterialButton = dialog.findViewById(R.id.option_delete)
+        val dismissSubmit:CardView = dialog.findViewById(R.id.option_dismiss)
+
+        updateSubmit.setOnClickListener {
             viewModel.handleReturnUpdate(tracking.content!!, tracking.id!!)
-            popup.dismiss()
+            Log.i("id tracking:", tracking.id!!.toString())
+            dialog.dismiss()
         }
 
-        view.findViewById<MaterialTextView>(R.id.to_track_delete).setOnClickListener {
-            popup.dismiss()
+        dismissSubmit.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        deleteSubmit.setOnClickListener {
+            dialog.dismiss()
             AlertDialog.Builder(requireContext())
                 .setTitle(R.string.confirm)
                 .setMessage(R.string.confirm_delete)
                 .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                .setPositiveButton(R.string.yes) { _, _ ->
                     deleteTracking(tracking)
-                })
+                }
                 .show()
         }
+
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.BOTTOM);
     }
+
     private fun deleteTracking(tracking: Tracking) {
         viewModel.handle(HomeViewAction.DeleteTracking(tracking.id!!))
     }

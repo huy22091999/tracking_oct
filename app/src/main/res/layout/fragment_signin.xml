@@ -201,4 +201,12 @@
         android:paddingEnd="40dp"
         android:text="@string/next" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/new_moon"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="-100dp"
+        android:layout_marginTop="60dp"
+        />
 </LinearLayout>

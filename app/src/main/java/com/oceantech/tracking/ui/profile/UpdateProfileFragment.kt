@@ -1,5 +1,6 @@
 package com.oceantech.tracking.ui.profile
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.FragmentUpdateProfileBinding
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
+import com.oceantech.tracking.utils.initialAlertDialog
 import okhttp3.internal.userAgent
 
 class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>() {
@@ -23,11 +25,9 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
     lateinit var newFirstName:String
     lateinit var newLastName:String
     private var newGender:String = EnMale
-    lateinit var newBirthday:String
     lateinit var newBirthPlace:String
     lateinit var newUniversity:String
     private var newYear:String = "1"
-
 
     var isUpdateMyself:Boolean = false
 
@@ -127,7 +127,6 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
                 this.birthPlace = newBirthPlace
                 this.university = newUniversity
             }
-
             viewModel.handleNextUpdateInfo(user,isUpdateMyself)
             Log.i("check data: ", user.toString())
             views.apply {
@@ -138,6 +137,7 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
             }
         }
     }
+
 
     companion object {
         private const val ViMale = "Nam"

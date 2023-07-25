@@ -14,7 +14,7 @@ data class HomeViewState(
     val allTracking: Async<List<Tracking>> = Uninitialized,
     val timeSheets:Async<List<TimeSheet>> = Uninitialized,
     val checkIn:Async<TimeSheet> = Uninitialized,
-    val allUsers:Async<List<User>> = Uninitialized,
+    val allUsers:Async<Page<User>> = Uninitialized,
     val asyncBlockUser:Async<User> = Uninitialized,
     val asyncTokenDevice:Async<User> = Uninitialized,
     val asyncUpdateMySelf:Async<User> = Uninitialized,

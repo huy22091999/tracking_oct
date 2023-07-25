@@ -48,3 +48,10 @@ data class User(
     @SerializedName("year")
     var year:Int? = null
 ):Serializable
+
+data class UserFilter(
+    @SerializedName("pageIndex")
+    var pageIndex:Int? = null,
+    @SerializedName("size")
+    var size:Int? = null,
+):Serializable

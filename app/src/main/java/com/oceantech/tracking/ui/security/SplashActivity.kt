@@ -1,28 +1,31 @@
 package com.oceantech.tracking.ui.security
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.viewbinding.ViewBinding
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
-import com.google.android.gms.ads.MobileAds
 import com.oceantech.tracking.R
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivitySplashBinding
-import com.oceantech.tracking.databinding.DialogLoginBinding
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.utils.initialAlertDialog
 import java.util.Locale
 import javax.inject.Inject
 
@@ -34,10 +37,13 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     private lateinit var dialog:AlertDialog
     private var isDialogShowing: Boolean = false
     private var hasCheckVersion:Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
+
+        views.versionLabel.text = "Version: ${packageManager.getPackageInfo(packageName, 0).versionName}"
 
         val sessionManager = SessionManager(this@SplashActivity)
         val lang = sessionManager.fetchAppLanguage()
@@ -48,10 +54,42 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
         conf.setLocale(myLocale)
         res.updateConfiguration(conf, dm)
 
-        viewModel.handle(SecurityViewAction.GetConfigApp)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                1001
+            )
+        } else {
+            viewModel.handle(SecurityViewAction.GetConfigApp)
 
-        viewModel.subscribe(this) {
-            handleStateChange(it)
+            viewModel.subscribe(this) {
+                handleStateChange(it)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            viewModel.handle(SecurityViewAction.GetConfigApp)
+
+            viewModel.subscribe(this) {
+                handleStateChange(it)
+            }
+        } else {
+            Toast.makeText(
+                this,
+                getString(R.string.permission),
+                Toast.LENGTH_SHORT
+            ).show()
+            val homeIntent = Intent(Intent.ACTION_MAIN)
+            homeIntent.addCategory(Intent.CATEGORY_HOME)
+            homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(homeIntent)
         }
     }
 
@@ -62,39 +100,17 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
         }
     }
 
-    private fun createDialog(): AlertDialog {
-        val builder = AlertDialog.Builder(this@SplashActivity)
-        val view: ViewBinding = DialogLoginBinding.inflate(LayoutInflater.from(this@SplashActivity))
-        builder.setView(view.root)
+    private val moveToChPlay:()->Unit = {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=spotify&c=apps&hl=vi&gl=US")))
+        } catch (e:ActivityNotFoundException){
 
-        val alertDialog = builder.create()
-
-        with(view as DialogLoginBinding){
-            view.dialogTitle.text = getString(R.string.update_notify)
-            view.returnSignIn.text = getString(R.string.update_now)
-            view.back.text = getString(R.string.remind_later)
-            view.returnSignIn.setOnClickListener {
-                if(alertDialog.isShowing){
-                    alertDialog.dismiss()
-                    try {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=spotify&c=apps&hl=vi&gl=US")))
-                    } catch (e:ActivityNotFoundException){
-
-                    }
-                    alertDialog.cancel()
-                }
-            }
-            view.back.setOnClickListener {
-                if(alertDialog.isShowing){
-                    alertDialog.dismiss()
-                    alertDialog.cancel()
-                    viewModel.handle(SecurityViewAction.GetUserCurrent)
-                }
-            }
         }
-        return alertDialog
     }
 
+    private val getCurrentUser:()->Unit={
+        viewModel.handle(SecurityViewAction.GetUserCurrent)
+    }
     private fun handleStateChange(it: SecurityViewState) {
         when(it.asyncConfigApp){
             is Success -> {
@@ -104,7 +120,12 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
                     Log.i("Version app:", version.versionName.toString())
                     Log.i("Version app:", appVersion)
                     if(version.versionName.toString() != appVersion){
-                        dialog = createDialog()
+                        dialog = initialAlertDialog(this,
+                            moveToChPlay, getCurrentUser,
+                            getString(R.string.update_notify),
+                            getString(R.string.update_now),
+                            getString(R.string.remind_later))
+
                         if(!isFinishing && !isDialogShowing){
                             dialog.show()
                             isDialogShowing = true
@@ -122,7 +143,6 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
             }
 
             is Fail -> {
-                //startActivity(Intent(this, LoginActivity::class.java))
                 moveToLogin()
                 val sessionManager = SessionManager(this@SplashActivity)
                 sessionManager.clearAuthToken()

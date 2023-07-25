@@ -6,6 +6,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TimeSheet
@@ -18,6 +21,7 @@ import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel @AssistedInject constructor(
     @Assisted state: HomeViewState,
@@ -30,6 +34,9 @@ class HomeViewModel @AssistedInject constructor(
 
     init {
         handleCurrentUser()
+        handleAllTracking()
+        handleAllUsers()
+        handleTimeSheets()
     }
     override fun handle(action: HomeViewAction) {
         when (action) {
@@ -108,11 +115,9 @@ class HomeViewModel @AssistedInject constructor(
     }
 
     fun handleRemoveStateAllUsers() = setState { copy(allUsers = Uninitialized) }
-    private fun handleAllUsers() {
-        setState { copy(allUsers = Loading()) }
-        repository.getAllUser().execute {
-            copy(allUsers = it)
-        }
+    fun handleAllUsers():Flow<PagingData<User>> {
+        val userData = repository.searchByPage().cachedIn(viewModelScope)
+        return userData
     }
 
     private fun handleCheckIn(ip:String) {

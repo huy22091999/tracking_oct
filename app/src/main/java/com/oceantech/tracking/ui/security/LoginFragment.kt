@@ -23,6 +23,7 @@ import com.oceantech.tracking.databinding.DialogLoginBinding
 import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.ui.home.HomeViewAction
+import com.oceantech.tracking.utils.initialAlertDialog
 import javax.inject.Inject
 
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
@@ -51,7 +52,12 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             views.passwordTil.error = null
             viewModel.handleReturnResetPass()
         }
-        dialog = createDialog()
+        dialog = initialAlertDialog(requireContext(),
+            returnSignIn, refuseReturnSignIn,
+            requireContext().getString(R.string.login_error),
+            requireContext().getString(R.string.register),
+            requireContext().getString(R.string.back)
+        )
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -67,29 +73,16 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         }
     }
 
-    private fun createDialog():AlertDialog{
-        val builder = AlertDialog.Builder(requireContext())
-        val view:ViewBinding = DialogLoginBinding.inflate(LayoutInflater.from(requireContext()))
-        builder.setView(view.root)
+    private val returnSignIn:()->Unit={
+        viewModel.handleRemoveStateError()
+        viewModel.handleReturnSignin()
+    }
 
-        val alertDialog = builder.create()
-
-        with(view as DialogLoginBinding){
-            view.returnSignIn.setOnClickListener {
-                hasShowDialog = true
-                alertDialog.dismiss()
-                viewModel.handleRemoveStateError()
-                viewModel.handleReturnSignin()
-            }
-            view.back.setOnClickListener {
-                hasShowDialog = true
-                alertDialog.dismiss()
-                viewModel.handleRemoveStateError()
-                views.usernameTil.error = null
-                views.passwordTil.error = null
-            }
-        }
-        return alertDialog
+    private val refuseReturnSignIn:()->Unit={
+        hasShowDialog = true
+        viewModel.handleRemoveStateError()
+        views.usernameTil.error = null
+        views.passwordTil.error = null
     }
 
     override fun onPause() {
@@ -102,8 +95,6 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
     override fun invalidate(): Unit = withState(viewModel){
         when(it.asyncLogin){
             is Success ->{
-                //viewModel.handle(SecurityViewAction.EditTokenDevice)
-
                 it.asyncLogin.invoke()?.let { token->
                     val sessionManager = context?.let { it1 -> SessionManager(it1.applicationContext) }
                     token.accessToken?.let { it1 -> sessionManager!! .saveAuthToken(it1) }

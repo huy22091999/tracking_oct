@@ -51,6 +51,7 @@ class AddOrUpTrackFragment : TrackingBaseFragment<FragmentAddOrUpTrackingBinding
             viewModel.handleReturnTracking()
         }
         id = arg.id
+        Log.i("id tracking: ", id.toString())
         if(id != -1){
             views.tracking.setText(arg.content)
         }

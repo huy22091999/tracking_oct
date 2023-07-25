@@ -9,12 +9,16 @@ import androidx.viewbinding.ViewBinding
 import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.databinding.ItemTimeSheetBinding
 import com.oceantech.tracking.utils.formatDate
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class TimeSheetAdapter(private val timeSheets:List<TimeSheet>):RecyclerView.Adapter<TimeSheetAdapter.TimeSheetHolder>() {
     class TimeSheetHolder(private val binding:ViewBinding):RecyclerView.ViewHolder(binding.root){
         fun bindHolder(timeSheet:TimeSheet){
             with(binding as ItemTimeSheetBinding){
-                binding.timeLabel.text = formatDate(timeSheet.dateAttendance.toString())
+                val date: Date = formatDate(timeSheet.dateAttendance.toString())
+                val formatterDate = SimpleDateFormat("dd/MM/yyyy - HH:mm")
+                binding.timeLabel.text = formatterDate.format(date)
             }
         }
     }
@@ -22,8 +26,14 @@ class TimeSheetAdapter(private val timeSheets:List<TimeSheet>):RecyclerView.Adap
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSheetHolder
         = TimeSheetHolder(ItemTimeSheetBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    override fun getItemCount(): Int
-        = timeSheets.size
+    override fun getItemCount(): Int{
+        if (timeSheets.size >= 3) return 3
+        return timeSheets.size
+    }
 
-    override fun onBindViewHolder(holder: TimeSheetHolder, position: Int) = holder.bindHolder(timeSheets[position])
+    override fun onBindViewHolder(holder: TimeSheetHolder, position: Int){
+        if (timeSheets.size > 0){
+            return holder.bindHolder(timeSheets[position])
+        }
+    }
 }

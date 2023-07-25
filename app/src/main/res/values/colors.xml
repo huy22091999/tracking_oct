@@ -17,4 +17,6 @@
     <color name="background_dark">#57606f</color>
     <color name="background_light">#f1f2f6</color>
     <color name="background_item">#f7f1e3</color>
+    <color name="green">#c7ecee</color>
+    <color name="cyan">#dff9fb</color>
 </resources>

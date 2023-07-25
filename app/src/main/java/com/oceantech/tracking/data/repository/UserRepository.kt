@@ -5,12 +5,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.google.firebase.messaging.FirebaseMessaging
+import com.oceantech.tracking.data.model.Page
 import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.model.UserFilter
 import com.oceantech.tracking.data.network.UserApi
+import com.oceantech.tracking.data.network.UserPagingSource
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.flow.Flow
 import java.time.Year
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,6 +50,17 @@ class UserRepository @Inject constructor(
             }
     }
     fun blockUser(id:Int):Observable<User> = api.blockUser(id).subscribeOn(Schedulers.io())
+    fun searchByPage():Flow<PagingData<User>>{
+        return Pager(
+            PagingConfig(
+                enablePlaceholders = false,
+                pageSize = 10,
+                prefetchDistance = 5
+            )
+        ){
+            UserPagingSource(api)
+        }.flow
+    }
     fun getCurrentUser(): Observable<User> = api.getCurrentUser().subscribeOn(Schedulers.io())
     fun edit(tokenDevice:String):Observable<User>{
         return api.edit(tokenDevice).subscribeOn(Schedulers.io())

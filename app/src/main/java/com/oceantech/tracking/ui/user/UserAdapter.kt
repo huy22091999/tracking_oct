@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.oceantech.tracking.R
@@ -12,15 +14,16 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.ItemUserBinding
 
 class UserAdapter (private val context: Context,
-                   private val users:List<User>,
                    private val action:(User) ->Unit
-    ):RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+    ):PagingDataAdapter<User, UserAdapter.UserViewHolder>(COMPARATOR) {
     class UserViewHolder(private val context: Context, private val binding:ViewBinding):RecyclerView.ViewHolder(binding.root){
         fun onBind(user: User){
             with(binding as ItemUserBinding){
-                binding.university.text = "${context.getString(R.string.university)}: ${user.university} - ${context.getString(R.string.year)} ${user.year}"
                 binding.email.text = "${context.getString(R.string.email)}: ${user.email}"
                 binding.fullName.text = "${user.firstName} ${user.lastName}"
+                binding.countDayCheckIn.text = user.countDayCheckin.toString()
+                binding.countDayTracking.text = user.countDayTracking.toString()
+                binding.levelLabel.text = "null"
             }
         }
     }
@@ -30,13 +33,23 @@ class UserAdapter (private val context: Context,
         return UserViewHolder(context, view)
     }
 
-    override fun getItemCount(): Int = users.size
-
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.onBind(user = users[position])
-        holder.itemView.setOnClickListener {
-            Log.i("selected item:", users[position].email.toString())
-            action(users[position])
+        getItem(position)?.let{ user ->
+            holder.onBind(user = user)
+            holder.itemView.setOnClickListener {
+                action(user)
+            }
+        }
+    }
+
+    companion object {
+        private val COMPARATOR = object : DiffUtil.ItemCallback<User>() {
+            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: User, newItem: User): Boolean =
+                oldItem == newItem
+
         }
     }
 }

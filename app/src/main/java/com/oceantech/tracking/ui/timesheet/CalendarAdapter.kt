@@ -2,9 +2,7 @@ package com.oceantech.tracking.ui.timesheet
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.oceantech.tracking.R
@@ -34,7 +32,7 @@ class CalendarAdapter(private val days:Map<Int, Boolean>, private val context:Co
                 if(day > 0){
                     if(hasCheckIn){
                         binding.dayTextView.text = day.toString()
-                        binding.dayTextView.background = context.getDrawable(R.color.teal_200)
+                        binding.dayTextView.background = context.getDrawable(R.drawable.bg_calendar)
                     } else {
                         binding.dayTextView.text = day.toString()
                     }

@@ -31,7 +31,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4347201915048498~6120388314"
             />
-        <service android:name=".ui.fcm.MyFirebaseMessagingService"
+        <service android:name=".ui.fcm.MessagingService"
             android:exported="true"
             android:stopWithTask="false">
             <intent-filter>

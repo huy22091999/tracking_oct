@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:theme="@style/TrackingProfile"
+    android:paddingTop="10dp"
+    android:paddingBottom="30dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/option_dismiss"
+        android:layout_width="100dp"
+        android:layout_height="5dp"
+        app:cardCornerRadius="3dp"
+        android:backgroundTint="#8395a7"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/NimpeButtonLogin"
+        android:text="@string/update"
+        android:layout_marginHorizontal="30dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/NimpeButtonLogin"
+        android:text="@string/delete"
+        android:layout_marginHorizontal="30dp"
+        app:backgroundTint="#ff6b6b"
+        />
+</LinearLayout>

@@ -50,14 +50,14 @@
     <string name="settings">Settings</string>
     <string name="warning_dengue">Ứng dụng đang quét các ổ dịch xung quanh bạn !</string>
     <string name="password">Password</string>
-    <string name="email">Email <font color="red">*</font></string>
+    <string name="email">Email</string>
     <string name="send">Send</string>
     <string name="signin">Đăng kí tài khoản</string>
     <string name="sign_success">Đăng kí tài khoản thành công</string>
     <string name="last_name">Fisrt Name</string>
     <string name="first_name">Last Name</string>
     <string name="display_name">Display name</string>
-    <string name="username">User name <font color="red">*</font></string>
+    <string name="username">User name</string>
     <string name="signin_account">Sign in</string>
     <string name="login_fail">User name or password is incorect</string>
     <string name="login_success">Loggin successfully.</string>
@@ -117,7 +117,7 @@
     <string name="lock_account">Block Account</string>
     <string name="level">Level</string>
     <string name="amount_of_leave_days">Amount of leave days</string>
-    <string name="trackings_of_participations">Trackings/\nParticipation</string>
+    <string name="trackings_of_participations">Trackings</string>
     <string name="update_profile">Update information</string>
     <string name="profile">Profile</string>
     <string name="block_account_success">Block account success</string>
@@ -125,6 +125,8 @@
     <string name="network_connected">Network is connected</string>
     <string name="network_disconnected">Network is disconnected</string>
     <string name="language">Language</string>
+    <string name="confirm_update">Confirm update</string>
+    <string name="permission">Until you grant the permission, we cannot continue.</string>
 
     <string-array name="gender_spin">
         <item>Male</item>

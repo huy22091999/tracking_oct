@@ -8,7 +8,6 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.PublicRepository
 import com.oceantech.tracking.data.repository.UserRepository
-import com.oceantech.tracking.ui.home.HomeViewAction
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -33,7 +32,6 @@ class SecurityViewModel @AssistedInject constructor(
             is SecurityViewAction.SignAction -> handleSign(action.user)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
             is SecurityViewAction.GetConfigApp -> handleConfigApp()
-            //is SecurityViewAction.EditTokenDevice -> handleTokenDevice()
         }
     }
 

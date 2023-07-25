@@ -118,7 +118,7 @@
     <string name="lock_account">Lock Account</string>
     <string name="level">Level</string>
     <string name="amount_of_leave_days">Số ngày nghỉ</string>
-    <string name="trackings_of_participations">Số ngày trackings/\nSố ngày tham gia</string>
+    <string name="trackings_of_participations">Số ngày trackings</string>
     <string name="update_profile">Chỉnh sửa thông tin</string>
     <string name="profile">Profile</string>
     <string name="block_account_success">Khóa tài khoản thành công.</string>
@@ -126,6 +126,8 @@
     <string name="network_connected">Đã kết nối mạng</string>
     <string name="network_disconnected">Đã mất kết nối mạng</string>
     <string name="language">Ngôn ngữ</string>
+    <string name="confirm_update">Xác nhận sửa</string>
+    <string name="permission">Until you grant the permission, we cannot continue.</string>
 
     <string-array name="gender_spin">
         <item>Nam</item>

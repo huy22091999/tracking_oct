@@ -1,6 +1,8 @@
 package com.oceantech.tracking.ui.profile
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +22,7 @@ import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.ui.security.SecurityViewAction
+import com.oceantech.tracking.utils.initialAlertDialog
 import com.oceantech.tracking.utils.validateEmail
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +32,7 @@ class NextUpdateFragment : TrackingBaseFragment<FragmentNextUpdateBinding>(){
     private val viewModel:HomeViewModel by activityViewModel()
     lateinit var user: User
     var isMyself:Boolean = false
+    private lateinit var dialog: AlertDialog
 
     lateinit var newDisplayName:String
     lateinit var newEmail:String
@@ -44,6 +48,13 @@ class NextUpdateFragment : TrackingBaseFragment<FragmentNextUpdateBinding>(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dialog = initialAlertDialog(requireContext(),
+            confirmUpdate, refuseUpdate,
+            requireContext().getString(R.string.confirm_update),
+            requireContext().getString(R.string.ok),
+            requireContext().getString(R.string.back)
+        )
 
         viewModel.observeViewEvents {
             handleEvent(it)
@@ -75,9 +86,17 @@ class NextUpdateFragment : TrackingBaseFragment<FragmentNextUpdateBinding>(){
             username.setText(user.username.toString())
 
             send.setOnClickListener {
-                updateProfile()
+                dialog.show()
             }
         }
+    }
+
+    private val confirmUpdate:()->Unit={
+        updateProfile()
+    }
+
+    private val refuseUpdate:()->Unit={
+        dialog.dismiss()
     }
 
     private fun updateProfile() {

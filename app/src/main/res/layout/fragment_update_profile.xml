@@ -5,208 +5,241 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
     tools:context=".ui.profile.UpdateProfileFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/back_layout"
-        android:layout_gravity="left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/baseline_arrow_back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/teal_200" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="@string/back"
-            style="@style/TextAppearance.AppCompat"
-            android:textSize="16dp"
-            android:textColor="@color/teal_200"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <LinearLayout
-        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/NimpeInputLayoutLogin"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        android:padding="12dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/back_layout"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:textColorHint="@color/text_color">
+            >
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/baseline_arrow_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/teal_200" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/first_name"
-                android:layout_width="match_parent"
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:text="@string/back"
+                style="@style/TextAppearance.AppCompat"
+                android:textSize="16dp"
+                android:textColor="@color/teal_200"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/NimpeInputLayoutLogin"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/first_name"
+                android:layout_marginTop="24dp"
+                android:textColorHint="@color/text_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/first_name"
+                    android:singleLine="true"
+                    android:textColor="@color/gray"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/NimpeInputLayoutLogin"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textColorHint="@color/text_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/last_name"
+                    android:singleLine="true"
+                    android:textColor="@color/gray"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:weightSum="2"
+            android:theme="@style/SpinnerInputLayoutLogin"
+            android:background="@drawable/background_spinner"
+            >
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_gender"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/gender"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:textColor="@color/text_color"
+                android:textSize="16dp"
+                android:paddingLeft="15dp"
+                />
+            <Spinner
+                android:id="@+id/gender_spinner"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="@string/gender"
                 android:singleLine="true"
-                android:textColor="@color/gray"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:textColor="@color/gray"
+                />
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/NimpeInputLayoutLogin"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:textColorHint="@color/text_color">
-
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/last_name"
+                android:id="@+id/birthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/last_name"
+                android:hint="@string/birthday"
                 android:singleLine="true"
                 android:textColor="@color/gray"
                 />
         </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:weightSum="2"
-        android:theme="@style/SpinnerInputLayoutLogin"
-        android:background="@drawable/background_spinner"
-        >
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/label_gender"
-            android:layout_width="0dp"
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/NimpeInputLayoutLogin"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/gender"
+            android:layout_marginTop="16dp"
+            android:textColorHint="@color/text_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/birthPlace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/birthPlace"
+                android:singleLine="true"
+                android:textColor="@color/gray"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/NimpeInputLayoutLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColorHint="@color/text_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/university"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/university"
+                android:singleLine="true"
+                android:textColor="@color/gray"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:weightSum="2"
+            android:theme="@style/SpinnerInputLayoutLogin"
+            android:background="@drawable/background_spinner"
+            >
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/label_year"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/year"
+                android:gravity="left"
+                android:layout_gravity="center"
+                android:textColor="@color/text_color"
+                android:textSize="16dp"
+                android:paddingLeft="15dp"
+                />
+            <Spinner
+                android:id="@+id/year_spinner"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="@string/gender"
+                android:singleLine="true"
+                android:textColor="@color/gray"
+                />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/send"
+            style="@style/NimpeButtonLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="left"
-            android:textColor="@color/text_color"
-            android:textSize="16dp"
-            android:paddingLeft="15dp"
-            />
-        <Spinner
-            android:id="@+id/gender_spinner"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:hint="@string/gender"
-            android:singleLine="true"
-            android:textColor="@color/gray"
-            />
+            android:layout_marginTop="16dp"
+            android:padding="12dp"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="@string/next" />
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/NimpeInputLayoutLogin"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColorHint="@color/text_color">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/birthday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/birthday"
-            android:singleLine="true"
-            android:textColor="@color/gray"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/NimpeInputLayoutLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColorHint="@color/text_color">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/birthPlace"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/birthPlace"
-            android:singleLine="true"
-            android:textColor="@color/gray"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/NimpeInputLayoutLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColorHint="@color/text_color">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/university"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/university"
-            android:singleLine="true"
-            android:textColor="@color/gray"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:weightSum="2"
-        android:theme="@style/SpinnerInputLayoutLogin"
-        android:background="@drawable/background_spinner"
+        android:layout_height="match_parent"
         >
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/label_year"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/year"
-            android:gravity="left"
-            android:layout_gravity="center"
-            android:textColor="@color/text_color"
-            android:textSize="16dp"
-            android:paddingLeft="15dp"
-            />
-        <Spinner
-            android:id="@+id/year_spinner"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:hint="@string/gender"
-            android:singleLine="true"
-            android:textColor="@color/gray"
-            />
-    </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/send"
-        style="@style/NimpeButtonLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:padding="12dp"
-        android:paddingStart="40dp"
-        android:paddingEnd="40dp"
-        android:text="@string/next" />
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/observation"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:rotation="335"
+            android:layout_marginRight="-30dp"
+            android:layout_marginBottom="-20dp"
+            />
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="right"
+            android:src="@drawable/new_moon"
+            android:layout_marginBottom="-150dp"
+            android:layout_marginLeft="-120dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+             />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

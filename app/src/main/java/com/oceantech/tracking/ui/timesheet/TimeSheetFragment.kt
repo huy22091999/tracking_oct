@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
@@ -29,9 +30,9 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     private val viewModel: HomeViewModel by activityViewModel()
     private lateinit var timeSheets:List<TimeSheet>
     private lateinit var listHasCheckIn:MutableList<LocalDate>
-    private var monthOfYear =""
     private lateinit var calendaradapter:CalendarAdapter
     private lateinit var selectDate:LocalDate
+    private lateinit var timeSheetAdapter: TimeSheetAdapter
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -42,6 +43,8 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
         viewModel.handle(HomeViewAction.GetTimeSheets)
         timeSheets = listOf()
         listHasCheckIn = mutableListOf<LocalDate>()
+
+        timeSheetAdapter = TimeSheetAdapter(timeSheets)
 
         selectDate = LocalDate.now()
         views.apply {
@@ -57,6 +60,8 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
             checkInSubmit.setOnClickListener {
                 checkIn()
             }
+
+            timeSheets.layoutManager = LinearLayoutManager(requireContext())
         }
 
         viewModel.observeViewEvents {
@@ -73,7 +78,6 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
         val daysInMonth:Map<Int,Boolean> = daysInMonthList(selectDate, listHasCheckIn)
 
         calendaradapter = CalendarAdapter(daysInMonth, requireContext())
-
         views.calendar.apply {
             layoutManager = GridLayoutManager(requireContext(),7)
             adapter = calendaradapter
@@ -89,7 +93,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
 
         for (i in 1..42) {
             if (i <= daysInWeek || i > daysInMonth + daysInWeek) {
-                days[i*(-1)] = false
+                days[(-1)*i] = false
             } else {
                 val currentDay = i - daysInWeek
                 val dayOfMonth = date.withDayOfMonth(currentDay)
@@ -100,7 +104,6 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
 
         return days
     }
-
 
     private fun previousMonthAction() {
         selectDate = selectDate.minusMonths(1)
@@ -150,6 +153,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
                     for(i in it){
                         listHasCheckIn.add(convertToDate(i.dateAttendance.toString()))
                     }
+                    views.timeSheets.adapter = TimeSheetAdapter(it.reversed())
                     setMonth()
                 }
                 viewModel.handleRemoveStateOfCheckIn()

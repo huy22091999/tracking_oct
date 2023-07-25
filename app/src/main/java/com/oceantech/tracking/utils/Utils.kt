@@ -3,8 +3,11 @@ package com.oceantech.tracking.utils
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +23,7 @@ import androidx.viewbinding.ViewBinding
 import com.oceantech.tracking.R
 import com.oceantech.tracking.databinding.DialogLoginBinding
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.ui.security.SecurityViewAction
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -74,14 +78,14 @@ fun validateEmail(email: String): Boolean {
     return emailRegex.matches(email)
 }
 
-fun formatDate(input:String):String{
+fun formatDate(input:String):Date{
     //formatting time to Vietnam's time
     val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     val date: Date = formatter .parse(input)
-    date.hours = date.hours - 7
-    val formatter2 = SimpleDateFormat("dd/MM/yyyy-HH:mm")
-    val formattedDate: String = formatter2.format(date)
-    return formattedDate
+//    date.hours = date.hours - 7
+//    val formatter2 = SimpleDateFormat("dd/MM/yyyy-HH:mm")
+//    val formattedDate: String = formatter2.format(date)
+    return date
 }
 
 fun showNotification(context: Context,title:String, body:String) {
@@ -107,3 +111,31 @@ fun showNotification(context: Context,title:String, body:String) {
     manager.notify(Random().nextInt(), builder.build())
 }
 
+fun initialAlertDialog(context: Context, accept:()->Unit, refuse:()->Unit,descText:String, acceptText:String, refuseText:String):AlertDialog{
+    val builder = AlertDialog.Builder(context)
+    val view: ViewBinding = DialogLoginBinding.inflate(LayoutInflater.from(context))
+    builder.setView(view.root)
+
+    val alertDialog = builder.create()
+
+    with(view as DialogLoginBinding){
+        view.dialogTitle.text = descText
+        view.returnSignIn.text = acceptText
+        view.back.text = refuseText
+        view.returnSignIn.setOnClickListener {
+            if(alertDialog.isShowing){
+                alertDialog.dismiss()
+                accept()
+                alertDialog.cancel()
+            }
+        }
+        view.back.setOnClickListener {
+            if(alertDialog.isShowing){
+                alertDialog.dismiss()
+                alertDialog.cancel()
+                refuse()
+            }
+        }
+    }
+    return alertDialog
+}

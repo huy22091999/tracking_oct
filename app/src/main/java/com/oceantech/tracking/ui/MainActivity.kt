@@ -5,8 +5,11 @@ import android.app.*
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -60,7 +63,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     }
 
     private val homeViewModel: HomeViewModel by viewModel()
-
     private lateinit var sharedActionViewModel: TestViewModel
 
     @Inject
@@ -77,7 +79,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         sharedActionViewModel = viewModelProvider.get(TestViewModel::class.java)
@@ -105,7 +106,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         when(viewEvent){
             is HomeViewEvent.ReturnUpdateTracking ->{
                 views.appBar.visibility = View.GONE
-                navigateTo(R.id.nav_trackingFragment, id = viewEvent.id, content = viewEvent.content,user = null)
+                val direction = TrackingFragmentDirections.actionNavAllTrackingFragmentToNavTrackingFragment(id = viewEvent.id, content = viewEvent.content)
+                navController.navigate(direction)
             }
 
             is HomeViewEvent.ReturnAddTracking -> {
@@ -208,10 +210,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
                 R.id.logout -> {
                     homeViewModel.handle(HomeViewAction.Logout)
-//                    val sessionManager = SessionManager(this@MainActivity)
-//                    sessionManager.clearAuthToken()
-//                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-//                    finishAffinity()
                 }
                 else -> {
                     views.title.text = getString(R.string.tracking)
@@ -229,13 +227,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val local = conf.locale
         val lang = local.displayLanguage
         menuItem.title = getString(R.string.language)
-//        if (lang == "English") {
-//            homeViewModel.language = 0
-//            menuItem.title = getString(R.string.en)
-//        } else {
-//            menuItem.title = getString(R.string.vi)
-//            homeViewModel.language = 1
-//        }
+
         var buttonShowMenu = actionView as AppCompatImageView
         buttonShowMenu.setImageDrawable(getDrawable(R.drawable.ic_drop))
         buttonShowMenu.setOnClickListener {
@@ -377,6 +369,18 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
         views.title.text = getString(R.string.tracking)
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showBottomDialog(){
+        val dialog = Dialog(this@MainActivity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.bottom_sheet_tracking_layout)
+
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        dialog.window?.setGravity(Gravity.BOTTOM);
     }
 
     private fun updateLanguge(lang: String) {

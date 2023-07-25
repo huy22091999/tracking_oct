@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Loading
@@ -21,6 +22,7 @@ import com.oceantech.tracking.databinding.FragmentUserBinding
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
     private val viewModel: HomeViewModel by activityViewModel()
@@ -37,11 +39,21 @@ class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
         viewModel.handle(HomeViewAction.GetAllUsers)
 
         users = listOf()
-        adapter = UserAdapter(requireContext(), users, action)
+        adapter = UserAdapter(requireContext(), action)
 
         views.users.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = adapter
+        }
+
+        views.users.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = UserLoadStateAdapter { adapter.retry() },
+            footer = UserLoadStateAdapter { adapter.retry() }
+        )
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.handleAllUsers().collectLatest {
+                adapter.submitData(it)
+            }
         }
 
         viewModel.observeViewEvents {
@@ -53,7 +65,11 @@ class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
         when(it){
             is HomeViewEvent.ResetLanguege -> {
                 views.title.text = requireContext().getString(R.string.users)
-                viewModel.handle(HomeViewAction.GetAllUsers)
+                lifecycleScope.launchWhenCreated {
+                    viewModel.handleAllUsers().collectLatest {
+                        adapter.submitData(it)
+                    }
+                }
             }
         }
     }
@@ -65,22 +81,6 @@ class UserFragment : TrackingBaseFragment<FragmentUserBinding>() {
     }
 
     override fun invalidate():Unit = withState(viewModel){
-        when(it.allUsers){
-            is Success -> {
-                it.allUsers.invoke()?.let { data ->
-                    users = data
-                    val activeUsers: List<User> = users.filter { user ->
-                        user.active == true
-                    }
-                    adapter = UserAdapter(requireContext(), activeUsers, action)
-                    views.users.adapter = adapter
-                }
-            }
-            is Fail -> {
-            }
-            is Loading -> {
-            }
-        }
         when(it.userCurrent){
             is Success -> {
                 it.userCurrent?.invoke().let { user ->

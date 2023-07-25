@@ -26,7 +26,12 @@ class TrackingAdapter(
         fun bindHolder(tracking: Tracking, showMenu:(View,Tracking)-> Unit) {
             with(binding as ItemTrackingBinding){
                 trackingContent.text = tracking.content
-                trackingDate.text = formatDate(tracking.date.toString())
+                val date:Date = formatDate(tracking.date.toString())
+                date.hours = date.hours - 7
+                val formatterDate = SimpleDateFormat("dd/MM/yyyy")
+                val formatterTime = SimpleDateFormat("HH:mm")
+                trackingDate.text = formatterDate.format(date)
+                timeLabel.text = formatterTime.format(date)
                 circleImageView.setOnClickListener {
                     showMenu(itemView.findViewById(R.id.circleImageView),tracking)
                 }
