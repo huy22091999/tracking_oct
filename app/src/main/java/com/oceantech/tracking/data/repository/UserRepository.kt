@@ -1,10 +1,7 @@
 package com.oceantech.tracking.data.repository
 
-import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.UserApi
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,8 +23,6 @@ class UserRepository @Inject constructor(
         userName: String,
         password: String,
         displayName: String,
-        firstName: String,
-        lastName: String,
         gender: String,
         dob: String,
         email: String,
@@ -48,13 +43,13 @@ class UserRepository @Inject constructor(
                     dob,
                     email,
                     false,
-                    firstName,
+                    null,
                     null,
                     password,
                     null,
                     mutableListOf(),
                     gender,
-                    lastName,
+                    null,
                     university,
                     year
                 )
@@ -72,9 +67,9 @@ class UserRepository @Inject constructor(
         )
     }.flowOn(Dispatchers.IO)
 
-    fun getBlockUser(id: Int): Flow<User> = flow {
+    fun lockUser(id: Int): Flow<User> = flow {
         emit(
-            api.getBlockUser(id)
+            api.lockUser(id)
         )
     }.flowOn(Dispatchers.IO)
 
@@ -87,6 +82,12 @@ class UserRepository @Inject constructor(
     fun updateUser(user: User, id : Int): Flow<User> = flow {
         emit(
             api.updateUser(user, id)
+        )
+    }.flowOn(Dispatchers.IO)
+
+    fun getUser(id: Int): Flow<User> = flow {
+        emit(
+            api.getUser(id)
         )
     }.flowOn(Dispatchers.IO)
 }

@@ -1,10 +1,6 @@
 package com.oceantech.tracking.data.network
 
-import com.oceantech.tracking.data.model.TokenResponse
 import com.oceantech.tracking.data.model.User
-import io.reactivex.Observable
-import kotlinx.coroutines.flow.Flow
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -26,12 +22,15 @@ interface UserApi {
     @GET("users/")
     suspend fun getDevice(@Query("tokenDevice") tokenDevice: String): User
 
-    @GET("users/block/{id}")
-    suspend fun getBlockUser(@Path("id") id: Int): User
+    @GET("users/lock/{id}")
+    suspend fun lockUser(@Path("id") id: Int): User
 
     @POST("users/update-myself")
     suspend fun updateMyself(@Body user: User) : User
 
     @POST("users/update/{id}")
     suspend fun updateUser(@Body user: User, @Path("id") id: Int): User
+
+    @GET("users/{id}")
+    suspend fun getUser(@Path("id") id: Int): User
 }

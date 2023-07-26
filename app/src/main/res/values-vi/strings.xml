@@ -38,14 +38,14 @@
     <string name="permission_denied_explanation">permission denied explanation</string>
     <string name="settings">Cài đặt</string>
     <string name="warning_dengue">Ứng dụng đang quét các ổ dịch xung quanh bạn !</string>
-    <string name="password">Mật khẩu</string>
-    <string name="email">Email</string>
+    <string name="password">Mật khẩu <font color="red">*</font></string>
+    <string name="email">Email <font color="red">*</font> </string>
     <string name="send">Gửi</string>
     <string name="signin">Đăng kí tài khoản</string>
     <string name="last_name">Họ</string>
     <string name="first_name">Tên</string>
-    <string name="display_name">Tên hiển thị</string>
-    <string name="username">Tên đăng nhập</string>
+    <string name="display_name">Tên hiển thị <font color="red">*</font></string>
+    <string name="username">Tên đăng nhập <font color="red">*</font> </string>
     <string name="signin_account">Đăng kí</string>
     <string name="login_fail">Tài khoản hoặc mật khẩu không đúng. Mời bạn đăng nhập lại</string>
     <string name="login_success">Đăng nhập thành công</string>
@@ -74,8 +74,8 @@
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
     <string name="menu_tracking">Theo dõi</string>
     <string name="add_tracking">Thêm theo dõi mới</string>
-    <string name="gender">Giới Tính</string>
-    <string name="dob">Ngày Sinh</string>
+    <string name="gender">Giới Tính <font color="red">*</font></string>
+    <string name="dob">Ngày Sinh <font color="red">*</font></string>
     <string name="add_new_tracking">Thêm</string>
     <string name="cancel_add_new_tracking">Huỷ</string>
     <string name="check_in_tracking_successfully">Check in thành công</string>
@@ -110,9 +110,9 @@
     <string name="restart_app_update">Tải update thành công, app sẽ khởi động lại trong 5s</string>
     <string name="downloading">Đang tải xuống</string>
     <string name="dark_mode">Nền tối</string>
-    <string name="university">Trường</string>
-    <string name="sign_in_year">Năm thứ mấy</string>
-    <string name="confirm_password">Nhập lại mật khẩu</string>
+    <string name="university">Trường <font color="red">*</font></string>
+    <string name="sign_in_year">Năm thứ mấy <font color="red">*</font></string>
+    <string name="confirm_password">Nhập lại mật khẩu <font color="red">*</font></string>
     <string name="user_first_name">Tên: %s</string>
     <string name="user_last_name">Họ: %s</string>
     <string name="user_dob">Ngày sinh: %s</string>
@@ -133,6 +133,26 @@
     <string name="network_requirement">Xin vui lòng kết nối mạng</string>
     <string name="check_network">Xin vui lòng kiểm tra lại kết nối</string>
     <string name="notification">Thông báo</string>
+
+    <string-array name="list_gender">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+
+    </string-array>
+    <string name="password_login">Mật khẩu</string>
+    <string name="username_error_signin">Bạn phải điền tên đăng nhập</string>
+    <string name="password_error_signin">Bạn phải điền mật khẩu</string>
+    <string name="displayname_error_signin">Bạn phải điền tên hiển thị</string>
+    <string name="gender_error_signin">Bạn phải điền giới tính</string>
+    <string name="dob_error_signin">Bạn phải điền ngày sinh</string>
+    <string name="email_error_signin">Bạn phải điền email</string>
+    <string name="uni_error_signin">Bạn phải điền trường</string>
+    <string name="year_error_signin">Bạn phải điền năm</string>
+    <string name="confirmpass_error_signin">Bạn phải điền mật khẩu nhập lại</string>
+    <string name="confirmpass_same_pass_error">Mật khẩu điền lại phải giống mật khẩu điền bên trên</string>
+    <string name="existed_username_error">Tên đăng nhập đã tồn tại, vui lòng chọn tên khác</string>
+    <string name="register_successfully">Đăng kí thành công</string>
 
 
 </resources>

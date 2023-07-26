@@ -11,8 +11,6 @@ sealed class SecurityViewAction : NimpeViewModelAction {
         val userName: String,
         val password: String,
         val displayName: String,
-        val firstName: String,
-        val lastName: String,
         val gender: String,
         val dob: String,
         val email: String,

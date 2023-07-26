@@ -24,6 +24,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/personFullName"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
@@ -33,22 +34,22 @@
                     android:id="@+id/imgPerson"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2.5"
-                    android:src="@drawable/person_icon"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"/>
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="2.5"
+                    android:src="@drawable/person_icon" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtFullName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="7.5"
                     android:text="FullName"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
                     android:textColor="?attr/colorOnBackground"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"/>
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
@@ -70,43 +71,50 @@
                     android:id="@+id/txtPersonId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:text="Id"
-                    android:textSize="20sp"
-                    android:textStyle="italic"
-                    android:textColor="?attr/colorOnSurface"/>
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtPersonDisplayName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:text="Id"
-                    android:textSize="20sp"
-                    android:textStyle="italic"
-                    android:textColor="?attr/colorOnSurface"/>
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtPersonUsermame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:text="Id"
-                    android:textSize="20sp"
-                    android:textStyle="italic"
-                    android:textColor="?attr/colorOnSurface"/>
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
 
 
             </LinearLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/personBtn"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_weight="2">
+                android:layout_weight="2"
+                android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnEditProfile"
@@ -119,22 +127,22 @@
                     android:fontFamily="@font/roboto"
                     android:text="@string/edit_profile"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold|italic" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnLogOut"
+                    style="@style/NimpeInputLayoutLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/log_out_background"
                     android:fontFamily="@font/roboto"
                     android:text="@string/log_out"
                     android:textColor="@color/white"
-                    android:background="@drawable/log_out_background"
-                    style="@style/NimpeInputLayoutLogin"
-                    android:textSize="20sp"
-                    android:textStyle="bold|italic"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold|italic" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

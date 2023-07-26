@@ -11,6 +11,7 @@ import android.location.Location
 import android.os.Build
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
@@ -262,4 +265,30 @@ private fun showDialog(
         }
         .create()
         .show()
+}
+
+internal fun handleNavigationBack(controller: NavController, drawerLayout: DrawerLayout){
+    when (controller.currentDestination?.id) {
+        R.id.modifyUserFragment -> {
+            controller.navigate(R.id.userInfoFragment)
+        }
+        R.id.modifyPersonalFragment ->{
+            controller.navigate(R.id.personalFragment)
+        }
+        else -> {
+            if (drawerLayout.isOpen) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+    }
+}
+
+fun View.hideKeyboard(): Boolean {
+    try {
+        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        return inputMethodManager.hideSoftInputFromWindow(applicationWindowToken, 0)
+    } catch (ignored: RuntimeException) { }
+    return false
 }

@@ -1,6 +1,7 @@
 package com.oceantech.tracking.utils
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.InputType
@@ -53,4 +54,9 @@ class ExposedDropdownMenu : MaterialAutoCompleteTextView {
             out.writeString(text)
         }
     }
+
+    override fun enoughToFilter(): Boolean {
+        return false
+    }
+
 }

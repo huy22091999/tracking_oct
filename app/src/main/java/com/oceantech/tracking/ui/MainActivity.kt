@@ -41,6 +41,11 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.google.firebase.iid.FirebaseInstanceIdReceiver
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging
+import com.google.firebase.inappmessaging.FirebaseInAppMessagingRegistrar
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging_Factory
+import com.google.firebase.installations.FirebaseInstallations
 import com.oceantech.tracking.databinding.ActivityMainBinding
 import java.util.*
 import javax.inject.Inject
@@ -62,6 +67,7 @@ import com.oceantech.tracking.utils.changeDarkMode
 import com.oceantech.tracking.utils.changeLanguage
 import com.oceantech.tracking.utils.createNotification
 import com.oceantech.tracking.utils.handleLogOut
+import com.oceantech.tracking.utils.handleNavigationBack
 import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -178,13 +184,17 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             setOf(
                 R.id.nav_HomeFragment,
                 R.id.trackingFragment,
-                R.id.timeSheetFragment
+                R.id.timeSheetFragment,
+                R.id.personalFragment,
+                R.id.notificationFragment,
+                R.id.publicFragment
             ), drawerLayout
         )
 
         //Set up toolbar(action bar) with navigation
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
         views.title.text = supportActionBar?.title
 
         // make title of toolbar as label navigation
@@ -296,11 +306,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                if (drawerLayout.isOpen) {
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START)
-                }
+                handleNavigationBack(navController, drawerLayout)
                 return true
             }
 

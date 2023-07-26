@@ -1,7 +1,6 @@
 package com.oceantech.tracking.ui.home.user
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.databinding.FragmentModifyUserBinding
-import com.oceantech.tracking.ui.home.HomeFragment
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.ui.home.HomeViewState
@@ -39,7 +37,7 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let{
-            homeViewModel.handle(HomeViewAction.GetBlockUser(it.getInt(UserInfoFragment.UPDATE_ID, 0)))
+            homeViewModel.handle(HomeViewAction.LockUser(it.getInt(UserInfoFragment.UPDATE_ID, 0)))
             stateModify = GET_BLOCK_ID
         }
     }
@@ -81,7 +79,7 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
     }
 
     private fun handleGetBlockUser(state: HomeViewState) {
-        when(val blockUser = state.blockUser){
+        when(val blockUser = state.lockUser){
             is Success -> {
                 views.user = blockUser.invoke()
             }

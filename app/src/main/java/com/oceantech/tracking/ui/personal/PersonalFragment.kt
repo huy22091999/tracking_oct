@@ -56,11 +56,8 @@ class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
         viewModel.onEach {
             views.personPB.isVisible = it.isLoading() || it.userCurrent is Fail
             views.personInfor.isVisible = it.userCurrent is Success
-            views.txtPersonDisplayName.isVisible = it.userCurrent is Success
-            views.imgPerson.isVisible = it.userCurrent is Success
-            views.btnEditProfile.isVisible = it.userCurrent is Success
-            views.btnLogOut.isVisible = it.userCurrent is Success
-            views.txtFullName.isVisible = it.userCurrent is Success
+            views.personFullName.isVisible = it.userCurrent is Success
+            views.personBtn.isVisible = it.userCurrent is Success
         }
         views.btnLogOut.setOnClickListener {
             requireActivity().handleLogOut()

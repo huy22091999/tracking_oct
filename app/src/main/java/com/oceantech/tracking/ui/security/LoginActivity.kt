@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.security
 
 import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
@@ -11,10 +12,12 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivityLoginBinding
+import com.oceantech.tracking.utils.TrackingContextWrapper
 import com.oceantech.tracking.utils.addFragmentToBackstack
 import com.oceantech.tracking.utils.changeDarkMode
 import com.oceantech.tracking.utils.registerNetworkReceiver
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import javax.inject.Inject
 @AndroidEntryPoint
 
@@ -68,5 +71,13 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
         return securityViewModelFactory.create(initialState)
     }
 
-
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun attachBaseContext(context: Context?) {
+        val prefs = context?.getSharedPreferences(
+            context.getString(R.string.app_name),
+            Context.MODE_PRIVATE
+        )
+        val language = prefs?.getString(SessionManager.LANGUAGE, Locale.getDefault().language)
+        super.attachBaseContext(language?.let { TrackingContextWrapper.wrap(context, it) })
+    }
 }

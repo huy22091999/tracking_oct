@@ -69,12 +69,19 @@
         android:name="com.oceantech.tracking.ui.home.user.ModifyUserFragment"
         android:label="@string/update_user"
         tools:layout="@layout/fragment_modify_user">
+        <action
+            android:id="@+id/action_modifyUserFragment_to_userInfoFragment"
+            app:destination="@id/userInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/modifyPersonalFragment"
         android:name="com.oceantech.tracking.ui.personal.ModifyPersonalFragment"
         android:label="@string/update_profile"
-        tools:layout="@layout/fragment_modify_personal" />
+        tools:layout="@layout/fragment_modify_personal" >
+        <action
+            android:id="@+id/action_modifyPersonalFragment_to_personalFragment"
+            app:destination="@id/personalFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.oceantech.tracking.ui.notifications.NotificationFragment"

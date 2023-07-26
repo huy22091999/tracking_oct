@@ -27,10 +27,11 @@ class TrackingCloudServices : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        val title = message.notification?.title
-        val body = message.notification?.body
+        val title = message.data["title"]
+        val body = message.data["content"]
 
         sendNotification(title, body)
+
 
     }
 

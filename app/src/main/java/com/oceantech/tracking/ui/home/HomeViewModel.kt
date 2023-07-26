@@ -19,9 +19,10 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.ResetLang -> handResetLang(action.lang)
             is HomeViewAction.GetAllUsers -> handleAllUsers()
             is HomeViewAction.GetDevice -> handleGetDevice(action.tokenDevice)
-            is HomeViewAction.GetBlockUser -> handleGetBlockUser(action.id)
+            is HomeViewAction.LockUser -> handleLockUser(action.id)
             is HomeViewAction.UpdateMyself -> handleUpdateMyself(action.user)
             is HomeViewAction.UpdateUser -> handleUpdateUser(action.user, action.id)
+            is HomeViewAction.GetUser -> handleGetUser(action.id)
         }
     }
 
@@ -58,10 +59,10 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handleGetBlockUser(id: Int) {
-        setState { copy(blockUser = Loading()) }
-        repository.getBlockUser(id).execute {
-            copy(blockUser = it)
+    private fun handleLockUser(id: Int) {
+        setState { copy(lockUser = Loading()) }
+        repository.lockUser(id).execute {
+            copy(lockUser = it)
         }
     }
 
@@ -69,6 +70,13 @@ class HomeViewModel @AssistedInject constructor(
         setState { copy(device = Loading()) }
         repository.getDevice(tokenDevice).execute {
             copy(device = it)
+        }
+    }
+
+    private fun handleGetUser(id: Int){
+        setState { copy(getUser = Loading()) }
+        repository.getUser(id).execute {
+            copy(getUser = it)
         }
     }
 

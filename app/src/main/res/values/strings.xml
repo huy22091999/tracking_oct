@@ -25,9 +25,9 @@
     <string name="feedback_hint">Your feedback ...</string>
     <string name="send_feedback">Send feedback</string>
     <string name="welcome">Hello, Welcome to Tracking</string>
-    <string name="loggin">Đăng nhập</string>
-    <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
-    <string name="forget_password">Quên mật khẩu</string>
+    <string name="loggin">Log In</string>
+    <string name="lable_signing">Don\'t have account? /<font color="#3F51B5"><b> Register</b></font></string>
+    <string name="forget_password">Forget Password</string>
     <string name="channel_description">Notification</string>
     <string name="category_theme">News topic</string>
     <string name="home_everyone">Let\'s all work together to prevent dengue fever !</string>
@@ -44,14 +44,14 @@
     <string name="permission_denied_explanation">permission denied explanation</string>
     <string name="settings">Settings</string>
     <string name="warning_dengue">Ứng dụng đang quét các ổ dịch xung quanh bạn !</string>
-    <string name="password">Password</string>
+    <string name="password">Password <font color="red">*</font></string>
     <string name="email">Email <font color="red">*</font></string>
     <string name="send">Send</string>
-    <string name="signin">Đăng kí tài khoản</string>
+    <string name="signin">Sign In</string>
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
-    <string name="display_name">Display name</string>
-    <string name="username">User name</string>
+    <string name="display_name">Display name <font color="red">*</font></string>
+    <string name="username">User name <font color="red">*</font></string>
     <string name="signin_account">Sign in</string>
     <string name="login_fail">User name or password is incorect</string>
     <string name="login_success">Loggin successfully.</string>
@@ -75,8 +75,8 @@
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
     <string name="menu_tracking">Tracking</string>
     <string name="add_tracking">Add Tracking</string>
-    <string name="gender">Gender</string>
-    <string name="dob">Date Of Birth</string>
+    <string name="gender">Gender <font color="red">*</font></string>
+    <string name="dob">Date Of Birth <font color="red">*</font></string>
     <string name="add_new_tracking">Add</string>
     <string name="cancel_add_new_tracking">Cancel</string>
     <string name="check_in_tracking_successfully">Check in successfully</string>
@@ -110,9 +110,9 @@
     <string name="downloading">Downloading</string>
     <string name="user_email" translatable="false">Email: %s</string>
     <string name="dark_mode">Dark Mode</string>
-    <string name="university">University</string>
-    <string name="sign_in_year">Year</string>
-    <string name="confirm_password">Confirm password</string>
+    <string name="university">University <font color="red">*</font></string>
+    <string name="sign_in_year">Year <font color="red">*</font></string>
+    <string name="confirm_password">Confirm password <font color="red">*</font></string>
     <string name="user_first_name">First Name: %s</string>
     <string name="user_last_name">Last Name: %s</string>
     <string name="user_dob">Date Of Birth: %s</string>
@@ -134,5 +134,24 @@
     <string name="check_network">Please check your network</string>
     <string name="notification">Notifications</string>
     <string name="noti_channel_id" translatable="false">nimpe_channel_id</string>
+    <string name="password_login">Password</string>
+    <string name="username_error_signin">"You must fill the username "</string>
+    <string name="password_error_signin">You must fill the password</string>
+    <string name="displayname_error_signin">You must fill the display name</string>
+    <string name="gender_error_signin">You must fill the gender</string>
+    <string name="dob_error_signin">You must fill the date of birth</string>
+    <string name="email_error_signin">You must fill the email</string>
+    <string name="uni_error_signin">You must fill the university</string>
+    <string name="year_error_signin">You must fill the year</string>
+    <string name="confirmpass_error_signin">You must fill the confirm password</string>
+    <string name="confirmpass_same_pass_error">Confirm password must be the same to password</string>
+    <string name="existed_username_error">"Username has been already existed "</string>
+    <string name="register_successfully">Register Successfully</string>
+    <string-array name="list_gender">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+
+    </string-array>
 
 </resources>
