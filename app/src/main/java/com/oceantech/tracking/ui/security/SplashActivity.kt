@@ -1,6 +1,5 @@
 package com.oceantech.tracking.ui.security
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -11,11 +10,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
@@ -39,13 +35,18 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     private var hasCheckVersion:Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val sessionManager = SessionManager(this@SplashActivity)
+        val modeTheme = sessionManager.fetchAppTheme()?.toInt()
+        if(modeTheme != null){
+            AppCompatDelegate.setDefaultNightMode(modeTheme)
+        }
+
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
 
         views.versionLabel.text = "Version: ${packageManager.getPackageInfo(packageName, 0).versionName}"
 
-        val sessionManager = SessionManager(this@SplashActivity)
         val lang = sessionManager.fetchAppLanguage()
         val res: Resources = resources
         val dm: DisplayMetrics = res.displayMetrics
@@ -56,7 +57,7 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(
-                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                arrayOf(android.Manifest.permission.INTERNET,android.Manifest.permission.POST_NOTIFICATIONS),
                 1001
             )
         } else {
@@ -117,8 +118,6 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
                 it.asyncConfigApp.invoke().let { version ->
                     hasCheckVersion = true
                     val appVersion = packageManager.getPackageInfo(packageName, 0).versionName
-                    Log.i("Version app:", version.versionName.toString())
-                    Log.i("Version app:", appVersion)
                     if(version.versionName.toString() != appVersion){
                         dialog = initialAlertDialog(this,
                             moveToChPlay, getCurrentUser,

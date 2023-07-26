@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.security
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,9 @@ import com.oceantech.tracking.databinding.DialogLoginBinding
 import com.oceantech.tracking.databinding.FragmentSigninBinding
 import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.utils.validateEmail
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -49,6 +53,9 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
         }
         views.labelSignup.setOnClickListener {
             viewModel.handleReturnLogin()
+        }
+        views.calendarImage.setOnClickListener {
+            showDatePickerDialog()
         }
 
         val genderAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,resources.getStringArray(R.array.gender_spin))
@@ -120,6 +127,30 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
             }
         }
     }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, selectedDay)
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                birthday = dateFormat.format(selectedDate.time).toString()
+                views.labelBirthday.text = birthday
+            },
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.show()
+    }
+
 
     companion object {
         private const val ViMale = "Nam"

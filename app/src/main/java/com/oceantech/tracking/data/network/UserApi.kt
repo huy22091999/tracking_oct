@@ -22,6 +22,8 @@ interface UserApi {
     fun sign(@Body user: User):Observable<User>
     @GET("users/get-user-current")
     fun getCurrentUser(): Observable<User>
+    @GET("users/{id}")
+    fun getUserById(@Path("id") id:String):Observable<User>
     @GET("users/get-user-current")
     fun getCurrentUserTest(): Call<User>
     @GET("users/token-device")

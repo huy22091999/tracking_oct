@@ -74,7 +74,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         viewModel.handleAllTracking()
     }
 
-    private val showMenu:(View,Tracking) -> Unit = {view,tracking ->
+    private val showMenu:(View,Tracking) -> Unit = { _, tracking ->
         showBottomDialog(tracking)
     }
 
@@ -89,7 +89,6 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
 
         updateSubmit.setOnClickListener {
             viewModel.handleReturnUpdate(tracking.content!!, tracking.id!!)
-            Log.i("id tracking:", tracking.id!!.toString())
             dialog.dismiss()
         }
 
@@ -137,7 +136,6 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             is Success -> {
                 it.asyncDeleteTracking.invoke().let {
                     Toast.makeText(requireContext(), getString(R.string.delete_success), Toast.LENGTH_SHORT).show()
-                    Log.i("state of deleted: ", "success delete tracking id ${it.id}")
                 }
                 viewModel.handleRemoveStateOfDelete()
             }

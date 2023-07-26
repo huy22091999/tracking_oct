@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.profile
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,12 +20,16 @@ import com.oceantech.tracking.ui.home.HomeViewEvent
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.utils.initialAlertDialog
 import okhttp3.internal.userAgent
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>() {
     private val viewModel:HomeViewModel by activityViewModel()
     lateinit var newFirstName:String
     lateinit var newLastName:String
     private var newGender:String = EnMale
+    lateinit var newBirthday:String
     lateinit var newBirthPlace:String
     lateinit var newUniversity:String
     private var newYear:String = "1"
@@ -67,6 +72,10 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
                 viewModel.handleReturnProfile()
             }
             else viewModel.handleReturnUsers()
+        }
+
+        views.calendarImage.setOnClickListener {
+            showDatePickerDialog()
         }
     }
 
@@ -136,6 +145,29 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
                 birthPlace.error = null
             }
         }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(selectedYear, selectedMonth, selectedDay)
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                newBirthday = dateFormat.format(selectedDate.time).toString()
+                views.labelBirthday.text = newBirthday
+            },
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.show()
     }
 
 
