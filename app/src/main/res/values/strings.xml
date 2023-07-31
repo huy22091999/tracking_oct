@@ -147,6 +147,7 @@
     <string name="confirmpass_same_pass_error">Confirm password must be the same to password</string>
     <string name="existed_username_error">"Username has been already existed "</string>
     <string name="register_successfully">Register Successfully</string>
+    <string name="no_users_left">There is no users left</string>
     <string-array name="list_gender">
         <item>Male</item>
         <item>Female</item>

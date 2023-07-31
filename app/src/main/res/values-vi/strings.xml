@@ -153,6 +153,7 @@
     <string name="confirmpass_same_pass_error">Mật khẩu điền lại phải giống mật khẩu điền bên trên</string>
     <string name="existed_username_error">Tên đăng nhập đã tồn tại, vui lòng chọn tên khác</string>
     <string name="register_successfully">Đăng kí thành công</string>
+    <string name="no_users_left">Đã hiện hết users</string>
 
 
 </resources>

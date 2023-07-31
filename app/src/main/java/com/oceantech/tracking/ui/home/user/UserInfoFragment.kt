@@ -19,7 +19,6 @@ import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.handleBackPressedEvent
-import com.oceantech.tracking.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -63,13 +62,13 @@ class UserInfoFragment @Inject constructor() : TrackingBaseFragment<FragmentUser
     }
 
     override fun invalidate(): Unit = withState(homeViewModel) {
-        when (val blockUser = it.lockUser) {
+        when (val user = it.getUser) {
             is Success -> {
-                views.user = blockUser.invoke()
+                views.user = user.invoke()
             }
 
             is Fail -> {
-                blockUser.error.message?.let { it1 -> checkError(it1) }
+                user.error.message?.let { it1 -> checkError(it1) }
             }
 
             else -> {}

@@ -1,6 +1,8 @@
 package com.oceantech.tracking.data.network
 
+import com.oceantech.tracking.data.model.PageContent
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.model.PageSearch
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -33,4 +35,7 @@ interface UserApi {
 
     @GET("users/{id}")
     suspend fun getUser(@Path("id") id: Int): User
+
+    @POST("users/searchByPage")
+    suspend fun searchByPage(@Body pageSearch: PageSearch): PageContent
 }

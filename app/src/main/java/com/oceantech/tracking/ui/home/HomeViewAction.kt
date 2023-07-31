@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.home
 
 import com.oceantech.tracking.core.NimpeViewModelAction
+import com.oceantech.tracking.data.model.PageSearch
 import com.oceantech.tracking.data.model.User
 
 sealed class HomeViewAction:NimpeViewModelAction{
@@ -19,5 +20,9 @@ sealed class HomeViewAction:NimpeViewModelAction{
     data class UpdateUser(val user: User, val id: Int): HomeViewAction()
 
     data class GetUser(val id: Int): HomeViewAction()
+
+    data class SearchByPage(val pageSearch: PageSearch): HomeViewAction()
+
+    object InitPage: HomeViewAction()
 
 }

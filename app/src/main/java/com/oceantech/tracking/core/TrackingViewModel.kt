@@ -27,7 +27,8 @@ import com.oceantech.tracking.utils.PublishDataSource
 import io.reactivex.Observable
 import io.reactivex.Single
 
-abstract class TrackingViewModel<S : MavericksState, VA : NimpeViewModelAction, VE : NimpeViewEvents>(initialState: S)
+abstract class TrackingViewModel<S : MavericksState, VA : NimpeViewModelAction, VE : NimpeViewEvents>(
+    initialState: S)
     : MavericksViewModel<S>(initialState) {
 
     interface Factory<S : MavericksState> {

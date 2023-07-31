@@ -227,7 +227,7 @@ fun changeDarkMode(isDarkMode: Boolean) {
     )
 }
 
-// this function will make us can press on user item when press back button to home fragment
+// this function will make us can press on user item when press physical back button to home fragment
 internal fun Fragment.handleBackPressedEvent(
     controller: NavController,
     handleAction: () -> Unit
@@ -267,6 +267,7 @@ private fun showDialog(
         .show()
 }
 
+// Handle back button on toolbar
 internal fun handleNavigationBack(controller: NavController, drawerLayout: DrawerLayout){
     when (controller.currentDestination?.id) {
         R.id.modifyUserFragment -> {
@@ -274,6 +275,9 @@ internal fun handleNavigationBack(controller: NavController, drawerLayout: Drawe
         }
         R.id.modifyPersonalFragment ->{
             controller.navigate(R.id.personalFragment)
+        }
+        R.id.userInfoFragment -> {
+            controller.navigate(R.id.nav_HomeFragment)
         }
         else -> {
             if (drawerLayout.isOpen) {

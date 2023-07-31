@@ -27,12 +27,12 @@ data class Page<T>(
 
 )
 
-data class Pageable(
-
-    @SerializedName("pageIndex")
-    val pageNumber: Int? = null,
-
-    @SerializedName("pageSize")
-    val pageSize: Int? = null
-
-)
+//data class Pageable(
+//
+//    @SerializedName("pageIndex")
+//    val pageNumber: Int? = null,
+//
+//    @SerializedName("pageSize")
+//    val pageSize: Int? = null
+//
+//)

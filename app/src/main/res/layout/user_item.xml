@@ -10,19 +10,22 @@
             type="com.oceantech.tracking.data.model.User" />
     </data>
 
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="?attr/elevation"
         app:cardCornerRadius="15dp">
 
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
             android:orientation="vertical"
             android:padding="10dp"
-            app:dividerPadding="5dp"
-            android:background="?attr/colorSurface">
+            app:dividerPadding="5dp">
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtId"
@@ -52,9 +55,9 @@
                 android:fontFamily="@font/roboto"
                 android:includeFontPadding="false"
                 android:text="@{user.displayName}"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="22sp"
                 android:textStyle="normal"
-                android:textColor="?attr/colorOnSurface"
                 app:lineHeight="28dp"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="173dp" />
@@ -71,16 +74,14 @@
                 android:fontFamily="@font/roboto"
                 android:includeFontPadding="false"
                 android:text="@{@string/user_email(user.email)}"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="18sp"
                 android:textStyle="normal"
-                android:textColor="?attr/colorOnSurface"
                 app:lineHeight="28dp"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="173dp" />
 
-
         </androidx.appcompat.widget.LinearLayoutCompat>
-
 
     </androidx.cardview.widget.CardView>
 

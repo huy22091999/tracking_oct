@@ -17,9 +17,12 @@ import com.oceantech.tracking.ui.security.LoginActivity
 import com.oceantech.tracking.ui.security.SplashActivity
 import com.oceantech.tracking.utils.createNotification
 import java.lang.Exception
+import kotlin.random.Random
+
 @SuppressLint("LogNotTimber")
 class TrackingCloudServices : FirebaseMessagingService() {
 
+    private var id:Int = 0
 
     override fun onNewToken(token: String) {
         Log.i("Token", "Refresh token: $token")
@@ -27,15 +30,24 @@ class TrackingCloudServices : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        val title = message.data["title"]
-        val body = message.data["content"]
+        message.data.isNotEmpty().let {
+            if(it){
+                val title = message.data["title"]
+                val body = message.data["body"]
+                when(message.data["type"]){
+                    "NO1" -> id = 1
+                    "NO2" -> id = 2
+                    "NO3" -> id = 3
+                }
+                sendNotification(title, body, id)
+            }
+        }
 
-        sendNotification(title, body)
 
 
     }
 
-    private fun sendNotification(title: String?, body: String?) {
+    private fun sendNotification(title: String?, body: String?, id: Int) {
         title?.let { title ->
             val notification = body?.let {body ->
                 createNotification(
@@ -49,7 +61,7 @@ class TrackingCloudServices : FirebaseMessagingService() {
 
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.notify(0, notification)
+            notificationManager.notify(id, notification)
         }
     }
 

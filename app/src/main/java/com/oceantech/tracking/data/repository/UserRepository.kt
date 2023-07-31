@@ -1,6 +1,9 @@
 package com.oceantech.tracking.data.repository
 
+import com.google.api.Page
+import com.oceantech.tracking.data.model.PageContent
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.model.PageSearch
 import com.oceantech.tracking.data.network.UserApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -88,6 +91,12 @@ class UserRepository @Inject constructor(
     fun getUser(id: Int): Flow<User> = flow {
         emit(
             api.getUser(id)
+        )
+    }.flowOn(Dispatchers.IO)
+
+    fun searchByPage(pageSearch: PageSearch): Flow<PageContent> = flow {
+        emit(
+            api.searchByPage(pageSearch)
         )
     }.flowOn(Dispatchers.IO)
 }

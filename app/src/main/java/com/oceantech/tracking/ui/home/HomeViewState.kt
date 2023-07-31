@@ -13,9 +13,12 @@ data class HomeViewState(
     val lockUser: Async<User> = Uninitialized,
     val updateMyself: Async<User> = Uninitialized,
     val updateUser: Async<User> = Uninitialized,
-    val getUser: Async<User> = Uninitialized
+    val getUser: Async<User> = Uninitialized,
+    val searchPage: Async<PageContent> = Uninitialized,
+    val initPage: Async<PageContent> = Uninitialized
 ) : MavericksState {
     fun isLoading() = userCurrent is Loading || allUsers is Loading || device is Loading
             || lockUser is Loading || updateMyself is Loading || updateUser is Loading || getUser is Loading
+            || searchPage is Loading || initPage is Loading
 
 }

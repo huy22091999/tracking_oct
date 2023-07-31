@@ -1,37 +1,113 @@
 package com.oceantech.tracking.ui.home.user.adapter
 
+import android.content.ClipData
 import android.text.Layout
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
+import com.oceantech.tracking.R
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.databinding.ItemLoadingStateBinding
 import com.oceantech.tracking.databinding.UserItemBinding
 import com.oceantech.tracking.utils.TrackingBaseAdapter
 import com.oceantech.tracking.utils.showToast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class UserAdapter(
     private val showUserInformation: (User) -> Unit
-): TrackingBaseAdapter<UserItemBinding, User>(){
+) : PagingDataAdapter<User, UserAdapter.ViewHolder>(ItemComparator) {
+
+    companion object {
+        private const val LOADING_STATE = 1
+        private const val USER_STATE = 2
+    }
+
+    inner class ViewHolder(private val _binding: ViewBinding) :
+        RecyclerView.ViewHolder(_binding.root) {
+        val binding: ViewBinding
+            get() = _binding
+    }
 
     private var authority: String = ""
 
-    fun setAuthority(authority: String){
+    //    var list = emptyList<User>()
+    fun setAuthority(authority: String) {
         this.authority = authority
     }
 
-    override fun getBinding(parent: ViewGroup): UserItemBinding {
-        return UserItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun getItemViewType(position: Int): Int {
+        return if(position < itemCount - 1){
+            USER_STATE
+        } else LOADING_STATE
     }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = list[position]
-        holder.binding.user = user
-        if (authority == "ROLE_ADMIN"){
-            holder.binding.root.apply {
-                setOnClickListener {
-                    showUserInformation(user)
+        when(getItemViewType(position)){
+            USER_STATE -> {
+                val user = getItem(position)
+                (holder.binding as UserItemBinding).user = user
+                if (authority == "ROLE_ADMIN") {
+                    holder.binding.root.apply {
+                        setOnClickListener {
+                            if (user != null) {
+                                showUserInformation(user)
+                            }
+                        }
+                    }
+                }
+            }
+            LOADING_STATE -> {
+                val binding = holder.binding as ItemLoadingStateBinding
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(5000L)
+                    binding.progressBar.visibility = View.GONE
+                    binding.noUsers.visibility = View.VISIBLE
                 }
             }
         }
+
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = when (viewType) {
+            LOADING_STATE -> ItemLoadingStateBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+
+            USER_STATE -> UserItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+
+            else -> throw Exception("Invalid viewType")
+        }
+        return ViewHolder(
+            binding
+        )
+    }
+
+    object ItemComparator : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+
 }
