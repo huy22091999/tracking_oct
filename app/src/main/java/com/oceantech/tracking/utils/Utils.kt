@@ -79,7 +79,6 @@ fun validateEmail(email: String): Boolean {
 }
 
 fun formatDate(input:String):Date{
-    //formatting time to Vietnam's time
     val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     val date: Date = formatter .parse(input)
 //    date.hours = date.hours - 7

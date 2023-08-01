@@ -12,23 +12,6 @@ private val Context.dataStore by preferencesDataStore(ThemePreferences.THEME_PRE
 class ThemePreferences @Inject constructor(context: Context) {
     private val mContext = context
 
-//    val appTheme: Flow<String?>
-//        get() = mContext.dataStore.data.map { preferences ->
-//            preferences[ThemePreferences.THEME_PREFERENCES]
-//        }
-//
-//    suspend fun saveAppTheme(theme:String) {
-//        mContext.dataStore.edit { preferences ->
-//            preferences[ThemePreferences.THEME_PREFERENCES] = theme
-//        }
-//    }
-//
-//    suspend fun clear() {
-//        mContext.dataStore.edit { preferences ->
-//            preferences.clear()
-//        }
-//    }
-//
     companion object {
         const val THEME_PREFERENCES = "theme_data_store"
     }
