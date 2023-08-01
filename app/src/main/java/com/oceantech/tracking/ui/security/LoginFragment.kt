@@ -24,6 +24,7 @@ import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.utils.initialAlertDialog
+import com.oceantech.tracking.utils.isNetworkAvailable
 import javax.inject.Inject
 
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
@@ -63,13 +64,17 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
 
     private fun loginSubmit()
     {
-        username=views.username.text.toString().trim()
-        password=views.password.text.toString().trim()
-        if(username.isNullOrEmpty()) views.usernameTil.error=getString(R.string.username_not_empty)
-        if(password.isNullOrEmpty()) views.passwordTil.error=getString(R.string.username_not_empty)
-        if (!username.isNullOrEmpty()&&!password.isNullOrEmpty())
-        {
-            viewModel.handle(SecurityViewAction.LogginAction(username, password))
+        if(isNetworkAvailable(requireContext())){
+            username=views.username.text.toString().trim()
+            password=views.password.text.toString().trim()
+            if(username.isNullOrEmpty()) views.usernameTil.error=getString(R.string.username_not_empty)
+            if(password.isNullOrEmpty()) views.passwordTil.error=getString(R.string.username_not_empty)
+            if (!username.isNullOrEmpty()&&!password.isNullOrEmpty())
+            {
+                viewModel.handle(SecurityViewAction.LogginAction(username, password))
+            }
+        } else {
+            Toast.makeText(requireContext(), getString(R.string.network_disconnected),Toast.LENGTH_SHORT).show()
         }
     }
 

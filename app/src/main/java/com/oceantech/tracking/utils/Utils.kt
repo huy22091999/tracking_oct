@@ -1,15 +1,11 @@
 package com.oceantech.tracking.utils
 
 import android.app.AlertDialog
-import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.location.Location
-import android.net.Uri
+import android.net.ConnectivityManager
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -17,17 +13,11 @@ import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
-import androidx.fragment.app.commitNow
 import androidx.viewbinding.ViewBinding
 import com.oceantech.tracking.R
 import com.oceantech.tracking.databinding.DialogLoginBinding
 import com.oceantech.tracking.ui.MainActivity
-import com.oceantech.tracking.ui.security.SecurityViewAction
-import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -137,4 +127,10 @@ fun initialAlertDialog(context: Context, accept:()->Unit, refuse:()->Unit,descTe
         }
     }
     return alertDialog
+}
+
+fun isNetworkAvailable(context: Context): Boolean {
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetwork = cm.activeNetworkInfo
+    return activeNetwork != null && activeNetwork.isAvailable && activeNetwork.isConnectedOrConnecting
 }

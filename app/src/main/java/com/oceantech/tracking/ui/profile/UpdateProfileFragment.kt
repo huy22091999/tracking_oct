@@ -45,6 +45,9 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
     ): FragmentUpdateProfileBinding = FragmentUpdateProfileBinding.inflate(inflater,container,false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        user = args.user
+        isUpdateMyself = args.isMyself
+
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.observeViewEvents {
@@ -63,8 +66,6 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
             adapter = yearAdapter
         }
 
-        user = args.user
-        isUpdateMyself = args.isMyself
         setData()
 
         views.backLayout.setOnClickListener {
@@ -79,10 +80,6 @@ class UpdateProfileFragment : TrackingBaseFragment<FragmentUpdateProfileBinding>
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putSerializable("user", user)
-    }
     private fun handleEvents(it: HomeViewEvent) {
         when(it){
             is HomeViewEvent.ResetLanguege -> {

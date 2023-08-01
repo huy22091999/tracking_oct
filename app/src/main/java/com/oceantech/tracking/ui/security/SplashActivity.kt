@@ -22,6 +22,7 @@ import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.utils.initialAlertDialog
+import com.oceantech.tracking.utils.isNetworkAvailable
 import java.util.Locale
 import javax.inject.Inject
 
@@ -61,10 +62,18 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
                 1001
             )
         } else {
-            viewModel.handle(SecurityViewAction.GetConfigApp)
+            if(isNetworkAvailable(this@SplashActivity)){
+                viewModel.handle(SecurityViewAction.GetConfigApp)
 
-            viewModel.subscribe(this) {
-                handleStateChange(it)
+                viewModel.subscribe(this) {
+                    handleStateChange(it)
+                }
+            } else {
+                Toast.makeText(this@SplashActivity, getString(R.string.network_disconnected),Toast.LENGTH_SHORT).show()
+                moveToLogin()
+                val sessionManager = SessionManager(this@SplashActivity)
+                sessionManager.clearAuthToken()
+                //finish()
             }
         }
     }

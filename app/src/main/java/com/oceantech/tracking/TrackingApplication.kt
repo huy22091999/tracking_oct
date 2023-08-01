@@ -19,7 +19,7 @@ open class TrackingApplication : Application() {
     val trackingComponent: TrackingComponent by lazy {
         initializeComponent()
     }
-    private var networkChangeReceiver: NetworkReceiver? = null
+    //private var networkChangeReceiver: NetworkReceiver? = null
 
     @Inject
     lateinit var localHelper: LocalHelper
@@ -38,20 +38,20 @@ open class TrackingApplication : Application() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
-        registerBroadcast()
+//        registerBroadcast()
     }
 
-    private fun registerBroadcast(){
-        networkChangeReceiver = NetworkReceiver()
-        val filter = IntentFilter()
-        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
-        registerReceiver(networkChangeReceiver, filter)
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-        unregisterReceiver(networkChangeReceiver)
-    }
+//    private fun registerBroadcast(){
+//        networkChangeReceiver = NetworkReceiver()
+//        val filter = IntentFilter()
+//        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+//        registerReceiver(networkChangeReceiver, filter)
+//    }
+//
+//    override fun onTerminate() {
+//        super.onTerminate()
+//        unregisterReceiver(networkChangeReceiver)
+//    }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because

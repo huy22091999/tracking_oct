@@ -19,6 +19,7 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.getDeviceToken
 import com.oceantech.tracking.databinding.FragmentNextSigninBinding
 import com.oceantech.tracking.ui.security.NextSigninFragmentArgs
+import com.oceantech.tracking.utils.isNetworkAvailable
 import com.oceantech.tracking.utils.validateEmail
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -103,9 +104,13 @@ class NextSigninFragment : TrackingBaseFragment<FragmentNextSigninBinding>() {
                         year.toInt()
                     )
 
-                    viewModel.handle(
-                        SecurityViewAction.SignAction(newUser)
-                    )
+                    if(isNetworkAvailable(requireContext())){
+                        viewModel.handle(
+                            SecurityViewAction.SignAction(newUser)
+                        )
+                    } else {
+                        Toast.makeText(requireContext(), getString(R.string.network_disconnected),Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
