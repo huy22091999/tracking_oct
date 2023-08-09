@@ -21,7 +21,7 @@ interface UserApi {
     @GET("users/get-all-user")
     suspend fun getAllUsers(): List<User>
 
-    @GET("users/")
+    @GET("users/token-device")
     suspend fun getDevice(@Query("tokenDevice") tokenDevice: String): User
 
     @GET("users/lock/{id}")

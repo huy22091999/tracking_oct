@@ -148,11 +148,21 @@
     <string name="existed_username_error">"Username has been already existed "</string>
     <string name="register_successfully">Register Successfully</string>
     <string name="no_users_left">There is no users left</string>
+    <string name="graduated">Graduated</string>
+    <string name="no_trackings">This day doesn\'t have tracking</string>
     <string-array name="list_gender">
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
 
+    </string-array>
+
+    <string-array name="list_year">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>Graduated</item>
     </string-array>
 
 </resources>

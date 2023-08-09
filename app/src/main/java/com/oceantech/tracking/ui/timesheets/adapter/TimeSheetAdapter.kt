@@ -3,6 +3,7 @@ package com.oceantech.tracking.ui.timesheets.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.databinding.TimeSheetItemBinding
 import com.oceantech.tracking.utils.TrackingBaseAdapter
@@ -13,8 +14,10 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 
-class TimeSheetAdapter : TrackingBaseAdapter<TimeSheetItemBinding, TimeSheet>() {
-
+class TimeSheetAdapter : TrackingBaseAdapter<TimeSheet>() {
+    override fun getBinding(parent: ViewGroup, viewType: Int): ViewBinding {
+        return TimeSheetItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    }
 
     fun setListTimeSheet(listTimeSheet: List<TimeSheet>) {
         val timeSheets = mutableListOf<TimeSheet>()
@@ -30,16 +33,10 @@ class TimeSheetAdapter : TrackingBaseAdapter<TimeSheetItemBinding, TimeSheet>() 
         list = timeSheets
     }
 
-    override fun getBinding(parent: ViewGroup): TimeSheetItemBinding {
-        return TimeSheetItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    }
-
-    override fun getItemCount(): Int {
-        return list.size
-    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val timeSheet = list[position]
-        holder.binding.timesheet = timeSheet
+        (holder.binding as TimeSheetItemBinding).timesheet = timeSheet
     }
+
 }

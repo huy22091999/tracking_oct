@@ -3,7 +3,6 @@ package com.oceantech.tracking.ui.tracking
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,22 +10,24 @@ import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Fail
-import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
 import com.oceantech.tracking.ui.tracking.adapter.TrackingAdapter
+import com.oceantech.tracking.utils.EventDecorator
 import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.registerNetworkReceiver
 import com.oceantech.tracking.utils.setupRecycleView
 import com.oceantech.tracking.utils.showToast
+import com.oceantech.tracking.utils.toDate
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.http.GET
+import java.util.Calendar
 import javax.inject.Inject
 
 @SuppressLint("NotifyDataSetChanged", "LogNotTimber")
@@ -35,7 +36,8 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
 
     private val trackingViewModel: TrackingViewModel by activityViewModel()
     private lateinit var trackingAdapter: TrackingAdapter
-
+    private val events = mutableListOf<EventDecorator>()
+    private val setTracking = mutableSetOf<Tracking>()
     companion object {
         private const val GET_ALL = 1
         private const val DELETE = 2
@@ -44,6 +46,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
     }
 
     private var state: Int = 0
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +88,17 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             saveTracking()
         }
 
+        //Set up Calendar View
+        views.calendar.apply {
+            setSelectedDate(Calendar.getInstance())
+            getListTrackingWithDateSelected(selectedDate)
+
+            setOnDateChangedListener { widget, date, selected ->
+                if(selected){
+                    getListTrackingWithDateSelected(date)
+                }
+            }
+        }
     }
 
     @SuppressLint("InflateParams") // to take null as view group
@@ -129,13 +143,18 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         when (state.getAllTracking) {
             is Success -> {
                 state.getAllTracking.invoke().let { listTracking ->
-                    trackingAdapter.list = listTracking
-                    trackingAdapter.notifyDataSetChanged()
+                    setTracking.addAll(listTracking)
+                    for (tracking in listTracking) {
+                        tracking.date?.let { date ->
+                            events.add(EventDecorator(CalendarDay.from(toDate(date))))
+                        }
+                    }
+                    views.calendar.addDecorators(events)
                 }
             }
 
             is Fail -> {
-                state.getAllTracking.error.message?.let {error ->
+                state.getAllTracking.error.message?.let { error ->
                     checkError(error)
                 }
             }
@@ -153,7 +172,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             }
 
             is Fail -> {
-                state.saveTracking.error.message?.let {error ->
+                state.saveTracking.error.message?.let { error ->
                     checkError(error)
                 }
             }
@@ -171,7 +190,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             }
 
             is Fail -> {
-                state.deleteTracking.error.message?.let {error ->
+                state.deleteTracking.error.message?.let { error ->
                     checkError(error)
                 }
             }
@@ -188,7 +207,7 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
             }
 
             is Fail -> {
-                state.updateTracking.error.message?.let {error ->
+                state.updateTracking.error.message?.let { error ->
                     checkError(error)
                 }
             }
@@ -197,5 +216,13 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         }
     }
 
+    //Get list of tracking with the selected date
+    private fun getListTrackingWithDateSelected(date: CalendarDay){
+        trackingAdapter.list = setTracking.filter {
+            CalendarDay.from(it.date?.let { it1 -> toDate(it1) }) == date
+        }
+        trackingAdapter.notifyDataSetChanged()
+        views.noTracking.visibility = if(trackingAdapter.itemCount == 0) View.VISIBLE else View.GONE
+    }
 
 }

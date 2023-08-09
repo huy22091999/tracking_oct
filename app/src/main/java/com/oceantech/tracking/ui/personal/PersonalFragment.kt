@@ -71,9 +71,7 @@ class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
         when (it.userCurrent) {
             is Success -> {
                 bindUser(it.userCurrent.invoke())
-
             }
-
             is Fail -> {
                 it.userCurrent.error.message?.let { it1 -> checkError(it1) }
             }
@@ -85,7 +83,7 @@ class PersonalFragment : TrackingBaseFragment<FragmentPersonalBinding>() {
     @SuppressLint("SetTextI18n")
     private fun bindUser(user: User) {
         views.txtPersonId.text = "Id: ${user.id}"
-        views.txtFullName.text = "${user.firstName} ${user.lastName}"
+        views.profileDisplayName.text = "${user.displayName}"
         views.txtPersonUsermame.text = "Username: ${user.username}"
         views.txtPersonDisplayName.text = "Display Name: ${user.displayName}"
     }

@@ -9,7 +9,6 @@ import com.oceantech.tracking.data.model.*
 data class HomeViewState(
     val userCurrent: Async<User> = Uninitialized,
     val allUsers: Async<List<User>> = Uninitialized,
-    val device: Async<User> = Uninitialized,
     val lockUser: Async<User> = Uninitialized,
     val updateMyself: Async<User> = Uninitialized,
     val updateUser: Async<User> = Uninitialized,
@@ -17,7 +16,7 @@ data class HomeViewState(
     val searchPage: Async<PageContent> = Uninitialized,
     val initPage: Async<PageContent> = Uninitialized
 ) : MavericksState {
-    fun isLoading() = userCurrent is Loading || allUsers is Loading || device is Loading
+    fun isLoading() = userCurrent is Loading || allUsers is Loading
             || lockUser is Loading || updateMyself is Loading || updateUser is Loading || getUser is Loading
             || searchPage is Loading || initPage is Loading
 

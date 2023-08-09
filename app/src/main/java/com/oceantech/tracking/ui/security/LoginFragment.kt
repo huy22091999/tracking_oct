@@ -89,6 +89,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                 }
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
                     val result = task.result
+                    viewModel.handle(SecurityViewAction.GetDevice(result))
                     Log.i("Login", result)
                 }
                 Toast.makeText(

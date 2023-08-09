@@ -11,8 +11,6 @@ sealed class HomeViewAction:NimpeViewModelAction{
 
     object GetAllUsers: HomeViewAction()
 
-    data class GetDevice(val tokenDevice: String): HomeViewAction()
-
     data class LockUser(val id: Int): HomeViewAction()
 
     data class UpdateMyself(val user: User): HomeViewAction()

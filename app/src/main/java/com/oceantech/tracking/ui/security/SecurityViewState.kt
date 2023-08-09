@@ -11,6 +11,7 @@ data class SecurityViewState(
     val asyncLogin: Async<TokenResponse> = Uninitialized,
     val userCurrent: Async<User> = Uninitialized,
     val userSignIn: Async<User> = Uninitialized,
+    val device: Async<User> = Uninitialized,
 
 ) : MavericksState {
     fun isLoading() = asyncLogin is Loading

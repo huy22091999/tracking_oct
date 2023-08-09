@@ -7,25 +7,24 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-abstract class TrackingBaseAdapter<VB: ViewBinding, E: Any>: RecyclerView.Adapter<TrackingBaseAdapter<VB, E>.ViewHolder>() {
+abstract class TrackingBaseAdapter<E: Any>: RecyclerView.Adapter<TrackingBaseAdapter<E>.ViewHolder>() {
 
     var list: List<E> = listOf()
 
 
-    inner class ViewHolder(private val _binding: VB): RecyclerView.ViewHolder(_binding.root){
-        val binding: VB
+    inner class ViewHolder(private val _binding: ViewBinding): RecyclerView.ViewHolder(_binding.root){
+        val binding: ViewBinding
             get() = _binding
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         return ViewHolder(
-            getBinding(parent)
+            getBinding(parent, viewType)
         )
     }
 
-    abstract fun getBinding(parent: ViewGroup): VB
+    abstract fun getBinding(parent: ViewGroup, viewType: Int): ViewBinding
 
 
     override fun getItemCount(): Int {

@@ -170,6 +170,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun setupToolbar() {
         toolbar = views.toolbar
         setSupportActionBar(toolbar)
+        toolbar.setContentInsetsAbsolute(0, toolbar.contentInsetStartWithNavigation) // make title center of toolbar
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
@@ -307,11 +308,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return when (item.itemId) {
             android.R.id.home -> {
                 handleNavigationBack(navController, drawerLayout)
-                return true
-            }
-
-            R.id.menu_list_user -> {
-                navigateTo(R.id.nav_HomeFragment)
                 return true
             }
 

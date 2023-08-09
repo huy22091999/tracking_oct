@@ -7,7 +7,11 @@ import android.os.Parcelable
 import android.text.InputType
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import androidx.appcompat.R
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
 
 class ExposedDropdownMenu : MaterialAutoCompleteTextView {
 
@@ -57,6 +61,43 @@ class ExposedDropdownMenu : MaterialAutoCompleteTextView {
 
     override fun enoughToFilter(): Boolean {
         return false
+    }
+
+}
+
+
+internal fun setUpDropdownMenu(
+    dropdownMenu: ExposedDropdownMenu,
+    options: List<String>,
+    context: Context,
+    layout: TextInputLayout,
+    error: String
+) {
+    val adapter = ArrayAdapter(
+        context,
+        R.layout.support_simple_spinner_dropdown_item,
+        options
+    )
+    dropdownMenu.apply {
+        setAdapter(adapter)
+        setOnItemClickListener { _, _, position, _ ->
+            setText(adapter.getItem(position))
+            layout.error = null
+            layout.isErrorEnabled = false
+        }
+        setOnFocusChangeListener { _, hasFocus ->
+            hideKeyboard()
+            if (hasFocus) {
+                showDropDown()
+                setOnClickListener {
+                    showDropDown()
+                }
+            } else {
+                if (dropdownMenu.text.isNullOrBlank()) {
+                    layout.error = error
+                }
+            }
+        }
     }
 
 }

@@ -29,7 +29,6 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang(action.lang)
             is HomeViewAction.GetAllUsers -> handleAllUsers()
-            is HomeViewAction.GetDevice -> handleGetDevice(action.tokenDevice)
             is HomeViewAction.LockUser -> handleLockUser(action.id)
             is HomeViewAction.UpdateMyself -> handleUpdateMyself(action.user)
             is HomeViewAction.UpdateUser -> handleUpdateUser(action.user, action.id)
@@ -105,12 +104,7 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
-    private fun handleGetDevice(tokenDevice: String) {
-        setState { copy(device = Loading()) }
-        repository.getDevice(tokenDevice).execute {
-            copy(device = it)
-        }
-    }
+
 
     private fun handleGetUser(id: Int) {
         setState { copy(getUser = Loading()) }

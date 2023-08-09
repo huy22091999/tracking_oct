@@ -40,13 +40,13 @@
                     android:src="@drawable/person_icon" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtFullName"
+                    android:id="@+id/profileDisplayName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="20dp"
                     android:layout_weight="7.5"
-                    android:text="FullName"
+                    android:text="Null"
                     android:textColor="?attr/colorOnBackground"
                     android:textSize="24sp"
                     android:textStyle="bold" />

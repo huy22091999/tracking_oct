@@ -89,7 +89,7 @@ fun <T : Fragment> AppCompatActivity.addFragmentToBackstack(
 }
 
 
-// Convert ISO 8061 to normal date time
+// Convert ISO 8061 to normal date time string
 
 fun String.toLocalDate(isoDateTime: String): String {
     val formatter = DateTimeFormatter.ISO_DATE_TIME.parse(isoDateTime)
@@ -102,13 +102,18 @@ fun String.toLocalDate(isoDateTime: String): String {
 
 // Convert normal date time to ISO Instant
 fun toIsoInstant(localDate: String): String {
-    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy" )
+    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
     val date = LocalDate.parse(localDate, formatter)
     val zonedDateTime = date.atStartOfDay(ZoneId.systemDefault())
     return zonedDateTime.toInstant().toString()
 }
 
-
+// Convert ISO 8061 to type date
+fun toDate(isoDateTime: String): Date{
+    val formatter = DateTimeFormatter.ISO_DATE_TIME.parse(isoDateTime)
+    val instant = Instant.from(formatter)
+    return Date.from(instant)
+}
 
 /**
  * Update language of app.

@@ -33,7 +33,7 @@ class TrackingCloudServices : FirebaseMessagingService() {
         message.data.isNotEmpty().let {
             if(it){
                 val title = message.data["title"]
-                val body = message.data["body"]
+                val body = message.data["content"]
                 when(message.data["type"]){
                     "NO1" -> id = 1
                     "NO2" -> id = 2

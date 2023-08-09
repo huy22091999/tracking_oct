@@ -155,5 +155,16 @@
     <string name="register_successfully">Đăng kí thành công</string>
     <string name="no_users_left">Đã hiện hết users</string>
 
+    <string-array name="list_year">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>Đã tốt nghiệp</item>
+    </string-array>
+    <string name="graduated">Đã tốt nghiệp</string>
+    <string name="no_trackings">Ngày này không có theo dõi</string>
+
+
 
 </resources>

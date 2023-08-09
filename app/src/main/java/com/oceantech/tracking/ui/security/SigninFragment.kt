@@ -23,6 +23,8 @@ import com.oceantech.tracking.utils.checkEmpty
 import com.oceantech.tracking.utils.hideKeyboard
 import com.oceantech.tracking.utils.emptyOrText
 import com.oceantech.tracking.utils.registerNetworkReceiver
+import com.oceantech.tracking.utils.selectDateAndCheckError
+import com.oceantech.tracking.utils.setUpDropdownMenu
 import com.oceantech.tracking.utils.toIsoInstant
 import com.oceantech.tracking.utils.unregisterNetworkReceiver
 import timber.log.Timber
@@ -51,47 +53,22 @@ class SigninFragment : TrackingBaseFragment<FragmentSigninBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerNetworkReceiver { }
-        views.dob.apply {
-            inputType = EditorInfo.TYPE_NULL
-            onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-                v.hideKeyboard()
-                if (hasFocus) {
-                    // Use date picker to choose date
-                    chooseDate()
-                    v.setOnClickListener {
-                        chooseDate()
-                    }
-                } else {
-                    if (views.dob.text.isNullOrBlank()) {
-                        views.layoutDob.error = getString(R.string.dob_error_signin)
-                    }
-                }
-            }
-        }
-        val adapter = ArrayAdapter(
+        views.dob.selectDateAndCheckError(requireContext(), getString(R.string.dob_error_signin))
+
+        setUpDropdownMenu(
+            views.gender,
+            resources.getStringArray(R.array.list_gender).asList(),
             requireContext(),
-            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-            resources.getStringArray(R.array.list_gender)
+            views.genderLayout,
+            getString(R.string.gender_error_signin)
         )
-        views.gender.apply {
-            setAdapter(adapter)
-            setOnItemClickListener { _, _, position, _ ->
-                setText(adapter.getItem(position))
-            }
-            setOnFocusChangeListener { _, hasFocus ->
-                hideKeyboard()
-                if (hasFocus) {
-                    showDropDown()
-                    setOnClickListener {
-                        showDropDown()
-                    }
-                } else {
-                    if (views.gender.text.isNullOrBlank()) {
-                        views.genderLayout.error = getString(R.string.gender_error_signin)
-                    }
-                }
-            }
-        }
+        setUpDropdownMenu(
+            views.studentYear,
+            resources.getStringArray(R.array.list_year).asList(),
+            requireContext(),
+            views.yearLayout,
+            getString(R.string.year_error_signin)
+        )
 
         checkEmpty()
 
@@ -167,31 +144,14 @@ class SigninFragment : TrackingBaseFragment<FragmentSigninBinding>() {
         super.onDestroy()
     }
 
-    private fun chooseDate() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(
-            requireContext(),
-            { view, year, month, dayOfMonth ->
-                val date = String.format("%02d-%02d-%04d", dayOfMonth, month + 1, year)
-                views.dob.setText(date)
-            },
-            year,
-            month,
-            dayOfMonth
-        ).show()
-    }
 
-    // Check empty or not when user unclick view
+    // Check empty or not when user untouch view
     private fun checkEmpty() {
         views.username.checkEmpty(getString(R.string.username_error_signin))
         views.password.checkEmpty(getString(R.string.password_error_signin))
         views.displayName.checkEmpty(getString(R.string.displayname_error_signin))
         views.email.checkEmpty(getString(R.string.email_error_signin))
         views.university.checkEmpty(getString(R.string.uni_error_signin))
-        views.studentYear.checkEmpty(getString(R.string.year_error_signin))
         views.rePassword.checkEmpty(getString(R.string.confirmpass_error_signin))
     }
 }

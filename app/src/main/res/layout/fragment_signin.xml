@@ -145,9 +145,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    app:startIconDrawable="@drawable/ic_drop"
                     >
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.oceantech.tracking.utils.ExposedDropdownMenu
                         android:id="@+id/student_year"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
