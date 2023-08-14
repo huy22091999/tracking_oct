@@ -30,4 +30,9 @@
         <item name="colorControlActivated">?attr/colorPrimary</item>
     </style>
 
+    <style name="CustomDateAppearance.Tracking.Theme" parent="TextAppearance.MaterialCalendarWidget.Date">
+        <item name="android:textColor">@color/dark_light_theme</item>
+    </style>
+
+    
 </resources>

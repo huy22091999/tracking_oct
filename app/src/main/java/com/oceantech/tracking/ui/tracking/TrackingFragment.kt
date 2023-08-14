@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.tracking
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,9 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
@@ -26,6 +30,8 @@ import com.oceantech.tracking.utils.setupRecycleView
 import com.oceantech.tracking.utils.showToast
 import com.oceantech.tracking.utils.toDate
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import javax.inject.Inject
@@ -38,6 +44,8 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
     private lateinit var trackingAdapter: TrackingAdapter
     private val events = mutableListOf<EventDecorator>()
     private val setTracking = mutableSetOf<Tracking>()
+    private lateinit var calendarView: MaterialCalendarView
+
     companion object {
         private const val GET_ALL = 1
         private const val DELETE = 2
@@ -46,6 +54,8 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
     }
 
     private var state: Int = 0
+
+    private var isExtended: Boolean = true
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,14 +99,28 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
         }
 
         //Set up Calendar View
-        views.calendar.apply {
-            setSelectedDate(Calendar.getInstance())
-            getListTrackingWithDateSelected(selectedDate)
+        calendarView = views.calendar
 
+        calendarView.apply {
+            setSelectedDate(Calendar.getInstance())
             setOnDateChangedListener { widget, date, selected ->
-                if(selected){
+                if (selected) {
                     getListTrackingWithDateSelected(date)
                 }
+            }
+            setTitleMonths(resources.getStringArray(R.array.months_calendar))
+        }
+        views.configCalendar.apply {
+            setOnClickListener {
+                calendarView.state().edit().setCalendarDisplayMode(
+                    if (isExtended) CalendarMode.WEEKS else CalendarMode.MONTHS
+                ).commit()
+                setImageResource(if (isExtended) R.drawable.extend_icon else R.drawable.collapse_icon)
+                (views.calendarLayout.layoutParams as LinearLayoutCompat.LayoutParams).weight =
+                    if (isExtended) 2.5F else 4.5F
+                (views.listTracking.layoutParams as LinearLayoutCompat.LayoutParams).weight =
+                    if (isExtended) 7.5F else 5.5F
+                isExtended = !isExtended
             }
         }
     }
@@ -149,7 +173,8 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
                             events.add(EventDecorator(CalendarDay.from(toDate(date))))
                         }
                     }
-                    views.calendar.addDecorators(events)
+                    calendarView.addDecorators(events)
+                    getListTrackingWithDateSelected(calendarView.selectedDate)
                 }
             }
 
@@ -217,12 +242,13 @@ class TrackingFragment @Inject constructor() : TrackingBaseFragment<FragmentTrac
     }
 
     //Get list of tracking with the selected date
-    private fun getListTrackingWithDateSelected(date: CalendarDay){
+    private fun getListTrackingWithDateSelected(date: CalendarDay) {
         trackingAdapter.list = setTracking.filter {
             CalendarDay.from(it.date?.let { it1 -> toDate(it1) }) == date
         }
         trackingAdapter.notifyDataSetChanged()
-        views.noTracking.visibility = if(trackingAdapter.itemCount == 0) View.VISIBLE else View.GONE
+        views.noTracking.visibility =
+            if (trackingAdapter.itemCount == 0) View.VISIBLE else View.GONE
     }
 
 }

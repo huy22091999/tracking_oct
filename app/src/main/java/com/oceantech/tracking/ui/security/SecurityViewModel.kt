@@ -43,7 +43,6 @@ class SecurityViewModel @AssistedInject constructor(
                 action.year,
                 action.confirmPassword
             )
-            is SecurityViewAction.GetDevice -> handleGetDevice(action.tokenDevice)
         }
     }
 
@@ -68,12 +67,7 @@ class SecurityViewModel @AssistedInject constructor(
             repository.saveAccessTokens(tokenResponse)
         }
     }
-    private fun handleGetDevice(tokenDevice: String) {
-        setState { copy(device = Loading()) }
-        userRepo.getDevice(tokenDevice).execute {
-            copy(device = it)
-        }
-    }
+
 
     private fun handleSignIn(
         userName: String,

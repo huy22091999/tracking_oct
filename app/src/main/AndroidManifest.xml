@@ -25,9 +25,9 @@
     <application
         android:name=".TrackingApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/tracking_login_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_icon"
+        android:roundIcon="@mipmap/tracking_login_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nimpe"
         android:usesCleartextTraffic="true"
@@ -39,7 +39,7 @@
         <activity
             android:name=".ui.security.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.Nimpe.NoActionBar">
+            android:theme="@style/Theme.Nimpe.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

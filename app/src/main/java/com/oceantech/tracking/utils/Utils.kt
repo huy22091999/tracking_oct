@@ -109,7 +109,7 @@ fun toIsoInstant(localDate: String): String {
 }
 
 // Convert ISO 8061 to type date
-fun toDate(isoDateTime: String): Date{
+fun toDate(isoDateTime: String): Date {
     val formatter = DateTimeFormatter.ISO_DATE_TIME.parse(isoDateTime)
     val instant = Instant.from(formatter)
     return Date.from(instant)
@@ -121,9 +121,7 @@ fun toDate(isoDateTime: String): Date{
  */
 fun AppCompatActivity.changeLanguage(sessionManager: SessionManager, language: String) {
     sessionManager.saveLanguage(language)
-    val intent = Intent(this, this.javaClass)
-    startActivity(intent)
-    finish()
+    recreate()
 }
 
 fun showToast(context: Context, content: String) {
@@ -241,12 +239,14 @@ internal fun Fragment.handleBackPressedEvent(
         onBackPressedDispatcher.addCallback {
             when (controller.currentDestination?.id) {
                 R.id.nav_HomeFragment -> finish()
-                R.id.modifyUserFragment -> showDialog(requireContext(), handleAction){
+                R.id.modifyUserFragment -> showDialog(requireContext(), handleAction) {
                     controller.navigate(R.id.userInfoFragment)
                 }
-                R.id.modifyPersonalFragment ->  showDialog(requireContext(), handleAction){
+
+                R.id.modifyPersonalFragment -> showDialog(requireContext(), handleAction) {
                     controller.navigate(R.id.personalFragment)
                 }
+
                 else -> controller.navigate(R.id.nav_HomeFragment)
             }
         }
@@ -273,17 +273,40 @@ private fun showDialog(
 }
 
 // Handle back button on toolbar
-internal fun handleNavigationBack(controller: NavController, drawerLayout: DrawerLayout){
+internal fun AppCompatActivity.handleNavigationBack(
+    controller: NavController, drawerLayout: DrawerLayout,
+) {
+    val context = drawerLayout.context
+    val navFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
     when (controller.currentDestination?.id) {
         R.id.modifyUserFragment -> {
-            controller.navigate(R.id.userInfoFragment)
+            showDialog(context,
+                handleAction = {
+                    // get modifyUserFragment instance to handle save profile user
+                    (navFragment?.childFragmentManager?.fragments?.get(0) as NavigationFragment).handleAction()
+                },
+                navigate = {
+                    controller.navigate(R.id.userInfoFragment)
+                }
+            )
         }
-        R.id.modifyPersonalFragment ->{
-            controller.navigate(R.id.personalFragment)
+
+        R.id.modifyPersonalFragment -> {
+            showDialog(context,
+                handleAction = {
+                    // get modifyUserFragment instance to handle save profile myself
+                    (navFragment?.childFragmentManager?.fragments?.get(0) as NavigationFragment).handleAction()
+                },
+                navigate = {
+                    controller.navigate(R.id.personalFragment)
+                }
+            )
         }
+
         R.id.userInfoFragment -> {
             controller.navigate(R.id.nav_HomeFragment)
         }
+
         else -> {
             if (drawerLayout.isOpen) {
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -296,8 +319,10 @@ internal fun handleNavigationBack(controller: NavController, drawerLayout: Drawe
 
 fun View.hideKeyboard(): Boolean {
     try {
-        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         return inputMethodManager.hideSoftInputFromWindow(applicationWindowToken, 0)
-    } catch (ignored: RuntimeException) { }
+    } catch (ignored: RuntimeException) {
+    }
     return false
 }

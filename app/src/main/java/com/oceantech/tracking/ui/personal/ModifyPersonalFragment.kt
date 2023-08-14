@@ -21,6 +21,7 @@ import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.ui.home.HomeViewState
 import com.oceantech.tracking.ui.home.user.ModifyUserFragment
+import com.oceantech.tracking.utils.NavigationFragment
 import com.oceantech.tracking.utils.checkEmpty
 import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.emptyOrText
@@ -33,7 +34,7 @@ import com.oceantech.tracking.utils.toIsoInstant
 import java.util.Calendar
 
 
-class ModifyPersonalFragment : TrackingBaseFragment<FragmentModifyPersonalBinding>() {
+class ModifyPersonalFragment : TrackingBaseFragment<FragmentModifyPersonalBinding>(), NavigationFragment {
 
     private val viewModel: HomeViewModel by activityViewModel()
     private var modifyState: Int = 0
@@ -174,4 +175,9 @@ class ModifyPersonalFragment : TrackingBaseFragment<FragmentModifyPersonalBindin
             updateMyself()
         }
     }
+
+    override fun handleAction() {
+        checkAndUpdate()
+    }
+
 }

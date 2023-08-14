@@ -77,6 +77,8 @@ dependencies {
     def rxbinding_version = '3.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //ViewModel - LiveData
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation "androidx.lifecycle:lifecycle-common:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
@@ -99,6 +101,10 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:3.1.0-alpha03"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.activity:activity-compose:1.7.2'
+
+    //Splash Screen
+    implementation 'androidx.core:core-splashscreen:1.0.0'
+
 
     // for new datetime apis
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'

@@ -14,7 +14,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="?attr/elevation"
+        android:elevation="2dp"
         app:cardCornerRadius="15dp">
 
 
@@ -28,26 +28,10 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtId"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/abel"
-                android:text="@{@string/user_id(Integer.toString(user.id))}"
-                android:textColor="#FF0000"
-                android:textSize="18sp"
-                android:textStyle="italic" />
-
-
-            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtDisplayName"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
@@ -62,24 +46,59 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="173dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtGmail"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="8dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/roboto"
-                android:includeFontPadding="false"
-                android:text="@{@string/user_email(user.email)}"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                app:lineHeight="28dp"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="173dp" />
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtGmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/roboto"
+                    android:includeFontPadding="false"
+                    android:text="@{@string/user_email(user.email)}"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    app:lineHeight="28dp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="173dp"
+                    android:layout_weight="1"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtUni"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:text="@{@string/user_university(user.university)}"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

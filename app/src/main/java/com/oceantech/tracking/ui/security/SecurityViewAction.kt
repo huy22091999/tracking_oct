@@ -19,7 +19,6 @@ sealed class SecurityViewAction : NimpeViewModelAction {
         val year: Int,
         val confirmPassword: String
     ):SecurityViewAction()
-    data class GetDevice(val tokenDevice: String): SecurityViewAction()
 
 
 }

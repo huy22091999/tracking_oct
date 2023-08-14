@@ -12,7 +12,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
@@ -28,6 +31,9 @@ import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.registerNetworkReceiver
 import com.oceantech.tracking.utils.unregisterNetworkReceiver
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.O)
@@ -44,14 +50,31 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
     lateinit var username: String
     lateinit var password: String
 
+    private var stateLogin = 0
+
+    companion object {
+        private const val LOGIN = 1
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         changeDarkMode(sessionManager.getDarkMode())
+        views.password.doOnTextChanged { text, start, before, count ->
+            views.passwordTil.isErrorEnabled = false
+        }
+        views.userName.doOnTextChanged { text, start, before, count ->
+            views.usernameTil.isErrorEnabled = false
+        }
+
         views.loginSubmit.setOnClickListener {
             val inputMethod = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethod.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
-            views.loginPB.visibility = View.VISIBLE
+
             registerNetworkReceiver {
-                loginSubmit()
+                // make login works in main thread to prevent crashing from username or pass is empty
+                GlobalScope.launch(Dispatchers.Main) {
+                    loginSubmit()
+                }
             }
         }
         views.labelSigin.setOnClickListener {
@@ -60,7 +83,10 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         views.labelResetPassword.setOnClickListener {
             viewModel.handleReturnResetPass()
         }
-        super.onViewCreated(view, savedInstanceState)
+        viewModel.onEach {
+            views.loginPB.isVisible = it.asyncLogin is Loading
+            views.passwordTil.isErrorEnabled = it.asyncLogin is Fail
+        }
     }
 
     private fun loginSubmit() {
@@ -72,25 +98,32 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             getString(R.string.username_not_empty)
         if (!username.isNullOrEmpty() && !password.isNullOrEmpty()) {
             viewModel.handle(SecurityViewAction.LogginAction(username, password))
+            stateLogin = LOGIN
         }
     }
 
 
     override fun invalidate(): Unit = withState(viewModel) {
-        when (it.asyncLogin) {
+        when(stateLogin) {
+            LOGIN -> handleLogin(it)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterNetworkReceiver()
+    }
+
+    private fun handleLogin(state: SecurityViewState){
+        when (state.asyncLogin) {
             is Success -> {
-                it.asyncLogin.invoke()?.let { token ->
+                state.asyncLogin.invoke()?.let { token ->
                     val sessionManager =
                         context?.let { it1 -> SessionManager(it1.applicationContext) }
                     token.accessToken?.let { it1 -> sessionManager!!.saveAuthToken(it1) }
                     token.refreshToken?.let { it1 -> sessionManager!!.saveAuthTokenRefresh(it1) }
                     Timber.tag("Login").i(token.toString())
                     viewModel.handle(SecurityViewAction.SaveTokenAction(token))
-                }
-                FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
-                    val result = task.result
-                    viewModel.handle(SecurityViewAction.GetDevice(result))
-                    Log.i("Login", result)
                 }
                 Toast.makeText(
                     requireContext(),
@@ -102,7 +135,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             }
 
             is Fail -> {
-                it.asyncLogin.error.message?.let { it1 ->
+                state.asyncLogin.error.message?.let { it1 ->
                     checkError(it1)
                     Log.i("Login", it1)
 
@@ -112,11 +145,5 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
 
             else -> {}
         }
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterNetworkReceiver()
     }
 }

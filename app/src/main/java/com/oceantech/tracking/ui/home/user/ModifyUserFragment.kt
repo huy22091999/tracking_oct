@@ -17,6 +17,7 @@ import com.oceantech.tracking.databinding.FragmentModifyUserBinding
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.ui.home.HomeViewState
+import com.oceantech.tracking.utils.NavigationFragment
 import com.oceantech.tracking.utils.checkEmpty
 import com.oceantech.tracking.utils.checkError
 import com.oceantech.tracking.utils.emptyOrText
@@ -29,11 +30,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentModifyUserBinding>() {
+class ModifyUserFragment @Inject constructor() : TrackingBaseFragment<FragmentModifyUserBinding>(),
+    NavigationFragment {
 
     private val homeViewModel: HomeViewModel by activityViewModel()
 
-    companion object{
+    companion object {
         private const val GET_USER_ID = 1
         private const val UPDATE_ID_USER = 2
     }
@@ -42,7 +44,7 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let{
+        arguments?.let {
             homeViewModel.handle(HomeViewAction.GetUser(it.getInt(UserInfoFragment.UPDATE_ID, 0)))
             stateModify = GET_USER_ID
         }
@@ -55,10 +57,13 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        handleBackPressedEvent(findNavController()){
+        handleBackPressedEvent(findNavController()) {
             updateAndCheck()
         }
-        views.editDob.selectDateAndCheckError(requireContext(), getString(R.string.dob_error_signin))
+        views.editDob.selectDateAndCheckError(
+            requireContext(),
+            getString(R.string.dob_error_signin)
+        )
 
         setUpDropdownMenu(
             views.editGender,
@@ -81,30 +86,32 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
         }
     }
 
-    override fun invalidate(): Unit = withState(homeViewModel){
-        when(stateModify) {
+    override fun invalidate(): Unit = withState(homeViewModel) {
+        when (stateModify) {
             GET_USER_ID -> handleGetUser(it)
             UPDATE_ID_USER -> handleUpdateUser(it)
         }
     }
 
     private fun handleUpdateUser(state: HomeViewState) {
-        when(val update = state.updateUser){
+        when (val update = state.updateUser) {
             is Success -> {
-                showToast(requireContext(),getString(R.string.update_user_successfully))
+                showToast(requireContext(), getString(R.string.update_user_successfully))
                 val bundle = bundleOf(UserInfoFragment.UPDATE_ID to update.invoke().id)
                 findNavController().navigate(R.id.userInfoFragment, bundle)
             }
+
             is Fail -> {
-                update.error.message?.let {checkError(it)}
+                update.error.message?.let { checkError(it) }
             }
+
             else -> {}
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun handleGetUser(state: HomeViewState) {
-        when(val user = state.getUser){
+        when (val user = state.getUser) {
             is Success -> {
                 user.invoke().let {
                     views.user = it
@@ -112,14 +119,23 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
                 }
 
             }
+
             is Fail -> {
                 user.error.message?.let { checkError(it) }
             }
+
             else -> {}
         }
     }
 
-    private fun updateUser(displayName: String, dob: String, gender: String, email: String, university: String, year: String){
+    private fun updateUser(
+        displayName: String,
+        dob: String,
+        gender: String,
+        email: String,
+        university: String,
+        year: String
+    ) {
         val updateUser = views.user?.copy(
             displayName = displayName,
             dob = toIsoInstant(dob),
@@ -128,14 +144,15 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
             university = university,
             year = year.toInt()
         )
-        updateUser?.id?.let {id ->
+        updateUser?.id?.let { id ->
             homeViewModel.handle(HomeViewAction.UpdateUser(updateUser, id))
             stateModify = UPDATE_ID_USER
         }
     }
 
     private fun updateAndCheck() {
-        val displayName = views.editDisplayName.emptyOrText(getString(R.string.displayname_error_signin))
+        val displayName =
+            views.editDisplayName.emptyOrText(getString(R.string.displayname_error_signin))
         val dob = views.editDob.emptyOrText(getString(R.string.dob_error_signin))
         val gender = views.editGender.emptyOrText(getString(R.string.gender_error_signin))
         val email = views.editEmail.emptyOrText(getString(R.string.email_error_signin))
@@ -154,4 +171,9 @@ class ModifyUserFragment @Inject constructor(): TrackingBaseFragment<FragmentMod
         views.editEmail.checkEmpty(getString(R.string.email_error_signin))
         views.editUniversity.checkEmpty(getString(R.string.uni_error_signin))
     }
+
+    override fun handleAction() {
+        updateAndCheck()
+    }
+
 }

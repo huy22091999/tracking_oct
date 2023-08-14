@@ -47,17 +47,28 @@ class UserAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(position < itemCount - 1){
+        return if (position < itemCount - 1) {
             USER_STATE
         } else LOADING_STATE
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when(getItemViewType(position)){
+        when (getItemViewType(position)) {
             USER_STATE -> {
                 val user = getItem(position)
-                (holder.binding as UserItemBinding).user = user
+                val binding = holder.binding as UserItemBinding
+                binding.user = user
+
+                val year = user?.year ?: 0
+                binding.txtYear.text = binding.root.context.let { context ->
+                    context.getString(
+                        R.string.user_student_year,
+                        if (year >= 5) context.getString(R.string.graduated) else year.toString()
+                    )
+                }
+
                 if (authority == "ROLE_ADMIN") {
-                    holder.binding.root.apply {
+                    binding.root.apply {
                         setOnClickListener {
                             if (user != null) {
                                 showUserInformation(user)
@@ -66,6 +77,7 @@ class UserAdapter(
                     }
                 }
             }
+
             LOADING_STATE -> {
                 val binding = holder.binding as ItemLoadingStateBinding
                 CoroutineScope(Dispatchers.Main).launch {

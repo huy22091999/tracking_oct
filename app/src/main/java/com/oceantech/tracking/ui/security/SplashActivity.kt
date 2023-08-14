@@ -3,6 +3,8 @@ package com.oceantech.tracking.ui.security
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.viewModel
@@ -28,6 +30,7 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         changeDarkMode(sessionManager.getDarkMode())

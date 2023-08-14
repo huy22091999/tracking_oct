@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -41,27 +42,28 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
-import com.google.firebase.inappmessaging.FirebaseInAppMessaging
-import com.google.firebase.inappmessaging.FirebaseInAppMessagingRegistrar
-import com.google.firebase.inappmessaging.FirebaseInAppMessaging_Factory
-import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.messaging.FirebaseMessaging
 import com.oceantech.tracking.databinding.ActivityMainBinding
 import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.network.SessionManager
+import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.home.user.ModifyUserFragment
 import com.oceantech.tracking.ui.information.InfoViewModel
 import com.oceantech.tracking.ui.information.InfoViewState
 import com.oceantech.tracking.ui.notifications.NotificationViewModel
 import com.oceantech.tracking.ui.notifications.NotificationViewState
+import com.oceantech.tracking.ui.personal.ModifyPersonalFragment
+import com.oceantech.tracking.ui.security.SecurityViewAction
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheets.TimeSheetViewState
 import com.oceantech.tracking.ui.tracking.TrackingViewModel
 import com.oceantech.tracking.ui.tracking.TrackingViewState
 import com.oceantech.tracking.utils.DarkModeUtils
+import com.oceantech.tracking.utils.NavigationFragment
 import com.oceantech.tracking.utils.TrackingContextWrapper
 import com.oceantech.tracking.utils.changeDarkMode
 import com.oceantech.tracking.utils.changeLanguage
@@ -76,7 +78,8 @@ import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
-    TrackingViewModel.Factory, TimeSheetViewModel.Factory, InfoViewModel.Factory, NotificationViewModel.Factory {
+    TrackingViewModel.Factory, TimeSheetViewModel.Factory, InfoViewModel.Factory,
+    NotificationViewModel.Factory {
 
     private val homeViewModel: HomeViewModel by viewModel()
 
@@ -135,6 +138,11 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         setupToolbar()
         setupDrawer()
         testViewModel.test()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
+            val result = task.result
+            homeViewModel.handle(HomeViewAction.GetDevice(result))
+        }
         homeViewModel.onEach {
             if (it.isLoading()) {
                 views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
@@ -143,6 +151,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
 
     }
+
     override fun create(state: NotificationViewState): NotificationViewModel {
         return notificationViewModelFactory.create(state)
     }
@@ -170,7 +179,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun setupToolbar() {
         toolbar = views.toolbar
         setSupportActionBar(toolbar)
-        toolbar.setContentInsetsAbsolute(0, toolbar.contentInsetStartWithNavigation) // make title center of toolbar
+        toolbar.setContentInsetsAbsolute(
+            0,
+            toolbar.contentInsetStartWithNavigation
+        ) // make title center of toolbar
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
@@ -317,6 +329,14 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
     }
 
+//    private fun setNavigationFragment(id: Int): NavigationFragment? {
+//        return if (id == R.id.modifyPersonalFragment || id == R.id.modifyUserFragment) {
+//            supportFragmentManager.findFragmentById(id) as? NavigationFragment
+//        } else {
+//            null
+//        }
+//    }
+
     private fun handleDarkMode(menuItem: MenuItem) {
         DarkModeUtils.isDarkMode = !DarkModeUtils.isDarkMode
         (menuItem.actionView!! as SwitchCompat).apply {
@@ -433,7 +453,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
         sessionManager.saveDarkMode(DarkModeUtils.isDarkMode)
     }
-
 
 
 }

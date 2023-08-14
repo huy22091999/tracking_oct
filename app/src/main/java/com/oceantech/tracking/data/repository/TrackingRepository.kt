@@ -5,6 +5,7 @@ import com.oceantech.tracking.data.model.Role
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.TrackingApi
+import com.oceantech.tracking.utils.toIsoInstant
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.subscribeOn
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Arrays
 import java.util.Date
@@ -33,8 +35,7 @@ class TrackingRepository @Inject constructor(
         emit(api.saveTracking(
             Tracking(
                 content,
-                Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2023-06-19T01:41:45.341Z"))
-                    .toString(),
+                LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toString(),
                 null,
                 null
             )

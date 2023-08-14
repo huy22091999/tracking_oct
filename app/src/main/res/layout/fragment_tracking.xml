@@ -10,12 +10,34 @@
         tools:context=".ui.tracking.TrackingFragment"
         android:orientation="vertical">
 
-
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4.5"
-            android:id="@+id/calendar"/>
+            android:id="@+id/calendarLayout"
+            android:orientation="vertical"
+            android:layout_marginTop = "5dp">
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/calendar"
+                android:layout_weight="9"
+                app:mcv_dateTextAppearance="@style/CustomDateAppearance.Tracking.Theme"
+                app:mcv_selectionColor="?attr/colorPrimary">
+
+            </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+            <ImageButton
+                android:id="@+id/configCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:src="@drawable/collapse_icon"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
         <!-- TODO: Update blank fragment layout -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +45,8 @@
             android:layout_height="0dp"
             android:layout_weight="5.5"
             android:background="?attr/colorOnPrimary"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:id="@+id/list_tracking">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/trackingRV"

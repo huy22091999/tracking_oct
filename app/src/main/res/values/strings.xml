@@ -150,6 +150,8 @@
     <string name="no_users_left">There is no users left</string>
     <string name="graduated">Graduated</string>
     <string name="no_trackings">This day doesn\'t have tracking</string>
+    <string name="checked_in">You checked in this day</string>
+    <string name="not_check_in">You did not check in this day</string>
     <string-array name="list_gender">
         <item>Male</item>
         <item>Female</item>
@@ -164,5 +166,21 @@
         <item>4</item>
         <item>Graduated</item>
     </string-array>
+
+    <string-array name="months_calendar">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
 
 </resources>

@@ -3,6 +3,7 @@ package com.oceantech.tracking.ui.home
 import com.oceantech.tracking.core.NimpeViewModelAction
 import com.oceantech.tracking.data.model.PageSearch
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.ui.security.SecurityViewAction
 
 sealed class HomeViewAction:NimpeViewModelAction{
 
@@ -22,5 +23,8 @@ sealed class HomeViewAction:NimpeViewModelAction{
     data class SearchByPage(val pageSearch: PageSearch): HomeViewAction()
 
     object InitPage: HomeViewAction()
+
+    data class GetDevice(val tokenDevice: String): HomeViewAction()
+
 
 }

@@ -10,6 +10,7 @@ import com.oceantech.tracking.data.model.PageSearch
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.UserApi
 import com.oceantech.tracking.data.repository.UserRepository
+import com.oceantech.tracking.ui.security.SecurityViewAction
 import com.oceantech.tracking.utils.UserPagingSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -35,6 +36,8 @@ class HomeViewModel @AssistedInject constructor(
             is HomeViewAction.GetUser -> handleGetUser(action.id)
             is HomeViewAction.SearchByPage -> handleSearchPage(action.pageSearch)
             is HomeViewAction.InitPage -> handleInitPage()
+            is HomeViewAction.GetDevice -> handleGetDevice(action.tokenDevice)
+
         }
     }
 
@@ -110,6 +113,13 @@ class HomeViewModel @AssistedInject constructor(
         setState { copy(getUser = Loading()) }
         repository.getUser(id).execute {
             copy(getUser = it)
+        }
+    }
+
+    private fun handleGetDevice(tokenDevice: String) {
+        setState { copy(device = Loading()) }
+        repository.getDevice(tokenDevice).execute {
+            copy(device = it)
         }
     }
 
