@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#666666"
+    tools:context=".ui.tracking.AddTrackingFragment">
+<LinearLayout
+    android:padding="16dp"
+    android:background="@drawable/background_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/input_tracking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_input_tracking"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:layout_gravity="top"
+        android:minLines="10"
+        android:scrollbars="vertical" />
+
+    <Button
+        style="@style/NimpeButtonLogin"
+        android:backgroundTint="@color/black"
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lưu" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
+</LinearLayout>
