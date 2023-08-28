@@ -46,4 +46,30 @@ object NetWorkModule {
         api: UserApi
     ): UserRepository = UserRepository(api)
 
+    @Provides
+    fun providerTrackingApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(TrankingApi::class.java, context)
+
+    @Provides
+    fun providerTrackingRepository(
+        api: TrankingApi
+    ): TrackingRepository =  TrackingRepository(api)
+
+    @Provides
+    fun providerTimeSheetApi(
+        remoteDataSource: RemoteDataSource,
+        context: Context
+    ) = remoteDataSource.buildApi(TimeSheetApi::class.java, context)
+
+    @Provides
+    fun providerTimeSheetRepository(
+        api: TimeSheetApi
+    ) : TimeSheetRepository = TimeSheetRepository(api)
+
+    @Provides
+    fun providerSessionManager(
+        context: Context
+    ) : SessionManager = SessionManager(context.applicationContext)
 }

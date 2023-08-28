@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:elevation="0dp"
-        android:background="?attr/colorOnPrimarySurface"
+        android:background="@color/background1"
         app:statusBarScrim="@android:color/transparent"
         android:theme="@style/Theme.Nimpe.AppBarOverlay">
 
@@ -23,18 +23,8 @@
             android:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorOnPrimarySurface"
-            app:popupTheme="@style/Theme.Nimpe.PopupOverlay" >
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:id="@+id/title"
-                android:textSize="18sp"
-                android:layout_marginEnd="24dp"
-                android:textStyle="bold"
-                android:textColor="@color/gray"
-                android:layout_height="wrap_content"/>
-        </androidx.appcompat.widget.Toolbar>
+            android:background="@color/background1"
+            app:popupTheme="@style/Theme.Nimpe.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

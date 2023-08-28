@@ -8,17 +8,32 @@
             android:icon="@drawable/ic_home"
             android:id="@+id/nav_HomeFragment"
             android:title="@string/menu_home"/>
-        <item android:id="@+id/nav_newsFragment"
-            android:icon="@drawable/ic_category"
-            android:title="@string/menu_category"/>
-        <item android:id="@+id/nav_medicalFragment"
-            android:icon="@drawable/ic_hostpital"
-            android:title="@string/menu_nearest_medical"/>
-        <item android:id="@+id/nav_feedbackFragment"
-            android:icon="@drawable/ic_feedback"
-            android:title="@string/menu_feedback"/>
+
+        <item android:id="@+id/nav_timeSheet"
+            android:icon="@drawable/baseline_calendar_today_24"
+            android:title="@string/timeSheet"/>
+
+        <item android:id="@+id/nav_trackingFragment"
+            android:icon="@drawable/baseline_check_24"
+            android:title="@string/tracking"/>
+
+        <item android:id="@+id/nav_usersFragment"
+            android:icon="@drawable/baseline_supervised_user_circle_24"
+            android:title="@string/menu_users"/>
+
+        <item android:id="@+id/nav_infoFragment"
+            android:icon="@drawable/baseline_person_24"
+            android:title="@string/infomation"/>
+
+
     </group>
     <group android:id="@+id/lang" >
+        <item
+            android:id="@+id/nav_change_mode"
+            android:title=""
+            app:actionViewClass="androidx.appcompat.widget.SwitchCompat"
+            app:showAsAction="always"/>
+
         <item
             android:title=""
             android:icon="@drawable/ic_language"
@@ -26,6 +41,11 @@
             app:actionViewClass="androidx.appcompat.widget.AppCompatImageView"
             app:actionProviderClass="android.widget.ShareActionProvider">
         </item>
+
+        <item android:title="@string/logout"
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_exit"/>
+
         <item android:title="@string/exit"
             android:id="@+id/exit"
             android:icon="@drawable/ic_exit"/>

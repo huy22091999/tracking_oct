@@ -1,8 +1,10 @@
 package com.oceantech.tracking.ui.security
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
-import com.oceantech.tracking.core.TrackingViewModel
+import com.oceantech.tracking.core.TrackingBaseViewModel
 import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
@@ -16,7 +18,15 @@ class SecurityViewModel @AssistedInject constructor(
     val repository: AuthRepository,
     private val userRepo:UserRepository
 ) :
-    TrackingViewModel<SecurityViewState,SecurityViewAction,SecurityViewEvent>(state) {
+    TrackingBaseViewModel<SecurityViewState,SecurityViewAction,SecurityViewEvent>(state) {
+
+    private var mUserSignin = MutableLiveData<User>()
+    var userSignin
+        set(value) {}
+        get(): MutableLiveData<User> {
+            return this.mUserSignin
+        }
+
     init {
 
     }
@@ -26,8 +36,11 @@ class SecurityViewModel @AssistedInject constructor(
             is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
+            is SecurityViewAction.UpdateUserSigninAction -> updateUserSignin(action.user)
+            is SecurityViewAction.SigninAction -> handleSignin(action.user)
         }
     }
+
 
     private fun handleCurrentUser() {
         setState { copy(userCurrent=Loading()) }
@@ -44,12 +57,25 @@ class SecurityViewModel @AssistedInject constructor(
             copy(asyncLogin=it)
         }
     }
+
+    private fun updateUserSignin(user: User) {
+        mUserSignin.value = user
+    }
+
+    private fun handleSignin(user: User) {
+        setState {
+            copy(userCurrent= Loading())
+        }
+        repository.signup(user).execute {
+            copy(userCurrent = it)
+        }
+    }
+
     private fun handleSaveToken(tokenResponse: TokenResponse)
     {
         this.viewModelScope.async {
             repository.saveAccessTokens(tokenResponse)
         }
-
     }
 
     fun handleReturnSignin() {
@@ -72,7 +98,6 @@ class SecurityViewModel @AssistedInject constructor(
                 is FragmentViewModelContext -> viewModelContext.fragment as? Factory
                 is ActivityViewModelContext -> viewModelContext.activity as? Factory
             }
-
             return factory?.create(state) ?: error("You should let your activity/fragment implements Factory interface")
         }
     }

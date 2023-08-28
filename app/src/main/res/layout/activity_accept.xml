@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background1">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,7 +15,7 @@
             android:padding="24dp"
             android:gravity="center_horizontal"
             tools:context=".ui.security.AcceptActivity">
-            <Space
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="56dp"/>
             <androidx.appcompat.widget.AppCompatImageView
@@ -24,7 +25,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray"
+                android:textColor="@color/text_title1"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:layout_marginTop="40dp"
@@ -33,7 +34,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray"
+                android:textColor="@color/text_message1"
                 android:textSize="18sp"
                 android:layout_marginTop="24dp"
                 android:lineHeight="28dp"
@@ -50,7 +51,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/text_message2"
                     android:layout_marginStart="8dp"
                     android:textSize="15sp"
                     android:lineHeight="20dp"

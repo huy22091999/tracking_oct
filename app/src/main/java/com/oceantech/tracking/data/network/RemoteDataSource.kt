@@ -15,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.security.SecureRandom
@@ -102,6 +103,7 @@ class RemoteDataSource() {
             val original = chain.request()
 
             // rewrite the request
+
             val request: Request = original.newBuilder()
                 .header("User-Agent", DEFAULT_USER_AGENT)
                 .header("Accept", DEFAULT_CONTENT_TYPE)

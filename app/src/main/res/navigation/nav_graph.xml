@@ -11,52 +11,66 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_FirstFragment_to_newsFragment"
-            app:destination="@id/nav_newsFragment" />
+            android:id="@+id/action_nav_HomeFragment_to_usersFragment"
+            app:destination="@id/nav_usersFragment" />
         <action
-            android:id="@+id/action_HomeFragment_to_feedbackFragment"
-            app:destination="@id/nav_feedbackFragment" />
+            android:id="@+id/action_nav_HomeFragment_to_infomationFragment"
+            app:destination="@id/nav_infoFragment" />
         <action
-            android:id="@+id/action_HomeFragment_to_medicalFragment"
-            app:destination="@id/nav_medicalFragment" />
+            android:id="@+id/action_nav_HomeFragment_to_trackingFragment"
+            app:destination="@id/nav_trackingFragment" />
+        <action
+            android:id="@+id/action_nav_HomeFragment_to_nav_trackingFragment"
+            app:destination="@id/nav_trackingFragment" />
+        <action
+            android:id="@+id/action_nav_HomeFragment_to_timeSheetFragment"
+            app:destination="@id/nav_timeSheet" />
     </fragment>
     <fragment
-        android:id="@+id/nav_newsFragment"
-        android:name="com.oceantech.tracking.ui.category.CategoryFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_news" >
+        android:id="@+id/nav_usersFragment"
+        android:name="com.oceantech.tracking.ui.users.UsersFragment"
+        android:label="fragment_users"
+        tools:layout="@layout/fragment_users" >
         <action
-            android:id="@+id/action_nav_newsFragment_to_listNewsFragment"
-            app:destination="@id/listNewsFragment" />
+            android:id="@+id/action_nav_usersFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/nav_feedbackFragment"
-        android:name="com.oceantech.tracking.ui.feedback.FeedbackFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_feedback" />
-    <fragment
-        android:id="@+id/nav_medicalFragment"
-        android:name="com.oceantech.tracking.ui.medical.MedicalFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_medical" />
-    <fragment
-        android:id="@+id/detailNewsFragment"
-        android:name="com.oceantech.tracking.ui.category.DetailNewsFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_detail_news" >
-        <argument android:name="new_id"
-            app:argType="string"/>
+        android:id="@+id/userDetailFragment"
+        android:name="com.oceantech.tracking.ui.users.UserDetailFragment"
+        android:label="fragment_user_detail"
+        tools:layout="@layout/fragment_user_detail" >
+        <action
+            android:id="@+id/action_userDetailFragment_to_nav_usersFragment"
+            app:destination="@id/nav_usersFragment" />
+        <argument android:name="ReviveUser"
+            app:argType="com.oceantech.tracking.data.model.User" />
     </fragment>
     <fragment
-        android:id="@+id/listNewsFragment"
-        android:name="com.oceantech.tracking.ui.category.ListNewsFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_list_news" >
-        <argument android:name="category_id"
-            app:argType="string"/>
+        android:id="@+id/nav_infoFragment"
+        android:name="com.oceantech.tracking.ui.infomation.InfomationFragment"
+        android:label="InfomationFragment" >
         <action
-            android:id="@+id/action_listNewsFragment_to_detailNewsFragment"
-            app:destination="@id/detailNewsFragment" />
+            android:id="@+id/action_infomationFragment_to_nav_HomeFragment"
+            app:destination="@id/nav_HomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_trackingFragment"
+        android:name="com.oceantech.tracking.ui.tracking.TrackingFragment"
+        android:label="fragment_tracking"
+        tools:layout="@layout/fragment_tracking" >
+        <action
+            android:id="@+id/action_trackingFragment_to_nav_HomeFragment"
+            app:destination="@id/nav_HomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_timeSheet"
+        android:name="com.oceantech.tracking.ui.timesheet.TimeSheetFragment"
+        android:label="fragment_time_sheet"
+        tools:layout="@layout/fragment_time_sheet" >
+        <action
+            android:id="@+id/action_timeSheetFragment_to_nav_HomeFragment"
+            app:destination="@id/nav_HomeFragment" />
     </fragment>
 
 </navigation>

@@ -32,6 +32,10 @@
             android:exported="true"
             android:theme="@style/Theme.Nimpe.NoActionBar" />
         <activity
+            android:name="com.oceantech.tracking.ui.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Nimpe.NoActionBar"/>
+        <activity
             android:name="com.oceantech.tracking.ui.security.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Nimpe.NoActionBar">
@@ -41,10 +45,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.oceantech.tracking.ui.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Nimpe.NoActionBar"/>
     </application>
 
 </manifest>

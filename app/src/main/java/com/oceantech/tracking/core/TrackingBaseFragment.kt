@@ -76,8 +76,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
     private var _binding: VB? = null
 
     // This property is only valid between onCreateView and onDestroyView.
-    protected val views: VB
-        get() = _binding!!
+    protected val views: VB get() = _binding!!
 
     /* ==========================================================================================
      * Life cycle
@@ -220,7 +219,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
      * ViewEvents
      * ========================================================================================== */
 
-    protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T) -> Unit) {
+    protected fun <T : NimpeViewEvents> TrackingBaseViewModel<*, *, T>.observeViewEvents(observer: (T) -> Unit) {
         viewEvents
                 .observe()
                 .observeOn(AndroidSchedulers.mainThread())

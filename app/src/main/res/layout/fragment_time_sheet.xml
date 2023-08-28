@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background1"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.timesheet.TimeSheetFragment">
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_title1"
+        android:layout_margin="10dp"/>
+
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+        android:id="@+id/calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_time"
+        app:compactCalendarTargetHeight="350dp"
+        app:compactCalendarTextSize="20sp"
+        app:compactCalendarBackgroundColor="@color/background1"
+        app:compactCalendarTextColor="@color/text_message1"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="@color/background2"
+        app:compactCalendarCurrentDayBackgroundColor="@color/background2"
+        app:compactCalendarMultiEventIndicatorColor="@color/blue"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_checkin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/baseline_add_24"
+        android:backgroundTint="@color/button_backgournd"
+        android:layout_margin="10dp"/>
+
+</RelativeLayout>

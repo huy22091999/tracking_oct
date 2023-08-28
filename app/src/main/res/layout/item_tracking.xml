@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/item_tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:textColor="@color/text_message1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/item_tvDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_tvTime"
+        android:textColor="@color/text_message2"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/item_tvContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toLeftOf="@+id/item_tvOption"
+        android:layout_toRightOf="@+id/item_tvTime"
+        android:textColor="@color/text_message1"
+        android:textSize="15sp" />
+
+
+    <ImageView
+        android:id="@+id/item_tvOption"
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/baseline_more_vert_24" />
+
+</RelativeLayout>

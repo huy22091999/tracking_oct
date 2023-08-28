@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import com.oceantech.tracking.di.DaggerTrackingComponent
 import com.oceantech.tracking.di.TrackingComponent
@@ -23,11 +24,12 @@ open class TrackingApplication : Application() {
     open fun initializeComponent(): TrackingComponent {
         // Creates an instance of AppComponent using its Factory constructor
         // We pass the applicationContext that will be used as Context in the graph
-        return DaggerTrackingComponent.factory().create(applicationContext)
+            return DaggerTrackingComponent.factory().create(applicationContext)
     }
 
     override fun onCreate() {
         super.onCreate()
+
         trackingComponent.inject(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

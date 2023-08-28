@@ -12,4 +12,20 @@
     <color name="blue">#3F51B5</color>
     <color name="red">#E91E63</color>
     <color name="text_color">#777777</color>
+
+    <color name="grey">#aaa</color>
+    <color name="dark_grey">#ff424242</color>
+
+    <color name="background">#FFFFFF</color>
+    <color name="background1">#FFFFFF</color>
+    <color name="background2">#DDDDDD</color>
+    <color name="background3">#CA252525</color>
+    <color name="text_title1">#009688</color>
+    <color name="text_title2">#00AE9D</color>
+    <color name="text_message1">#252525</color>
+    <color name="text_message2">#505050</color>
+    <color name="button_backgournd">#009688</color>
+    <color name="button_text">#FFFFFF</color>
+
+
 </resources>

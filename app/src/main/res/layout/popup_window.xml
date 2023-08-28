@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0.1dip"
-        android:background="@color/white"
+        android:background="@color/background2"
         android:padding="4dp">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -23,6 +23,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="4dp"
+            android:textColor="@color/text_message1"
             android:text="@string/en" />
     </LinearLayout>
 
@@ -30,7 +31,7 @@
         android:id="@+id/to_lang_vi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/background2"
         android:padding="4dp">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -42,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="@color/text_message1"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="4dp"
             android:text="@string/vi" />

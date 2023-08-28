@@ -24,6 +24,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.MenuRes
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -49,7 +50,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     protected val viewModelProvider
         get() = ViewModelProvider(this, viewModelFactory)
 
-    protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
+    protected fun <T : NimpeViewEvents> TrackingBaseViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
         viewEvents
             .observe()
             .observeOn(AndroidSchedulers.mainThread())
@@ -80,7 +81,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         Timber.v("Injecting dependencies into ${javaClass.simpleName} took $timeForInjection ms")
         fragmentFactory = nimpeComponent.fragmentFactory()
         viewModelFactory = nimpeComponent.viewModelFactory()
-        supportFragmentManager.fragmentFactory = fragmentFactory
+        supportFragmentManager.fragmentFactory = fragmentFactory  //giúp quản lý vòng đời của Fragment trong khi khôi phục trạng thái của activity và đảm bảo rằng việc tái tạo Fragment diễn ra đúng cách  ||||  Việc xác định FragmentFactory trong supportFragmentManager giúp đảm bảo rằng FragmentManager sẽ sử dụng FragmentFactory đã cung cấp để tái tạo các Fragment, đảm bảo rằng các tham số của Fragment như arguments hay dữ liệu trạng thái được giữ nguyên đúng cách.
         super.onCreate(savedInstanceState)
 
         doBeforeSetContentView()
@@ -91,7 +92,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         views = getBinding()
         setContentView(views.root)
 
-        this.savedInstanceState = savedInstanceState
+        this.savedInstanceState = savedInstanceState            // savedInstanceState: Tham số này là để chứa thông tin về trạng thái của hoạt động khi nó bị hủy và được khôi phục lại.
 
         initUiAndData()
 
@@ -107,6 +108,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
     /**
      * This method has to be called for the font size setting be supported correctly.
+     * sử dụng để cập nhật kích thước chữ (font size) của ứng dụng trong trường hợp có sự thay đổi trong cấu hình hệ thống.
      */
     private fun applyFontSize() {
         @Suppress("DEPRECATION")
@@ -131,7 +133,10 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
     /**
      * Schedule action to be done in the next call of onPostResume()
-     * It fixes bug observed on Android 6 (API 23)
+     * It fixes bug observed on Android 6 (API 23)  : Lý do sử dụng doOnPostResume() là để khắc phục một lỗi được quan sát trên Android 6 (API 23)
+     *
+     * Điều này được thực hiện bằng cách thêm hành động (action) vào danh sách postResumeScheduledActions,
+     * và sau đó, khi onPostResume() được gọi, hành động này sẽ được thực hiện.
      */
     protected fun doOnPostResume(action: () -> Unit) {
         synchronized(postResumeScheduledActions) {
@@ -139,13 +144,13 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         }
     }
 
-
     override fun onPause() {
         super.onPause()
         Timber.i("onPause Activity ${javaClass.simpleName}")
 
     }
 
+    // được gọi khi trạng thái của cửa sổ hoặc khả năng tương tác của cửa sổ thay đổi. Khi cửa sổ hoạt động và có trạng thái tương tác (hasFocus == true), phương thức này sẽ được gọi.
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
 
@@ -154,7 +159,8 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         }
     }
 
-    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
 
         Timber.w("onMultiWindowModeChanged. isInMultiWindowMode: $isInMultiWindowMode")
@@ -176,12 +182,14 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
     /**
      * Force to render the activity in fullscreen
+     *  cấu hình hoạt động vào chế độ hiển thị toàn màn hình nếu cần thiết và
+     *  xử lý sự kiện khi trạng thái của cửa sổ hoặc khả năng tương tác của cửa sổ thay đổi
      */
     @Suppress("DEPRECATION")
     private fun setFullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // New API instead of SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN and SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            window.setDecorFitsSystemWindows(false)
+            window.setDecorFitsSystemWindows(false)         // Điều này là một cách mới để thiết lập hoạt động vào chế độ toàn màn hình thay vì sử dụng các cờ cũ
         } else {
             window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -268,10 +276,10 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
      * Configure the Toolbar, with default back button.
      */
     protected fun configureToolbar(toolbar: Toolbar, displayBack: Boolean = true) {
-        setSupportActionBar(toolbar)
-        supportActionBar?.let {
-            it.setDisplayShowHomeEnabled(displayBack)
-            it.setDisplayHomeAsUpEnabled(displayBack)
+        setSupportActionBar(toolbar)                         // cho phép bạn sử dụng toolbar như là thanh Action Bar
+        supportActionBar?.let {                    // Nếu thanh hành động (Action Bar) được hỗ trợ
+            it.setDisplayShowHomeEnabled(displayBack)        // Đặt trạng thái của nút home
+            it.setDisplayHomeAsUpEnabled(displayBack)        // Đặt trạng thái của nút back
             it.title = null
         }
     }
@@ -280,12 +288,17 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     // Handle loading view (also called waiting view or spinner view)
     // ==============================================================================================
 
-    var waitingView: View? = null
+    /**
+     * Tóm lại, khi bạn gán một đối tượng View vào thuộc tính waitingView,
+     * thuộc tính này sẽ được cập nhật và View đó sẽ trở thành một phần của giao diện người dùng,
+     * cho phép người dùng tương tác với nó nếu isClickable được đặt thành true.
+     */
+    var waitingView: View? = null           // tham chiếu đến một View, như loading được hiển thị khi đang chờ xử lý một tác vụ nào đó.
         set(value) {
-            field = value
+            field = value                   // Gán giá trị mới của waitingView vào biến lưu trữ field
 
             // Ensure this view is clickable to catch UI events
-            value?.isClickable = true
+            value?.isClickable = true       // isClickable xác định xem View có thể nhấp hoặc không. Bằng cách đặt isClickable thành true, bạn cho phép View có thể nhận các sự kiện nhấp chuột hoặc chạm của người dùng
         }
 
     /**
@@ -315,19 +328,22 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     /* ==========================================================================================
      * OPEN METHODS
      * ========================================================================================== */
-
+    /**
+     * hi một lớp, thuộc tính hoặc phương thức được đánh dấu là "open",
+     * nó cho phép các lớp con kế thừa (inherit) và ghi đè (override) lên nó.
+     */
     abstract fun getBinding(): VB
 
-    open fun displayInFullscreen() = false
+    open fun displayInFullscreen() = false              // trả về giá trị boolean cho biết xem hoạt động cần được hiển thị toàn màn hình hay không.
 
-    open fun doBeforeSetContentView() = Unit
+    open fun doBeforeSetContentView() = Unit            // Lợi ích của việc có phương thức này là để cho phép các hoạt động con (Activity) có thể ghi đè nó và định nghĩa các hành động cụ thể mà họ muốn thực hiện trước khi gọi setContentView(). Điều này giúp bạn có khả năng tùy chỉnh và thay đổi giao diện người dùng trước khi nó được hiển thị lên màn hình.
 
     open fun initUiAndData() = Unit
 
-    @StringRes
+    @StringRes                                          // StringRes: đây là một tập hợp các giá trị integer được sử dụng để đại diện cho các tài nguyên chuỗi (String resources) trong tệp strings.xml của ứng dụng. Mục tiêu của việc sử dụng giá trị @StringRes là để tránh trực tiếp gán chuỗi (String) trong mã lập trình và sử dụng tài nguyên chuỗi quản lý tập trung trong tệp strings.xml
     open fun getTitleRes() = -1
 
-    @MenuRes
+    @MenuRes                                            // MenuRes: đại diện cho tài nguyên menu trong tệp menu.xml của ứng dụng Mục tiêu để tránh trực tiếp gán menu trong mã lập trình và sử dụng tài nguyên menu quản lý tập trung trong tệp menu.xml
     open fun getMenuRes() = -1
 
 
