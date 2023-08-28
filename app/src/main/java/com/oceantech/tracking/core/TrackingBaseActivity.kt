@@ -41,60 +41,63 @@ import timber.log.Timber
 import kotlin.system.measureTimeMillis
 
 abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), HasScreenInjector {
-
+    //khai báo
+    //đối tượng viewBinding (class con chỉ việc dùng luôn kk)
     protected lateinit var views: VB
 
-    private lateinit var viewModelFactory: ViewModelProvider.Factory
+    //----------------------------------------------------------------------------------------------
 
+    //đối tượng Factory của viewModel (factory để tạo thg viewModel tương ứng)
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
+    //khởi tạo đối tượng provider của viewModel để lấy giá trị tùy chỉnh this ở đây là activity
     protected val viewModelProvider
         get() = ViewModelProvider(this, viewModelFactory)
 
-    protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
-        viewEvents
-            .observe()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                hideWaitingView()
-                observer(it)
-            }
-    }
-
+    //----------------------------------------------------------------------------------------------
+    //đối tượng Factory của Fragment (factory để tạo thg fragment tương ứng)
     private lateinit var fragmentFactory: FragmentFactory
 
-
     // Filter for multiple invalid token error
+    //biến theo dõi xem Activity chính đã được bắt đầu hay chưa
     private var mainActivityStarted = false
-
+    //Biến này sẽ chứa trạng thái của activity khi nó được hủy và khôi phục lại
     private var savedInstanceState: Bundle? = null
 
+    //----------------------------------------------------------------------------------------------
+    //đối tượng di
     private lateinit var nimpeComponent: TrackingComponent
 
+    //----------------------------------------------------------------------------------------------
+    //hàm onCreate()
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.i("onCreate Activity ${javaClass.simpleName}")
-
+        //khởi tạo thg di
         nimpeComponent = DaggerTrackingComponent.factory().create(this)
+        //? cái này chưa bt dùng làm gì nè
         val timeForInjection = measureTimeMillis {
             injectWith(nimpeComponent)
         }
         Timber.v("Injecting dependencies into ${javaClass.simpleName} took $timeForInjection ms")
+        //lấy ra thằng factory cho fragment và viewModel
         fragmentFactory = nimpeComponent.fragmentFactory()
         viewModelFactory = nimpeComponent.viewModelFactory()
         supportFragmentManager.fragmentFactory = fragmentFactory
         super.onCreate(savedInstanceState)
 
+        //cái hàm này làm trước khi set contentView
         doBeforeSetContentView()
 
         // Hack for font size
         applyFontSize()
-
+        // config viewbinding
         views = getBinding()
         setContentView(views.root)
-
+        //gán giá trị cho thằng state
         this.savedInstanceState = savedInstanceState
-
+        // cái này còn ko dùng
         initUiAndData()
-
+        //chưa biết sao bằng -1 nữa
         val titleRes = getTitleRes()
         if (titleRes != -1) {
             supportActionBar?.let {
@@ -103,6 +106,18 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
                 setTitle(titleRes)
             }
         }
+    }
+    //----------------------------------------------------------------------------------------------
+    //hàm mở rộng cho viewModel, thêm chức năng theo dõi sự kiện để dùng cho Activity
+    //T phải là NimpeViewEvents,
+    protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
+        viewEvents
+            .observe()//phát ra sự kiện đó
+            .observeOn(AndroidSchedulers.mainThread())//nhận tại luồng giao diện
+            .subscribe {//thực hiện
+                hideWaitingView()//ẩn progessbar
+                observer(it)//trả lại giá trị T
+            }
     }
 
     /**
@@ -133,19 +148,28 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
      * Schedule action to be done in the next call of onPostResume()
      * It fixes bug observed on Android 6 (API 23)
      */
+    /**
+     * Lên lịch thực hiện một hành động trong lần gọi hàm onPostResume() tiếp theo.
+     * Điều này giúp khắc phục lỗi quan sát trên Android 6 (API 23).
+     */
     protected fun doOnPostResume(action: () -> Unit) {
         synchronized(postResumeScheduledActions) {
             postResumeScheduledActions.add(action)
         }
     }
 
-
+    /**
+     * Được gọi khi activity không còn hiển thị cho người dùng.
+     */
     override fun onPause() {
         super.onPause()
         Timber.i("onPause Activity ${javaClass.simpleName}")
 
     }
-
+    /**
+     * Được gọi khi trạng thái của cửa sổ của activity thay đổi.
+     * Nếu activity đang ở chế độ toàn màn hình và nhận được focus, nó sẽ được đặt lại ở chế độ toàn màn hình.
+     */
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
 
@@ -153,7 +177,10 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
             setFullScreen()
         }
     }
-
+    /**
+     * Được gọi khi chế độ multi-window của activity thay đổi.
+     * Phương thức này ghi log thay đổi trong chế độ multi-window nếu cần.
+     */
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
 
@@ -164,9 +191,14 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     override fun injector(): TrackingComponent {
         return nimpeComponent
     }
-
+    /**
+     * Phương thức này có thể được ghi đè trong các lớp con để thực hiện injection sử dụng injector được cung cấp.
+     * Phương thức này được gọi trong quá trình tạo activity.
+     */
     protected open fun injectWith(injector: TrackingComponent) = Unit
-
+    /**
+     * Tạo fragment từ lớp fragmentClass cung cấp với các đối số args.
+     */
     protected fun createFragment(fragmentClass: Class<out Fragment>, args: Bundle?): Fragment {
         return fragmentFactory.instantiate(classLoader, fragmentClass.name).apply {
             arguments = args
@@ -176,6 +208,12 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
     /**
      * Force to render the activity in fullscreen
+     */
+    /**
+     * Buộc activity hiển thị trong chế độ toàn màn hình.
+     * Phương thức này sẽ đặt các cờ phù hợp để đạt được chế độ toàn màn hình.
+     * Lưu ý: Một số giá trị cờ có thể đã bị loại bỏ đối với các phiên bản API mới hơn.
+     * Nó kiểm tra phiên bản API hiện tại và đặt các cờ tùy thích.
      */
     @Suppress("DEPRECATION")
     private fun setFullScreen() {
@@ -196,6 +234,10 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
      * MENU MANAGEMENT
      * ========================================================================================== */
 
+    /**
+     * Khởi tạo menu dựa trên menuRes được chỉ định.
+     * Nó cũng áp dụng tô màu tùy chỉnh cho các biểu tượng menu nếu getMenuTint() được triển khai và ThemeUtils có sẵn.
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val menuRes = getMenuRes()
 
@@ -207,7 +249,10 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
 
         return super.onCreateOptionsMenu(menu)
     }
-
+    /**
+     * Xử lý sự kiện khi người dùng click vào một item trong options menu.
+     * Nếu nút home (nút quay lại) được click, gọi onBackPressed(true) để xử lý sự kiện.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             onBackPressed(true)
@@ -217,17 +262,28 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Xử lý sự kiện khi người dùng nhấn nút back.
+     * Nếu fromToolbar là true, gọi onBackPressed(true) để xử lý sự kiện.
+     * Nếu fromToolbar là false, gọi super.onBackPressed() để xử lý sự kiện.
+     */
     override fun onBackPressed() {
         onBackPressed(false)
     }
-
+    /**
+     * Xử lý sự kiện khi người dùng nhấn nút back với một cờ chỉ định liệu có từ toolbar hay không.
+     * Nếu fromToolbar là true, gọi đệ quy onBackPressed để xử lý sự kiện cho các fragment con.
+     * Nếu fromToolbar là false, gọi super.onBackPressed() để xử lý sự kiện.
+     */
     private fun onBackPressed(fromToolbar: Boolean) {
         val handled = recursivelyDispatchOnBackPressed(supportFragmentManager, fromToolbar)
         if (!handled) {
             super.onBackPressed()
         }
     }
-
+    /**
+     * Đệ quy xử lý sự kiện khi người dùng nhấn nút back cho các fragment con.
+     */
     private fun recursivelyDispatchOnBackPressed(
         fm: FragmentManager,
         fromToolbar: Boolean
@@ -246,26 +302,29 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     /* ==========================================================================================
      * PROTECTED METHODS
      * ========================================================================================== */
+    /* ==========================================================================================
+     * CÁC PHƯƠNG THỨC BẢO VỆ
+     * ========================================================================================== */
 
     /**
-     * Get the saved instance state.
-     * Ensure {@link isFirstCreation()} returns false before calling this
+     * Lấy trạng thái đã lưu.
+     * Đảm bảo `isFirstCreation()` trả về false trước khi gọi phương thức này.
      *
-     * @return
+     * @return savedInstanceState
      */
     protected fun getSavedInstanceState(): Bundle {
         return savedInstanceState!!
     }
 
     /**
-     * Is first creation
+     * Kiểm tra xem activity có được tạo lần đầu hay không (không phục hồi bởi hệ thống).
      *
-     * @return true if Activity is created for the first time (and not restored by the system)
+     * @return true nếu Activity được tạo lần đầu
      */
     protected fun isFirstCreation() = savedInstanceState == null
 
     /**
-     * Configure the Toolbar, with default back button.
+     * Cấu hình Toolbar với nút quay lại mặc định.
      */
     protected fun configureToolbar(toolbar: Toolbar, displayBack: Boolean = true) {
         setSupportActionBar(toolbar)

@@ -8,6 +8,11 @@
         <item name="boxStrokeColor">@color/boxstroke_outline</item>
         <item name="android:layout_height">48dp</item>
     </style>
+
+    <style name="DateTextAppearance">
+        <item name="android:textColor">#388E3C</item> <!-- Thay đổi màu văn bản thành màu đỏ -->
+    </style>
+
     <style name="NimpeButtonLogin">
         <item name="cornerRadius">24dp</item>
 

@@ -18,6 +18,7 @@ package com.oceantech.tracking.core
 
 /**
  * Interface for View Events
+ * giao diện cho sự kiện view
  */
 interface NimpeViewEvents
 

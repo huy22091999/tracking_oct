@@ -40,7 +40,7 @@ import io.reactivex.disposables.Disposable
 
 import timber.log.Timber
 abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasScreenInjector {
-
+    //khai báo activity của nó
     protected val nimpeBaseActivity: TrackingBaseActivity<*> by lazy {
         activity as TrackingBaseActivity<*>
     }
@@ -48,24 +48,30 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
     /* ==========================================================================================
      * Navigator and other common objects
      * ========================================================================================== */
-
+    //thằng di
     private lateinit var screenComponent: TrackingComponent
 
 //    protected lateinit var navigator: Navigator
 //    protected lateinit var errorFormatter: ErrorFormatter
 //    protected lateinit var unrecognizedCertificateDialog: UnrecognizedCertificateDialog
 
+//    progressbar
     private var progress: ProgressDialog? = null
 
     /* ==========================================================================================
      * View model
      * ========================================================================================== */
 
+    //đối tượng Factory của viewModel (factory để tạo thg viewModel tương ứng)
     private lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    //khởi tạo đối tượng provider của viewModel để lấy giá trị tùy chỉnh -> truyền vào cái thằng
+    // owner là activity vì vậy phạm vi sử dụng của viewModel đó là các fragment của activity đó
     protected val activityViewModelProvider
         get() = ViewModelProvider(requireActivity(), viewModelFactory)
 
+    //khởi tạo đối tượng provider của viewModel để lấy giá trị tùy chỉnh -> truyền vào cái thằng
+    // owner là activity vì vậy phạm vi sử dụng của viewModel đó là chỉ trong fragment này
     protected val fragmentViewModelProvider
         get() = ViewModelProvider(this, viewModelFactory)
 
@@ -83,6 +89,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
      * Life cycle
      * ========================================================================================== */
 
+    //lấy ra thằng di
     override fun onAttach(context: Context) {
         screenComponent = DaggerTrackingComponent.factory().create(context)
         super.onAttach(context)
@@ -96,12 +103,13 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
         }
     }
 
+    //thay layout = viewbinding
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Timber.i("onCreateView Fragment ${javaClass.simpleName}")
         _binding = getBinding(inflater, container)
         return views.root
     }
-
+    //hàm config nè
     abstract fun getBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     @CallSuper
@@ -136,7 +144,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
         uiDisposables.dispose()
         super.onDestroy()
     }
-
+    //cái này ko dùng đến
     override fun injector(): TrackingComponent{
         return screenComponent
     }
@@ -207,7 +215,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
 //    }
 
     /* ==========================================================================================
-     * Disposable
+     * Disposable(ngắt kết nối)
      * ========================================================================================== */
 
     private val uiDisposables = CompositeDisposable()
@@ -220,6 +228,7 @@ abstract class TrackingBaseFragment<VB: ViewBinding> : BaseMvRxFragment(), HasSc
      * ViewEvents
      * ========================================================================================== */
 
+    //cái này là theo dõi sự kiện giống activity(sang đó mà đọc) nè
     protected fun <T : NimpeViewEvents> TrackingViewModel<*, *, T>.observeViewEvents(observer: (T) -> Unit) {
         viewEvents
                 .observe()

@@ -1,8 +1,11 @@
 package com.oceantech.tracking.ui.security
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
@@ -23,6 +26,7 @@ class SecurityViewModel @AssistedInject constructor(
 
     override fun handle(action: SecurityViewAction) {
         when(action){
+            is SecurityViewAction.SignupAction->handleSignup(action.user)
             is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
@@ -44,6 +48,15 @@ class SecurityViewModel @AssistedInject constructor(
             copy(asyncLogin=it)
         }
     }
+    private fun handleSignup(user:User){
+        setState {
+            copy(userCurrent=Loading())
+        }
+        repository.signup(user).execute {
+            copy(userCurrent= it)
+
+        }
+    }
     private fun handleSaveToken(tokenResponse: TokenResponse)
     {
         this.viewModelScope.async {
@@ -52,8 +65,14 @@ class SecurityViewModel @AssistedInject constructor(
 
     }
 
-    fun handleReturnSignin() {
-        _viewEvents.post(SecurityViewEvent.ReturnSigninEvent)
+    fun handleReturnSignin(user: User) {
+        _viewEvents.post(SecurityViewEvent.ReturnSigninEvent(user))
+    }
+    fun handleReturnInforRegister() {
+        _viewEvents.post(SecurityViewEvent.ReturnInforRegisterEvent)
+    }
+    fun handleReturnLogin() {
+        _viewEvents.post(SecurityViewEvent.ReturnLoginEvent)
     }
     fun handleReturnResetPass() {
         _viewEvents.post(SecurityViewEvent.ReturnResetpassEvent)

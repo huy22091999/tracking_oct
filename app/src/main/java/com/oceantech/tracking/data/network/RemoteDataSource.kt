@@ -33,8 +33,7 @@ import javax.net.ssl.X509TrustManager
 class RemoteDataSource() {
 
     companion object {
-        private const val BASE_URL =
-            "http://android-tracking.oceantech.com.vn/mita/"
+        private const val BASE_URL = "http://android-tracking.oceantech.com.vn/mita/"
         private const val DEFAULT_USER_AGENT = "Nimpe-Android"
         private const val DEFAULT_CONTENT_TYPE = "application/json"
     }

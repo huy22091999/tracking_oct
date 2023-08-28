@@ -1,6 +1,7 @@
 package com.oceantech.tracking.data.repository
 
 import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.model.UserCredentials
 import com.oceantech.tracking.data.network.AuthApi
 import com.oceantech.tracking.ui.security.UserPreferences
@@ -14,6 +15,9 @@ class AuthRepository @Inject constructor(
     val api: AuthApi,
     private val preferences: UserPreferences
 ) {
+    fun signup(user : User):Observable<User> = api.signup(
+        user
+    ).subscribeOn(Schedulers.io())
     fun login(username: String, password: String): Observable<TokenResponse> = api.oauth(
         UserCredentials(
             AuthApi.CLIENT_ID,

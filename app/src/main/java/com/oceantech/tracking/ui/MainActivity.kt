@@ -32,14 +32,25 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
+import com.oceantech.tracking.core.TrackingViewModel
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.tracking.TrackingSubViewModel
+import com.oceantech.tracking.ui.tracking.TrackingViewAction
+import com.oceantech.tracking.ui.tracking.TrackingViewState
+import com.oceantech.tracking.ui.users.UserViewAction
+import com.oceantech.tracking.ui.users.UserViewModel
+import com.oceantech.tracking.ui.users.UserViewState
+import com.oceantech.tracking.utils.handleLogOut
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory, UserViewModel.Factory, TrackingSubViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
 
     private val homeViewModel: HomeViewModel by viewModel()
+    private val userViewModel: UserViewModel by viewModel()
+    private val trackingSubViewModel: TrackingSubViewModel by viewModel()
 
     private lateinit var sharedActionViewModel: TestViewModel
 
@@ -48,6 +59,13 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     @Inject
     lateinit var homeViewModelFactory: HomeViewModel.Factory
+
+
+    @Inject
+    lateinit var userViewModelFactory: UserViewModel.Factory
+
+    @Inject
+    lateinit var trackingViewModelFactory: TrackingSubViewModel.Factory
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -96,14 +114,13 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         navController = findNavController(R.id.nav_host_fragment_content_main)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_HomeFragment,
-                R.id.nav_newsFragment,
-                R.id.nav_medicalFragment,
-                R.id.nav_feedbackFragment,
-                R.id.listNewsFragment,
-                R.id.detailNewsFragment
-            ), drawerLayout
+                setOf(
+                    R.id.nav_HomeFragment,
+                    R.id.nav_usersFragment,
+                    R.id.nav_trackingFragment,
+                    R.id.nav_fofileFragment
+                )
+            , drawerLayout
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -126,6 +143,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                     showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
                 }
 
+                R.id.logout -> {
+                    handleLogOut()
+                }
+
                 else -> {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     handled
@@ -142,11 +163,15 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val lang = local.displayLanguage
         if (lang == "English") {
             homeViewModel.language = 0
+            trackingSubViewModel.language =0
+            userViewModel.language =0
             menuItem.title = getString(R.string.en)
 
         } else {
             menuItem.title = getString(R.string.vi)
             homeViewModel.language = 1
+            trackingSubViewModel.language=1
+            userViewModel.language=1
         }
         var buttonShowMenu = actionView as AppCompatImageView
         buttonShowMenu.setImageDrawable(getDrawable(R.drawable.ic_drop))
@@ -155,6 +180,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         }
 
     }
+
 
     private fun changeLangue(lang: String) {
         val res: Resources = resources
@@ -183,14 +209,23 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
             changeLangue("en")
             homeViewModel.language = 0
+            userViewModel.language= 0
+            trackingSubViewModel.language=0
             popup.dismiss()
             homeViewModel.handle(HomeViewAction.ResetLang)
+            userViewModel.handle(UserViewAction.ResetLang)
+            trackingSubViewModel.handle(TrackingViewAction.ResetLang)
         }
         view.findViewById<LinearLayout>(R.id.to_lang_vi).setOnClickListener {
             changeLangue("vi")
             homeViewModel.language = 1
+            userViewModel.language= 1
+            trackingSubViewModel.language=1
             popup.dismiss()
             homeViewModel.handle(HomeViewAction.ResetLang)
+            homeViewModel.handle(HomeViewAction.ResetLang)
+            userViewModel.handle(UserViewAction.ResetLang)
+            trackingSubViewModel.handle(TrackingViewAction.ResetLang)
         }
     }
 
@@ -199,11 +234,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
 
     fun navigateTo(fragmentId: Int) {
         navController.navigate(fragmentId)
@@ -220,11 +250,6 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
                 return true
             }
 
-            R.id.menu_list_health -> {
-
-                return true
-            }
-
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -236,11 +261,21 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun updateLanguge(lang: String) {
         val menu: Menu = navView.menu
         menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
-        menu.findItem(R.id.nav_newsFragment).title = getString(R.string.menu_category)
-        menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
-        menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
+        menu.findItem(R.id.nav_usersFragment).title = getString(R.string.menu_list_user)
+        menu.findItem(R.id.nav_trackingFragment).title = getString(R.string.menu_add_tracking)
+        menu.findItem(R.id.nav_fofileFragment).title = getString(R.string.menu_Profile)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
+        menu.findItem(R.id.logout).title= getString(R.string.logout)
+        menu.findItem(R.id.exit).title=getString(R.string.exit)
+    }
+
+    override fun create(initialState: UserViewState): UserViewModel {
+       return userViewModelFactory.create(initialState)
+    }
+
+    override fun create(initialState: TrackingViewState): TrackingSubViewModel {
+        return trackingViewModelFactory.create(initialState)
     }
 
 

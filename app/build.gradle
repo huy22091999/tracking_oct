@@ -153,4 +153,7 @@ dependencies {
 
     // optional - Multiprocess support
     implementation "androidx.work:work-multiprocess:$work_version"
+
+    //last time
+    implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
 }

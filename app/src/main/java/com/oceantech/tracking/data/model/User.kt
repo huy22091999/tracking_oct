@@ -1,40 +1,35 @@
 package com.oceantech.tracking.data.model
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.io.Serializable
 
 data class User(
-    @SerializedName("id")
-    val id: String? = null,
-    @SerializedName("username")
-    val username: String? = null,
-    @SerializedName("active")
-    val active: Boolean? = null,
-    @SerializedName("birthPlace")
-    val birthPlace: String? = null,
-    @SerializedName("changePass")
-    val changePass: Boolean? = null,
-    @SerializedName("confirmPassword")
-    val confirmPassword: String? = null,
-    @SerializedName("displayName")
-    val displayName: String? = null,
+    val active: Boolean,
+    var birthPlace: String,
+    val changePass: Boolean,
+    var confirmPassword: String,
+    val countDayCheckin: Int,
+    val countDayTracking: Int,
+    var displayName: String,
+    val dob: String,
+    var email: String,
+    var firstName: String,
+    var gender: String,
+    val hasPhoto: Boolean,
+    var id: Int? =null,
+    var lastName: String,
+    var password: String,
+    val roles: List<Role>,
+    val setPassword: Boolean,
+    val tokenDevice: String,
+    var university: String,
+    var username: String,
+    var year: Int
+):Serializable
 
-    @SerializedName("dob")
-    val dob: Date? = null,
-
-    @SerializedName("email")
-    val email: String? = null,
-
-    @SerializedName("firstName")
-    val firstName: String? = null,
-    @SerializedName("oldPassword")
-    val oldPassword: String? = null,
-    @SerializedName("password")
-    val password: String? = null,
-    @SerializedName("setPassword")
-    val setPassword: String? = null,
-    @SerializedName("person")
-    val person: Person? = null,
-    @SerializedName("roles")
-    val roles: List<Role>? = null
-)
+data class UserFilter(
+    @SerializedName("pageIndex")
+    var pageIndex:Int? = null,
+    @SerializedName("size")
+    var size:Int? = null,
+): Serializable

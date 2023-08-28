@@ -7,15 +7,10 @@ import com.airbnb.mvrx.Uninitialized
 import com.oceantech.tracking.data.model.*
 
 data class HomeViewState(
-    val asyncCategory: Async<Page<Category>> = Uninitialized,
-    val asyncNews: Async<Page<News>> = Uninitialized,
-    val asyncSaveFeedback:Async<Feedback> = Uninitialized,
-    val userCurrent:Async<User> = Uninitialized,
-
+    val userCurrent: Async<User> = Uninitialized,
+    val timeSheets: Async<List<TimeSheet>> = Uninitialized,
+    val timeSheet: Async<TimeSheet> = Uninitialized
 ) : MvRxState {
-    fun isLoadding() = asyncCategory is Loading ||
-            asyncNews is Loading ||
-            asyncSaveFeedback is Loading ||
-            userCurrent is Loading
+    fun isLoadding() = userCurrent is Loading || timeSheets is Loading || timeSheet is Loading
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Dengue Alert</string>
+    <string name="app_name">Tracking Oceantech</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -13,7 +13,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">Home</string>
     <string name="menu_category">News</string>
+    <string name="menu_list_user">List user</string>
+    <string name="menu_add_tracking">Tracking</string>
     <string name="menu_nearest_medical">Nearest Medical</string>
+    <string name="menu_Profile">Profile</string>
     <string name="menu_feedback">Feedback</string>
     <string name="fragment_home">Home</string>
     <string name="fragment_news">News</string>
@@ -21,13 +24,15 @@
     <string name="feedback_description">Please enter your feedback below to help make our app even better !</string>
     <string name="feedback_hint">Your feedback ...</string>
     <string name="send_feedback">Send feedback</string>
-    <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
+    <string name="warning">Đăng nhập tài khoản Oceantech Tracking</string>
+    <string name="gender">Gender</string>
+    <string name="birth_place">BirthPlace</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="channel_description">Notification</string>
     <string name="category_theme">News topic</string>
-    <string name="home_everyone">Let\'s all work together to prevent dengue fever !</string>
+    <string name="home_everyone">home_everyone</string>
     <string name="home_button">Dengue News</string>
     <string name="info_app">Thông tin ứng dụng</string>
     <string name="privacy">Dengue alert is a proactive alert application supporting people detect and avoid exposure to risk factors for dengue infection. At the same time, the application aslo provides necessary information on the causative agnet, measures and the nearest medical facilities to the people.</string>
@@ -45,14 +50,29 @@
     <string name="email">Email <font color="red">*</font></string>
     <string name="send">Send</string>
     <string name="signin">Đăng kí tài khoản</string>
-    <string name="last_name">Fisrt Name</string>
-    <string name="first_name">Last Name</string>
+    <string name="infor_register">Information register</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">Fisrt Name</string>
     <string name="display_name">Display name</string>
     <string name="username">User name</string>
+    <string name="university">University</string>
+    <string name="year">Year</string>
     <string name="signin_account">Sign in</string>
+    <string name="register_next">Next</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="gender_male">male</string>
+    <string name="gender_female">female</string>
     <string name="login_fail">User name or password is incorect</string>
     <string name="login_success">Loggin successfully.</string>
     <string name="username_not_empty">This field not empty.</string>
+    <string name="password_not_empty">This field not empty.</string>
+    <string name="email_not_empty">This field not empty.</string>
+    <string name="display_name_not_empty">This field not empty.</string>
+    <string name="confirm_password_not_empty">This field not empty.</string>
+    <string name="password_not_match">Your password is not match.</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="infor_profile">My profile</string>
+    <string name="year_is_not_string">Year must be number.</string>
     <string name="has_dengue">⛔ Bạn đang ở trong phạm vi có nguy cơ nhiễm Sốt xuất huyết !</string>
     <string name="content_new">News content</string>
     <string name="by_outhor">by author</string>
@@ -66,8 +86,29 @@
     <string name="need_network">The Dengue Alert app needs to use mobile data to detect outbreaks around. You need to anable mobile data or Wifi in the settings.</string>
     <string name="account">User name</string>
     <string name="received">We have received your feedback</string>
-    <string name="exit">Thoát ứng dụng</string>
+    <string name="exit">Exit</string>
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">at</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="tracking_content">Tracking list</string>
+    <string name="user_level_label">Level: </string>
+    <string name="user_email_lable">Email: </string>
+    <string name="user_checkin_lable">Checkin </string>
+    <string name="user_tracking_lable">Tracking </string>
+    <string name="hint_input_tracking">Insert your content</string>
+    <string name="add_tracking_successfully">Add tracking successfully</string>
+    <string name="add_tracking_unsuccessfully">Add tracking unsuccessfully</string>
+    <string name="content_tracking_lable">Content</string>
+    <string name="submit">Submit</string>
+    <string name="delete">Delete</string>
+    <string name="update_tracking_successfully">Update tracking successfully</string>
+    <string name="update_tracking_unsuccessfully">Update tracking unsuccessfully</string>
+    <string name="delete_tracking_successfully">Delete tracking successfully</string>
+    <string name="delete_tracking_unsuccessfully">Delete tracking unsuccessfully</string>
+    <string name="logout">Logout</string>
+    <string name="add_tracking">Add</string>
+    <string name="no_checkin">No checkin</string>
+    <string name="calendar_lable">Calendar</string>
+    <string name="checkin_status">Status: present</string>
+    <string name="signup_success">Signup successfully</string>
 </resources>

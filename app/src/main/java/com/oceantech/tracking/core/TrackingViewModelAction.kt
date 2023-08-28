@@ -16,6 +16,10 @@
 
 package com.oceantech.tracking.core
 
+/**
+ * Interface for view action
+ * giao diện cho hành động trên view
+ */
 interface NimpeViewModelAction
 
 /**

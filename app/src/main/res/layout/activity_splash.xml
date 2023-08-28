@@ -7,8 +7,8 @@
     tools:context=".ui.security.SplashActivity">
     <ImageView
         android:layout_width="160dp"
-        android:layout_height="140dp"
-        android:background="@drawable/img_splash"
+        android:layout_height="100dp"
+        android:background="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

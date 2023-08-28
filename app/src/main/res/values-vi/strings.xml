@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Dengue Alert</string>
+    <string name="app_name">Tracking Oceantech</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -16,18 +16,21 @@
     <string name="menu_category">Danh mục tin tức</string>
     <string name="menu_nearest_medical">Cơ sở y tế gần nhất</string>
     <string name="menu_feedback">Phản hồi</string>
+    <string name="menu_Profile">Hồ sơ</string>
+    <string name="menu_list_user">Danh sách người dùng</string>
+    <string name="menu_add_tracking">Tracking</string>
     <string name="fragment_home">Trang chủ</string>
     <string name="feedback_to_app">Phản hồi về ứng dụng</string>
     <string name="feedback_description">Vui lòng nhập ý kiến phản hồi của bạn để góp phần làm cho ứng dụng của chúng tôi ngày càng hoàn thiện hơn.</string>
     <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
     <string name="fragment_news">Tin tức</string>
     <string name="send_feedback">Gửi phản hồi</string>
-    <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
+    <string name="warning">Đăng nhập tài khoản Oceantech</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="category_theme">Chủ đề tin tức</string>
-    <string name="home_everyone">Mọi người cùng chung tay phòng chống dịch bệnh sốt xuất huyết</string>
+    <string name="home_everyone">Xin chào, bạn đã điểm danh chưa?</string>
     <string name="home_button">Tin tức sốt xuất huyết</string>
     <string name="note">Dengue Alert không thực hiện lưu trữ, thu thập dữ liệu vị tí của dười dùng.</string>
     <string name="accept_use">Đồng ý sử dụng</string>
@@ -40,11 +43,26 @@
     <string name="password">Mật khẩu</string>
     <string name="email">Email</string>
     <string name="send">Gửi</string>
+    <string name="gender">Giới tính</string>
+    <string name="birth_place">Nơi sinh</string>
+    <string name="university">Trường đại học</string>
     <string name="signin">Đăng kí tài khoản</string>
-    <string name="last_name">Tên</string>
-    <string name="first_name">Họ</string>
+    <string name="infor_register">Thông tin đăng kí</string>
+    <string name="last_name">Họ</string>
+    <string name="first_name">Tên</string>
     <string name="display_name">Tên hiển thị</string>
     <string name="username">Tên đăng nhập</string>
+    <string name="year">Năm</string>
+    <string name="register_next">Tiếp</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
+    <string name="gender_male">nam</string>
+    <string name="gender_female">nữ</string>
+    <string name="year_is_not_string">Năm phải là số.</string>
+    <string name="password_not_empty">Không được để trống mật khẩu.</string>
+    <string name="email_not_empty">Không được để trống email.</string>
+    <string name="display_name_not_empty">Không được để trống trường này.</string>
+    <string name="confirm_password_not_empty">Không được để trống trường này.</string>
+    <string name="password_not_match">Mật khẩu của bạn không khớp.</string>
     <string name="signin_account">Đăng kí</string>
     <string name="login_fail">Tài khoản hoặc mật khẩu không đúng. Mời bạn đăng nhập lại</string>
     <string name="login_success">Đăng nhập thành công</string>
@@ -55,6 +73,8 @@
     <string name="view_count">" %1$s Lượt xem"</string>
     <string name="vi">Tiếng Việt</string>
     <string name="en">Tiếng Anh</string>
+    <string name="edit_profile">Chỉnh sửa thông tin</string>
+    <string name="infor_profile">Thông tin của tôi</string>
     <string name="Cancel">Hủy</string>
     <string name="open_location_settings">Mở cài đặt</string>
     <string name="gps_network_not_enabled">Ứng dụng cần sử dụng vị trí của bạn để phát hiện và cảnh báo các ổ dịch xunh quanh.</string>
@@ -71,4 +91,26 @@
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">lúc</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="tracking_content">danh sách theo dõi</string>
+    <string name="user_level_label">Cấp độ: </string>
+    <string name="user_email_lable">Email: </string>
+    <string name="user_checkin_lable">Điểm danh</string>
+    <string name="user_tracking_lable">Theo dõi</string>
+    <string name="hint_input_tracking">Nhập đoạn văn bản</string>
+    <string name="add_tracking_successfully">Lưu thành công nội dung mới</string>
+    <string name="add_tracking_unsuccessfully">Lưu nội dung thất bại</string>
+    <string name="content_tracking_lable">Nội dung</string>
+    <string name="submit">Nộp</string>
+    <string name="delete">Xoá</string>
+    <string name="update_tracking_successfully">Cập nhật nội dung thành công</string>
+    <string name="update_tracking_unsuccessfully">Cập nhật nội dung không thành công</string>
+    <string name="delete_tracking_successfully">Xóa nội dung thành công</string>
+    <string name="delete_tracking_unsuccessfully">Xóa nội dung thất bại</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="add_tracking">Thêm</string>
+    <string name="no_checkin">Không điểm danh</string>
+    <string name="calendar_lable">Lịch</string>
+    <string name="checkin_status">Trạng thái: có mặt</string>
+    <string name="signup_success">Đăng ký thành công</string>
+
 </resources>
