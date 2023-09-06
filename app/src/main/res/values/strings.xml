@@ -79,4 +79,5 @@
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
     <string name="confirmPassword" translatable="false">Confirm Password</string>
     <string name="information">Personal information</string>
+    <string name="language">language</string>
 </resources>

@@ -34,18 +34,19 @@
 
         <View style="@style/proifleDetailsView" />
 
-        <RelativeLayout style="@style/profileDetailsLayout">
+        <RelativeLayout android:id="@+id/language"
+            style="@style/profileDetailsLayout">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/mobileImageView"
+                android:id="@+id/image_language"
                 style="@style/profileDetailsImage"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_lang" />
 
             <TextView
                 style="@style/profileDetailsTextMain"
-                android:layout_toRightOf="@id/mobileImageView"
-                android:text="Language" />
+                android:layout_toRightOf="@id/image_language"
+                android:text="@string/language" />
             <ImageView
                 style="@style/profileNextImage"
                 android:src="@drawable/ic_next" />
