@@ -7,7 +7,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context=".ui.feedback.FeedbackFragment">
+    tools:context=".ui.timesheet.TimeSheetFragment">
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="100dp"
         android:layout_marginTop="40dp"

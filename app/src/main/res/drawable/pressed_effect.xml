@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- pressed_effect.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/darker_gray" android:state_pressed="true" /> <!-- Màu nền khi nhấn -->
+    <item android:drawable="@android:color/transparent" /> <!-- Màu nền mặc định -->
+</selector>

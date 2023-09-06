@@ -27,6 +27,8 @@ data class User(
 
     @SerializedName("firstName")
     val firstName: String? = null,
+    @SerializedName("lastName")
+    val lastName: String? = null,
     @SerializedName("oldPassword")
     val oldPassword: String? = null,
     @SerializedName("password")

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_HomeFragment"
+        android:contentDescription="@string/menu_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/menu_home" />
+    <item
+        android:id="@+id/nav_timeSheetFragment"
+        android:contentDescription="@string/menu_time_sheet"
+        android:icon="@drawable/ic_category"
+        android:title="@string/menu_time_sheet" />
+    <item
+        android:id="@+id/nav_trackingFragment"
+        android:contentDescription="@string/menu_tracking"
+        android:icon="@drawable/ic_hostpital"
+        android:title="@string/menu_tracking" />
+    <item
+        android:id="@+id/nav_usersFragment"
+        android:contentDescription="@string/menu_users"
+        android:icon="@drawable/ic_feedback"
+        android:title="@string/menu_users" />
+    <item
+        android:id="@+id/nav_profileFragment"
+        android:contentDescription="@string/menu_profile"
+        android:icon="@drawable/ic_feedback"
+        android:title="@string/fragment_profile" />
+</menu>

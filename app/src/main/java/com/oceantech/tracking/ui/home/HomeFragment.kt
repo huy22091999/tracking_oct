@@ -29,7 +29,7 @@ class HomeFragment @Inject constructor(val api: UserApi) :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views.homeToCategory.setOnClickListener {
-            (activity as MainActivity).navigateTo(R.id.action_FirstFragment_to_newsFragment)
+            (activity as MainActivity).navigateTo(R.id.action_HomeFragment_to_nav_trackingFragment)
         }
         viewModel.observeViewEvents {
             handleEvent(it)
@@ -53,6 +53,8 @@ class HomeFragment @Inject constructor(val api: UserApi) :
                 views.title.text = getString(R.string.home_everyone)
                 views.homeToCategory.text = getString(R.string.home_button)
             }
+
+            else -> {}
         }
     }
 

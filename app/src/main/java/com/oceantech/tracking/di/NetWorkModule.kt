@@ -46,4 +46,9 @@ object NetWorkModule {
         api: UserApi
     ): UserRepository = UserRepository(api)
 
+    @Provides
+    fun providerSessionManager(
+        context: Context
+    ) : SessionManager = SessionManager(context.applicationContext)
+
 }

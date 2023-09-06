@@ -3,13 +3,13 @@ package com.oceantech.tracking.data.network
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.oceantech.tracking.BuildConfig
 import com.oceantech.tracking.utils.format
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
+import com.oceantech.tracking.BuildConfig
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

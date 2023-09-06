@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- trạng thái được nhấn, tăng kích thước theo chiều x, y lên 150% -->
+    <item android:state_pressed="true">
+        <set>
+            <objectAnimator android:propertyName="scaleX"
+                android:duration="@android:integer/config_shortAnimTime"
+                android:valueTo="0.7"
+                android:valueType="floatType"/>
+            <objectAnimator android:propertyName="scaleY"
+                android:duration="@android:integer/config_shortAnimTime"
+                android:valueTo="0.7"
+                android:valueType="floatType"/>
+        </set>
+    </item>
+    <!-- trạng thái mặc định, không được nhấn, thiết lập kích thước theo chiều x, y là 100% -->
+    <item android:state_pressed="false">
+        <set>
+            <objectAnimator android:propertyName="scaleX"
+                android:duration="@android:integer/config_shortAnimTime"
+                android:valueTo="1"
+                android:valueType="floatType"/>
+            <objectAnimator android:propertyName="scaleY"
+                android:duration="@android:integer/config_shortAnimTime"
+                android:valueTo="1"
+                android:valueType="floatType"/>
+        </set>
+    </item>
+</selector>

@@ -24,6 +24,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.MenuRes
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -154,12 +155,18 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
         }
     }
 
-    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
-
         Timber.w("onMultiWindowModeChanged. isInMultiWindowMode: $isInMultiWindowMode")
-//        bugReporter.inMultiWindowMode = isInMultiWindowMode
     }
+
+//    override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean, newConfig: Configuration?) {
+//        super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig)
+//
+//        Timber.w("onMultiWindowModeChanged. isInMultiWindowMode: $isInMultiWindowMode")
+////        bugReporter.inMultiWindowMode = isInMultiWindowMode
+//    }
 
     override fun injector(): TrackingComponent {
         return nimpeComponent

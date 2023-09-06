@@ -16,6 +16,7 @@ class HomeViewModel @AssistedInject constructor(
         when (action) {
             is HomeViewAction.GetCurrentUser -> handleCurrentUser()
             is HomeViewAction.ResetLang -> handResetLang()
+            else -> {}
         }
     }
 

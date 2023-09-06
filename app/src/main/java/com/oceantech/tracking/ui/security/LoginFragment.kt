@@ -2,6 +2,7 @@ package com.oceantech.tracking.ui.security
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,22 +11,28 @@ import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
+import com.google.android.material.textfield.TextInputLayout
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.utils.PasswordMaskUtil
+import com.oceantech.tracking.utils.addEndIconClickListener
 import javax.inject.Inject
 
 
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
-    private val viewModel:SecurityViewModel by activityViewModel()
+    private val viewModel: SecurityViewModel by activityViewModel()
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentLoginBinding {
-        return FragmentLoginBinding.inflate(inflater,container,false)
+        return FragmentLoginBinding.inflate(inflater, container, false)
     }
-    lateinit var username:String
-    lateinit var password:String
+
+    lateinit var username: String
+    lateinit var password: String
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        views.password.transformationMethod = PasswordMaskUtil.getInstance()
+        views.passwordTil.addEndIconClickListener()
         views.loginSubmit.setOnClickListener {
             loginSubmit()
         }
@@ -37,34 +44,43 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         }
         super.onViewCreated(view, savedInstanceState)
     }
-    private fun loginSubmit()
-    {
-        username=views.username.text.toString().trim()
-        password=views.password.text.toString().trim()
-        if(username.isNullOrEmpty()) views.usernameTil.error=getString(R.string.username_not_empty)
-        if(password.isNullOrEmpty()) views.passwordTil.error=getString(R.string.username_not_empty)
-        if (!username.isNullOrEmpty()&&!password.isNullOrEmpty())
-        {
-            viewModel.handle(SecurityViewAction.LogginAction(username,password))
+
+    private fun loginSubmit() {
+        username = views.username.text.toString().trim()
+        password = views.password.text.toString().trim()
+        if (username.isNullOrEmpty()) views.usernameTil.error =
+            getString(R.string.username_not_empty)
+        if (password.isNullOrEmpty()) views.passwordTil.error =
+            getString(R.string.username_not_empty)
+        if (!username.isNullOrEmpty() && !password.isNullOrEmpty()) {
+            viewModel.handle(SecurityViewAction.LogginAction(username, password))
         }
     }
 
-    override fun invalidate(): Unit = withState(viewModel){
-        when(it.asyncLogin){
-            is Success ->{
-                it.asyncLogin.invoke()?.let { token->
-                    val sessionManager = context?.let { it1 -> SessionManager(it1.applicationContext) }
-                    token.accessToken?.let { it1 -> sessionManager!! .saveAuthToken(it1) }
+    override fun invalidate(): Unit = withState(viewModel) {
+        when (it.asyncLogin) {
+            is Success -> {
+                it.asyncLogin.invoke()?.let { token ->
+                    val sessionManager =
+                        context?.let { it1 -> SessionManager(it1.applicationContext) }
+                    token.accessToken?.let { it1 -> sessionManager!!.saveAuthToken(it1) }
                     token.refreshToken?.let { it1 -> sessionManager!!.saveAuthTokenRefresh(it1) }
                     viewModel.handle(SecurityViewAction.SaveTokenAction(token!!))
                 }
-                Toast.makeText(requireContext(),getString(R.string.login_success),Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.login_success),
+                    Toast.LENGTH_LONG
+                ).show()
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 activity?.finish()
             }
-            is Fail->{
-                views.passwordTil.error=getString(R.string.login_fail)
+
+            is Fail -> {
+                views.passwordTil.error = getString(R.string.login_fail)
             }
+
+            else -> {}
         }
 
     }

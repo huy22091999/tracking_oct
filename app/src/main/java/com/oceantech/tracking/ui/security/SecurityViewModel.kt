@@ -1,8 +1,10 @@
 package com.oceantech.tracking.ui.security
+import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.AuthRepository
 import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
@@ -24,6 +26,7 @@ class SecurityViewModel @AssistedInject constructor(
     override fun handle(action: SecurityViewAction) {
         when(action){
             is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
+            is SecurityViewAction.SignAction->handleRegister(action.user)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
         }
@@ -33,6 +36,15 @@ class SecurityViewModel @AssistedInject constructor(
         setState { copy(userCurrent=Loading()) }
         userRepo.getCurrentUser().execute {
             copy(userCurrent=it)
+        }
+    }
+    private fun handleRegister(user: User) {
+        // Perform the registration logic
+        setState { copy(asyncRegister = Loading()) }
+
+        // Call repository to perform registration
+        repository.register(user).execute {
+            copy(asyncRegister = it)
         }
     }
 

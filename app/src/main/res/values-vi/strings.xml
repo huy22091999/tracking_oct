@@ -13,10 +13,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">Trang chủ</string>
-    <string name="menu_category">Danh mục tin tức</string>
-    <string name="menu_nearest_medical">Cơ sở y tế gần nhất</string>
-    <string name="menu_feedback">Phản hồi</string>
+    <string name="menu_time_sheet">Thời gian biểu </string>
+    <string name="menu_tracking">Theo dõi</string>
+    <string name="menu_users">Danh sách người dùng</string>
+    <string name="menu_profile">Hồ sơ</string>
     <string name="fragment_home">Trang chủ</string>
+    <string name="fragment_profile">Hồ sơ</string>
+    <string name="fragment_users">Danh sách người dùng</string>
     <string name="feedback_to_app">Phản hồi về ứng dụng</string>
     <string name="feedback_description">Vui lòng nhập ý kiến phản hồi của bạn để góp phần làm cho ứng dụng của chúng tôi ngày càng hoàn thiện hơn.</string>
     <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
@@ -47,8 +50,11 @@
     <string name="username">Tên đăng nhập</string>
     <string name="signin_account">Đăng kí</string>
     <string name="login_fail">Tài khoản hoặc mật khẩu không đúng. Mời bạn đăng nhập lại</string>
+    <string name="sign_fail">Email hoặc tên đăng nhập đã đăng kí. Mời bạn đăng nhập lại</string>
     <string name="login_success">Đăng nhập thành công</string>
+    <string name="sign_success">Đăng kí thành công</string>
     <string name="username_not_empty">Trường này không được để trống.</string>
+    <string name="confirm_password_fail">Mật khẩu không khớp</string>
     <string name="has_dengue">⛔ Bạn đang ở trong phạm vi có nguy cơ nhiễm Sốt xuất huyết !</string>
     <string name="content_new">Nội dung tin</string>
     <string name="by_outhor">bởi tác giả</string>
@@ -68,7 +74,9 @@
     <string name="need_network">Ứng dụng Dengue Alert cần sử dụng dữ liệu di động để phát hiện ổ dịch xung quanh. \n\nBạn cần bật dữ liệu di động hoặc Wifi trong phần cài đặt</string>
     <string name="received">We have received your feedback</string>
     <string name="exit">Thoát ứng dụng</string>
+    <string name="logout">Đăng xuất</string>
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">lúc</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
+    <string name="information">Thông tin cá nhân</string>
 </resources>

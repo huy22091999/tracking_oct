@@ -1,6 +1,7 @@
 package com.oceantech.tracking.data.repository
 
 import com.oceantech.tracking.data.model.TokenResponse
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.model.UserCredentials
 import com.oceantech.tracking.data.network.AuthApi
 import com.oceantech.tracking.ui.security.UserPreferences
@@ -24,6 +25,9 @@ class AuthRepository @Inject constructor(
             AuthApi.GRANT_TYPE_PASSWORD
         )
     ).subscribeOn(Schedulers.io())
+
+    fun register(user: User): Observable<User> = api.registerUser(user)
+        .subscribeOn(Schedulers.io())
     suspend fun saveAccessTokens(tokens: TokenResponse) {
         if (tokens.accessToken == null || tokens.refreshToken == null) {
             return

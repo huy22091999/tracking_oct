@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/fragment_profile">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <RelativeLayout style="@style/profileDetailsLayout">
+
+            <ImageView
+                android:id="@+id/nameImageView"
+                style="@style/profileDetailsImage"
+                android:src="@drawable/ic_per" />
+
+            <TextView
+                android:id="@+id/nameTextView"
+                style="@style/profileDetailsTextMain"
+                android:layout_toRightOf="@id/nameImageView"
+                android:text="@string/information" />
+
+            <ImageView
+                style="@style/profileNextImage"
+                android:src="@drawable/ic_next" />
+
+        </RelativeLayout>
+
+        <View style="@style/proifleDetailsView" />
+
+        <RelativeLayout style="@style/profileDetailsLayout">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mobileImageView"
+                style="@style/profileDetailsImage"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_lang" />
+
+            <TextView
+                style="@style/profileDetailsTextMain"
+                android:layout_toRightOf="@id/mobileImageView"
+                android:text="Language" />
+            <ImageView
+                style="@style/profileNextImage"
+                android:src="@drawable/ic_next" />
+
+
+        </RelativeLayout>
+
+        <View style="@style/proifleDetailsView" />
+
+        <RelativeLayout
+            android:id="@+id/logout"
+            style="@style/profileDetailsLayout">
+
+            <ImageView
+                android:id="@+id/image_logout"
+                style="@style/profileDetailsImage"
+                android:src="@drawable/ic_logout" />
+
+            <TextView
+                style="@style/profileDetailsTextMain"
+                android:layout_toRightOf="@id/image_logout"
+                android:text="@string/logout" />
+            <ImageView
+                style="@style/profileNextImage"
+                android:src="@drawable/ic_next" />
+
+
+        </RelativeLayout>
+
+        <View style="@style/proifleDetailsView" />
+
+        <RelativeLayout
+            android:id="@+id/exit"
+            style="@style/profileDetailsLayout">
+
+            <ImageView
+                android:id="@+id/image_exit"
+                style="@style/profileDetailsImage"
+                android:src="@drawable/ic_exit1" />
+
+            <TextView
+                style="@style/profileDetailsTextMain"
+                android:layout_toRightOf="@id/image_exit"
+                android:text="@string/exit" />
+
+            <ImageView
+                style="@style/profileNextImage"
+                android:src="@drawable/ic_next" />
+
+        </RelativeLayout>
+
+        <View style="@style/proifleDetailsView" />
+
+        <RelativeLayout style="@style/profileDetailsLayout">
+
+            <ImageView
+                android:id="@+id/dobImageView"
+                style="@style/profileDetailsImage"
+                android:src="@drawable/ic_forgot_password" />
+
+            <TextView
+                style="@style/profileDetailsTextMain"
+                android:layout_toRightOf="@id/dobImageView"
+                android:text="@string/forget_password" />
+
+            <ImageView
+                style="@style/profileNextImage"
+                android:src="@drawable/ic_next" />
+
+        </RelativeLayout>
+
+        <View style="@style/proifleDetailsView" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

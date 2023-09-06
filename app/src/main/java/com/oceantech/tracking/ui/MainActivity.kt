@@ -18,8 +18,10 @@ import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.airbnb.mvrx.viewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.ui.home.HomeViewAction
@@ -32,13 +34,17 @@ import java.util.*
 import javax.inject.Inject
 
 import com.oceantech.tracking.R
+import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.security.LoginActivity
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
 
+    @Inject
+    lateinit var sessionManager: SessionManager
     private val homeViewModel: HomeViewModel by viewModel()
 
     private lateinit var sharedActionViewModel: TestViewModel
@@ -51,9 +57,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
-    lateinit var navView: NavigationView
+    lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
@@ -61,14 +66,14 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         sharedActionViewModel = viewModelProvider.get(TestViewModel::class.java)
         setContentView(views.root)
         setupToolbar()
-        setupDrawer()
+        setupBottomNavigation()
         sharedActionViewModel.test()
 
         homeViewModel.subscribe(this) {
             if (it.isLoadding()) {
-                views.appBarMain.contentMain.waitingView.visibility = View.VISIBLE
+                views.waitingView.visibility = View.VISIBLE
             } else
-                views.appBarMain.contentMain.waitingView.visibility = View.GONE
+                views.waitingView.visibility = View.GONE
         }
     }
 
@@ -76,83 +81,88 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     override fun create(initialState: HomeViewState): HomeViewModel {
         return homeViewModelFactory.create(initialState)
     }
-
     override fun getBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
     }
 
     private fun setupToolbar() {
         toolbar = views.toolbar
-        toolbar.title = ""
-        views.title.text = getString(R.string.app_name)
         setSupportActionBar(toolbar)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     @SuppressLint("ResourceType")
-    private fun setupDrawer() {
-        drawerLayout = views.appBarMain.drawerLayout
-        navView = views.appBarMain.navView
-        navController = findNavController(R.id.nav_host_fragment_content_main)
+    private fun setupBottomNavigation() {
+        bottomNavigationView = views.bottomNav
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        //navController = findNavController(R.id.nav_host_fragment)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_HomeFragment,
-                R.id.nav_newsFragment,
-                R.id.nav_medicalFragment,
-                R.id.nav_feedbackFragment,
-                R.id.listNewsFragment,
-                R.id.detailNewsFragment
-            ), drawerLayout
+            navController.graph
         )
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        //setupActionBarWithNavController(navController, appBarConfiguration)
+        bottomNavigationView.setupWithNavController(navController)
+        setSupportActionBar(toolbar)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            views.title.text = destination.label
+//        }
 
         // settings
-        navView.setNavigationItemSelectedListener { menuItem ->
-
-            val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
-
-            when (menuItem.itemId) {
-                R.id.exit -> {
-                    val homeIntent = Intent(Intent.ACTION_MAIN)
-                    homeIntent.addCategory(Intent.CATEGORY_HOME)
-                    homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    startActivity(homeIntent)
-                }
-
-                R.id.nav_change_langue -> {
-                    showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
-                }
-
-                else -> {
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                    handled
-                }
-            }
-            handled
-        }
-        val menu: Menu = navView.menu
-        val menuItem = menu.findItem(R.id.nav_change_langue)
-        val actionView: View = MenuItemCompat.getActionView(menuItem)
-        val res: Resources = resources
-        val conf: Configuration = res.configuration
-        val local = conf.locale
-        val lang = local.displayLanguage
-        if (lang == "English") {
-            homeViewModel.language = 0
-            menuItem.title = getString(R.string.en)
-
-        } else {
-            menuItem.title = getString(R.string.vi)
-            homeViewModel.language = 1
-        }
-        var buttonShowMenu = actionView as AppCompatImageView
-        buttonShowMenu.setImageDrawable(getDrawable(R.drawable.ic_drop))
-        buttonShowMenu.setOnClickListener {
-            showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
-        }
+//        navView.setNavigationItemSelectedListener { menuItem ->
+//
+//            val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
+//
+//            when (menuItem.itemId) {
+//                R.id.exit -> {
+//                    val homeIntent = Intent(Intent.ACTION_MAIN)
+//                    homeIntent.addCategory(Intent.CATEGORY_HOME)
+//                    homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                    startActivity(homeIntent)
+//                }
+//
+//                R.id.logout -> {
+//                    sessionManager.let { it.clearAuthToken() }
+//
+//                    val intent = Intent(this, LoginActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                    startActivity(intent)
+//                }
+//
+//                R.id.nav_change_langue -> {
+//                    showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
+//                }
+//
+//                else -> {
+//                    drawerLayout.closeDrawer(GravityCompat.START)
+//                    handled
+//                }
+//            }
+//            handled
+//        }
+//        val menu: Menu = navView.menu
+//        val menuItem = menu.findItem(R.id.nav_change_langue)
+//        val actionView: View = MenuItemCompat.getActionView(menuItem)
+//        val res: Resources = resources
+//        val conf: Configuration = res.configuration
+//        val local = conf.locale
+//        val lang = local.displayLanguage
+//        if (lang == "English") {
+//            homeViewModel.language = 0
+//            menuItem.title = getString(R.string.en)
+//
+//        } else {
+//            menuItem.title = getString(R.string.vi)
+//            homeViewModel.language = 1
+//        }
+//        var buttonShowMenu = actionView as AppCompatImageView
+//        buttonShowMenu.setImageDrawable(getDrawable(R.drawable.ic_drop))
+//        buttonShowMenu.setOnClickListener {
+//            showMenu(findViewById(R.id.nav_change_langue), R.menu.menu_main)
+//        }
 
     }
 
@@ -163,6 +173,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val myLocale = Locale(lang)
         conf.setLocale(myLocale)
         res.updateConfiguration(conf, dm)
+        sessionManager.let { it.saveLanguage(lang) }
         updateLanguge(lang)
 
 
@@ -195,50 +206,23 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
     }
 
     fun navigateTo(fragmentId: Int) {
         navController.navigate(fragmentId)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                if (drawerLayout.isOpen) {
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START)
-                }
-                return true
-            }
-
-            R.id.menu_list_health -> {
-
-                return true
-            }
-
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
 
     private fun updateLanguge(lang: String) {
-        val menu: Menu = navView.menu
+        val menu: Menu = bottomNavigationView.menu
         menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
-        menu.findItem(R.id.nav_newsFragment).title = getString(R.string.menu_category)
-        menu.findItem(R.id.nav_medicalFragment).title = getString(R.string.menu_nearest_medical)
-        menu.findItem(R.id.nav_feedbackFragment).title = getString(R.string.menu_feedback)
+        menu.findItem(R.id.nav_trackingFragment).title = getString(R.string.menu_tracking)
+        menu.findItem(R.id.nav_usersFragment).title = getString(R.string.menu_users)
+        menu.findItem(R.id.nav_timeSheetFragment).title = getString(R.string.menu_time_sheet)
+        menu.findItem(R.id.nav_profileFragment).title = getString(R.string.menu_profile)
+        menu.findItem(R.id.exit).title = getString(R.string.exit)
+        menu.findItem(R.id.logout).title = getString(R.string.logout)
         menu.findItem(R.id.nav_change_langue).title =
             if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }

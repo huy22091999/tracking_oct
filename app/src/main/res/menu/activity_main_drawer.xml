@@ -8,15 +8,18 @@
             android:icon="@drawable/ic_home"
             android:id="@+id/nav_HomeFragment"
             android:title="@string/menu_home"/>
-        <item android:id="@+id/nav_newsFragment"
+        <item android:id="@+id/nav_timeSheetFragment"
             android:icon="@drawable/ic_category"
-            android:title="@string/menu_category"/>
-        <item android:id="@+id/nav_medicalFragment"
+            android:title="@string/menu_time_sheet"/>
+        <item android:id="@+id/nav_trackingFragment"
             android:icon="@drawable/ic_hostpital"
-            android:title="@string/menu_nearest_medical"/>
-        <item android:id="@+id/nav_feedbackFragment"
+            android:title="@string/menu_tracking"/>
+        <item android:id="@+id/nav_usersFragment"
             android:icon="@drawable/ic_feedback"
-            android:title="@string/menu_feedback"/>
+            android:title="@string/menu_users"/>
+        <item android:id="@+id/nav_profileFragment"
+            android:icon="@drawable/ic_feedback"
+            android:title="@string/fragment_profile"/>
     </group>
     <group android:id="@+id/lang" >
         <item
@@ -26,6 +29,9 @@
             app:actionViewClass="androidx.appcompat.widget.AppCompatImageView"
             app:actionProviderClass="android.widget.ShareActionProvider">
         </item>
+        <item android:title="@string/logout"
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_exit"/>
         <item android:title="@string/exit"
             android:id="@+id/exit"
             android:icon="@drawable/ic_exit"/>
