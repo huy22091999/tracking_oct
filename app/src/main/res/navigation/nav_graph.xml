@@ -58,6 +58,15 @@
         android:id="@+id/nav_profileFragment"
         android:name="com.oceantech.tracking.ui.profile.ProfileFragment"
         android:label="@string/fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profileFragment_to_informationFragment"
+            app:destination="@id/informationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/informationFragment"
+        android:name="com.oceantech.tracking.ui.information.InformationFragment"
+        android:label="@string/information"
+        tools:layout="@layout/fragment_information" />
 
 </navigation>

@@ -37,6 +37,7 @@ import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.data.network.UserApi
 import com.oceantech.tracking.databinding.FragmentProfileBinding
+import com.oceantech.tracking.ui.MainActivity
 import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.security.LoginActivity
 import com.oceantech.tracking.utils.checkStatusApiRes
@@ -88,6 +89,9 @@ class ProfileFragment @Inject constructor() :
         }
         views.setting.language.setOnClickListener {
             showMenu(views.setting.language, R.menu.menu_main)
+        }
+        views.setting.info.setOnClickListener {
+            (activity as MainActivity).navigateTo(R.id.action_nav_profileFragment_to_informationFragment)
         }
         profileViewModel.handle(ProfileViewAction.GetCurrentUser)
         profileViewModel.observeViewEvents {

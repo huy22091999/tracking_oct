@@ -40,10 +40,12 @@ import com.oceantech.tracking.ui.profile.ProfileViewModel
 import com.oceantech.tracking.ui.profile.ProfileViewState
 import com.oceantech.tracking.ui.security.LoginActivity
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory, ProfileViewModel.Factory {
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
+    ProfileViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
+
     @Inject
     lateinit var profileViewModelFactory: ProfileViewModel.Factory
 
@@ -93,6 +95,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     private fun setupToolbar() {
         toolbar = views.toolbar
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
@@ -104,18 +107,25 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(
-            navController.graph
+            setOf(
+                R.id.nav_HomeFragment,
+                R.id.nav_usersFragment,
+                R.id.nav_profileFragment,
+                R.id.nav_timeSheetFragment,
+                R.id.nav_trackingFragment
+            )
         )
 
         bottomNavigationView.setupWithNavController(navController)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        views.toolbarTitle.text=toolbar.title
         //toolbar.setupWithNavController(navController, appBarConfiguration)
-//        navController.addOnDestinationChangedListener { _, destination, _ ->
-//            views.title.text = destination.label
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            views.toolbarTitle.text = destination.label
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     fun navigateTo(fragmentId: Int) {
