@@ -18,11 +18,13 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <ImageView
+            android:id="@+id/image_user"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/profile_round" />
 
         <TextView
+            android:id="@+id/name_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="\@appsnippuser"
@@ -30,6 +32,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/email_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

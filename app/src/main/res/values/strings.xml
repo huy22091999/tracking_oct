@@ -27,7 +27,7 @@
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
-    <string name="forget_password">Quên mật khẩu</string>
+    <string name="forget_password">Forget Password</string>
     <string name="channel_description">Notification</string>
     <string name="category_theme">News topic</string>
     <string name="home_everyone">Let\'s all work together to prevent dengue fever !</string>
@@ -80,4 +80,10 @@
     <string name="confirmPassword" translatable="false">Confirm Password</string>
     <string name="information">Personal information</string>
     <string name="language">language</string>
+    <string name="success">Success</string>
+    <string name="http200">ok</string>
+    <string name="http401">Unauthorized</string>
+    <string name="http403">Forbidden</string>
+    <string name="http404">Not Found link</string>
+    <string name="http500">Internal Server Error</string>
 </resources>

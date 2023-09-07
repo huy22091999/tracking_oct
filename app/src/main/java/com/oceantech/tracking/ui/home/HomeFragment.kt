@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.mvrx.activityViewModel
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
@@ -52,6 +53,8 @@ class HomeFragment @Inject constructor(val api: UserApi) :
             is HomeViewEvent.ResetLanguege -> {
                 views.title.text = getString(R.string.home_everyone)
                 views.homeToCategory.text = getString(R.string.home_button)
+                val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
+                actionBar?.setTitle(R.string.menu_home)
             }
 
             else -> {}

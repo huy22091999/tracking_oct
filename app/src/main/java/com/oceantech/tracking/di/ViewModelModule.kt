@@ -1,9 +1,7 @@
 package com.oceantech.tracking.di
 
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.oceantech.tracking.ui.home.HomeFragment
 import com.oceantech.tracking.ui.home.TestViewModel
 import dagger.Binds
 import dagger.Module

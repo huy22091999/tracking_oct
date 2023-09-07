@@ -6,7 +6,7 @@ import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
 import com.oceantech.tracking.data.model.User
 
-class ProfileViewState(
+data class ProfileViewState(
     val userCurrent: Async<User> = Uninitialized
 ) : MvRxState {
     fun isLoadding() =

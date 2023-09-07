@@ -80,4 +80,10 @@
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
     <string name="information">Thông tin cá nhân</string>
     <string name="language">Ngôn ngữ</string>
+    <string name="success">Hoàn thành</string>
+    <string name="http200">ok</string>
+    <string name="http401">Unauthorized</string>
+    <string name="http403">Forbidden</string>
+    <string name="http404">Not Found link</string>
+    <string name="http500">Internal Server Error</string>
 </resources>

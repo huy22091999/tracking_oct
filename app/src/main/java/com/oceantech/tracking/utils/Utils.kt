@@ -6,6 +6,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.airbnb.mvrx.Fail
+import com.oceantech.tracking.R
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -46,5 +48,27 @@ fun <T : Fragment> AppCompatActivity.addFragmentToBackstack(
     supportFragmentManager.commitTransaction(allowStateLoss) {
         option?.invoke(this)
         replace(frameId, fragmentClass,null, tag).addToBackStack(tag)
+    }
+}
+fun<T> checkStatusApiRes(err: Fail<T>): Int {
+    return when(err.error.message!!.trim()){
+        "HTTP 200" ->{
+            R.string.http200
+        }
+        "HTTP 401" ->{
+            R.string.http401
+        }
+        "HTTP 403" ->{
+            R.string.http403
+        }
+        "HTTP 404" ->{
+            R.string.http404
+        }
+        "HTTP 500" ->{
+            R.string.http500
+        }
+        else -> {
+            R.string.http500
+        }
     }
 }
