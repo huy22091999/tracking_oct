@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#EFEFEF"
+    android:orientation="vertical"
     tools:context=".ui.information.InformationFragment">
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,16 +19,33 @@
         android:orientation="vertical"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image_user"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/profile_round" />
+            android:layout_gravity="center"
+            android:src="@drawable/profile_round"
+            app:civ_border_color="@color/red"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/edt_photo"
+            android:src="@drawable/img_camera"
+            app:layout_constraintBottom_toBottomOf="@+id/image_user"
+            app:layout_constraintEnd_toEndOf="@+id/image_user" />
 
 
-    <include android:id="@+id/setting"
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <include
+        android:id="@+id/setting"
         layout="@layout/content_profile" />
 
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_profile"
+    android:label="@string/menu_profile"
+    app:startDestination="@id/nav_profileFragment">
+    <fragment
+        android:id="@+id/nav_profileFragment"
+        android:name="com.oceantech.tracking.ui.profile.ProfileFragment"
+        android:label="@string/fragment_profile"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_nav_profileFragment_to_informationFragment"
+            app:destination="@id/informationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/informationFragment"
+        android:name="com.oceantech.tracking.ui.information.InformationFragment"
+        android:label="@string/information"
+        tools:layout="@layout/fragment_information">
+
+        <argument
+            android:name="ReviveUser"
+            app:argType="com.oceantech.tracking.data.model.User" />
+    </fragment>
+</navigation>

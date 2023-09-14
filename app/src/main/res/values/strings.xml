@@ -86,4 +86,10 @@
     <string name="http403">Forbidden</string>
     <string name="http404">Not Found link</string>
     <string name="http500">Internal Server Error</string>
+    <string name="acc">Account</string>
+    <string name="gender">Gender</string>
+    <string name="university">University<font color="red">*</font></string>
+    <string name="dob">Date of birth<font color="red">*</font></string>
+    <string name="prompt_country">chọn quốc gia</string>
+    <string name="address">Address<font color="red">*</font></string>
 </resources>

@@ -32,7 +32,7 @@ data class Pageable(
     @SerializedName("pageIndex")
     val pageNumber: Int? = null,
 
-    @SerializedName("pageSize")
+    @SerializedName("size")
     val pageSize: Int? = null
 
 )

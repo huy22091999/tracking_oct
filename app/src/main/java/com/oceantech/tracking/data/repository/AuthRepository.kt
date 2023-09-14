@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthRepository @Inject constructor(
+class AuthRepository (
     val api: AuthApi,
     private val preferences: UserPreferences
 ) {

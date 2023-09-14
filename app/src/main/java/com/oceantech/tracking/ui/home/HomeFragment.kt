@@ -29,9 +29,9 @@ class HomeFragment @Inject constructor(val api: UserApi) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        views.homeToCategory.setOnClickListener {
-            (activity as MainActivity).navigateTo(R.id.action_HomeFragment_to_nav_trackingFragment)
-        }
+//        views.homeToCategory.setOnClickListener {
+//            (activity as MainActivity).navigateTo(R.id.action_HomeFragment_to_nav_trackingFragment)
+//        }
         viewModel.observeViewEvents {
             handleEvent(it)
         }

@@ -2,6 +2,7 @@ package com.oceantech.tracking.data.network
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.oceantech.tracking.R
 
 
@@ -33,6 +34,7 @@ class SessionManager(context: Context) {
     }
 
     fun fetchAuthToken(): String? {
+        Log.e("TOKEN", "fetchAuthToken: "+ prefs.getString(USER_TOKEN, null))
         return prefs.getString(USER_TOKEN, null)
     }
     fun saveLanguage(language: String) {

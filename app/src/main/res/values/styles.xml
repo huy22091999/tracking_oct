@@ -2,10 +2,10 @@
 <resources>
 
     <style name="NimpeInputLayoutLogin" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-        <item name="boxCornerRadiusTopStart">24dp</item>
-        <item name="boxCornerRadiusTopEnd">24dp</item>
-        <item name="boxCornerRadiusBottomStart">24dp</item>
-        <item name="boxCornerRadiusBottomEnd">24dp</item>
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
         <item name="boxStrokeColor">@color/boxstroke_outline</item>
         <item name="android:layout_height">48dp</item>
     </style>
@@ -59,10 +59,10 @@
     </style>
 
     <style name="profileDetailsLayout" parent="parent">
-        <item name="android:layout_marginTop">20dp</item>
-        <item name="android:layout_marginRight">20dp</item>
-        <item name="android:layout_marginLeft">20dp</item>
-        <item name="android:elevation">8dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:elevation">1dp</item>
         <item name="android:clickable">true</item>
         <item name="android:stateListAnimator">@drawable/shrink</item>
         <item name="android:focusable">true</item>
@@ -71,33 +71,36 @@
     </style>
 
     <style name="profileDetailsImage">
-        <item name="android:layout_width">45dp</item>
-        <item name="android:layout_height">45dp</item>
-        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:layout_marginStart">15dp</item>
         <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerInParent">true</item>
     </style>
 
     <style name="profileNextImage">
-        <item name="android:layout_width">45dp</item>
-        <item name="android:layout_height">45dp</item>
-        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_centerInParent">true</item>
         <item name="android:layout_alignParentRight">true</item>
     </style>
 
     <style name="profileDetailsTextMain" parent="viewParent">
         <item name="android:textColor">@color/blackTextColor</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="profileDetailsMiniText" parent="viewParent">
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:textColor">@color/blackTextColor</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textColor">@color/profileEditTextColor</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
     </style>
 
     <style name="proifleDetailsView">
@@ -106,4 +109,14 @@
         <item name="android:background">@color/white</item>
         <item name="android:layout_marginTop">5dp</item>
     </style>
+
+    <style name="SpinnerDatePickerStyle">
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:calendarViewShown">false</item>
+    </style>
+
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:textColor">@android:color/black</item> <!-- Đặt màu chữ là đen -->
+    </style>
+
 </resources>

@@ -41,7 +41,7 @@
     <string name="settings">Cài đặt</string>
     <string name="warning_dengue">Ứng dụng đang quét các ổ dịch xung quanh bạn !</string>
     <string name="password">Mật khẩu</string>
-    <string name="email">Email</string>
+    <string name="email">Email<font color="red">*</font></string>
     <string name="send">Gửi</string>
     <string name="signin">Đăng kí tài khoản</string>
     <string name="last_name">Tên</string>
@@ -86,4 +86,10 @@
     <string name="http403">Forbidden</string>
     <string name="http404">Not Found link</string>
     <string name="http500">Internal Server Error</string>
+    <string name="acc">Tài khoản</string>
+    <string name="gender">Giới tính</string>
+    <string name="university">Trường đại học<font color="red">*</font></string>
+    <string name="dob">Ngày sinh<font color="red">*</font></string>
+    <string name="prompt_country">chọn quốc gia</string>
+    <string name="address">Địa chỉ<font color="red">*</font></string>
 </resources>

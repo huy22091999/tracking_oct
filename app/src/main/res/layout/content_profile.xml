@@ -10,27 +10,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
         android:orientation="vertical">
 
         <RelativeLayout style="@style/profileDetailsLayout">
 
-            <ImageView
-                android:id="@+id/nameImageView"
-                style="@style/profileDetailsImage"
-                android:src="@drawable/ic_person" />
-
             <TextView
                 android:id="@+id/nameTextView"
                 style="@style/profileDetailsTextMain"
-                android:layout_toRightOf="@id/nameImageView"
-                android:text="Name" />
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="15dp"
+                android:text="@string/acc" />
 
             <TextView
+                android:id="@+id/acc"
                 style="@style/profileDetailsMiniText"
-                android:layout_toRightOf="@id/nameImageView"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="15dp"
                 android:text="developer" />
 
         </RelativeLayout>
@@ -38,85 +36,166 @@
 
         <RelativeLayout style="@style/profileDetailsLayout">
 
-            <ImageView
-                android:id="@+id/mobileImageView"
-                style="@style/profileDetailsImage"
-                android:src="@drawable/ic_mobile" />
+            <TextView
+                android:id="@+id/display_name"
+                style="@style/profileDetailsTextMain"
+                android:layout_alignLeft="@+id/username_til"
+                android:layout_marginTop="15dp"
+                android:text="@string/display_name" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/username_til"
+                style="@style/NimpeInputLayoutLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/display_name"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="20dp"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
+                    android:enabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/account"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="15dp"
+            style="@style/profileDetailsLayout"
+            android:orientation="vertical">
+
 
             <TextView
+                android:id="@+id/gender"
                 style="@style/profileDetailsTextMain"
-                android:layout_toRightOf="@id/mobileImageView"
-                android:text="Mobile" />
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/gender" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editMobileNumber"
-                style="@style/profileDetailsMiniText"
-                android:layout_toRightOf="@id/mobileImageView"
-                android:background="@color/transparent"
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/gender_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 android:enabled="false"
-                android:focusable="false"
-                android:text="+91-8129999999" />
-
-        </RelativeLayout>
-
-        <RelativeLayout style="@style/profileDetailsLayout">
-
-            <ImageView
-                android:id="@+id/emailImageView"
-                style="@style/profileDetailsImage"
-                android:src="@drawable/ic_email" />
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp" />
 
             <TextView
+                android:id="@+id/text_university"
                 style="@style/profileDetailsTextMain"
-                android:layout_toRightOf="@id/emailImageView"
-                android:text="Email" />
+                android:layout_below="@+id/gender_spinner"
+                android:layout_alignLeft="@+id/gender_spinner"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/university" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/university"
+                style="@style/NimpeInputLayoutLogin"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_university"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/university"
+                    android:enabled="false"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                style="@style/profileDetailsMiniText"
-                android:layout_toRightOf="@id/emailImageView"
-                android:text="developer@appsnipp.com" />
-
-        </RelativeLayout>
-
-        <RelativeLayout style="@style/profileDetailsLayout">
-
-            <ImageView
-                android:id="@+id/addressImageView"
-                style="@style/profileDetailsImage"
-                android:src="@drawable/ic_address" />
-
-            <TextView
+                android:id="@+id/text_email"
                 style="@style/profileDetailsTextMain"
-                android:layout_toRightOf="@id/addressImageView"
-                android:text="Address" />
+                android:layout_below="@+id/gender_spinner"
+                android:layout_alignLeft="@+id/gender_spinner"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/email" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email"
+                style="@style/NimpeInputLayoutLogin"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:enabled="false"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_email"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp">
+
+                <TextView
+                    android:id="@+id/text_dob"
+                    style="@style/profileDetailsTextMain"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/dob" />
+
+                <com.jaredrummler.materialspinner.MaterialSpinner
+                    android:id="@+id/spinner_date_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown"
+                    android:theme="@style/CustomSpinnerStyle" />
+            </RelativeLayout>
 
             <TextView
-                style="@style/profileDetailsMiniText"
-                android:layout_toRightOf="@id/addressImageView"
-                android:text="Avenue 2nd Street NW SY." />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_marginBottom="45dp"
-            style="@style/profileDetailsLayout">
-
-            <ImageView
-                android:id="@+id/dobImageView"
-                style="@style/profileDetailsImage"
-                android:src="@drawable/ic_dob" />
-
-            <TextView
+                android:id="@+id/text_address"
                 style="@style/profileDetailsTextMain"
-                android:layout_toRightOf="@id/dobImageView"
-                android:text="D.O.B" />
+                android:layout_below="@+id/gender_spinner"
+                android:layout_alignLeft="@+id/gender_spinner"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/address" />
 
-            <TextView
-                style="@style/profileDetailsMiniText"
-                android:layout_toRightOf="@id/dobImageView"
-                android:text="12-05-1990" />
-
-        </RelativeLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/address"
+                style="@style/NimpeInputLayoutLogin"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                app:hintEnabled="false">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/address"
+                    android:enabled="false"
+                    tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
 
     </LinearLayout>

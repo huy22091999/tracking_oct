@@ -4,7 +4,7 @@
     tools:context="com.oceantech.tracking.MainActivity">
     <item
 
-        android:icon="@drawable/img_flag_vi"
+        android:icon="@drawable/img_flag_en"
         android:id="@+id/action_en"
         app:showAsAction="collapseActionView"
         android:title="en" />

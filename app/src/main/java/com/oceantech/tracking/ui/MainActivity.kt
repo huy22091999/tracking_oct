@@ -2,52 +2,48 @@ package com.oceantech.tracking.ui
 
 import android.annotation.SuppressLint
 import android.app.*
-import android.content.Intent
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.*
-import android.widget.LinearLayout
-import android.widget.PopupWindow
-import androidx.annotation.MenuRes
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.core.view.MenuItemCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.viewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
-import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.home.HomeViewState
 import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.utils.LocalHelper
-import com.google.android.material.navigation.NavigationView
 import com.oceantech.tracking.databinding.ActivityMainBinding
 import java.util.*
 import javax.inject.Inject
-
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.ui.home.TestViewModel
+import com.oceantech.tracking.ui.information.InformationViewModel
+import com.oceantech.tracking.ui.information.InformationViewState
 import com.oceantech.tracking.ui.profile.ProfileViewModel
 import com.oceantech.tracking.ui.profile.ProfileViewState
-import com.oceantech.tracking.ui.security.LoginActivity
+import com.oceantech.tracking.ui.users.UserViewState
+import com.oceantech.tracking.ui.users.UsersViewModel
+import com.oceantech.tracking.ui.users.UsersViewModel_Factory
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
-    ProfileViewModel.Factory {
+    ProfileViewModel.Factory, InformationViewModel.Factory, UsersViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
 
     @Inject
     lateinit var profileViewModelFactory: ProfileViewModel.Factory
+
+    @Inject
+    lateinit var informationViewModelFactory: InformationViewModel.Factory
+
+    @Inject
+    lateinit var usersviewmodelFactory: UsersViewModel.Factory
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -60,6 +56,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     @Inject
     lateinit var homeViewModelFactory: HomeViewModel.Factory
+
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -94,6 +91,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     private fun setupToolbar() {
         toolbar = views.toolbar
+        toolbar.title = ""
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
@@ -105,27 +103,25 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_HomeFragment,
-                R.id.nav_usersFragment,
-                R.id.nav_profileFragment,
                 R.id.nav_timeSheetFragment,
-                R.id.nav_trackingFragment
+                R.id.nav_trackingFragment,
+                R.id.nav_usersFragment,
+                R.id.nav_profileFragment
             )
         )
-
         bottomNavigationView.setupWithNavController(navController)
-//        views.toolbarTitle.text=toolbar.title
-        //toolbar.setupWithNavController(navController, appBarConfiguration)
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             views.toolbarTitle.text = destination.label
         }
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     fun navigateTo(fragmentId: Int) {
@@ -134,6 +130,14 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     override fun create(initialState: ProfileViewState): ProfileViewModel {
         return profileViewModelFactory.create(initialState)
+    }
+
+    override fun create(initialState: InformationViewState): InformationViewModel {
+        return informationViewModelFactory.create(initialState)
+    }
+
+    override fun create(initialState: UserViewState): UsersViewModel {
+        return usersviewmodelFactory.create(initialState)
     }
 
 

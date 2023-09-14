@@ -3,29 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="#EFEFEF"
     android:orientation="vertical"
-    tools:context=".ui.users.UsersFragment"
-    >
-        <com.google.android.material.textview.MaterialTextView
-            android:textColor="@color/gray"
-            android:textStyle="bold"
-            android:textSize="24dp"
-            android:layout_marginBottom="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    android:padding="16dp"
+    tools:context=".ui.users.UsersFragment">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/gray"
+        android:textSize="24dp"
+        android:textStyle="bold" />
     <!-- TODO: Update blank fragment layout -->
-<!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-<!--        android:id="@+id/swipeRefresh"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:paddingTop="8dp"
-            android:id="@+id/recycler_view"
-            tools:listitem="@layout/item_health_organization"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+    <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+    <!--        android:id="@+id/swipeRefresh"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        tools:listitem="@layout/user_item" />
+    <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
 </LinearLayout>

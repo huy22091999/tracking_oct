@@ -5,56 +5,104 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
+import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.databinding.FragmentUsersBinding
+import com.oceantech.tracking.ui.profile.ProfileFragmentDirections
+import com.oceantech.tracking.utils.checkStatusApiRes
+import timber.log.Timber
+import javax.inject.Inject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [UsersFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class UsersFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+class UsersFragment @Inject constructor() : TrackingBaseFragment<FragmentUsersBinding>() {
+    private val usersViewModel: UsersViewModel by activityViewModel()
+    lateinit var adapter: UserAdapter
+    private var role: String = "ROLE_USER"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        usersViewModel.handle(UsersViewAction.RefeshUserAction(lifecycleScope))
+
+
+    }
+
+    private fun handleEvents(it: UsersViewEvent) {
+        when (it) {
+            is UsersViewEvent.ReturnDetailViewEvent -> {
+                Timber.e("InformationFragment3: ${it.user}")
+                val action =
+                    UsersFragmentDirections.actionNavUsersFragmentToInformationFragment3(it.user)
+                findNavController().navigate(action)
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_users, container, false)
+
+    override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentUsersBinding {
+        return FragmentUsersBinding.inflate(inflater, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UsersFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UsersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        usersViewModel.observeViewEvents {
+            if (it != null) {
+                Timber.e("InformationFragment3:")
+                handleEvents(it)
             }
+        }
+        setUpRCV()
+    }
+
+    private fun setUpRCV() {
+        adapter = UserAdapter {
+            //usersViewModel.handleReturnDetailUser(it)
+            action(it)
+        }
+        views.recyclerView.setHasFixedSize(true)
+        views.recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        views.recyclerView.adapter = adapter
+    }
+
+    private val action: (User) -> Unit = { user ->
+        if (role != "ROLE_USER") {
+            usersViewModel.handleReturnDetailUser(user)
+        }else{
+            Toast.makeText(requireActivity(), "Quyền truy cập bị từ chối", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    override fun invalidate() = withState(usersViewModel) {
+        when (it.pageUsers) {
+            is Success -> {
+                val pageUser = it.pageUsers.invoke()
+                adapter.submitData(lifecycle, it.pageUsers.invoke())
+                //views.swipeLayout.isRefreshing = false
+                Timber.e("UsersFragment Success: $pageUser")
+                Toast.makeText(requireContext(), getString(R.string.success), Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            is Fail -> {
+                Timber.e("UsersFragment invalidate Fail:")
+                Toast.makeText(
+                    requireContext(),
+                    getString(checkStatusApiRes(it.pageUsers)),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> {}
+        }
     }
 }

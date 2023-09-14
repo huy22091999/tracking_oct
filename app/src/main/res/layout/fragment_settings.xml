@@ -13,7 +13,8 @@
         android:layout_marginTop="10dp"
         android:orientation="vertical">
 
-        <RelativeLayout android:id="@+id/info"
+        <RelativeLayout
+            android:id="@+id/info"
             style="@style/profileDetailsLayout">
 
             <ImageView
@@ -22,8 +23,10 @@
                 android:src="@drawable/ic_per" />
 
             <TextView
+                android:layout_marginStart="10dp"
                 android:id="@+id/title_info"
                 style="@style/profileDetailsTextMain"
+                android:layout_centerInParent="true"
                 android:layout_toRightOf="@id/nameImageView"
                 android:text="@string/information" />
 
@@ -33,7 +36,8 @@
 
         </RelativeLayout>
 
-        <RelativeLayout android:id="@+id/language"
+        <RelativeLayout
+            android:id="@+id/language"
             style="@style/profileDetailsLayout">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -43,60 +47,19 @@
                 android:src="@drawable/ic_lang" />
 
             <TextView
+                android:layout_marginStart="10dp"
                 android:id="@+id/title_lang"
                 style="@style/profileDetailsTextMain"
+                android:layout_centerInParent="true"
                 android:layout_toRightOf="@id/image_language"
                 android:text="@string/language" />
+
             <ImageView
                 style="@style/profileNextImage"
                 android:src="@drawable/ic_next" />
 
 
         </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/logout"
-            style="@style/profileDetailsLayout">
-
-            <ImageView
-                android:id="@+id/image_logout"
-                style="@style/profileDetailsImage"
-                android:src="@drawable/ic_logout" />
-
-            <TextView
-                android:id="@+id/title_logout"
-                style="@style/profileDetailsTextMain"
-                android:layout_toRightOf="@id/image_logout"
-                android:text="@string/logout" />
-            <ImageView
-                style="@style/profileNextImage"
-                android:src="@drawable/ic_next" />
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/exit"
-            style="@style/profileDetailsLayout">
-
-            <ImageView
-                android:id="@+id/image_exit"
-                style="@style/profileDetailsImage"
-                android:src="@drawable/ic_exit1" />
-
-            <TextView
-                android:id="@+id/title_exit"
-                style="@style/profileDetailsTextMain"
-                android:layout_toRightOf="@id/image_exit"
-                android:text="@string/exit" />
-
-            <ImageView
-                style="@style/profileNextImage"
-                android:src="@drawable/ic_next" />
-
-        </RelativeLayout>
-
 
         <RelativeLayout style="@style/profileDetailsLayout">
 
@@ -106,8 +69,10 @@
                 android:src="@drawable/ic_forgot_password" />
 
             <TextView
+                android:layout_marginStart="10dp"
                 android:id="@+id/title_forget"
                 style="@style/profileDetailsTextMain"
+                android:layout_centerInParent="true"
                 android:layout_toRightOf="@id/dobImageView"
                 android:text="@string/forget_password" />
 
@@ -117,6 +82,39 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/logout"
+            style="@style/profileDetailsLayout">
+            <ImageView
+                android:id="@+id/image_logout"
+                style="@style/profileNextImage"
+                android:src="@drawable/ic_logout" />
+            <TextView
+                android:id="@+id/title_logout"
+                style="@style/profileDetailsTextMain"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="15dp"
+                android:text="@string/logout" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/exit"
+            style="@style/profileDetailsLayout">
+
+            <ImageView
+                android:id="@+id/image_exit"
+                style="@style/profileNextImage"
+                android:src="@drawable/ic_exit1" />
+
+            <TextView
+                android:id="@+id/title_exit"
+                style="@style/profileDetailsTextMain"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="15dp"
+                android:text="@string/exit" />
+        </RelativeLayout>
 
     </LinearLayout>
 

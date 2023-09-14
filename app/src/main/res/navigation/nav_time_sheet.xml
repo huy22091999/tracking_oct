@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:label="@string/menu_time_sheet"
+    android:id="@+id/nav_time_sheet"
+    app:startDestination="@id/nav_timeSheetFragment">
+
+    <fragment
+        android:id="@+id/nav_timeSheetFragment"
+        android:name="com.oceantech.tracking.ui.timesheet.TimeSheetFragment"
+        android:label="@string/menu_time_sheet"
+        tools:layout="@layout/fragment_time_sheet" />
+</navigation>

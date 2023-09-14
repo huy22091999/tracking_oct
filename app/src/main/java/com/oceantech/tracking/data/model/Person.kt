@@ -10,14 +10,14 @@ data class Person(
     @SerializedName("firstName")
     val firstName:String?=null,
     @SerializedName("gender")
-    val gender:String?=null,
+    var gender:String?=null,
     @SerializedName("id")
     val id:String?=null,
     @SerializedName("lastName")
     val lastName:String?=null,
 
     @SerializedName("phoneNumber")
-    val phoneNumber:String?=null,
+    var phoneNumber:String?=null,
     @SerializedName("userId")
     val userId:String?=null
     )

@@ -1,72 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_HomeFragment">
+    app:startDestination="@id/nav_home">
 
-    <fragment
-        android:id="@+id/nav_HomeFragment"
-        android:name="com.oceantech.tracking.ui.home.HomeFragment"
-        android:label="@string/fragment_home"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_HomeFragment_to_nav_trackingFragment"
-            app:destination="@id/nav_trackingFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_timeSheetFragment"
-            app:destination="@id/nav_timeSheetFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_usersFragment"
-            app:destination="@id/nav_usersFragment" />
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_profileFragment"
-            app:destination="@id/nav_profileFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_trackingFragment"
-        android:name="com.oceantech.tracking.ui.tracking.TrackingFragment"
-        android:label="@string/menu_tracking"
-        tools:layout="@layout/fragment_tracking">
-
-    </fragment>
-    <fragment
-        android:id="@+id/nav_timeSheetFragment"
-        android:name="com.oceantech.tracking.ui.timesheet.TimeSheetFragment"
-        android:label="@string/menu_time_sheet"
-        tools:layout="@layout/fragment_time_sheet" />
-    <fragment
-        android:id="@+id/nav_usersFragment"
-        android:name="com.oceantech.tracking.ui.users.UsersFragment"
-        android:label="@string/fragment_users"
-        tools:layout="@layout/fragment_users">
-        <action
-            android:id="@+id/action_nav_usersFragment_to_listNewsFragment"
-            app:destination="@id/detailUsersFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/detailUsersFragment"
-        android:name="com.oceantech.tracking.ui.users.DetailUsersFragment"
-        android:label="@string/fragment_users"
-        tools:layout="@layout/fragment_detail_users">
-        <argument
-            android:name="new_id"
-            app:argType="string" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_profileFragment"
-        android:name="com.oceantech.tracking.ui.profile.ProfileFragment"
-        android:label="@string/fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_nav_profileFragment_to_informationFragment"
-            app:destination="@id/informationFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/informationFragment"
-        android:name="com.oceantech.tracking.ui.information.InformationFragment"
-        android:label="@string/information"
-        tools:layout="@layout/fragment_information" />
+    <include app:graph="@navigation/nav_home" />
+    <include app:graph="@navigation/nav_time_sheet" />
+    <include app:graph="@navigation/nav_tracking" />
+    <include app:graph="@navigation/nav_users" />
+    <include app:graph="@navigation/nav_profile" />
 
 </navigation>

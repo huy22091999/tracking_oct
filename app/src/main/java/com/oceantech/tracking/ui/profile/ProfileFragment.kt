@@ -1,6 +1,5 @@
 package com.oceantech.tracking.ui.profile
 
-import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -10,19 +9,16 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getDrawable
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.ViewModel
-import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.fragment.findNavController
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
@@ -35,19 +31,15 @@ import com.oceantech.tracking.core.TrackingBaseFragment
 
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
-import com.oceantech.tracking.data.network.UserApi
 import com.oceantech.tracking.databinding.FragmentProfileBinding
 import com.oceantech.tracking.ui.MainActivity
-import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.security.LoginActivity
 import com.oceantech.tracking.utils.checkStatusApiRes
-import retrofit2.Call
-import retrofit2.Response
 import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 
-class ProfileFragment @Inject constructor() :
+class ProfileFragment :
     TrackingBaseFragment<FragmentProfileBinding>() {
     var user: User? = null
     var isEdit = false
@@ -72,6 +64,11 @@ class ProfileFragment @Inject constructor() :
         )
     }
 
+    override fun onStart() {
+        super.onStart()
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views.setting.logout.setOnClickListener {
@@ -91,8 +88,13 @@ class ProfileFragment @Inject constructor() :
             showMenu(views.setting.language, R.menu.menu_main)
         }
         views.setting.info.setOnClickListener {
-            (activity as MainActivity).navigateTo(R.id.action_nav_profileFragment_to_informationFragment)
+            user?.let { userProfile ->
+                val action = ProfileFragmentDirections.actionNavProfileFragmentToInformationFragment(userProfile)
+                findNavController().navigate(action)
+            }
         }
+
+
         profileViewModel.handle(ProfileViewAction.GetCurrentUser)
         profileViewModel.observeViewEvents {
         }
@@ -110,7 +112,6 @@ class ProfileFragment @Inject constructor() :
             true
         )
         popup.elevation = 20F
-        //val drawable=ContextCompat.getDrawable(requireContext(),R.drawable.backgound_box)
         popup.setBackgroundDrawable(getDrawable(requireContext(), R.drawable.backgound_box))
         popup.showAsDropDown(v, 280, -140, Gravity.CENTER_HORIZONTAL)
         view.findViewById<LinearLayout>(R.id.to_lang_en).setOnClickListener {
@@ -144,44 +145,51 @@ class ProfileFragment @Inject constructor() :
         bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav)
 
         val menu: Menu = bottomNavigationView.menu
-        menu.findItem(R.id.nav_HomeFragment).title = getString(R.string.menu_home)
-        menu.findItem(R.id.nav_trackingFragment).title = getString(R.string.menu_tracking)
-        menu.findItem(R.id.nav_usersFragment).title = getString(R.string.menu_users)
-        menu.findItem(R.id.nav_timeSheetFragment).title = getString(R.string.menu_time_sheet)
-        menu.findItem(R.id.nav_profileFragment).title = getString(R.string.menu_profile)
+        menu.findItem(R.id.nav_home).title = getString(R.string.menu_home)
+        menu.findItem(R.id.nav_tracking).title = getString(R.string.menu_tracking)
+        menu.findItem(R.id.nav_users).title = getString(R.string.menu_users)
+        menu.findItem(R.id.nav_time_sheet).title = getString(R.string.menu_time_sheet)
+        menu.findItem(R.id.nav_profile).title = getString(R.string.menu_profile)
 
         views.setting.titleInfo.text = getString(R.string.information)
         views.setting.titleExit.text = getString(R.string.exit)
         views.setting.titleForget.text = getString(R.string.forget_password)
         views.setting.titleLogout.text = getString(R.string.logout)
         views.setting.titleLang.text = getString(R.string.language)
-
-        //menu.findItem(R.id.exit).title = getString(R.string.exit)
-        //menu.findItem(R.id.logout).title = getString(R.string.logout)
-//        menu.findItem(R.id.nav_change_langue).title =
-//            if (lang == "en") getString(R.string.en) else getString(R.string.vi)
     }
 
-    override fun invalidate() = withState(profileViewModel){
-        when(it.userCurrent){
-            is Success ->{
+    override fun invalidate() = withState(profileViewModel) {
+        when (it.userCurrent) {
+            is Success -> {
                 user = it.userCurrent.invoke()
                 Timber.e("UsersFragment Success: $user")
-                Glide.with(requireContext()).load("user.link").placeholder(R.drawable.ic_person).into(views.imageUser)
+                Glide.with(requireContext()).load("user.link").placeholder(R.drawable.ic_person)
+                    .into(views.imageUser)
                 views.nameUser.text = user?.displayName
-                views.emailUser.text = user?.email
 
                 if (isEdit) {
                     isEdit = false
                     //handleEditUser()
                 }
-                Toast.makeText(requireContext(), getString(R.string.success), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.success), Toast.LENGTH_SHORT)
+                    .show()
             }
+
             is Fail -> {
-                Toast.makeText(requireContext(), getString(checkStatusApiRes(it.userCurrent)), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(checkStatusApiRes(it.userCurrent)),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+
             else -> {}
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
     }
 
 
