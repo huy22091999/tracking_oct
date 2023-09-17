@@ -162,6 +162,6 @@ dependencies {
 // image picker
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
-    implementation 'com.github.mahimrocky:EventCalender:v1.0.0'
-
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 }

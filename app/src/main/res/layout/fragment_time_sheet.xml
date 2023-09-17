@@ -9,13 +9,15 @@
     android:padding="24dp"
     tools:context=".ui.timesheet.TimeSheetFragment">
 
-    <com.skyhope.eventcalenderlibrary.CalenderEvent
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calender_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:mcv_selectionColor="#00F"
+        app:mcv_showOtherDates="all" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_checkin"
