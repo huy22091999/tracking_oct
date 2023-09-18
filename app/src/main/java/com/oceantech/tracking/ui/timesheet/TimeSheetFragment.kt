@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.airbnb.mvrx.activityViewModel
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.databinding.FragmentTimeSheetBinding
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -13,6 +14,8 @@ import javax.inject.Inject
 
 class TimeSheetFragment @Inject constructor() : TrackingBaseFragment<FragmentTimeSheetBinding>() {
 
+    val mViewModel: TimeSheetViewModel by activityViewModel()
+    private val selectedDates: MutableList<CalendarDay>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -26,27 +29,20 @@ class TimeSheetFragment @Inject constructor() : TrackingBaseFragment<FragmentTim
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val calenderEvent = views.calenderEvent
-        val selectedDates = arrayListOf(
-            CalendarDay.from(2023, 9, 16), // Ví dụ: Ngày 17/9/2023
-            CalendarDay.from(2023, 9, 15), // Ví dụ: Ngày 18/9/2023
-            // Thêm các ngày khác vào danh sách
-        )
-        val decorator = SelectedDateDecorator(requireActivity(), selectedDates)
-        calenderEvent.addDecorators(decorator)
+
+        listennerClickUI()
+
+        val decorator = selectedDates?.let { SelectedDateDecorator(requireActivity(), it) }
+    }
+        views.calenderEvent.addDecorators(decorator)
+    }
+
+    private fun listennerClickUI() {
         views.btnCheckin.setOnClickListener {
+            val decorator = SelectedDateDecorator(requireActivity(), selectedDates)
             val currentDate = CalendarDay.today()
             decorator.addSelectedDate(currentDate)
             calenderEvent.invalidateDecorators()
-        }
-        // Đặt sự kiện click cho các ngày
-        calenderEvent.setOnDateChangedListener { widget, date, selected ->
-            // Hiển thị toast với ngày đã bấm
-            Toast.makeText(
-                requireActivity(),
-                "Bạn đã chọn ngày: ${date.day}/${date.month}/${date.year}",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 }
