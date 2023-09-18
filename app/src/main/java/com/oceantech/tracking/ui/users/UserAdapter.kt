@@ -13,21 +13,18 @@ import com.bumptech.glide.Glide
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.model.User
 
+val USER_COMPARATOR = object : DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean =
+        // User ID serves as unique ID
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean =
+        // Compare full contents (note: Java users should call .equals())
+        oldItem == newItem
+}
+
 class UserAdapter(private val action: (User) -> Unit) :
     PagingDataAdapter<User, UserAdapter.ViewHolder>(USER_COMPARATOR) {
-    companion object {
-        private val USER_COMPARATOR = object :
-            DiffUtil.ItemCallback<User>() {          // callback này sẽ so sánh 2 item trc và mới có trùng nhau
-            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-    }
 
     inner class ViewHolder(private val itemView: View, private val action: (User) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
@@ -49,7 +46,9 @@ class UserAdapter(private val action: (User) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        val repoItem = getItem(position)
+        if (repoItem != null)
+            holder.onBind(repoItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,4 +57,6 @@ class UserAdapter(private val action: (User) -> Unit) :
             action
         )
     }
+
+
 }

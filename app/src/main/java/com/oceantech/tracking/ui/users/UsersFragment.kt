@@ -38,7 +38,6 @@ class UsersFragment @Inject constructor() : TrackingBaseFragment<FragmentUsersBi
     private fun handleEvents(it: UsersViewEvent) {
         when (it) {
             is UsersViewEvent.ReturnDetailViewEvent -> {
-                Timber.e("InformationFragment3: ${it.user}")
                 val action =
                     UsersFragmentDirections.actionNavUsersFragmentToInformationFragment3(it.user)
                 findNavController().navigate(action)
@@ -55,7 +54,6 @@ class UsersFragment @Inject constructor() : TrackingBaseFragment<FragmentUsersBi
         super.onViewCreated(view, savedInstanceState)
         usersViewModel.observeViewEvents {
             if (it != null) {
-                Timber.e("InformationFragment3:")
                 handleEvents(it)
             }
         }
@@ -86,8 +84,7 @@ class UsersFragment @Inject constructor() : TrackingBaseFragment<FragmentUsersBi
         when (it.pageUsers) {
             is Success -> {
                 val pageUser = it.pageUsers.invoke()
-                adapter.submitData(lifecycle, it.pageUsers.invoke())
-                //views.swipeLayout.isRefreshing = false
+                adapter.submitData(lifecycle,pageUser)
                 Timber.e("UsersFragment Success: $pageUser")
                 Toast.makeText(requireContext(), getString(R.string.success), Toast.LENGTH_SHORT)
                     .show()

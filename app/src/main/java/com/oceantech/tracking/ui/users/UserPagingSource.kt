@@ -12,7 +12,7 @@ class UserPagingSource(private val userApi: UserApi) : PagingSource<Int, User>()
 
     companion object {
         const val USER_START_PAGE_INDEX = 1;
-        const val NETWORK_PAGE_SIZE = 10;
+        const val NETWORK_PAGE_SIZE = 20;
     }
 
 

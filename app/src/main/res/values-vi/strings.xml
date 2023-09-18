@@ -92,4 +92,5 @@
     <string name="dob">Ngày sinh<font color="red">*</font></string>
     <string name="prompt_country">chọn quốc gia</string>
     <string name="address">Địa chỉ<font color="red">*</font></string>
+    <string name="checkInSuccess">Check-In Thành Công</string>
 </resources>
