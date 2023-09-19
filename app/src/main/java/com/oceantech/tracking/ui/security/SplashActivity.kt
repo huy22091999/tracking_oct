@@ -59,6 +59,7 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
             }
 
             is Fail -> {
+                sessionManager.clearAuthToken()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }

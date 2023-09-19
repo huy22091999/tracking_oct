@@ -12,13 +12,6 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-fun Location?.toText(): String {
-    return if (this != null) {
-        "($latitude, $longitude)"
-    } else {
-        "Unknown location"
-    }
-}
 @RequiresApi(Build.VERSION_CODES.O)
 fun Date.format(format: String? = null): String {
     val ld = toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
