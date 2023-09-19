@@ -29,13 +29,15 @@ import com.oceantech.tracking.ui.profile.ProfileViewModel
 import com.oceantech.tracking.ui.profile.ProfileViewState
 import com.oceantech.tracking.ui.timesheet.TimeSheetViewModel
 import com.oceantech.tracking.ui.timesheet.TimeSheetViewState
+import com.oceantech.tracking.ui.tracking.TrackingViewModel
+import com.oceantech.tracking.ui.tracking.TrackingViewState
 import com.oceantech.tracking.ui.users.UserViewState
 import com.oceantech.tracking.ui.users.UsersViewModel
 import com.oceantech.tracking.ui.users.UsersViewModel_Factory
 
 class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
     ProfileViewModel.Factory, InformationViewModel.Factory, UsersViewModel.Factory,
-    TimeSheetViewModel.Factory {
+    TimeSheetViewModel.Factory, TrackingViewModel.Factory {
     companion object {
         const val NOTIFICATION_CHANNEL_ID = "nimpe_channel_id"
     }
@@ -51,6 +53,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     @Inject
     lateinit var timeSheetViewModelFactory: TimeSheetViewModel.Factory
+
+    @Inject
+    lateinit var trackingViewModelFactory: TrackingViewModel.Factory
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -149,6 +154,10 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     override fun create(initialState: TimeSheetViewState): TimeSheetViewModel {
         return timeSheetViewModelFactory.create(initialState)
+    }
+
+    override fun create(initialState: TrackingViewState): TrackingViewModel {
+        return trackingViewModelFactory.create(initialState)
     }
 
 

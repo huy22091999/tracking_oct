@@ -34,7 +34,7 @@
     <string name="home_button">Dengue News</string>
     <string name="info_app">Thông tin ứng dụng</string>
     <string name="privacy">Dengue alert is a proactive alert application supporting people detect and avoid exposure to risk factors for dengue infection. At the same time, the application aslo provides necessary information on the causative agnet, measures and the nearest medical facilities to the people.</string>
-    <string name="note">Dengue Alert does not store or collect user location data.</string>
+    <string name="note">No detailed information available.</string>
     <string name="accept_use">Agree to use</string>
     <string name="title_category">Bệnh sốt xuất huyết</string>
     <string name="retry">Thử lại</string>
@@ -93,4 +93,7 @@
     <string name="prompt_country">chọn quốc gia</string>
     <string name="address">Address<font color="red">*</font></string>
     <string name="checkInSuccess">Check-In Successful</string>
+    <string name="checkInFail">Check-In Fail</string>
+    <string name="checked">You have already checked in for today</string>
+    <string name="fail">Fail</string>
 </resources>

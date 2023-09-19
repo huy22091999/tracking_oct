@@ -5,10 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
     android:padding="24dp"
     tools:context=".ui.timesheet.TimeSheetFragment">
-
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calender_event"
         android:layout_width="match_parent"

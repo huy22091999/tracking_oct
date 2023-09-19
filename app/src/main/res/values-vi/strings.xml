@@ -32,7 +32,7 @@
     <string name="category_theme">Chủ đề tin tức</string>
     <string name="home_everyone">Mọi người cùng chung tay phòng chống dịch bệnh sốt xuất huyết</string>
     <string name="home_button">Tin tức sốt xuất huyết</string>
-    <string name="note">Dengue Alert không thực hiện lưu trữ, thu thập dữ liệu vị tí của dười dùng.</string>
+    <string name="note">Không có thông tin chi tiết.</string>
     <string name="accept_use">Đồng ý sử dụng</string>
     <string name="title_category">Bệnh sốt xuất huyết</string>
     <string name="no_location_text">No location</string>
@@ -93,4 +93,7 @@
     <string name="prompt_country">chọn quốc gia</string>
     <string name="address">Địa chỉ<font color="red">*</font></string>
     <string name="checkInSuccess">Check-In Thành Công</string>
+    <string name="checkInFail">Check-In Thất bại</string>
+    <string name="checked">Bạn đã check-in cho hôm nay rồi</string>
+    <string name="fail">Thất bại</string>
 </resources>

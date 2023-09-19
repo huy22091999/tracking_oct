@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#EFEFEF"
-    tools:context=".ui.category.CategoryFragment">
+    android:orientation="vertical"
+    tools:context=".ui.tracking.TrackingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.google.android.material.textview.MaterialTextView
-        android:text="@string/category_theme"
-        android:id="@+id/title"
-        android:layout_margin="24dp"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:textColor="@color/gray"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <GridView
-        android:layout_margin="16dp"
-        android:id="@+id/grid_layout"
-        android:numColumns="2"
-        tools:listitem="@layout/category_list_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calender_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_selectionColor="@color/profileEditTextColor"
+            app:mcv_showOtherDates="all" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            tools:listitem="@layout/user_item" />
+    </LinearLayout>
+
+
+</ScrollView>

@@ -23,13 +23,12 @@ object DialogUtil {
         loadingDialog?.dismiss()
     }
 
-    fun showAlertDialogSuccess(context: Context, title: String) {
+    fun showAlertDialogSuccess(context: Context, heading: String,description:String) {
         PopupDialog.getInstance(context)
             .setStyle(Styles.SUCCESS)
-            .setHeading("Well Done")
+            .setHeading(heading)
             .setDescription(
-                "You have successfully" +
-                        " completed the task"
+                description
             )
             .setCancelable(false)
             .showDialog(object : OnDialogButtonClickListener() {
@@ -39,13 +38,12 @@ object DialogUtil {
             })
     }
 
-    fun showAlertDialogAlert(context: Context, title: String) {
+    fun showAlertDialogAlert(context: Context, heading: String,description:String) {
         PopupDialog.getInstance(context)
             .setStyle(Styles.ALERT)
-            .setHeading("Pending")
+            .setHeading(heading)
             .setDescription(
-                "You verification is under" +
-                        " observation. Try again later."
+                description
             )
             .setCancelable(false)
             .showDialog(object : OnDialogButtonClickListener() {

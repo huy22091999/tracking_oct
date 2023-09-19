@@ -2,6 +2,7 @@ package com.oceantech.tracking.ui.timesheet
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +20,12 @@ import com.oceantech.tracking.utils.StringUltis
 import com.oceantech.tracking.utils.checkStatusApiRes
 import com.oceantech.tracking.utils.convertToCalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import java.net.InetAddress
-import java.net.NetworkInterface
+import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.DayViewFacade
+
 import java.net.NetworkInterface.*
-import java.util.Enumeration
+import java.util.Calendar
 
 
 class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
@@ -51,23 +53,33 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupCalendar()
         state = GET_TIMESHEET
         timeSheetViewModel.handle(TimeSheetViewAction.getTimeSheetAction)
         listennerClickUI()
-
+        views.calenderEvent.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit()
         decorator = SelectedDateDecorator(requireActivity(), selectedDates)
         views.calenderEvent.addDecorators(decorator)
-        setupCalendar()
     }
 
     private fun setupCalendar() {
+        val selectedDateDecorator = object : DayViewDecorator {
+            override fun shouldDecorate(day: CalendarDay?): Boolean {
+                return day == CalendarDay.today()
+            }
+
+            override fun decorate(view: DayViewFacade?) {
+                view?.addSpan(ForegroundColorSpan(resources.getColor(R.color.red)))
+            }
+        }
+        views.calenderEvent.addDecorators(selectedDateDecorator)
         views.calenderEvent.setOnDateChangedListener { widget, date, selected ->
             val selectedTimeSheet = timeSheets.find {
                 it.dateAttendance!!.convertToCalendarDay(StringUltis.dateIso8601Format) == date
             }
             if (selectedTimeSheet != null) {
                 // Hiển thị thông báo nếu có TimeSheet và có message
-                val messageToDisplay = selectedTimeSheet?.message ?: "Không có thông tin chi tiết."
+                val messageToDisplay = selectedTimeSheet?.message ?:getString(R.string.note )
 
                 val alertDialog = AlertDialog.Builder(widget.context)
                     .setTitle("Thông báo")
@@ -83,7 +95,19 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     private fun listennerClickUI() {
         views.btnCheckin.setOnClickListener {
             state = CHECK_IN
-            timeSheetViewModel.handle(TimeSheetViewAction.checkinAction(getLocalIpAddress()))
+            val selectedTimeSheet = timeSheets.find {
+                it.dateAttendance!!.convertToCalendarDay(StringUltis.dateIso8601Format) == CalendarDay.today()
+            }
+            if (selectedTimeSheet == null) {
+                timeSheetViewModel.handle(TimeSheetViewAction.checkinAction(getLocalIpAddress()))
+            }else{
+                DialogUtil.showAlertDialogAlert(
+                    requireActivity(),
+                    getString(R.string.success)
+                    ,
+                    getString(R.string.checked)
+                )
+            }
         }
     }
 
@@ -100,14 +124,18 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
                 val currentDate = CalendarDay.today()
                 val checkIn = it.checkin.invoke()
                 timeSheets.add(checkIn)
-                DialogUtil.showAlertDialogSuccess(requireActivity(), getString(R.string.checkInSuccess))
-                if (checkIn.offline == true){
+                DialogUtil.showAlertDialogSuccess(
+                    requireActivity(),
+                    getString(R.string.success)
+                    ,
+                    getString(R.string.checkInSuccess)
+                )
+                if (checkIn.offline == true) {
                     offline = true
                     decorator.addSelectedDate(offline!!, currentDate)
                     views.calenderEvent.invalidateDecorators()
-                }
-                else{
-                    offline=false
+                } else {
+                    offline = false
                     decorator.addSelectedDate(offline!!, currentDate)
                     views.calenderEvent.invalidateDecorators()
                 }
@@ -115,7 +143,12 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
             }
 
             is Fail -> {
-                DialogUtil.showAlertDialogAlert(requireActivity(), getString(R.string.checkInSuccess))
+                DialogUtil.showAlertDialogAlert(
+                    requireActivity(),
+                    getString(R.string.fail)
+                    ,
+                    getString(R.string.checkInFail)
+                )
                 Toast.makeText(
                     requireContext(),
                     getString(checkStatusApiRes(it.checkin)),

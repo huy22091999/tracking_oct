@@ -1,17 +1,21 @@
 package com.oceantech.tracking.ui.timesheet
 
+import android.R.color
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.oceantech.tracking.R
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.spans.DotSpan
+
 
 class SelectedDateDecorator(
     private val context: Context,
     private val selectedDates: MutableList<CalendarDay>
 ) : DayViewDecorator {
     private var offline1 = false
+    private val currentDate=CalendarDay.today()
 
     override fun shouldDecorate(day: CalendarDay): Boolean {
         return selectedDates.contains(day)
@@ -26,6 +30,8 @@ class SelectedDateDecorator(
 
         ContextCompat.getDrawable(context, backgroundDrawableResId)
             ?.let { view?.setBackgroundDrawable(it) }
+
+            view!!.addSpan(DotSpan(5f, R.color.black))
     }
 
     // Function to add a new selected date
