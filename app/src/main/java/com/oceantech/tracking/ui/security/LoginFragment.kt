@@ -28,6 +28,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
     lateinit var username: String
     lateinit var password: String
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.handelReturnShowToolbar(false)
         views.loginSubmit.setOnClickListener {
             val resources = resources
             if (checkTILNull(resources, views.username) or checkTILNull(resources, views.password))
@@ -36,9 +37,6 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         }
         views.labelSigin.setOnClickListener {
             viewModel.handleReturnSignin()
-        }
-        views.labelResetPassword.setOnClickListener {
-            viewModel.handleReturnResetPass()
         }
         super.onViewCreated(view, savedInstanceState)
     }

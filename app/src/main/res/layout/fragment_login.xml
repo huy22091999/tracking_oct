@@ -1,39 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background1"
     android:orientation="vertical"
-    tools:context=".ui.security.LoginFragment">
-
-    <androidx.core.widget.NestedScrollView
-        android:fitsSystemWindows="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    tools:context=".ui.security.LoginFragment"
+    android:background="@color/background1">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <LinearLayout
-                android:id="@+id/space"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@color/nimpe_background_login"
-                android:orientation="horizontal" />
+            android:layout_height="match_parent">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="-20sp"
-                android:layout_below="@id/space"
-                android:background="@drawable/background_login"
                 android:orientation="vertical"
                 android:padding="24dp">
 
                 <ImageView
+                    android:layout_marginTop="100dp"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
@@ -46,7 +34,8 @@
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="@string/app_name"
-                    android:textColor="@color/text_message1"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_title2"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
@@ -73,7 +62,8 @@
                     android:layout_marginTop="16dp"
                     app:errorEnabled="true"
                     app:hintEnabled="false"
-                    app:passwordToggleEnabled="true"
+                    app:endIconMode="password_toggle"
+                    app:endIconDrawable="@drawable/custom_password_eyes"
                     app:startIconDrawable="@drawable/ic_lock"
                     android:id="@+id/password_til">
 
@@ -88,7 +78,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/login_submit"
                     style="@style/NimpeButtonLogin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
@@ -103,25 +93,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
+                    android:layout_marginBottom="32dp"
                     android:text="@string/lable_signing"
                     android:textColor="@color/text_message1"
                     android:textSize="16sp" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/label_reset_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="32dp"
-                    android:text="@string/forget_password"
-                    android:textColor="@color/blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
             </LinearLayout>
-        </RelativeLayout>
-
-    </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -130,4 +107,9 @@
         android:visibility="gone"
         android:id="@+id/progress_loading"/>
 
-</RelativeLayout>
+
+ </RelativeLayout>
+
+
+
+</androidx.core.widget.NestedScrollView>

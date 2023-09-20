@@ -2,7 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Nimpe" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Hide status bar ( cái thời gian ấy)-->
-        <item name="android:windowFullscreen">true</item>
+<!--        <item name="android:windowFullscreen">true</item>-->
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -12,8 +13,25 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/background1</item>
         <!-- Customize your theme here. -->
         <item name="android:actionMenuTextColor">@color/background</item>
+
+        <item name="toolbarNavigationButtonStyle">@style/TintedNavigation</item>
+
+        <!-- Custom border radius for bottomSheetDialogFragment -->
+<!--        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>-->
     </style>
+
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/background_boder_radius_top</item>
+    </style>
+
 </resources>

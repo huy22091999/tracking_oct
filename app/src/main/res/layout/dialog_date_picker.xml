@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@drawable/background_border_radius">
+
+    <DatePicker
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        android:id="@+id/date_picker_dob"
+        />
+
+    <TextView
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xong"
+        android:textSize="18sp"
+        android:textColor="@color/text_message1"
+        android:layout_below="@+id/date_picker_dob"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30sp"
+        />
+
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hủy"
+        android:textSize="18sp"
+        android:textColor="@color/text_message1"
+        android:layout_below="@+id/date_picker_dob"
+        android:layout_toStartOf="@+id/done"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="30sp"
+        />
+
+</RelativeLayout>

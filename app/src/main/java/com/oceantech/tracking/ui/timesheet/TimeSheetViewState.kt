@@ -7,6 +7,7 @@ import com.oceantech.tracking.data.model.TimeSheet
 import com.oceantech.tracking.ui.tracking.TrackingViewState
 
 data class TimeSheetViewState(
+//    val sateAppbar: Float = 0F,
     val timeSheets: Async<List<TimeSheet>> = Uninitialized,
     val checkin: Async<TimeSheet> = Uninitialized
 ) : MvRxState {

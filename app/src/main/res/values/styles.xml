@@ -10,12 +10,31 @@
     </style>
     <style name="NimpeButtonLogin">
         <item name="cornerRadius">24dp</item>
-
+    </style>
+    <style name="NimpeButtonProfile">
+        <item name="android:backgroundTint">@color/background2</item>
     </style>
     <style name="stylePopup" parent="Base.Widget.AppCompat.PopupMenu">
         <item name="android:dropDownVerticalOffset">0dip</item>
         <item name="android:dropDownHorizontalOffset">20dp</item>
         <item name="android:dropDownWidth">100dp</item>
         <item name="android:width">100dp</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_bottom_to_top</item>
+    </style>
+
+    <style name="StyleDialog_Full_screen_animation" parent="android:Theme.DeviceDefault.Light.NoActionBar.TranslucentDecor">
+<!--        <item name="android:windowAnimationStyle">@style/Animation</item>-->
+    </style>
+
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@anim/enter_from_right</item>
+        <item name="android:windowExitAnimation">@anim/enter_from_left</item>
+    </style>
+
+    <style name="TintedNavigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <item name="tint">@color/text_message1</item>
     </style>
 </resources>

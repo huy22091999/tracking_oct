@@ -2,7 +2,7 @@ package com.oceantech.tracking.ui.users
 
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
+import androidx.paging.*
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingBaseViewModel
 import com.oceantech.tracking.data.model.User
@@ -40,11 +40,6 @@ class UserViewModel @AssistedInject constructor(
                 }
         }
     }
-
-    fun handleReturnDetailUser(user: User) {
-        _viewEvents.post(UsersViewEvent.ReturnDetailViewEvent(user))
-    }
-
 
     fun getString() = "test"
 

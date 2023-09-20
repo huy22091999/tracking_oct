@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/background1"
+    tools:context=".ui.profile.changepass.ChangePassFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/NimpeInputLayoutLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        app:startIconDrawable="@drawable/ic_lock"
+        app:errorEnabled="true"
+        app:endIconMode="password_toggle"
+        app:endIconDrawable="@drawable/custom_password_eyes"
+        app:startIconTint="@color/text_message1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/curent_password"
+            android:inputType="textPassword"
+            android:textColor="@color/text_message1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/NimpeInputLayoutLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/baseline_key_24"
+        app:errorEnabled="true"
+        app:endIconMode="password_toggle"
+        app:endIconDrawable="@drawable/custom_password_eyes">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColor="@color/text_message1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/NimpeInputLayoutLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/baseline_key_24"
+        app:errorEnabled="true"
+        app:endIconMode="password_toggle"
+        app:endIconDrawable="@drawable/custom_password_eyes">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword"
+            android:textColor="@color/text_message1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_update"
+        style="@style/NimpeButtonLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="12dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="@string/update" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel"
+        style="@style/NimpeButtonLogin"
+        android:backgroundTint="@color/background2"
+        android:textColor="@color/text_message1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="12dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:text="@string/cancel" />
+
+</LinearLayout>

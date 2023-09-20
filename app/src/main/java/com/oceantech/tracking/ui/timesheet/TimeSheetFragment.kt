@@ -1,33 +1,28 @@
 package com.oceantech.tracking.ui.timesheet
 
-import android.R
-import android.app.Dialog
+import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+
 import android.widget.Toast
-import com.airbnb.mvrx.Async.Companion.getMetadata
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.github.sundeepk.compactcalendarview.domain.Event
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.conn.util.InetAddressUtils
+import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.TimeSheet
-import com.oceantech.tracking.databinding.DialogTimesheetBinding
 import com.oceantech.tracking.databinding.FragmentTimeSheetBinding
-import com.oceantech.tracking.ui.tracking.TrackingViewEvent
 import com.oceantech.tracking.utils.*
-import retrofit2.http.GET
-import timber.log.Timber
+import com.oceantech.tracking.utils.StringUltis.dateIso8601Format
 import java.net.NetworkInterface
 import java.util.*
 
 
+@SuppressLint("SetTextI18n")
 class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
 
     companion object {
@@ -40,6 +35,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
 
 
     val mViewModel: TimeSheetViewModel by activityViewModel()
+    private var dateSelect: Date = Date()
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -58,6 +54,8 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
         setupCalendar()
     }
 
+
+
     private fun listennerClickUI() {
         views.btnCheckin.setOnClickListener {
             mViewModel.handle(TimeSheetViewAction.checkinAction(getIPAddress()))
@@ -67,19 +65,26 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
         mViewModel.observeViewEvents {
             handlEvent(it)
         }
+
+        views.btnNext.setOnClickListener{
+            views.calendar.scrollRight()
+        }
+
+        views.btnPrevius.setOnClickListener{
+            views.calendar.scrollLeft()
+        }
     }
 
     private fun setupCalendar() {
-        views.tvTime.text = Date().convertDateToStringFormat(StringUltis.dateMonthFormat)
+        views.tvTime.text = dateSelect.convertDateToStringFormat(StringUltis.dateMonthFormat)
         views.calendar.setUseThreeLetterAbbreviation(true)
-        views.calendar.setEventIndicatorStyle(CompactCalendarView.NO_FILL_LARGE_INDICATOR)
         views.calendar.shouldDrawIndicatorsBelowSelectedDays(true)
         views.calendar.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date?) {
                 withState(mViewModel) { it ->
                     it.timeSheets.invoke()!!.forEach {
                         if (dateClicked?.compareWithString(it.dateAttendance!!, StringUltis.dateIso8601Format) == true) {
-                            mViewModel.handleReturnShowDetailTimeSheet(it)
+                            handleShowDialogDetail(it)
                             return@forEach
                         }
                     }
@@ -88,13 +93,38 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
                 views.tvTime.text = firstDayOfNewMonth?.convertDateToStringFormat(StringUltis.dateMonthFormat)
+                handleProgressBar(firstDayOfNewMonth)
             }
         })
     }
 
+
+    private fun handleProgressBar(dateCurentCalendar: Date? ) {
+        if (dateCurentCalendar != null) dateSelect = dateCurentCalendar
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.time = dateSelect
+        var totalDayCheckIn = 0
+
+        withState(mViewModel){
+            it.timeSheets.invoke().let { it ->
+                it?.forEach {
+                    var calendarTemp = Calendar.getInstance()
+                    calendarTemp.time = it.dateAttendance?.convertToDateFormat(dateIso8601Format)!!
+
+                    if (calendar.get(Calendar.MONTH) == calendarTemp.get(Calendar.MONTH)){
+                        totalDayCheckIn++
+                    }
+                }
+            }
+            views.progress.progress = totalDayCheckIn
+            views.progress.max = 30
+            views.tvProgresss.text = getString(R.string.totalDay) + " $totalDayCheckIn/${calendar.getActualMaximum(Calendar.DAY_OF_MONTH)}"
+        }
+    }
+
+
     private fun handlEvent(it: TimeSheetViewEvent) {
         when (it) {
-          is TimeSheetViewEvent.ReturnDetailTimeSheetViewEvent -> handleShowDialogDetail(it.timeSheet)
         }
     }
 
@@ -108,6 +138,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     private fun handleGetTimeSheet(it: TimeSheetViewState) {
         when (it.timeSheets) {
             is Success -> {
+                handleProgressBar(null)
                 views.calendar.removeAllEvents()
                 it.timeSheets.invoke().forEach {
                     var event: Event? = null
@@ -149,10 +180,11 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
                 )
 
                 views.calendar.addEvent(event)
-                Toast.makeText(requireContext(), checkin.message, Toast.LENGTH_SHORT).show()
+                showSnackbar(views.root, getString(R.string.success), null, R.color.text_title1){
+                }
             }
             is Fail -> {
-                Toast.makeText(requireContext(), getString(checkStatusApiRes(it.checkin)), Toast.LENGTH_SHORT).show()
+                showSnackbar(views.root, getString(R.string.failed), null, R.color.red){}
             }
             else -> {}
         }
@@ -175,19 +207,7 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
 
 
     private fun handleShowDialogDetail(timeSheet: TimeSheet) {
-        var dialog = Dialog(requireContext())
-        var bindingDialog = DialogTimesheetBinding.inflate(dialog.layoutInflater)
-        dialog.setContentView(bindingDialog.root)
-
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.setGravity(Gravity.BOTTOM);
-        dialog.show()
-
-        if (timeSheet.offline == true) bindingDialog.tvDate.setTextColor(Color.GREEN)
-        else bindingDialog.tvDate.setTextColor(Color.RED)
-        bindingDialog.tvDate.text = timeSheet.dateAttendance!!.convertToStringFormat(StringUltis.dateIso8601Format, StringUltis.dateDayTimeFormat)
-        bindingDialog.tvMessage.text = timeSheet.message ?: getString(com.oceantech.tracking.R.string.no_message)
+        TimeSheetDialogFragment.getInstance(timeSheet).show(requireActivity().supportFragmentManager, tag)
     }
 
 }

@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Checking user</string>
+    <string name="app_name">Checking</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -13,6 +13,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">Home</string>
     <string name="menu_users">Users</string>
+    <string name="total_user">Total users</string>
     <string name="menu_nearest_medical">Nearest Medical</string>
     <string name="menu_feedback">Feedback</string>
     <string name="fragment_home">Home</string>
@@ -38,7 +39,9 @@
     <string name="permission_rationale">permission rationale</string>
     <string name="permission_denied_explanation">permission denied explanation</string>
     <string name="settings">Settings</string>
+    <string name="curent_password">Curent password</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
     <string name="birth_day">Birth day</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
@@ -70,12 +73,14 @@
     <string name="account">User name</string>
     <string name="received">We have received your feedback</string>
     <string name="exit">Exit app</string>
-    <string name="at">at</string>
+    <string name="at">at...</string>
     <string name="feedback_empty">Enter your feedback</string>
     <string name="detail">Detail</string>
+    <string name="check">Check</string>
     <string name="education">Education</string>
-    <string name="infomation">My infomation</string>
-    <string name="edit">Edit</string>
+    <string name="infomation">Infomation</string>
+    <string name="edit">Edit profile</string>
+    <string name="change_pass">Change password</string>
     <string name="delete">Delete</string>
     <string name="addImgae">Add image</string>
     <string name="notEmpty">Should not be empty</string>
@@ -83,7 +88,7 @@
     <string name="tracking">Tracking</string>
     <string name="content">Content</string>
     <string name="timeSheet">Time sheet</string>
-    <string name="no_message">No message</string>
+    <string name="no_message">No data</string>
     <string name="logout">Logout</string>
     <string name="failed">Failed</string>
     <string name="http200">Oke</string>
@@ -91,7 +96,32 @@
     <string name="http403">Forbidden</string>
     <string name="http404">Not Found link</string>
     <string name="http500">Internal Server Error</string>
+    <string name="checkin">Check in</string>
     <string name="checkingSucces">Check in success</string>
     <string name="validateEmail">Valid email</string>
+    <string name="validatePassword">Passwords are not the same</string>
     <string name="title_home">checking mosquito</string>
+    <string name="totalDay">Total day: </string>
+    <string name="nodata">No value</string>
+    <string name="no_more">No more tracking</string>
+    <string name="did_you_do">What did you do?</string>
+    <string name="tracking_now">Add now</string>
+    <string name="create_tracking">Create tracking</string>
+    <string name="edit_tracking">Edit tracking</string>
+    <string name="post">Post</string>
+    <string name="save">Save</string>
+    <string name="suggest">Suggest</string>
+    <string name="view_user">View user</string>
+    <string name="view">View</string>
+    <string name="language">Language</string>
+    <string name="mode">Mode</string>
+    <string name="block_user">Block user</string>
+    <string name="unblock_user">Unblock user</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="university">University</string>
+    <string name="lever">Lever</string>
+    <string name="birth_place">Birth place</string>
+    <string name="done">Done</string>
+    <string name="search">Search</string>
 </resources>

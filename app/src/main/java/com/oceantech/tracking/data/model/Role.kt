@@ -1,6 +1,7 @@
 package com.oceantech.tracking.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Role(
     @SerializedName("id")
@@ -11,4 +12,4 @@ data class Role(
     @SerializedName("authority")
     val authority:String?=null,
 
-    )
+    ): Serializable

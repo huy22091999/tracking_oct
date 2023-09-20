@@ -28,17 +28,25 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name="com.oceantech.tracking.ui.profile.InfoActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Nimpe.NoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.oceantech.tracking.ui.security.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.Nimpe.NoActionBar" />
+            android:theme="@style/Theme.Nimpe.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.oceantech.tracking.ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Nimpe.NoActionBar"/>
+            android:theme="@style/Theme.Nimpe.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.oceantech.tracking.ui.security.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.Nimpe.NoActionBar">
+            android:theme="@style/Theme.Nimpe.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

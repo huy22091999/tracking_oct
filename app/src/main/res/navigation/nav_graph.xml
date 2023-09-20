@@ -3,29 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_HomeFragment">
+    app:startDestination="@id/nav_timeSheet">
 
-    <fragment
-        android:id="@+id/nav_HomeFragment"
-        android:name="com.oceantech.tracking.ui.home.HomeFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_usersFragment"
-            app:destination="@id/nav_usersFragment" />
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_infomationFragment"
-            app:destination="@id/nav_infoFragment" />
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_trackingFragment"
-            app:destination="@id/nav_trackingFragment" />
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_nav_trackingFragment"
-            app:destination="@id/nav_trackingFragment" />
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_timeSheetFragment"
-            app:destination="@id/nav_timeSheet" />
-    </fragment>
     <fragment
         android:id="@+id/nav_usersFragment"
         android:name="com.oceantech.tracking.ui.users.UsersFragment"
@@ -34,6 +13,9 @@
         <action
             android:id="@+id/action_nav_usersFragment_to_userDetailFragment"
             app:destination="@id/userDetailFragment" />
+        <action
+            android:id="@+id/action_nav_usersFragment_to_nav_timeSheet"
+            app:destination="@id/nav_timeSheet" />
     </fragment>
     <fragment
         android:id="@+id/userDetailFragment"
@@ -48,11 +30,11 @@
     </fragment>
     <fragment
         android:id="@+id/nav_infoFragment"
-        android:name="com.oceantech.tracking.ui.infomation.InfomationFragment"
+        android:name="com.oceantech.tracking.ui.menu.MenuFragment"
         android:label="InfomationFragment" >
         <action
-            android:id="@+id/action_infomationFragment_to_nav_HomeFragment"
-            app:destination="@id/nav_HomeFragment" />
+            android:id="@+id/action_nav_infoFragment_to_nav_timeSheet"
+            app:destination="@id/nav_timeSheet" />
     </fragment>
     <fragment
         android:id="@+id/nav_trackingFragment"
@@ -60,8 +42,8 @@
         android:label="fragment_tracking"
         tools:layout="@layout/fragment_tracking" >
         <action
-            android:id="@+id/action_trackingFragment_to_nav_HomeFragment"
-            app:destination="@id/nav_HomeFragment" />
+            android:id="@+id/action_nav_trackingFragment_to_nav_timeSheet"
+            app:destination="@id/nav_timeSheet" />
     </fragment>
     <fragment
         android:id="@+id/nav_timeSheet"
@@ -69,8 +51,14 @@
         android:label="fragment_time_sheet"
         tools:layout="@layout/fragment_time_sheet" >
         <action
-            android:id="@+id/action_timeSheetFragment_to_nav_HomeFragment"
-            app:destination="@id/nav_HomeFragment" />
+            android:id="@+id/action_nav_timeSheet_to_nav_trackingFragment"
+            app:destination="@id/nav_trackingFragment" />
+        <action
+            android:id="@+id/action_nav_timeSheet_to_nav_usersFragment"
+            app:destination="@id/nav_usersFragment" />
+        <action
+            android:id="@+id/action_nav_timeSheet_to_nav_infoFragment"
+            app:destination="@id/nav_infoFragment" />
     </fragment>
 
 </navigation>

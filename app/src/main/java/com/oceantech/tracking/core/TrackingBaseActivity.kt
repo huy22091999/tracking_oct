@@ -16,6 +16,7 @@
 
 package com.oceantech.tracking.core
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -50,6 +51,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     protected val viewModelProvider
         get() = ViewModelProvider(this, viewModelFactory)
 
+    @SuppressLint("CheckResult")
     protected fun <T : NimpeViewEvents> TrackingBaseViewModel<*, *, T>.observeViewEvents(observer: (T?) -> Unit) {
         viewEvents
             .observe()
@@ -69,6 +71,7 @@ abstract class TrackingBaseActivity<VB : ViewBinding> : AppCompatActivity(), Has
     private var savedInstanceState: Bundle? = null
 
     private lateinit var nimpeComponent: TrackingComponent
+
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {

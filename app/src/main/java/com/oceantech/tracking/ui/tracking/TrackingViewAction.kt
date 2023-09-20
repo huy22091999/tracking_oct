@@ -6,6 +6,8 @@ import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.ui.users.UsersViewAction
 
 sealed class TrackingViewAction : NimpeViewModelAction {
+    object rcvScrollUp : TrackingViewAction()
+    object rcvScrollDown : TrackingViewAction()
     object getAllTrackings : TrackingViewAction()
     data class addTrackingViewAction(val content: String) : TrackingViewAction()
     data class updateTrackingViewAction(val tracking: Tracking) : TrackingViewAction()

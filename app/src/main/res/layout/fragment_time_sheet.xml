@@ -5,21 +5,55 @@
     android:layout_height="match_parent"
     android:background="@color/background1"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.timesheet.TimeSheetFragment">
+    tools:context=".ui.timesheet.TimeSheetFragment"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkin"
+        android:textColor="@color/background5"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_time"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minWidth="200dp"
+        android:gravity="center"
         android:textSize="30sp"
         android:textStyle="bold"
         android:textColor="@color/text_title1"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/btn_next"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/baseline_navigate_next_24"
+        android:layout_below="@+id/tv_title"
+        android:layout_toRightOf="@+id/tv_time"
+        app:tint="@color/text_message1" />
+
+    <ImageView
+        android:id="@+id/btn_previus"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/baseline_navigate_before_24"
+        android:layout_below="@+id/tv_title"
+        android:layout_toLeftOf="@+id/tv_time"
+        app:tint="@color/text_message1" />
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/calendar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="340dp"
         android:layout_below="@+id/tv_time"
         app:compactCalendarTargetHeight="350dp"
         app:compactCalendarTextSize="20sp"
@@ -29,14 +63,39 @@
         app:compactCalendarCurrentDayBackgroundColor="@color/background2"
         app:compactCalendarMultiEventIndicatorColor="@color/blue"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_checkin"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background3"
+        android:layout_below="@+id/tv_time"/>
+
+    <TextView
+        android:id="@+id/tv_progresss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/baseline_add_24"
-        android:backgroundTint="@color/button_backgournd"
-        android:layout_margin="10dp"/>
+        android:text="13/30"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/calendar"
+        />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/tv_progresss"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_checkin"
+        style="@style/NimpeButtonLogin"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:layout_marginBottom="10dp"
+        android:textSize="20sp"
+        android:text="@string/checkin"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

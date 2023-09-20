@@ -36,11 +36,11 @@ class SecurityViewModel @AssistedInject constructor(
             is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
+            is SecurityViewAction.RemoveUserCurrent ->handleRemoveCurrentUser()
             is SecurityViewAction.UpdateUserSigninAction -> updateUserSignin(action.user)
             is SecurityViewAction.SigninAction -> handleSignin(action.user)
         }
     }
-
 
     private fun handleCurrentUser() {
         setState { copy(userCurrent=Loading()) }
@@ -48,6 +48,11 @@ class SecurityViewModel @AssistedInject constructor(
             copy(userCurrent=it)
         }
     }
+
+    private fun handleRemoveCurrentUser() {
+        setState { copy(userCurrent= Uninitialized) }
+    }
+
 
     private fun handleLogin(userName:String,password: String){
         setState {
@@ -80,6 +85,9 @@ class SecurityViewModel @AssistedInject constructor(
 
     fun handleReturnSignin() {
         _viewEvents.post(SecurityViewEvent.ReturnSigninEvent)
+    }
+    fun handelReturnShowToolbar(isVisible: Boolean) {
+        _viewEvents.post(SecurityViewEvent.ReturnShowToolBar(isVisible))
     }
     fun handleReturnResetPass() {
         _viewEvents.post(SecurityViewEvent.ReturnResetpassEvent)

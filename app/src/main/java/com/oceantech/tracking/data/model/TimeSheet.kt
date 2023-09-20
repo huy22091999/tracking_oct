@@ -9,6 +9,6 @@ data class TimeSheet(
     val ip: String? = null,
     val user: User? = null,
     val offline: Boolean? = null,
-) {
+): java.io.Serializable {
 
 }

@@ -4,6 +4,7 @@ import android.view.View
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingBaseViewModel
 import com.oceantech.tracking.data.model.Tracking
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.utils.StringUltis
 import com.oceantech.tracking.utils.convertLongToStringFormat
@@ -17,7 +18,10 @@ class TrackingViewModel @AssistedInject constructor(
     private val repo: TrackingRepository
 ): TrackingBaseViewModel<TrackingViewState, TrackingViewAction, TrackingViewEvent>(state) {
 
-    var isRunning = false
+    private var _curentUser: User? = null
+    var curentUser: User?
+    set(value) { _curentUser = value}
+    get() = _curentUser
 
     override fun handle(action: TrackingViewAction) {
         when(action){
@@ -25,7 +29,14 @@ class TrackingViewModel @AssistedInject constructor(
             is TrackingViewAction.addTrackingViewAction -> addTracking(action.content)
             is TrackingViewAction.updateTrackingViewAction -> updateTracking(action.tracking)
             is TrackingViewAction.deleteTrackingViewAction -> deleteTracking(action.tracking)
+
+            is TrackingViewAction.rcvScrollUp -> handleScrollRcv(false)
+            is TrackingViewAction.rcvScrollDown -> handleScrollRcv(true)
         }
+    }
+
+    private fun handleScrollRcv(isDown : Boolean){
+        setState { copy(isScrollDown = isDown) }
     }
 
     private fun getAllTracking(){
@@ -37,7 +48,7 @@ class TrackingViewModel @AssistedInject constructor(
 
     private fun addTracking(content : String){
         withState { it ->
-            val tracking = Tracking(null, content, it.currentTime.invoke()!!.convertLongToStringFormat(StringUltis.dateIso8601Format), null)
+            val tracking = Tracking(null, content, System.currentTimeMillis().convertLongToStringFormat(StringUltis.dateIso8601Format), null)
             setState { copy(addTracking = Loading()) }
             repo.addTracking(tracking).execute {
                 copy(addTracking = it)
@@ -57,31 +68,6 @@ class TrackingViewModel @AssistedInject constructor(
         repo.deleteTracking(tracking.id!!).execute {
             copy(deleteTracking = it)
         }
-    }
-
-    fun runTimmRealTime(){
-        isRunning = true
-        withState {
-            Thread {
-                while (isRunning){
-                    var long = System.currentTimeMillis()
-                    setState { copy(currentTime = Success(long)) }
-                    Thread.sleep(1000)
-                }
-            }.start()
-        }
-    }
-
-    fun stopTimmRealTime(){
-        isRunning = false
-    }
-
-    fun handleReturnShowDialogAdd(tracking: Tracking?) {
-        _viewEvents.post(TrackingViewEvent.ReturnShowDialogViewEvent(tracking))
-    }
-
-    fun handleReturnShowOptionMenu(view: View, tracking: Tracking) {
-        _viewEvents.post(TrackingViewEvent.ReturnShowOptionMenuViewEvent(view, tracking))
     }
 
     @AssistedFactory

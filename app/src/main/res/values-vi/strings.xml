@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Kiểm tra nhân viên</string>
+    <string name="app_name">Checking</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -13,8 +13,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">Trang chủ</string>
-    <string name="menu_users">Danh sách người dùng</string>
+    <string name="menu_users">Danh sách</string>
     <string name="menu_nearest_medical">Cơ sở y tế gần nhất</string>
+    <string name="total_user">Tổng số người dùng</string>
     <string name="menu_feedback">Phản hồi</string>
     <string name="fragment_home">Trang chủ</string>
     <string name="feedback_to_app">Phản hồi về ứng dụng</string>
@@ -23,7 +24,7 @@
     <string name="fragment_news">Tin tức</string>
     <string name="send_feedback">Gửi phản hồi</string>
     <string name="loggin">Đăng nhập</string>
-    <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
+    <string name="lable_signing">Chưa có tài khoản /<font color="#00B3A2"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="category_theme">Chủ đề tin tức</string>
     <string name="home_everyone">Mọi người cùng chung tay phòng chống dịch bệnh sốt xuất huyết</string>
@@ -34,7 +35,9 @@
     <string name="ok">Ok</string>
     <string name="permission_denied_explanation">permission denied explanation</string>
     <string name="settings">Cài đặt</string>
+    <string name="curent_password">Mật khẩu hiện tại</string>
     <string name="password">Mật khẩu</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
     <string name="birth_day">Sinh nhật</string>
     <string name="gender">Giới tính</string>
     <string name="male">Nam</string>
@@ -70,12 +73,14 @@
     <string name="need_network">Ứng dụng Dengue Alert cần sử dụng dữ liệu di động để phát hiện ổ dịch xung quanh. \n\nBạn cần bật dữ liệu di động hoặc Wifi trong phần cài đặt</string>
     <string name="received">Nhập phản hồi của bạn</string>
     <string name="exit">Thoát ứng dụng</string>
-    <string name="at">lúc</string>
+    <string name="at">lúc ...</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
-    <string name="detail">Detail</string>
+    <string name="detail">Chi tiết</string>
+    <string name="check">Kiểm tra</string>
     <string name="education">Học vấn</string>
     <string name="infomation">Thông tin cá nhân</string>
     <string name="edit">Chỉnh sửa</string>
+    <string name="change_pass">Đổi mật khẩu</string>
     <string name="delete">Xóa</string>
     <string name="addImgae">Thêm ảnh</string>
     <string name="notEmpty">Không nên để trống</string>
@@ -92,7 +97,32 @@
     <string name="http403">Cấm</string>
     <string name="http404">Không tìm thấy đường dẫn</string>
     <string name="http500">Máy chủ lỗi</string>
+    <string name="checkin">Điểm danh</string>
     <string name="checkingSucces">Điểm danh thành công</string>
     <string name="validateEmail">Lỗi định dạng email</string>
+    <string name="validatePassword">Mật khẩu không giống nhau</string>
     <string name="title_home">Checking con muỗi</string>
+    <string name="totalDay">Tổng số ngày: </string>
+    <string name="nodata">Không có dữ liệu</string>
+    <string name="no_more">Không có theo dõi nào</string>
+    <string name="did_you_do">Bạn đã làm được gì?</string>
+    <string name="tracking_now">Thêm ngay</string>
+    <string name="create_tracking">Tạo theo dõi</string>
+    <string name="edit_tracking">Sửa theo dõi</string>
+    <string name="post">Đăng</string>
+    <string name="save">Lưu</string>
+    <string name="suggest">Gợi ý</string>
+    <string name="view_user">Xem người dùng</string>
+    <string name="view">Xem</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="mode">Chế độ</string>
+    <string name="block_user">Khóa người dùng</string>
+    <string name="unblock_user">Bỏ khóa người dùng</string>
+    <string name="update">Chỉnh sửa</string>
+    <string name="cancel">Hủy</string>
+    <string name="university">Trường đại học</string>
+    <string name="lever">Cấp độ</string>
+    <string name="birth_place">Nơi sinh</string>
+    <string name="done">Xong</string>
+    <string name="search">Tìm kiếm</string>
 </resources>

@@ -9,6 +9,8 @@ import com.oceantech.tracking.data.model.User
 import java.util.Date
 
 data class TrackingViewState(
+    val isScrollDown : Boolean = true,
+
     val currentTime: Async<Long> = Uninitialized,
     val isRunning: Boolean = false,
 

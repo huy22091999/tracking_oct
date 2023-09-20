@@ -2,29 +2,28 @@ package com.oceantech.tracking.ui.tracking
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.core.TrackingClickItem
 import com.oceantech.tracking.data.model.Tracking
-import com.oceantech.tracking.databinding.FragmentBottomsheetTrackingBinding
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
-import com.oceantech.tracking.ui.users.UsersViewAction
-import com.oceantech.tracking.utils.StringUltis
-import com.oceantech.tracking.utils.checkStatusApiRes
-import com.oceantech.tracking.utils.convertToStringFormat
-import com.oceantech.tracking.utils.convertLongToStringFormat
-import timber.log.Timber
-import java.text.SimpleDateFormat
+import com.oceantech.tracking.ui.home.HomeViewModel
+import com.oceantech.tracking.ui.profile.InfoActivity
+import com.oceantech.tracking.utils.*
+
 
 class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
 
@@ -36,13 +35,14 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         private const val DELETE_TRACKING = 4
         private const val CURENT_TIME = 5
     }
+
     private var state = DEFAULT_STATE
 
     private val mViewModel: TrackingViewModel by activityViewModel()
+    private val homeViewModel: HomeViewModel by activityViewModel()
     var adapter: TrackingAdapter? = null
 
     var dialog: Dialog? = null
-    var dialogBinding: FragmentBottomsheetTrackingBinding? = null
 
 
     override fun getBinding(
@@ -55,50 +55,106 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mViewModel.handle(TrackingViewAction.getAllTrackings)
         state = GET_TRACKING
+        mViewModel.handle(TrackingViewAction.getAllTrackings)
 
         setUpRcv()
         onListenner()
+
+        homeViewModel.subscribe(requireActivity()){
+            mViewModel.curentUser = it.userCurrent.invoke()
+        }
     }
 
     private fun onListenner() {
-        views.btnTracking.setOnClickListener {
-            mViewModel.handleReturnShowDialogAdd(null)
-        }
 
         mViewModel.observeViewEvents {
             handlEvent(it)
         }
 
         views.swipeLayout.setOnRefreshListener {
-            mViewModel.handle(TrackingViewAction.getAllTrackings)
             state = GET_TRACKING
+            mViewModel.handle(TrackingViewAction.getAllTrackings)
         }
     }
 
     private fun handlEvent(it: TrackingViewEvent) {
-        when (it) {
-            is TrackingViewEvent.ReturnShowDialogViewEvent -> showDialog(it.tracking)
-            is TrackingViewEvent.ReturnShowOptionMenuViewEvent -> showOptionMenu(
-                it.view,
-                it.tracking
-            )
-        }
+
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setUpRcv() {
-        adapter = TrackingAdapter { view, tracking ->
-            mViewModel.handleReturnShowOptionMenu(view, tracking)
-        }
+        val dividerItemDecoration =
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        dividerItemDecoration.setDrawable(requireActivity().resources.getDrawable(R.drawable.custom_divider_item))
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+
+        adapter = TrackingAdapter(object : TrackingClickItem() {
+            override fun onItemTrackingAddClickListenner() {
+                super.onItemTrackingAddClickListenner()
+                showDialog(null)
+            }
+
+            override fun onItemTrackingOptionMenuClickListenner(view: View, tracking: Tracking) {
+                super.onItemTrackingOptionMenuClickListenner(view, tracking)
+                showOptionMenu(view, tracking)
+            }
+
+            override fun onItemPosition(position: Int) {
+                super.onItemPosition(position)
+                    scrollRcv(linearLayoutManager, position)
+            }
+
+            override fun onItemAvatarClickListennner() {
+                super.onItemAvatarClickListennner()
+                requireActivity().startActivityAnim(Intent(requireActivity(), InfoActivity::class.java))
+            }
+        })
+
+
         views.rcv.adapter = adapter
-        views.rcv.layoutManager = LinearLayoutManager(requireContext())
-        views.rcv.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
+        views.rcv.layoutManager = linearLayoutManager
+        views.rcv.addItemDecoration(dividerItemDecoration)
+
+        views.rcv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (linearLayoutManager.findFirstVisibleItemPosition() == 0) {
+                    // RecyclerView ở đầu danh sách
+                    mViewModel.handle(TrackingViewAction.rcvScrollDown)
+                }
+
+                if (dy !in -50..10) {
+                    if (dy > 0) {
+                        mViewModel.handle(TrackingViewAction.rcvScrollUp)
+                    } else {
+                        mViewModel.handle(TrackingViewAction.rcvScrollDown)
+                    }
+                }
+
+
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when (newState) {
+                    RecyclerView.SCROLL_STATE_IDLE -> println("The RecyclerView is not scrolling")
+                    RecyclerView.SCROLL_STATE_DRAGGING -> println("Scrolling now")
+                    RecyclerView.SCROLL_STATE_SETTLING -> println("Scroll Settling")
+                }
+            }
+        })
+    }
+
+    private fun scrollRcv(linearLayoutManager: LinearLayoutManager, position: Int) {
+        val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_ANY // cuộn item đến bất kỳ ds
+            }
+        }
+        smoothScroller.targetPosition = position;
+        linearLayoutManager.startSmoothScroll(smoothScroller);
     }
 
     override fun invalidate(): Unit = withState(mViewModel) {
@@ -107,17 +163,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             ADD_TRACKING -> handleAddTracking(it)
             UPDATE_TRACKING -> handleUpdateTracking(it)
             DELETE_TRACKING -> handleDeleteTracking(it)
-            CURENT_TIME -> handleCurrentTime(it)
             else -> {}
-        }
-    }
-
-    private fun handleCurrentTime(it: TrackingViewState) {
-        when (it.currentTime) {
-            is Success -> {
-                dialogBinding?.tvTime?.text =
-                    it.currentTime.invoke().convertLongToStringFormat(StringUltis.dateTimeFormat)
-            }
         }
     }
 
@@ -126,9 +172,15 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             is Success -> {
                 adapter!!.setAllData(it.getTrackings.invoke())
                 views.swipeLayout.isRefreshing = false
+                state = DEFAULT_STATE
             }
             is Fail -> {
-                Toast.makeText(requireContext(), getString(checkStatusApiRes(it.getTrackings)), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(checkStatusApiRes(it.getTrackings)),
+                    Toast.LENGTH_SHORT
+                ).show()
+                state = DEFAULT_STATE
             }
             else -> {}
         }
@@ -137,11 +189,17 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     private fun handleAddTracking(it: TrackingViewState) {
         when (it.addTracking) {
             is Success -> {
-                adapter?.addItemData(it.addTracking.invoke())
+                val tracking = it.addTracking.invoke()
+                adapter?.addItemData(tracking)
                 dialog?.dismiss()
+                showSnackbar(views.root, getString(R.string.success), getString(R.string.view), R.color.text_title1){
+                    adapter?.findItemPositoon(tracking)
+                }
+                state = DEFAULT_STATE
             }
             is Fail -> {
-                Toast.makeText(requireContext(), getString(checkStatusApiRes(it.addTracking)), Toast.LENGTH_SHORT).show()
+                showSnackbar(views.root, getString(R.string.failed), null, R.color.red){}
+                state = DEFAULT_STATE
             }
             else -> {}
         }
@@ -150,11 +208,17 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     private fun handleUpdateTracking(it: TrackingViewState) {
         when (it.updateTracking) {
             is Success -> {
-                adapter?.updateItemData(it.updateTracking.invoke())
+                val tracking = it.updateTracking.invoke()
+                adapter?.updateItemData(tracking)
                 dialog?.dismiss()
+                showSnackbar(views.root, getString(R.string.success), getString(R.string.view), R.color.text_title1){
+                    adapter?.findItemPositoon(tracking)
+                }
+                state = DEFAULT_STATE
             }
             is Fail -> {
-                Toast.makeText(requireContext(), getString(checkStatusApiRes(it.updateTracking)), Toast.LENGTH_SHORT).show()
+                showSnackbar(views.root, getString(R.string.failed), null, R.color.red){}
+                state = DEFAULT_STATE
             }
             else -> {}
         }
@@ -165,43 +229,33 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             is Success -> {
                 adapter?.deleteItemData(it.deleteTracking.invoke())
                 dialog?.dismiss()
+                showSnackbar(views.root, getString(R.string.success), null, R.color.text_title1){}
+                state = DEFAULT_STATE
             }
             is Fail -> {
-                Toast.makeText(requireContext(), getString(checkStatusApiRes(it.deleteTracking)), Toast.LENGTH_SHORT).show()
+                showSnackbar(views.root, getString(R.string.failed), null, R.color.red){}
+                state = DEFAULT_STATE
             }
             else -> {}
         }
     }
 
-
-
+    @SuppressLint("LogNotTimber")
     private fun showDialog(tracking: Tracking?) {
-        state = CURENT_TIME
-        dialog = Dialog(requireContext())
-        dialogBinding =
-            FragmentBottomsheetTrackingBinding.inflate(requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater)
-        dialog!!.setContentView(dialogBinding!!.root)
-        dialog!!.show()
-
-        if (tracking == null) {
-            mViewModel.runTimmRealTime()
-            dialogBinding!!.btnAccept.setOnClickListener {
-                mViewModel.handle(TrackingViewAction.addTrackingViewAction(dialogBinding!!.edtContent.text.toString()))
-                state = ADD_TRACKING
+        val dialog: TrackingBottomSheetFragment =
+            TrackingBottomSheetFragment.newInstance(tracking, tracking?.user ?: mViewModel.curentUser) {
+                if (tracking == null) {
+                    mViewModel.handle(TrackingViewAction.addTrackingViewAction(it))
+                    state = ADD_TRACKING
+                } else {
+                    tracking.content = it
+                    mViewModel.handle(TrackingViewAction.updateTrackingViewAction(tracking))
+                    state = UPDATE_TRACKING
+                }
             }
-        } else {
-            dialogBinding!!.edtContent.setText(tracking.content)
-            dialogBinding!!.tvTime.text = tracking.date!!.convertToStringFormat(StringUltis.dateIso8601Format, StringUltis.dateDayTimeFormat)
-            dialogBinding!!.btnAccept.setOnClickListener {
-                tracking.content = dialogBinding!!.edtContent.text.toString()
-                mViewModel.handle(TrackingViewAction.updateTrackingViewAction(tracking))
-                state = UPDATE_TRACKING
-            }
-        }
+        dialog.show(requireActivity().supportFragmentManager, "")
 
-        dialog!!.setOnDismissListener {
-            mViewModel.stopTimmRealTime()
-        }
+
     }
 
     private fun showOptionMenu(view: View, tracking: Tracking) {
@@ -212,7 +266,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         popUpMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.edit_item -> {
-                    mViewModel.handleReturnShowDialogAdd(tracking)
+                    showDialog(tracking)
                 }
                 R.id.delete_item -> {
                     state = DELETE_TRACKING

@@ -15,6 +15,8 @@ import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.utils.changeLangue
+import com.oceantech.tracking.utils.changeMode
 import java.util.*
 import javax.inject.Inject
 
@@ -47,21 +49,12 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     private fun setupSettingApp() {
         // setting mode
         sessionManager.fetchDarkMode().let {
-            if (it == true) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+            changeMode(it)
         }
 
         // setting language
         sessionManager.fetchLanguage().let {
-            val res: Resources = resources
-            val dm: DisplayMetrics = res.displayMetrics
-            val conf: Configuration = res.configuration
-            val myLocale = Locale(it ?: "en")
-            conf.setLocale(myLocale)
-            res.updateConfiguration(conf, dm)
+            changeLangue(it)
         }
     }
 
@@ -73,6 +66,10 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
             }
 
             is Fail -> {
+                sessionManager.let {
+                    it.removeTokenRefresh()
+                    it.removeAuthToken()
+                }
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }

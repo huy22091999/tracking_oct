@@ -9,13 +9,25 @@ import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.oceantech.tracking.R
+import com.oceantech.tracking.core.TrackingClickItem
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.databinding.ItemAddTrackingBinding
+import com.oceantech.tracking.databinding.ItemTitleBinding
+import com.oceantech.tracking.databinding.ItemTrackingBinding
+import com.oceantech.tracking.databinding.ItemUserBinding
 
 class UserAdapter(
-    private val action:(User) ->Unit
+    private val callBack: TrackingClickItem
 ) : PagingDataAdapter<User, UserAdapter.ViewHolder>(USER_COMPARATOR) {
+
+    val TYPE_ITEM_TITLE = 0
+    val TYPE_ITEM = 1
+
+    fun getUserWithCount(i : Int): User? = getItem(i)
+
 
     companion object{
         private val USER_COMPARATOR = object : DiffUtil.ItemCallback<User>() {          // callback này sẽ so sánh 2 item trc và mới có trùng nhau
@@ -30,26 +42,50 @@ class UserAdapter(
         }
     }
 
-    inner class ViewHolder(private val itemView: View, private val action:(User) ->Unit) : RecyclerView.ViewHolder(itemView) {
-        private var img = itemView.findViewById<android.widget.ImageView?>(R.id.item_user_img)
-        private var tvName = itemView.findViewById<TextView?>(R.id.item_user_name)
-        private var item_main = itemView.findViewById<RelativeLayout?>(R.id.item_main)
+    inner class ViewHolder(private val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(user: User?){
-            Glide.with(itemView.context).load("user.link").placeholder(R.drawable.ic_person).into(img);
-            tvName.text = user?.displayName
+            with(binding as ItemUserBinding){
+                Glide.with(itemView.context).load("user.link").placeholder(R.drawable.ic_person).into(binding.imgImg);
+                binding.tvName.text = user?.displayName ?: binding.tvName.context.getString(R.string.nodata)
+                binding.tvDesc.text = user?.university ?: binding.tvName.context.getString(R.string.nodata)
 
-            item_main.setOnClickListener{
-                action(user!!)
+                binding.btnViewUser.setOnClickListener{
+                    callBack.onItemUserClickListenner(user?.id!!)
+                }
+            }
+        }
+        fun onBindTitle(){
+            with(binding as ItemTitleBinding){
+               binding.tvTitle.text = binding.tvTitle.context.getString(R.string.menu_users)
+               binding.tvMessage.text = binding.tvTitle.context.getString(R.string.total_user)
+               binding.tvMessageIndex.text = "$itemCount"
+
+               binding.cvSearch.setOnClickListener{
+                   callBack.onItemSearchUserClickListenner()
+               }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
-    = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false),
-            action)
+    override fun getItemViewType(position: Int): Int {
+        if (position == 0) return TYPE_ITEM_TITLE
+        return TYPE_ITEM
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        if (viewType == TYPE_ITEM_TITLE)
+            return ViewHolder(ItemTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+}
+
+//    override fun getItemCount(): Int {
+//        return super.getItemCount() + 1
+//    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        if (holder.itemViewType == TYPE_ITEM_TITLE) holder.onBindTitle()
+        else if ((holder.itemViewType == TYPE_ITEM))
+        holder.onBind(getItem(position - 1))
     }
 }

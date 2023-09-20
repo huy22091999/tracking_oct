@@ -15,7 +15,7 @@ class AuthRepository @Inject constructor(
     val api: AuthApi,
     private val preferences: UserPreferences
 ) {
-    fun login(username: String, password: String): Observable<TokenResponse> = api.oauth(
+    fun login(username: String?, password: String?): Observable<TokenResponse> = api.oauth(
         UserCredentials(
             AuthApi.CLIENT_ID,
             AuthApi.CLIENT_SECRET,

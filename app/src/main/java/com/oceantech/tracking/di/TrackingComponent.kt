@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.ui.profile.InfoActivity
 import com.oceantech.tracking.ui.security.LoginActivity
 import com.oceantech.tracking.ui.security.SplashActivity
 import dagger.BindsInstance
@@ -20,6 +21,7 @@ import javax.inject.Singleton
 interface TrackingComponent {
     fun inject(trackingApplication: TrackingApplication)
     fun inject(mainActivity: MainActivity)
+    fun inject(infoActivity: InfoActivity)
     fun inject(loginActivity: LoginActivity)
     fun inject(splashActivity: SplashActivity)
     fun fragmentFactory(): FragmentFactory

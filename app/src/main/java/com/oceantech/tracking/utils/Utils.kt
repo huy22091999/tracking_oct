@@ -1,23 +1,29 @@
 package com.oceantech.tracking.utils
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.location.Location
 import android.os.Build
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.util.Patterns
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.RadioGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatRadioButton
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.airbnb.mvrx.Fail
 import com.google.android.material.textfield.TextInputEditText
 import com.oceantech.tracking.R
+import com.oceantech.tracking.ui.profile.InfoActivity
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -57,8 +63,28 @@ fun <T : Fragment> AppCompatActivity.addFragmentToBackstack(
     option: ((FragmentTransaction) -> Unit)? = null) {
     supportFragmentManager.commitTransaction(allowStateLoss) {
         option?.invoke(this)
+        setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+            R.anim.enter_from_left,
+            R.anim.exit_to_right )
         replace(frameId, fragmentClass,null, tag).addToBackStack(tag)
     }
+}
+
+fun Activity.startActivityAnim(intent: Intent) {
+    startActivity(intent)
+    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left,)
+}
+
+fun Activity.popActivityAnim() {
+    finish()
+    overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right,)
+}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 fun <V : View> setVisibleView(view : V, isVisible : Boolean){
@@ -98,15 +124,16 @@ fun checkValidEmail(res : Resources , edt : TextInputEditText): Boolean {
     edt.error = null
     return false
 }
-fun checkRadioGRNull(radio: RadioGroup): Boolean{
-    var radioButton = (radio.getChildAt(radio.size - 1) as AppCompatRadioButton)
-    if (radio.checkedRadioButtonId == -1){
-        radioButton.setError(R.string.notEmpty.toString())
+
+fun checkValidEPassword(res : Resources , edt1 : TextInputEditText, edt2 : TextInputEditText): Boolean {
+    val str1 = edt1.text.toString().trim()
+    val str2 = edt2.text.toString().trim()
+    if (str1 == ""|| str2 == "" || str1 != str2){
+        edt2.error =   res.getString(R.string.validatePassword)
         return true
     }
-    radioButton.setError(null)
+    edt2.error = null
     return false
-
 }
 
 fun<T> checkStatusApiRes(err: Fail<T>): Int {
@@ -132,13 +159,19 @@ fun<T> checkStatusApiRes(err: Fail<T>): Int {
     }
 }
 
-//private fun changeLangue(lang: String) {
-//    val res: Resources = resources
-//    val dm: DisplayMetrics = res.displayMetrics
-//    val conf: Configuration = res.configuration
-//    val myLocale = Locale(lang)
-//    conf.setLocale(myLocale)
-//    res.updateConfiguration(conf, dm)
-//    updateLanguge(lang)
-//}
+fun changeMode(isChecked: Boolean?) {
+    if (isChecked == true) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    } else {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
+}
+fun Activity.changeLangue(lang: String?) {
+    val res: Resources = resources
+    val dm: DisplayMetrics = res.displayMetrics
+    val conf: Configuration = res.configuration
+    res.updateConfiguration(conf, dm)
+    conf.setLocale(Locale(lang ?: "en"))
 
+
+}

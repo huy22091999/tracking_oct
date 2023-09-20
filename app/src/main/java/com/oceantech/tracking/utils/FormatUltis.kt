@@ -8,6 +8,7 @@ import java.util.*
 @SuppressLint("SimpleDateFormat")
 object StringUltis {
     val dateIso8601Format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    val dateIso8601Format2 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     val dateTimeFormat = SimpleDateFormat("HH:mm:ss")
     val dateTimeHourFormat = SimpleDateFormat("HH:mm")
     val dateDayFormat = SimpleDateFormat("EEE dd/MM/yy")
@@ -34,8 +35,17 @@ fun String.convertToMillisFormat(inputDateFormat: SimpleDateFormat): Long =
     } catch (e: Exception) {
         0L
     }
-fun Date.convertDateToStringFormat(outputDateFormat: SimpleDateFormat) = outputDateFormat.format(this)
-fun Long.convertLongToStringFormat(outputDateFormat: SimpleDateFormat) = outputDateFormat.format(this)
+fun String.convertToDateFormat(inputDateFormat: SimpleDateFormat): Date? =
+    try {
+        val date = inputDateFormat.parse(this)
+        date.let {
+            date
+        }
+    } catch (e: Exception) {
+        null
+    }
+fun Date.convertDateToStringFormat(outputDateFormat: SimpleDateFormat): String = outputDateFormat.format(this)
+fun Long.convertLongToStringFormat(outputDateFormat: SimpleDateFormat): String = outputDateFormat.format(this)
 
 fun Date.compareWithString(strDate: String ,inputDateFormat: SimpleDateFormat) : Boolean {
     var date1 = StringUltis.dateFormat.parse(StringUltis.dateFormat.format(this))

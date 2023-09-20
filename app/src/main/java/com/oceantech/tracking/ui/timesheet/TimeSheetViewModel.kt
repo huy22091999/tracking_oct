@@ -32,13 +32,9 @@ class TimeSheetViewModel @AssistedInject constructor(
     private fun getTimeSheet() {
         setState { copy(timeSheets = Loading()) }
         repo.getTimeSheet().execute {
-            Timber.e("${it.invoke()}" ?: " khong co data viewModel")
+            Timber.e("${it.invoke()}")
             copy(timeSheets = it)
         }
-    }
-
-    public fun handleReturnShowDetailTimeSheet(timeSheet : TimeSheet){
-        _viewEvents.post(TimeSheetViewEvent.ReturnDetailTimeSheetViewEvent(timeSheet))
     }
 
     @AssistedFactory

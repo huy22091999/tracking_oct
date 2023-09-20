@@ -15,7 +15,6 @@ class UserPagingSource(private val userApi: UserApi) : PagingSource<Int, User>()
         const val NETWORK_PAGE_SIZE = 20;
     }
 
-
     override fun getRefreshKey(state: PagingState<Int, User>): Int? {
         return state.anchorPosition.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition!!)?.prevKey

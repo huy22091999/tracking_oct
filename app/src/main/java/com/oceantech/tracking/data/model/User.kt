@@ -10,18 +10,18 @@ data class User(
     @SerializedName("username")
     val username: String? = null,
     @SerializedName("active")
-    val active: Boolean? = null,
+    var active: Boolean? = null,
     @SerializedName("birthPlace")
-    val birthPlace: String? = null,
+    var birthPlace: String? = null,
     @SerializedName("changePass")
-    val changePass: Boolean? = null,
+    var changePass: Boolean? = null,
     @SerializedName("confirmPassword")
-    val confirmPassword: String? = null,
+    var confirmPassword: String? = null,
     @SerializedName("displayName")
     var displayName: String? = null,
 
     @SerializedName("dob")
-    val dob: Date? = null,
+    var dob: String? = null,
 
     @SerializedName("email")
     var email: String? = null,
@@ -34,9 +34,9 @@ data class User(
 //    @SerializedName("oldPassword")
 //    val oldPassword: String? = null,
     @SerializedName("password")
-    val password: String? = null,
+    var password: String? = null,
     @SerializedName("setPassword")
-    val setPassword: Boolean? = null,
+    var setPassword: Boolean? = null,
 //    @SerializedName("person")
 //    val person: Person? = null,
     @SerializedName("roles")
@@ -46,7 +46,7 @@ data class User(
     @SerializedName("countDayTracking")
     val countDayTracking: Int? = null,
     @SerializedName("gender")
-    val gender: String? = null,
+    var gender: String? = null,
     @SerializedName("hasPhoto")
     val hasPhoto: Boolean? = null,
     @SerializedName("tokenDevice")
@@ -54,5 +54,5 @@ data class User(
     @SerializedName("university")
     var university: String? = null,
     @SerializedName("year")
-    val year: Int? = null
+    var year: Int? = null
 ): Serializable

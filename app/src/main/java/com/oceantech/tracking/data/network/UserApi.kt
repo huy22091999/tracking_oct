@@ -14,6 +14,8 @@ import retrofit2.http.Path
 interface UserApi {
     @GET("users/get-user-current")
     fun getCurrentUser(): Observable<User>
+    @GET("users/{id}")
+    fun getCurrentUserById(@Path("id")id: String): Observable<User>
 
     @GET("users/get-user-current")
     fun getCurrentUserTest(): Call<User>
@@ -21,14 +23,17 @@ interface UserApi {
     @GET("users/get-all-user")
     fun getAllUser(): Call<User>
 
-//    @POST("users/searchByPage")
-//    fun getUserByPage(@Body filter: Pageable): Observable<Page<User>>
-
     @POST("users/searchByPage")
     suspend fun getUserByPage(@Body filter: Pageable): Page<User>
 
 
     @POST("users/update-myself")
     fun updateUser(@Body user: User): Observable<User>
+
+    @POST("users/update/{id}")
+    fun updateUserById(@Path("id")id: String , @Body user: User): Observable<User>
+
+    @GET("users/lock/{id}")
+    fun blockUser(@Path("id")id: String): Observable<User>
 
 }

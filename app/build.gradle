@@ -162,5 +162,5 @@ dependencies {
     implementation "com.github.sundeepk:compact-calendar-view:3.0.0"
 
     // Effects imageview
-//    implementation 'com.airbnb.android:lottie:6.1.0'
+    implementation 'com.airbnb.android:lottie:6.0.1'
 }
