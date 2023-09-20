@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_edit"
+        android:title="Sửa"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_edit_"
+        android:orderInCategory="100"/>
+
+    <item
+        android:id="@+id/item_delete"
+        android:title="Xoá"
+        app:showAsAction="always"
+        android:icon="@drawable/icon_delete"
+        android:orderInCategory="100" />
+</menu>

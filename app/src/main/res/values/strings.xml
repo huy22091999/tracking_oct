@@ -21,7 +21,7 @@
     <string name="fragment_users">Users</string>
     <string name="fragment_news">News</string>
     <string name="feedback_to_app">App feedback</string>
-    <string name="feedback_description">Please enter your feedback below to help make our app even better !</string>
+    <string name="feedback_description">Please fill in your tracking below!</string>
     <string name="feedback_hint">Your feedback ...</string>
     <string name="send_feedback">Send feedback</string>
     <string name="warning">Cảnh báo bệnh truyền nhiễm</string>

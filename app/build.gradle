@@ -166,4 +166,7 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 
     implementation 'com.saadahmedev.popup-dialog:popup-dialog:1.0.5'
+
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
+
 }
