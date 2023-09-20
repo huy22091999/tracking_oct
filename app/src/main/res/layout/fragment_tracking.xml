@@ -32,6 +32,7 @@
             android:layout_marginTop="15dp"
             tools:listitem="@layout/tracking_item" />
     </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_checkin"
         android:layout_width="wrap_content"
@@ -46,26 +47,17 @@
 
     <LinearLayout
         android:id="@+id/layout_tracking"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#EFEFEF"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="24dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout2"
         tools:context=".ui.timesheet.TimeSheetFragment">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title1"
-            style="@style/TextAppearance.AppCompat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/feedback_to_app"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title2"
@@ -91,23 +83,41 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/feedback"
+                android:id="@+id/edt_tracking"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:gravity="top"
                 android:hint="@string/feedback_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_send_feedback"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/about_twitter_color"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:text="@string/send_feedback"
-            app:cornerRadius="16dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#FF5722"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/Cancel"
+                app:cornerRadius="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_send_feedback"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/about_twitter_color"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/send_feedback"
+                app:cornerRadius="16dp" />
+        </RelativeLayout>
     </LinearLayout>
 
 

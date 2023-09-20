@@ -1,6 +1,7 @@
 package com.oceantech.tracking.ui.tracking
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.databinding.TrackingItemBinding
 import com.oceantech.tracking.utils.StringUltis
 import com.oceantech.tracking.utils.convertToDateTimePartsList
+import java.util.Timer
 
 
 class TrackingAdapter(
@@ -28,8 +30,9 @@ class TrackingAdapter(
 
     private fun updateDataLists() {
         val dateStrings = mlistTracking.mapNotNull { it.date }
-        Toast.makeText(context, mlistTracking.size.toString(), Toast.LENGTH_SHORT).show()
-        mDateList = dateStrings.convertToDateTimePartsList(StringUltis.dateIso8601Format)
+        Log.e("Check",mlistTracking[0].date.toString())
+        mDateList = dateStrings.convertToDateTimePartsList()
+        Log.e("Check1",mDateList[0].toString())
     }
 
 

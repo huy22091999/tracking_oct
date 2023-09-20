@@ -11,6 +11,7 @@ import com.airbnb.mvrx.viewModel
 import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.core.TrackingViewModel
+import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.ui.MainActivity

@@ -6,6 +6,7 @@ import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.oceantech.tracking.core.TrackingViewModel
+import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.repository.TrackingRepository
 import com.oceantech.tracking.ui.timesheet.TimeSheetViewModel
 import dagger.assisted.Assisted
@@ -20,19 +21,19 @@ class TrackingViewModel @AssistedInject constructor(
     override fun handle(action: TrackingViewAction) {
         when (action) {
             is TrackingViewAction.getTrackingAction -> handleGetTracking()
-            //is TrackingViewAction.saveTracking -> handleSaveTracking(action.tracking)
+            is TrackingViewAction.saveTracking -> handleSaveTracking(action.tracking)
             else -> {
                 false
             }
         }
     }
 
-//    private fun handleSaveTracking() {
-//        setState { copy(Tracking = Loading()) }
-//        repo.saveTracking(tracking).execute {
-//            copy(Tracking = it)
-//        }
-//    }
+    private fun handleSaveTracking(tracking:Tracking) {
+        setState { copy(Tracking = Loading()) }
+        repo.saveTracking(tracking).execute {
+            copy(Tracking = it)
+        }
+    }
 
     private fun handleGetTracking() {
         setState { copy(listTracking = Loading()) }
