@@ -6,15 +6,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.users.UsersFragment"
     android:orientation="vertical">
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+    <TextView
+        android:layout_alignParentStart="true"
+        android:padding="10dp"
+        android:id="@+id/users_lable"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:paddingLeft="20dp"
-        />
+        android:background="@drawable/background_nimpe_layout"
+        android:text="@string/menu_list_user"
+        android:textColor="?attr/textFillColor"
+        android:textSize="20sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="10dp"
+        android:layout_centerInParent="true"
+/>
+
+    <ImageButton
+        android:id="@+id/finding_user"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/background_nimpe_layout"
+        android:padding="10dp"
+        android:src="@drawable/baseline_search_24"
+        app:hintEnabled="false"
+        app:tint="?attr/textFillColor" />
+</RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/users"
         android:layout_width="match_parent"

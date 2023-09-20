@@ -11,6 +11,9 @@ import dagger.Provides
 @Module
 object NetWorkModule {
     @Provides
+    fun provideSessionManager(context: Context): SessionManager = SessionManager(context)
+
+    @Provides
     fun providerLocaleHelper(): LocalHelper = LocalHelper()
 
     @Provides

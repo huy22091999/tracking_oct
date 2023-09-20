@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Tracking Oceantech</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
@@ -17,7 +17,7 @@
     <string name="menu_nearest_medical">Cơ sở y tế gần nhất</string>
     <string name="menu_feedback">Phản hồi</string>
     <string name="menu_Profile">Hồ sơ</string>
-    <string name="menu_list_user">Danh sách người dùng</string>
+    <string name="menu_list_user">Người dùng</string>
     <string name="menu_add_tracking">Tracking</string>
     <string name="fragment_home">Trang chủ</string>
     <string name="feedback_to_app">Phản hồi về ứng dụng</string>
@@ -25,7 +25,7 @@
     <string name="feedback_hint">Ý kiến phản hồi của bạn ...</string>
     <string name="fragment_news">Tin tức</string>
     <string name="send_feedback">Gửi phản hồi</string>
-    <string name="warning">Đăng nhập tài khoản Oceantech</string>
+    <string name="warning">Đăng nhập tài khoản</string>
     <string name="loggin">Đăng nhập</string>
     <string name="lable_signing">Chưa có tài khoản /<font color="#3F51B5"><b> Đăng kí</b></font></string>
     <string name="forget_password">Quên mật khẩu</string>
@@ -50,9 +50,9 @@
     <string name="infor_register">Thông tin đăng kí</string>
     <string name="last_name">Họ</string>
     <string name="first_name">Tên</string>
-    <string name="display_name">Tên hiển thị</string>
+    <string name="display_name">Tên hiển thị: </string>
     <string name="username">Tên đăng nhập</string>
-    <string name="year">Năm</string>
+    <string name="year">Năm: </string>
     <string name="register_next">Tiếp</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
     <string name="gender_male">nam</string>
@@ -73,7 +73,10 @@
     <string name="view_count">" %1$s Lượt xem"</string>
     <string name="vi">Tiếng Việt</string>
     <string name="en">Tiếng Anh</string>
-    <string name="edit_profile">Chỉnh sửa thông tin</string>
+    <string name="th">Tiếng Thái</string>
+    <string name="ko">Tiếng Hàn</string>
+    <string name="zh">Tiếng Trung</string>
+    <string name="edit_profile">Sửa thông tin</string>
     <string name="infor_profile">Thông tin của tôi</string>
     <string name="Cancel">Hủy</string>
     <string name="open_location_settings">Mở cài đặt</string>
@@ -91,7 +94,7 @@
     <string name="no_dengue">🛡 Bạn đã ở ngoài phạm vi có nguy cơ nhiễm Sốt xuất huyết</string>
     <string name="at">lúc</string>
     <string name="feedback_empty">Vui lòng nhập phản hồi của bạn.</string>
-    <string name="tracking_content">danh sách theo dõi</string>
+    <string name="tracking_content">Danh sách theo dõi</string>
     <string name="user_level_label">Cấp độ: </string>
     <string name="user_email_lable">Email: </string>
     <string name="user_checkin_lable">Điểm danh</string>
@@ -107,10 +110,52 @@
     <string name="delete_tracking_successfully">Xóa nội dung thành công</string>
     <string name="delete_tracking_unsuccessfully">Xóa nội dung thất bại</string>
     <string name="logout">Đăng xuất</string>
-    <string name="add_tracking">Thêm</string>
+    <string name="add_tracking">+  Thêm nội dung mới</string>
     <string name="no_checkin">Không điểm danh</string>
     <string name="calendar_lable">Lịch</string>
     <string name="checkin_status">Trạng thái: có mặt</string>
     <string name="signup_success">Đăng ký thành công</string>
+    <string name="details_onbroading_fragment1">hello</string>
+    <string name="checkin_successfully">Điểm danh thành công</string>
+    <string name="my_location">Địa chỉ của tôi</string>
+    <string name="change_password">Thay đổi mật khẩu</string>
+    <string name="notify">Thông báo</string>
+    <string name="backup">Hỗ trợ</string>
+    <string name="dark_mode">Màn hình tối</string>
+    <string name="light_mode">Màn hình sáng</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="logo_app">oceantech</string>
+    <string name="skip">Bỏ qua</string>
+    <!--    maps-->
+    <string name="location_permission_denied">location_permission_denied</string>
+    <string name="permission_required_toast">permission_required_toast</string>
+    <string name="permission_rationale_location">permission_rationale_location</string>
+    <string name="notify_is_null">Chưa có thông báo nào!</string>
+    <string name="block">Chặn</string>
+    <string name="unblock">Bỏ chặn</string>
+    <string name="user_not_found">Không tìm thấy người dùng!</string>
+    <string name="search">Tìm kiếm người dùng theo id</string>
+    <string name="tracking_is_not_found">Chưa có bản ghi nào! </string>
+    <string name="dismiss">Đã hiểu</string>
+    <string name="success">Thành công</string>
+    <string name="failure">Thất bại</string>
+    <string name="checkin_unsuccessfully">Bạn đã điểm danh ngày hôm nay!</string>
+    <string name="save">lưu</string>
+    <string name="confirmation_title">Xác nhận</string>
+    <string name="confirmation_message">Bạn có chắc chắn với lựa chọn này không?</string>
+    <string name="confirmation_positive_button">Có</string>
+    <string name="confirmation_negative_button">Không</string>
+    <string name="welcome_message">Chào mừng bạn đến trang hỗ trợ của Oceantech!</string>
+    <string name="contact_support">Liên hệ hỗ trợ</string>
+    <string name="label_statistical">Thống kê</string>
+    <string name="label_checkin">Ngày đã điểm danh</string>
+    <string name="label_nocheckin">Ngày trống</string>
+    <string name="label_notyet">Ngày chưa điểm danh</string>
+    <string name="label_month">Trong tháng</string>
+    <string name="label_sixmonths">6 tháng</string>
+    <string name="label_year">1 năm</string>
+    <string name="lable_day">ngày</string>
+    <string name="update_profile_successfully">Cập nhật thông tin thành công!</string>
+    <string name="percent_text">Phần trăm</string>
 
 </resources>

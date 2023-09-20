@@ -2,6 +2,8 @@ package com.oceantech.tracking.ui.security
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +17,8 @@ import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.network.SessionManager
 import com.oceantech.tracking.databinding.FragmentLoginBinding
 import com.oceantech.tracking.ui.MainActivity
-import com.oceantech.tracking.utils.handleLogOut
 import javax.inject.Inject
-
+//done
 class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBinding>() {
     private val viewModel: SecurityViewModel by activityViewModel()
 
@@ -26,16 +27,32 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        listenEvent()
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun listenEvent() {
         views.loginSubmit.setOnClickListener {
             loginSubmit()
         }
         views.labelSigin.setOnClickListener {
-            viewModel.handleReturnInforRegister()
+            viewModel.handleReturnInfoRegister()
         }
         views.labelResetPassword.setOnClickListener {
             viewModel.handleReturnResetPass()
         }
-        super.onViewCreated(view, savedInstanceState)
+        views.password.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                views.passwordTil.error =null
+            }
+
+        })
     }
 
     private fun loginSubmit() {
@@ -43,7 +60,7 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
         val password = views.password.text.toString().trim()
 
         if (validateLoginInput(username, password)) {
-            viewModel.handle(SecurityViewAction.LogginAction(username, password))
+            viewModel.handle(SecurityViewAction.LoginAction(username, password))
         }
     }
 
@@ -74,16 +91,12 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                     val sessionManager = context?.let { ctx -> SessionManager(ctx.applicationContext) }
                     token.accessToken?.let { token -> sessionManager!!.saveAuthToken(token) }
                     token.refreshToken?.let { refreshToken -> sessionManager!!.saveAuthTokenRefresh(refreshToken) }
-                    viewModel.handle(SecurityViewAction.SaveTokenAction(token))
                 }
                 Toast.makeText(requireContext(), getString(R.string.login_success), Toast.LENGTH_LONG).show()
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 activity?.finish()
             }
             is Fail -> {
-                if(it.asyncLogin.invoke().toString().isNotEmpty()){
-                    requireActivity().handleLogOut()
-                }
                 views.passwordTil.error = getString(R.string.login_fail)
             }
         }

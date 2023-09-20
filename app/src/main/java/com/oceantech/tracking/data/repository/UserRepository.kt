@@ -16,9 +16,11 @@ import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-    val api: UserApi
+    val api: UserApi,
 ) {
     fun getCurrentUser(): Observable<User> = api.getCurrentUser().subscribeOn(Schedulers.io())
+    fun getUserById(id: Int): Observable<User> = api.getUserById(id).subscribeOn(Schedulers.io())
+    fun blockUserById(id: Int): Observable<User> = api.blockUserById(id).subscribeOn(Schedulers.io())
 
     fun getAllUser(): Flow<PagingData<User>> {
         return Pager(
@@ -33,6 +35,7 @@ class UserRepository @Inject constructor(
     }
 
     fun updateMyself(user: User):Observable<User> =api.updateMyself(user).subscribeOn(Schedulers.io())
+    fun updateUser(user: User):Observable<User> =api.updateUser(user.id!!,user).subscribeOn(Schedulers.io())
 
     fun getString(): String = "test part"
 }

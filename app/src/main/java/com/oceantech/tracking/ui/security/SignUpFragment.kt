@@ -1,7 +1,6 @@
 package com.oceantech.tracking.ui.security
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +13,16 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.FragmentSigninBinding
+//done
+class SignUpFragment : TrackingBaseFragment<FragmentSigninBinding>() {
 
-class SigninFragment : TrackingBaseFragment<FragmentSigninBinding>() {
     private val viewModel: SecurityViewModel by activityViewModel()
-
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentSigninBinding {
         return FragmentSigninBinding.inflate(inflater, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val user = arguments?.getSerializable("infor_user") as User
+        val user = arguments?.getSerializable("info_user") as User
         views.send.setOnClickListener {
             signupSubmit(user)
         }
@@ -107,7 +105,6 @@ class SigninFragment : TrackingBaseFragment<FragmentSigninBinding>() {
                     getString(R.string.signup_success),
                     Toast.LENGTH_LONG
                 ).show()
-                Log.d("huth", "invalidate: ${it.userCurrent.invoke().toString()}")
                 viewModel.handleReturnLogin()
             }
 

@@ -23,4 +23,5 @@
         <item name="android:dropDownWidth">100dp</item>
         <item name="android:width">100dp</item>
     </style>
+
 </resources>

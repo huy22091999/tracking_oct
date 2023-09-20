@@ -8,31 +8,29 @@ import com.oceantech.tracking.data.repository.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-
+//done
 class HomeViewModel @AssistedInject constructor(
-    // Tham số constructor @Assisted được Dagger cung cấp giá trị thông qua Dependency Injection.
     @Assisted state: HomeViewState,
-    val userRepository: UserRepository, // Phụ thuộc vào lớp UserRepository để lấy dữ liệu về người dùng.
-    val timeSheetRepository: TimeSheetRepository
+    private val userRepository: UserRepository,
+    private val timeSheetRepository: TimeSheetRepository
 ) : TrackingViewModel<HomeViewState, HomeViewAction, HomeViewEvent>(state) {
-    // Biến language để lưu giữ trạng thái ngôn ngữ hiện tại của màn hình "Home".
-    var language: Int = 1
+    init{
+        handleCurrentUser()
+        handleGetAllTimeSheetByUser()
+    }
+
     override fun handle(action: HomeViewAction) {
         when (action) {
-            is HomeViewAction.GetCurrentUser -> handleCurrentUser()
-            is HomeViewAction.ResetLang -> handResetLang()
-            is HomeViewAction.UpdateMyself -> handleEditProfile(action.user)
             is HomeViewAction.GetAllTimeSheet -> handleGetAllTimeSheetByUser()
+            is HomeViewAction.UpdateMyself -> handleEditProfile(action.user)
             is HomeViewAction.CheckIn -> handleCheckIn(action.ip)
         }
     }
 
-    private fun handleCheckIn(ip:String) {
-        setState {
-            this.copy(timeSheet = Loading())
-        }
-        timeSheetRepository.checkIn(ip).execute {
-            copy(timeSheet= it)
+    private fun handleCurrentUser() {
+        setState { copy(userCurrent = Loading()) }
+        userRepository.getCurrentUser().execute {
+            copy(userCurrent = it)
         }
     }
 
@@ -45,26 +43,40 @@ class HomeViewModel @AssistedInject constructor(
         }
     }
 
+    private fun handleEditProfile(user: User){
+        setState { copy(updateCurrent = Loading()) }
+        userRepository.updateMyself(user).execute {
+            copy(updateCurrent = it,userCurrent = it)
+        }
+    }
+
+    private fun handleCheckIn(ip:String) {
+        setState {
+            this.copy(timeSheet = Loading())
+        }
+        timeSheetRepository.checkIn(ip).execute {
+            copy(timeSheet= it)
+        }
+    }
+
+    fun removeCurrent(){
+        setState { copy(updateCurrent = Uninitialized) }
+    }
+
     fun removeTimeSheet(){
         setState {
             this.copy(timeSheet = Uninitialized)
         }
     }
-    private fun handResetLang() {
-        _viewEvents.post(HomeViewEvent.ResetLanguege)
+
+    fun handleEventLogout() {
+        _viewEvents.post(HomeViewEvent.Logout)
     }
-    private fun handleCurrentUser() {
-        setState { copy(userCurrent = Loading()) }
-        userRepository.getCurrentUser().execute {
-            copy(userCurrent = it)
-        }
+
+    fun handleChangeThemeMode(isChecked: Boolean) {
+        _viewEvents.post(HomeViewEvent.ChangeDarkMode(isChecked))
     }
-    private fun handleEditProfile(user: User){
-        setState { copy(userCurrent = Loading()) }
-        userRepository.updateMyself(user).execute {
-            copy(userCurrent = it)
-        }
-    }
+
     // Factory interface để tạo HomeViewModel, được đánh dấu bằng @AssistedFactory.
     @AssistedFactory
     interface Factory {

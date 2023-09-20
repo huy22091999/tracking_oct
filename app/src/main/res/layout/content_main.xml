@@ -6,7 +6,24 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        app:abb_selectedTabType="text"
+        app:abb_textSize="14sp"
+        app:abb_indicatorAppearance="round"
+        app:abb_iconSize="26sp"
+        app:abb_tabAnimation="slide"
+        android:background="?attr/colorOnPrimary"
+        app:abb_indicatorColor="?attr/colorPrimary"
+        app:abb_tabColorSelected="?attr/colorPrimary"
+        app:abb_tabs="@menu/activity_main_bottom_nav"
+        />
+
     <fragment
+        android:layout_above="@+id/bottomNavigationView"
         android:id="@+id/nav_host_fragment_content_main"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
@@ -16,6 +33,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph" />
+
+
     <RelativeLayout
         android:id="@+id/waitingView"
         android:layout_width="match_parent"
@@ -26,10 +45,9 @@
         android:padding="8dp"
         android:visibility="gone"
         tools:visibility="visible">
-
         <ProgressBar
             android:layout_width="40dp"
             android:layout_height="40dp" />
-
     </RelativeLayout>
+
 </RelativeLayout>

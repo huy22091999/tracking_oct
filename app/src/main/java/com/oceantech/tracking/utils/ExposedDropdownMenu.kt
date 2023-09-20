@@ -1,15 +1,16 @@
 package com.oceantech.tracking.utils
 
+import android.R
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.InputType
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.widget.ArrayAdapter
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 
 class ExposedDropdownMenu : MaterialAutoCompleteTextView {
-
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -34,6 +35,10 @@ class ExposedDropdownMenu : MaterialAutoCompleteTextView {
         val customSavedState = CustomSavedState(parcelable)
         customSavedState.text = text.toString()
         return customSavedState
+    }
+    fun setAdapter(options: Array<String>) {
+        val adapter = ArrayAdapter(context, R.layout.simple_dropdown_item_1line, options)
+        setAdapter(adapter)
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {

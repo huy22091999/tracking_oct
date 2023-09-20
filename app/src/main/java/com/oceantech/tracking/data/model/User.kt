@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class User(
-    val active: Boolean,
+    var active: Boolean,
     var birthPlace: String,
     val changePass: Boolean,
     var confirmPassword: String,

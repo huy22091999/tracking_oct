@@ -7,21 +7,23 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.airbnb.mvrx.activityViewModel
+import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.FragmentUsersBinding
 import com.oceantech.tracking.ui.users.adapter.UserAdapter
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import javax.inject.Inject
-
+//done
 class UsersFragment : TrackingBaseFragment<FragmentUsersBinding>() {
     private val viewModel: UserViewModel by activityViewModel()
-    private lateinit var adapter: UserAdapter
+    //data
     private lateinit var mListUser: List<User>
+    //views
     private lateinit var progressBar: ProgressBar
+    private lateinit var adapter: UserAdapter
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentUsersBinding {
         return FragmentUsersBinding.inflate(layoutInflater, container, false)
@@ -31,13 +33,13 @@ class UsersFragment : TrackingBaseFragment<FragmentUsersBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.handle(UserViewAction.GetListUser)
         initUI();
+        listenEvent()
     }
 
-    //fun initUI
     private fun initUI() {
         mListUser = listOf()
         progressBar = ProgressBar(requireContext())
-        adapter = UserAdapter(requireContext(), action)
+        adapter = UserAdapter(action)
         views.users.adapter = adapter
         adapter.addLoadStateListener {
                 loadState ->
@@ -45,7 +47,6 @@ class UsersFragment : TrackingBaseFragment<FragmentUsersBinding>() {
                 progressBar.visibility = View.VISIBLE
             } else {
                 progressBar.visibility = View.GONE
-                // getting the error
                 val error = when {
                     loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
                     loadState.append is LoadState.Error -> loadState.append as LoadState.Error
@@ -66,8 +67,14 @@ class UsersFragment : TrackingBaseFragment<FragmentUsersBinding>() {
 
     //fun callback
     private val action: (User) -> Unit = {
-        viewModel.handleReturnDetailUser(user = it)
+        val action = UsersFragmentDirections.actionNavUsersFragmentToUserDetailsFragment(it)
+        findNavController().navigate(action)
     }
 
+    private fun listenEvent() {
+        views.findingUser.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_usersFragment_to_searchUserFragment)
+        }
+    }
 
 }

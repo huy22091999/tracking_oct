@@ -9,9 +9,9 @@ import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.ui.MainActivity
+import com.oceantech.tracking.utils.handleLogOut
 import javax.inject.Inject
-
-
+//done
 class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityViewModel.Factory {
 
     private val viewModel: SecurityViewModel by viewModel()
@@ -23,7 +23,6 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
-        viewModel.handle(SecurityViewAction.GetUserCurrent)
         viewModel.subscribe(this) {
             handleStateChange(it)
         }
@@ -37,14 +36,11 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
             }
 
             is Fail -> {
+                handleLogOut()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun getBinding(): ActivitySplashBinding {

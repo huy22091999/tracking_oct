@@ -1,12 +1,9 @@
 package com.oceantech.tracking.ui.tracking
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
@@ -14,22 +11,26 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.data.model.Notify
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
+import com.oceantech.tracking.ui.home.HomeViewModel
 import com.oceantech.tracking.ui.tracking.adapter.TrackingAdapter
-
-
+import com.oceantech.tracking.utils.NotificationDialogFragment
+import com.oceantech.tracking.utils.showDialog
+//done
 class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     val viewModel: TrackingSubViewModel by activityViewModel()
-    lateinit var adapter: TrackingAdapter
-    private var mUser: User? = null
+    private val homeViewModel: HomeViewModel by activityViewModel()
+    //data
+    private var mUser: User?=null
     var state: Int = 0
-
+    //views
+    lateinit var adapter: TrackingAdapter
     companion object {
-        private const val GET_CURUSER= 1
-        private const val GET_ALL = 2
-        private const val SAVE = 3
+        private const val GET_ALL = 1
+        private const val SAVE = 2
     }
 
     override fun getBinding(
@@ -40,14 +41,13 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.handle(TrackingViewAction.GetCurrentUser)
-        state= GET_CURUSER
         setupUi();
-        viewModel.observeViewEvents {
-            handleEvent(it)
-        }
+        listenEvent()
+    }
+
+    private fun listenEvent() {
         views.btnAddTracking.setOnClickListener {
-            viewModel.handle(TrackingViewAction.NavigateToAddDialog)
+            findNavController().navigate(R.id.action_nav_trackingFragment_to_addTrackingFragment)
         }
         parentFragmentManager.setFragmentResultListener("requestKey", this) { _, bundle ->
             val receivedTracking = bundle.getSerializable("key_tracking") as Tracking
@@ -57,7 +57,13 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     }
 
     private fun setupUi() {
-
+        withState(homeViewModel){
+            it.userCurrent.invoke().let { user ->
+                mUser=user
+                views.displayName.text = "${user?.displayName}"
+                views.levelLabel.text= getString(R.string.year) +" ${user?.year}"
+            }
+        }
         adapter = TrackingAdapter {
             val action =
                 TrackingFragmentDirections.actionNavTrackingFragmentToDetailTrackingFragment(it)
@@ -68,80 +74,42 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         state = GET_ALL
     }
 
-    private fun handleEvent(it: TrackingViewEvent) {
-        when (it) {
-            is TrackingViewEvent.ResetLanguege -> {
-                views.trackingContent.text = getString(R.string.tracking_content)
-            }
-
-            is TrackingViewEvent.NavigateToAddDialog -> {
-                    withState(viewModel){
-                        it.asyncCurrentUser.invoke().let {
-                            if (it!=null){
-                            val action =
-                                TrackingFragmentDirections.actionNavTrackingFragmentToAddTrackingFragment(it)
-                            findNavController().navigate(action)
-                        }
+    private fun handleStateGetALl(it: TrackingViewState) {
+        when (it.asyncTrackingArray) {
+            is Success -> {
+                it.asyncTrackingArray.invoke().let {
+                    if (it.isEmpty()){
+                        setupTrackingNotFound()
                     }
+                    adapter.setData(it)
                 }
             }
         }
     }
 
-    private fun handleStateGetALl(it: TrackingViewState) {
-        when (it.asyncTrackingArray) {
-            is Success -> {
-                it.asyncTrackingArray.invoke().let {
-                    adapter.setData(it)
-                }
-            }
-
-            is Fail -> {
-            
-            }
-        }
+    private fun setupTrackingNotFound() {
+        views.noTracking.visibility=View.VISIBLE
     }
 
     private fun handleStateSaved(it: TrackingViewState) {
         when (it.asyncSaveTracking) {
             is Success -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.add_tracking_successfully),
-                    Toast.LENGTH_LONG
-                ).show()
+                val notify= Notify(NotificationDialogFragment.SUCCESS_ID,getString(R.string.add_tracking_successfully))
+                showDialog(notify,childFragmentManager)
                 viewModel.handle(TrackingViewAction.GetAllTrackingByUser)
                 this.state = GET_ALL
             }
 
             is Fail -> {
                 it.asyncSaveTracking.error.message.let {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.add_tracking_unsuccessfully),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    val notify= Notify(NotificationDialogFragment.FALURE_ID,getString(R.string.add_tracking_unsuccessfully))
+                    showDialog(notify,childFragmentManager)
                 }
-            }
-        }
-    }
-    private fun handleStateGetCurrentUser(it: TrackingViewState) {
-        when (it.asyncCurrentUser) {
-            is Success -> {
-                it.asyncCurrentUser.invoke().let {
-                    Log.d("user", "handleStateGetCurrentUser: ${mUser}")
-                    mUser=it
-                }
-            }
-
-            is Fail -> {
-
             }
         }
     }
     override fun invalidate(): Unit = withState(viewModel) {
         when (state) {
-            GET_CURUSER -> handleStateGetCurrentUser(it)
             GET_ALL -> handleStateGetALl(it)
             SAVE -> handleStateSaved(it)
         }

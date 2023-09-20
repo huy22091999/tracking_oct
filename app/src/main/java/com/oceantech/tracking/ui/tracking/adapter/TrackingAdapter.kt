@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.databinding.ItemTrackingBinding
-
+//done
 class TrackingAdapter(val onClick: (Tracking) -> Unit): RecyclerView.Adapter<TrackingAdapter.TrackingViewHolder>() {
     var mList: List<Tracking> = listOf()
 

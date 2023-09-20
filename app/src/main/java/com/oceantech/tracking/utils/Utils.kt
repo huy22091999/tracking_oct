@@ -2,15 +2,24 @@ package com.oceantech.tracking.utils
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.oceantech.tracking.R
 import com.oceantech.tracking.data.network.SessionManager
+import com.oceantech.tracking.ui.home.HomeViewAction
 import com.oceantech.tracking.ui.security.LoginActivity
+import com.oceantech.tracking.ui.tracking.TrackingViewAction
+import com.oceantech.tracking.ui.users.UserViewAction
 import timber.log.Timber
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -68,5 +77,26 @@ fun Activity.handleLogOut() {
     startActivity(intent)
     finish()
 }
+
+fun Activity.changeLanguage(lang: String) {
+    val res: Resources = resources
+    val dm: DisplayMetrics = res.displayMetrics
+    val conf: Configuration = res.configuration
+    val myLocale = Locale(lang)
+    conf.setLocale(myLocale)
+    res.updateConfiguration(conf, dm)
+}
+
+fun Activity.changeDarkMode(isDarkMode: Boolean) {
+    AppCompatDelegate.setDefaultNightMode(
+        if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+    )
+}
+
+fun isNumeric(input: String): Boolean {
+    return input.toIntOrNull() != null
+}
+
+
 
 

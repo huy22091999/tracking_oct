@@ -3,19 +3,22 @@ package com.oceantech.tracking.data.network
 import android.content.Context
 import android.content.SharedPreferences
 import com.oceantech.tracking.R
+import javax.inject.Inject
 
 
 /**
  * Session manager to save and fetch data from SharedPreferences
  */
-class SessionManager(context: Context) {
+class SessionManager @Inject constructor(context: Context) {
 
     private var prefs: SharedPreferences =
         context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
     companion object {
         const val USER_TOKEN = "user_token"
-        const val TOKEN_REFRESH="refresh_token"
+        const val TOKEN_REFRESH = "refresh_token"
+        const val DARK_MODE = "dark_mode"
+        const val LANGUAGE = "language"
     }
 
     /**
@@ -44,5 +47,28 @@ class SessionManager(context: Context) {
         editor.apply()
     }
 
+    fun saveDarkMode(isDarkMode: Boolean) {
+        val editor = prefs.edit()
+        editor.putBoolean(DARK_MODE, isDarkMode)
+        editor.apply()
+    }
 
+    fun getDarkMode(): Boolean = prefs.getBoolean(DARK_MODE, false)
+
+    fun saveLanguage(language: String) {
+        val editor = prefs.edit()
+        editor.putString(LANGUAGE, language)
+        editor.apply()
+    }
+
+    fun getLanguage(): String = prefs.getString(LANGUAGE,"vi").toString()
+
+    fun saveOnBoardingFinished(){
+        val editor=prefs.edit()
+        editor.putBoolean("Finished",true)
+        editor.apply()
+    }
+    fun getOnBoardingFinished(): Boolean {
+        return prefs.getBoolean("Finished", false)
+    }
 }

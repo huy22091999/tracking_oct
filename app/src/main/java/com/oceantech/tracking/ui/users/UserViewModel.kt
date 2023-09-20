@@ -1,57 +1,73 @@
 package com.oceantech.tracking.ui.users
 
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.User
-import com.oceantech.tracking.data.network.UsersPagingSource
 import com.oceantech.tracking.data.repository.UserRepository
-import com.oceantech.tracking.ui.home.HomeViewAction
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
-
+//done
 class UserViewModel @AssistedInject constructor(
    @Assisted state: UserViewState,
     private val repository: UserRepository
     ):TrackingViewModel<UserViewState,UserViewAction,UserViewEvent>(state) {
-    var language: Int = 1
     override fun handle(action: UserViewAction) {
        when(action){
-           is UserViewAction.ResetLang -> handResetLang()
+           is UserViewAction.GetUserById -> handleGetUserById(action.id)
            is UserViewAction.GetListUser -> handleGetListUser()
-           is UserViewAction.RemoveUser -> handleRemoveUser()
-           is UserViewAction.UpdateUser -> handleUpdateUser()
+           is UserViewAction.UpdateUser -> handleUpdateUser(action.user)
+           is UserViewAction.BlockUserById -> handleBlockUserById(action.id)
+           is UserViewAction.UnBlockUserById -> handleUpdateUser(action.user)
        }
     }
 
-    private fun handResetLang() {
-        _viewEvents.post(UserViewEvent.ResetLanguege)
+    fun removeUserState(){
+        setState {
+            this.copy(asyncUser = Uninitialized,
+                asyncBlockUser= Uninitialized,
+                asyncUpdateUser = Uninitialized)
+        }
     }
 
-    private fun handleUpdateUser() {
-
+    private fun handleBlockUserById(id: Int) {
+        setState {
+            this.copy(asyncBlockUser= Loading())
+        }
+        repository.blockUserById(id).execute {
+            copy(asyncBlockUser=it, asyncUser = it)
+        }
     }
 
-    private fun handleRemoveUser() {
-
+    private fun handleGetUserById(id: Int) {
+        setState {
+            this.copy(asyncUser= Loading())
+        }
+        repository.getUserById(id).execute {
+            copy(asyncUser= it)
+        }
     }
 
-     fun handleGetListUser(): Flow<PagingData<User>>{
-        val userData=repository.getAllUser().cachedIn(viewModelScope)
-        return userData
+    private fun handleUpdateUser(user: User) {
+        setState {
+            this.copy(asyncUpdateUser= Loading())
+        }
+        repository.updateUser(user).execute {
+            copy(asyncUpdateUser=it, asyncUser = it)
+        }
     }
 
-    fun handleReturnDetailUser(user: User) {
-
+    fun handleGetListUser(): Flow<PagingData<User>> {
+        return repository.getAllUser().cachedIn(viewModelScope)
     }
 
     @AssistedFactory

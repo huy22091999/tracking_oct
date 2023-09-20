@@ -10,25 +10,42 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_usersFragment"
-            app:destination="@id/nav_usersFragment" />
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_myProfileFragment"
-            app:destination="@id/nav_fofileFragment" />
-        <action
-            android:id="@+id/action_nav_HomeFragment_to_trackingFragment"
-            app:destination="@id/nav_trackingFragment" />
+            android:id="@+id/action_nav_HomeFragment_to_homeBottomsheetFragment"
+            app:destination="@id/homeBottomsheetFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_usersFragment"
         android:name="com.oceantech.tracking.ui.users.UsersFragment"
         android:label="fragment_users"
-        tools:layout="@layout/fragment_users" />
+        tools:layout="@layout/fragment_users" >
+        <action
+            android:id="@+id/action_nav_usersFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
+        <action
+            android:id="@+id/action_nav_usersFragment_to_searchUserFragment"
+            app:destination="@id/searchUserFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_fofileFragment"
         android:name="com.oceantech.tracking.ui.profile.MyProfileFragment"
         android:label="fragment_my_profile"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_nav_fofileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_nav_fofileFragment_to_notifiesFragment"
+            app:destination="@id/notifiesFragment" />
+        <action
+            android:id="@+id/action_nav_fofileFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
+        <action
+            android:id="@+id/action_nav_fofileFragment_to_supportFragment"
+            app:destination="@id/supportFragment" />
+        <action
+            android:id="@+id/action_nav_fofileFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_trackingFragment"
         android:name="com.oceantech.tracking.ui.tracking.TrackingFragment"
@@ -58,5 +75,57 @@
         <argument
             android:name="trackingArg"
             app:argType="com.oceantech.tracking.data.model.Tracking" />
+    </fragment>
+    <dialog
+        android:id="@+id/homeBottomsheetFragment"
+        android:name="com.oceantech.tracking.ui.home.HomeBottomSheetFragment"
+        android:label="fragment_home_bottomsheet"
+        tools:layout="@layout/fragment_home_bottomsheet" >
+        <argument
+            android:name="dateArg"
+            app:argType="string" />
+    </dialog>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.oceantech.tracking.ui.profile.EditProfileFragment"
+        android:label="EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile"/>
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.oceantech.tracking.ui.users.UserDetailsFragment"
+        android:label="UserDetailsFragment"
+        tools:layout="@layout/fragment_user_details">
+        <argument
+            android:name="userArg"
+            app:argType="com.oceantech.tracking.data.model.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/notifiesFragment"
+        android:name="com.oceantech.tracking.ui.notifies.NotifiesFragment"
+        android:label="fragment_notifies"
+        tools:layout="@layout/fragment_notifies" />
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.oceantech.tracking.ui.security.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" />
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.oceantech.tracking.ui.support.SupportFragment"
+        android:label="SupportFragment"
+        tools:layout="@layout/fragment_support"/>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.oceantech.tracking.ui.maps.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/searchUserFragment"
+        android:name="com.oceantech.tracking.ui.users.SearchUserFragment"
+        android:label="fragment_search_user"
+        tools:layout="@layout/fragment_search_user" >
+        <action
+            android:id="@+id/action_searchUserFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment>
 </navigation>

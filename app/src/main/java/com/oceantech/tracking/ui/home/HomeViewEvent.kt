@@ -1,8 +1,9 @@
 package com.oceantech.tracking.ui.home
 
 import com.oceantech.tracking.core.NimpeViewEvents
-
+//done
 sealed class HomeViewEvent:NimpeViewEvents{
-    object ResetLanguege:HomeViewEvent()
-    object SaveFeedback:HomeViewEvent()
+    data class ChangeDarkMode(var isCheckedDarkMode: Boolean) : HomeViewEvent()
+    object Logout : HomeViewEvent()
+
 }

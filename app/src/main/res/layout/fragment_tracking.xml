@@ -9,31 +9,89 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:id="@+id/tracking_content"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:text="@string/tracking_content"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rcy_tracking"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_tracking"/>
-</LinearLayout>
+        <RelativeLayout
+            android:layout_marginHorizontal="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/background_nimpe_layout"
+            android:backgroundTint="?attr/colorBackgroundFloating"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-    <Button
-        android:id="@+id/btn_add_tracking"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="50dp"
-        style="@style/NimpeButtonLogin"
-        android:text="@string/add_tracking"
-        android:backgroundTint="@color/black"/>
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ellipse" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/img_avatar"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:textColor="?attr/textFillColor"
+                    android:id="@+id/display_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/display_name"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:textColor="?attr/textFillColor"
+                    android:id="@+id/level_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_level_label"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_add_tracking"                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                app:backgroundTint="@color/white"
+                android:src="@drawable/baseline_add_24" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <TextView
+            android:textColor="?attr/textFillColor"
+            android:background="@drawable/background_nimpe_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:layout_margin="8dp"
+            android:id="@+id/tracking_content"
+            android:textSize="20sp"
+            android:text="@string/tracking_content"/>
+            <TextView
+                android:visibility="gone"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/tracking_is_not_found"
+                android:id="@+id/no_tracking"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcy_tracking"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_tracking" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

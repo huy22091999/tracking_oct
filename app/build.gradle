@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -52,6 +53,8 @@ kapt {
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
     def daggerVersion = '2.37'
     def autofill_version = "1.1.0"
     def work_version = '2.8.1'
@@ -156,4 +159,12 @@ dependencies {
 
     //last time
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
+    implementation 'nl.joery.animatedbottombar:library:1.1.0'
+
+    //animation
+    implementation 'com.airbnb.android:lottie:6.0.1'
+    //
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+
+
 }

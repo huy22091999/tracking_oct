@@ -1,6 +1,4 @@
 package com.oceantech.tracking.ui.security
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.viewModelScope
 import com.airbnb.mvrx.*
 import com.oceantech.tracking.core.TrackingViewModel
@@ -12,24 +10,23 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.async
-
-
+//done
 class SecurityViewModel @AssistedInject constructor(
     @Assisted state: SecurityViewState,
     val repository: AuthRepository,
     private val userRepo:UserRepository
 ) :
     TrackingViewModel<SecurityViewState,SecurityViewAction,SecurityViewEvent>(state) {
-    init {
 
+    init {
+        handleCurrentUser()
     }
 
     override fun handle(action: SecurityViewAction) {
         when(action){
             is SecurityViewAction.SignupAction->handleSignup(action.user)
-            is SecurityViewAction.LogginAction->handleLogin(action.userName,action.password)
+            is SecurityViewAction.LoginAction->handleLogin(action.userName,action.password)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
-            is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
         }
     }
 
@@ -65,17 +62,17 @@ class SecurityViewModel @AssistedInject constructor(
 
     }
 
-    fun handleReturnSignin(user: User) {
-        _viewEvents.post(SecurityViewEvent.ReturnSigninEvent(user))
+    fun handleReturnSignUp(user: User) {
+        _viewEvents.post(SecurityViewEvent.ReturnSignUpEvent(user))
     }
-    fun handleReturnInforRegister() {
-        _viewEvents.post(SecurityViewEvent.ReturnInforRegisterEvent)
+    fun handleReturnInfoRegister() {
+        _viewEvents.post(SecurityViewEvent.ReturnInfoRegisterEvent)
     }
     fun handleReturnLogin() {
         _viewEvents.post(SecurityViewEvent.ReturnLoginEvent)
     }
     fun handleReturnResetPass() {
-        _viewEvents.post(SecurityViewEvent.ReturnResetpassEvent)
+        _viewEvents.post(SecurityViewEvent.ReturnResetPassEvent)
     }
 
     fun getString()="test"

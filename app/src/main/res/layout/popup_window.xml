@@ -18,6 +18,7 @@
             android:src="@drawable/img_flag_en" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -39,6 +40,7 @@
             android:src="@drawable/img_flag_vi" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -46,5 +48,70 @@
             android:layout_marginEnd="4dp"
             android:text="@string/vi" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/to_lang_zh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="4dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/china" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/zh" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/to_lang_ko"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="4dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/korea" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:text= "@string/ko"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/to_lang_th"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="4dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/thailand" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/th" />
+    </LinearLayout>
+
 </LinearLayout>
 

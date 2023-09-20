@@ -1,6 +1,5 @@
 package com.oceantech.tracking.ui.users.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -8,23 +7,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.ItemUserBinding
-
-
-class UserAdapter(private val context: Context, private val action: (User) -> Unit) :
+//done
+class UserAdapter(private val action: (User) -> Unit) :
     PagingDataAdapter<User, UserAdapter.UserViewHolder>(userComparator) {
 
     inner class UserViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
-            binding.fullName.text = user.displayName
-            binding.email.text = "Email: ${ user.email }"
-            binding.levelLabel.text ="Level: ${ user.year.toString() }"
+            binding.fullName.text = " ${user.displayName}"
+            binding.email.text = " ${ user.email }"
+            binding.year.text =" ${ user.year}"
             binding.countDayCheckIn.text = user.countDayCheckin.toString()
             binding.countDayTracking.text = user.countDayTracking.toString()
             binding.itemView.setOnClickListener {
                 action(user)
             }
-
         }
     }
 

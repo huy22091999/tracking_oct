@@ -9,7 +9,6 @@ import android.os.Build
 import androidx.preference.PreferenceManager
 import java.util.*
 
-
 class LocalHelper {
     private val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
 

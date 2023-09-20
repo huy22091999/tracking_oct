@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Tracking Oceantech</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
@@ -24,7 +24,7 @@
     <string name="feedback_description">Please enter your feedback below to help make our app even better !</string>
     <string name="feedback_hint">Your feedback ...</string>
     <string name="send_feedback">Send feedback</string>
-    <string name="warning">Đăng nhập tài khoản Oceantech Tracking</string>
+    <string name="warning">Đăng nhập tài khoản</string>
     <string name="gender">Gender</string>
     <string name="birth_place">BirthPlace</string>
     <string name="loggin">Đăng nhập</string>
@@ -50,13 +50,13 @@
     <string name="email">Email <font color="red">*</font></string>
     <string name="send">Send</string>
     <string name="signin">Đăng kí tài khoản</string>
-    <string name="infor_register">Information register</string>
+    <string name="infor_register">Thông tin đăng kí</string>
     <string name="last_name">Last Name</string>
     <string name="first_name">Fisrt Name</string>
-    <string name="display_name">Display name</string>
+    <string name="display_name">Display name: </string>
     <string name="username">User name</string>
     <string name="university">University</string>
-    <string name="year">Year</string>
+    <string name="year">Year: </string>
     <string name="signin_account">Sign in</string>
     <string name="register_next">Next</string>
     <string name="confirm_password">Confirm password</string>
@@ -79,6 +79,9 @@
     <string name="view_count">" %1$s View"</string>
     <string name="en">English</string>
     <string name="vi">Vietnamese</string>
+    <string name="zh">Chiness</string>
+    <string name="ko">Korean</string>
+    <string name="th">Thai</string>
     <string name="Cancel">Cancel</string>
     <string name="open_location_settings">Open setting</string>
     <string name="gps_network_not_enabled">Application must be use your location tp play the current and warning the center of the services.</string>
@@ -93,7 +96,7 @@
     <string name="tracking_content">Tracking list</string>
     <string name="user_level_label">Level: </string>
     <string name="user_email_lable">Email: </string>
-    <string name="user_checkin_lable">Checkin </string>
+    <string name="user_checkin_lable">Check-in </string>
     <string name="user_tracking_lable">Tracking </string>
     <string name="hint_input_tracking">Insert your content</string>
     <string name="add_tracking_successfully">Add tracking successfully</string>
@@ -106,9 +109,54 @@
     <string name="delete_tracking_successfully">Delete tracking successfully</string>
     <string name="delete_tracking_unsuccessfully">Delete tracking unsuccessfully</string>
     <string name="logout">Logout</string>
-    <string name="add_tracking">Add</string>
+    <string name="add_tracking">+  Create new tracking</string>
     <string name="no_checkin">No checkin</string>
     <string name="calendar_lable">Calendar</string>
     <string name="checkin_status">Status: present</string>
     <string name="signup_success">Signup successfully</string>
+    <string name="details_onbroading_fragment1">Bắt đầu với ứng dụng theo dõi tiến độ</string>
+    <string name="checkin_successfully">checkin successfully</string>
+    <string name="my_location">My location</string>
+    <string name="change_password">Change password</string>
+    <string name="notify">Notifies</string>
+    <string name="backup">Back up</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="light_mode">Light mode</string>
+    <string name="language">Language</string>
+    <string name="logo_app">oceantech</string>
+    <string name="skip">Bỏ qua</string>
+
+    <!--    maps-->
+    <string name="location_permission_denied">location_permission_denied</string>
+    <string name="permission_required_toast">permission_required_toast</string>
+    <string name="permission_rationale_location">permission_rationale_location</string>
+    <string name="notify_is_null">There are no announcements yet!</string>
+    <string name="block">Block</string>
+    <string name="unblock">Unblock</string>
+    <string name="user_not_found">User cannot found!</string>
+    <string name="search">Search user by user id</string>
+    <string name="tracking_is_not_found">Tracking is not found</string>
+    <string name="dismiss">Dimiss</string>
+    <string name="success">success</string>
+    <string name="failure">falure</string>
+    <string name="checkin_unsuccessfully">Checkin unsuccessfully</string>
+    <string name="save">save</string>
+    <string name="confirmation_title">Confirmation</string>
+    <string name="confirmation_message">Are you sure about this choice?</string>
+    <string name="confirmation_positive_button">Yes</string>
+    <string name="confirmation_negative_button">No</string>
+    <string name="welcome_message">Welcome to Oceantech\'s support page!</string>
+    <string name="contact_support">Contact Support</string>
+    <string name="label_statistical">Statistics</string>
+    <string name="label_checkin">Checked-in Days</string>
+    <string name="label_nocheckin">Empty Days</string>
+    <string name="label_notyet">Not Checked-in Days</string>
+    <string name="label_month">Within Month</string>
+    <string name="label_sixmonths">6 Months</string>
+    <string name="label_year">1 Year</string>
+    <string name="lable_day">day</string>
+    <string name="update_profile_successfully">Update profile successfully!</string>
+    <string name="percent_text">Percent</string>
+
+
 </resources>

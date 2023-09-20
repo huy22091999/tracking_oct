@@ -3,14 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.oceantech.tracking.MainActivity">
     <item
-
-        android:icon="@drawable/img_flag_vi"
+        android:icon="@drawable/img_flag_en"
         android:id="@+id/action_en"
-        app:showAsAction="collapseActionView"
+        app:showAsAction="always"
         android:title="en" />
     <item
         android:id="@+id/action_vi"
         android:icon="@drawable/img_flag_vi"
-        app:showAsAction="collapseActionView"
+        app:showAsAction="always"
         android:title="vi"/>
+    <item
+        android:id="@+id/action_zh"
+        android:icon="@drawable/china"
+        app:showAsAction="always"
+        android:title="zh"/>
+    <item
+        android:id="@+id/action_ko"
+        android:icon="@drawable/korea"
+        app:showAsAction="always"
+        android:title="ko"/>
+    <item
+        android:id="@+id/action_th"
+        android:icon="@drawable/thailand"
+        app:showAsAction="always"
+        android:title="th"/>
 </menu>

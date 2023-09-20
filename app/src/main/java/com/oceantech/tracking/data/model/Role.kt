@@ -7,8 +7,6 @@ data class Role(
     val id:String?=null,
     @SerializedName("name")
     val name:String?=null,
-
     @SerializedName("authority")
     val authority:String?=null,
-
     )
