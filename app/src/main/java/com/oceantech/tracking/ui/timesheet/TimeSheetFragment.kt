@@ -38,12 +38,6 @@ class TimeSheetFragment : TrackingBaseFragment<FragmentTimeSheetBinding>() {
     private var offline: Boolean = false
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

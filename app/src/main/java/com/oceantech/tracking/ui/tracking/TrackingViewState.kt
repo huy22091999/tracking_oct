@@ -7,7 +7,8 @@ import com.oceantech.tracking.data.model.Tracking
 
 data class TrackingViewState(
     val listTracking: Async<List<Tracking>> = Uninitialized,
-    val Tracking: Async<Tracking> = Uninitialized
+    val Tracking: Async<Tracking> = Uninitialized,
+    val deleteTracking:Async<Tracking> = Uninitialized
 ) : MvRxState {
 
 }

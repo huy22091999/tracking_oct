@@ -22,13 +22,18 @@ class TrackingViewModel @AssistedInject constructor(
         when (action) {
             is TrackingViewAction.getTrackingAction -> handleGetTracking()
             is TrackingViewAction.saveTracking -> handleSaveTracking(action.tracking)
-            else -> {
-                false
-            }
+            is TrackingViewAction.deleteTracking -> handleDeleteTracking(action.id)
         }
     }
 
-    private fun handleSaveTracking(tracking:Tracking) {
+    private fun handleDeleteTracking(id: Int) {
+        setState { copy(deleteTracking = Loading()) }
+        repo.deleteTracking(id).execute {
+            copy(deleteTracking = it)
+        }
+    }
+
+    private fun handleSaveTracking(tracking: Tracking) {
         setState { copy(Tracking = Loading()) }
         repo.saveTracking(tracking).execute {
             copy(Tracking = it)

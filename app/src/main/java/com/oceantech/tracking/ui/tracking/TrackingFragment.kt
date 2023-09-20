@@ -1,7 +1,6 @@
 package com.oceantech.tracking.ui.tracking
 
 import android.app.AlertDialog
-import android.graphics.Canvas
 import android.os.Bundle
 import android.text.Editable
 import android.text.style.ForegroundColorSpan
@@ -9,10 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.mvrx.Fail
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
@@ -20,9 +16,7 @@ import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.Tracking
-import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
-import com.oceantech.tracking.utils.DialogUtil
 import com.oceantech.tracking.utils.checkStatusApiRes
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
@@ -36,6 +30,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     val trackingViewModel: TrackingViewModel by activityViewModel()
     private var mlistTracking: MutableList<Tracking> = mutableListOf()
     private var content: String = ""
+    private var positionToDelete: Int = -1
 
     private lateinit var rvAdapter: TrackingAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,10 +90,16 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     }
 
     private fun setUpRcv() {
-        rvAdapter = TrackingAdapter(requireActivity(), mlistTracking)
+        rvAdapter = TrackingAdapter(requireActivity(), mlistTracking, action)
         views.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         views.recyclerView.adapter = rvAdapter
+    }
+
+    private val action: (Tracking, Int) -> Unit = { tracking, position ->
+        tracking.id?.let { TrackingViewAction.deleteTracking(it) }
+            ?.let { trackingViewModel.handle(it) }
+        positionToDelete = position
     }
 
     private fun setUpCalender() {
@@ -147,6 +148,25 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
                 Toast.makeText(
                     requireContext(),
                     getString(checkStatusApiRes(it.Tracking)),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> {
+                false
+            }
+        }
+
+        when (it.deleteTracking) {
+            is Success -> {
+                if (positionToDelete != -1)
+                    rvAdapter.removeItem(positionToDelete)
+            }
+
+            is Fail -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(checkStatusApiRes(it.deleteTracking)),
                     Toast.LENGTH_SHORT
                 ).show()
             }
