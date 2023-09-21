@@ -69,6 +69,11 @@ class ProfileFragment :
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
     }
 
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         views.setting.logout.setOnClickListener {
@@ -145,7 +150,6 @@ class ProfileFragment :
         bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav)
 
         val menu: Menu = bottomNavigationView.menu
-        menu.findItem(R.id.nav_home).title = getString(R.string.menu_home)
         menu.findItem(R.id.nav_tracking).title = getString(R.string.menu_tracking)
         menu.findItem(R.id.nav_users).title = getString(R.string.menu_users)
         menu.findItem(R.id.nav_time_sheet).title = getString(R.string.menu_time_sheet)
@@ -156,6 +160,9 @@ class ProfileFragment :
         views.setting.titleForget.text = getString(R.string.forget_password)
         views.setting.titleLogout.text = getString(R.string.logout)
         views.setting.titleLang.text = getString(R.string.language)
+
+        val currentActivity = requireActivity()
+        currentActivity.recreate()
     }
 
     override fun invalidate() = withState(profileViewModel) {

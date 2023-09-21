@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_home"
-        android:contentDescription="@string/menu_home"
-        android:icon="@drawable/ic_home"
-        android:title="@string/menu_home" />
+        android:id="@+id/nav_tracking"
+        android:contentDescription="@string/menu_tracking"
+        android:icon="@drawable/ic_tracking"
+        android:title="@string/menu_tracking" />
     <item
         android:id="@+id/nav_time_sheet"
         android:contentDescription="@string/menu_time_sheet"
-        android:icon="@drawable/ic_category"
+        android:icon="@drawable/ic_calendar"
         android:title="@string/menu_time_sheet" />
-    <item
-        android:id="@+id/nav_tracking"
-        android:contentDescription="@string/menu_tracking"
-        android:icon="@drawable/ic_hostpital"
-        android:title="@string/menu_tracking" />
     <item
         android:id="@+id/nav_users"
         android:contentDescription="@string/menu_users"
-        android:icon="@drawable/ic_feedback"
+        android:icon="@drawable/ic_group_user"
         android:title="@string/menu_users" />
     <item
         android:id="@+id/nav_profile"
         android:contentDescription="@string/menu_profile"
-        android:icon="@drawable/ic_feedback"
+        android:icon="@drawable/ic_profile"
         android:title="@string/fragment_profile" />
 </menu>

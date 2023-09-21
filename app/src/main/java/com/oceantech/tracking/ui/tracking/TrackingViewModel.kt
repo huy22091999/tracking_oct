@@ -8,7 +8,6 @@ import com.airbnb.mvrx.ViewModelContext
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.data.repository.TrackingRepository
-import com.oceantech.tracking.ui.timesheet.TimeSheetViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -23,7 +22,34 @@ class TrackingViewModel @AssistedInject constructor(
             is TrackingViewAction.getTrackingAction -> handleGetTracking()
             is TrackingViewAction.saveTracking -> handleSaveTracking(action.tracking)
             is TrackingViewAction.deleteTracking -> handleDeleteTracking(action.id)
+            is TrackingViewAction.upadateTracking -> handleUpdateTracking(action.id, action.content)
+            else -> {
+                false
+            }
         }
+    }
+
+    private fun handleUpdateTracking(id: Int, content: String) {
+        setState { copy(updateTracking = Loading()) }
+        repo.updateTracking(id, content).execute {
+            copy(updateTracking = it)
+        }
+    }
+
+    fun handleReturnDelete() {
+        _viewEvents.post(TrackingViewEvent.ReturnDeleteTracking)
+    }
+
+    fun handleReturnUpdate(content: String?, positionToSelected: Int) {
+        _viewEvents.post(TrackingViewEvent.ReturnUpdateTracking(content, positionToSelected))
+    }
+
+    fun handleReturnSave(tracking: Tracking) {
+        _viewEvents.post(TrackingViewEvent.ReturnSaveTracking(tracking))
+    }
+
+    fun handleReturnGetAll(listTracking: List<Tracking>) {
+        _viewEvents.post(TrackingViewEvent.ReturnGetTracking(listTracking))
     }
 
     private fun handleDeleteTracking(id: Int) {

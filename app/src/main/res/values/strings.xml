@@ -96,4 +96,6 @@
     <string name="checkInFail">Check-In Fail</string>
     <string name="checked">You have already checked in for today</string>
     <string name="fail">Fail</string>
+    <string name="update_feedback">Update</string>
+    <string name="notification">Notification</string>
 </resources>

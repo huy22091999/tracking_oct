@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.airbnb.mvrx.MvRxViewModelFactory
@@ -35,7 +36,7 @@ import com.oceantech.tracking.ui.users.UserViewState
 import com.oceantech.tracking.ui.users.UsersViewModel
 import com.oceantech.tracking.ui.users.UsersViewModel_Factory
 
-class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.Factory,
+class MainActivity : TrackingBaseActivity<ActivityMainBinding>(),
     ProfileViewModel.Factory, InformationViewModel.Factory, UsersViewModel.Factory,
     TimeSheetViewModel.Factory, TrackingViewModel.Factory {
     companion object {
@@ -59,15 +60,17 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
 
     @Inject
     lateinit var sessionManager: SessionManager
-    private val homeViewModel: HomeViewModel by viewModel()
+
+    //private val homeViewModel: HomeViewModel by viewModel()
+    private val trackingViewModel: TrackingViewModel by viewModel()
 
     private lateinit var sharedActionViewModel: TestViewModel
 
     @Inject
     lateinit var localHelper: LocalHelper
 
-    @Inject
-    lateinit var homeViewModelFactory: HomeViewModel.Factory
+//    @Inject
+//    lateinit var homeViewModelFactory: HomeViewModel.Factory
 
 
     private lateinit var navController: NavController
@@ -84,7 +87,7 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         setupBottomNavigation()
         sharedActionViewModel.test()
 
-        homeViewModel.subscribe(this) {
+        trackingViewModel.subscribe(this) {
             if (it.isLoadding()) {
                 views.waitingView.visibility = View.VISIBLE
             } else
@@ -93,9 +96,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
     }
 
 
-    override fun create(initialState: HomeViewState): HomeViewModel {
-        return homeViewModelFactory.create(initialState)
-    }
+//    override fun create(initialState: HomeViewState): HomeViewModel {
+//        return homeViewModelFactory.create(initialState)
+//    }
 
     override fun getBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
@@ -115,9 +118,25 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            views.toolbarTitle.text = destination.label
+            when (destination.id) {
+                R.id.nav_notificationFragment, R.id.nav_informationFragment -> {
+                    // Ẩn thanh điều hướng khi chuyển đến Fragment notificationFragment
+                    bottomNavigationView.visibility = View.GONE
+                }
+
+                R.id.nav_trackingFragment, R.id.nav_profileFragment -> {
+                    supportActionBar?.hide()
+                }
+
+                R.id.nav_timeSheetFragment, R.id.nav_usersFragment, R.id.nav_trackingFragment, R.id.nav_profileFragment -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+            }
+        }
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_HomeFragment,
                 R.id.nav_timeSheetFragment,
                 R.id.nav_trackingFragment,
                 R.id.nav_usersFragment,
@@ -125,11 +144,8 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(), HomeViewModel.
             )
         )
         bottomNavigationView.setupWithNavController(navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            views.toolbarTitle.text = destination.label
-        }
         setupActionBarWithNavController(navController, appBarConfiguration)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

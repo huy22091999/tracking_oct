@@ -8,5 +8,6 @@ sealed class TrackingViewAction : NimpeViewModelAction {
     object getTrackingAction : TrackingViewAction()
     data class saveTracking(val tracking: Tracking) : TrackingViewAction()
     data class deleteTracking(val id: Int) : TrackingViewAction()
+    data class upadateTracking(val id: Int, val content: String) : TrackingViewAction()
 
 }

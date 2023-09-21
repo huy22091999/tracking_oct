@@ -1,15 +1,16 @@
 package com.oceantech.tracking.data.model
 
 import com.google.gson.annotations.SerializedName
-import java.util.Date
 
-data class Tracking(
-    @SerializedName("content")
-    var content: String? = null,
+data class Notification(
+    @SerializedName("body")
+    val body: String,
     @SerializedName("date")
-    val date: String? = null,
+    val date: String,
     @SerializedName("id")
-    var id: Int? = null,
+    val id: Int,
+    @SerializedName("title")
+    val title: String,
     @SerializedName("user")
     val user: User? = null
 )

@@ -14,7 +14,7 @@ import com.oceantech.tracking.utils.convertToDateTimePartsList
 class TrackingAdapter(
     private val context: Context,
     private val mlistTracking: MutableList<Tracking>,
-    private val action: (Tracking, Int) -> Unit
+    private val action: (Tracking, Int, ActionType) -> Unit
 ) :
     RecyclerView.Adapter<TrackingAdapter.ViewHolder>() {
 
@@ -33,9 +33,9 @@ class TrackingAdapter(
     inner class ViewHolder(
         val binding: TrackingItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(tracking: Tracking) {
-            binding.tvDate.text = mDateList[adapterPosition].first
-            binding.tvHour.text = mDateList[adapterPosition].second
+        fun onBind(tracking: Tracking, position: Int) {
+            binding.tvDate.text = mDateList[position].first
+            binding.tvHour.text = mDateList[position].second
             binding.tvContent.text = tracking.content
         }
     }
@@ -50,7 +50,7 @@ class TrackingAdapter(
         updateDataLists()
         if (!mDateList.isNullOrEmpty()) {
             val tracking = mlistTracking[position]
-            holder.onBind(tracking)
+            holder.onBind(tracking, position)
             holder.binding.imgEdit.setOnClickListener {
                 val itemPosition = holder.adapterPosition
                 if (itemPosition != RecyclerView.NO_POSITION) {
@@ -72,12 +72,13 @@ class TrackingAdapter(
             when (it.itemId) {
                 R.id.item_edit -> {
                     Toast.makeText(context, "This is Edit", Toast.LENGTH_SHORT).show()
+                    action(tracking, itemPosition, ActionType.EDIT)
                     true
                 }
 
                 R.id.item_delete -> {
                     Toast.makeText(context, "This is Delete", Toast.LENGTH_SHORT).show()
-                    action(tracking, itemPosition)
+                    action(tracking, itemPosition, ActionType.DELETE)
 
                     true
                 }
@@ -91,11 +92,26 @@ class TrackingAdapter(
     }
 
     fun removeItem(position: Int) {
-        mlistTracking.removeAt(position)
-        notifyItemRemoved(position)
+        if (!mlistTracking.isNullOrEmpty()) {
+            mlistTracking.removeAt(position)
+            notifyDataSetChanged()
+        }
     }
 
-    fun restoreOriginalList() {
+    fun addItem(tracking: Tracking) {
+        mlistTracking.add(tracking)
         notifyDataSetChanged()
     }
+
+    fun update(content: String, position: Int) {
+        if (position >= 0 && position < mlistTracking.size) {
+            mlistTracking[position].content = content
+            notifyItemChanged(position)
+        }
+    }
+
+}
+
+enum class ActionType {
+    EDIT, DELETE
 }

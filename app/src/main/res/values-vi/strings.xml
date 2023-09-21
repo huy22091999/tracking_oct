@@ -96,4 +96,6 @@
     <string name="checkInFail">Check-In Thất bại</string>
     <string name="checked">Bạn đã check-in cho hôm nay rồi</string>
     <string name="fail">Thất bại</string>
+    <string name="update_feedback">Sửa</string>
+    <string name="notification">Thông báo</string>
 </resources>

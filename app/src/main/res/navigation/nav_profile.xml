@@ -13,10 +13,10 @@
 
         <action
             android:id="@+id/action_nav_profileFragment_to_informationFragment"
-            app:destination="@id/informationFragment" />
+            app:destination="@id/nav_informationFragment" />
     </fragment>
     <fragment
-        android:id="@+id/informationFragment"
+        android:id="@+id/nav_informationFragment"
         android:name="com.oceantech.tracking.ui.information.InformationFragment"
         android:label="@string/information"
         tools:layout="@layout/fragment_information">
