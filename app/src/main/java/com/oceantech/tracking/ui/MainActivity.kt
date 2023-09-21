@@ -123,16 +123,20 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(),
             when (destination.id) {
                 R.id.nav_notificationFragment, R.id.nav_informationFragment -> {
                     // Ẩn thanh điều hướng khi chuyển đến Fragment notificationFragment
+                    supportActionBar?.show()
                     bottomNavigationView.visibility = View.GONE
                 }
 
-                R.id.nav_trackingFragment, R.id.nav_profileFragment -> {
-                    supportActionBar?.hide()
-                }
-
-                R.id.nav_timeSheetFragment, R.id.nav_usersFragment, R.id.nav_trackingFragment, R.id.nav_profileFragment -> {
+                else -> {
+                    supportActionBar?.show()
                     bottomNavigationView.visibility = View.VISIBLE
                 }
+
+
+//                R.id.nav_timeSheetFragment, R.id.nav_usersFragment, R.id.nav_trackingFragment, R.id.nav_profileFragment -> {
+//                    bottomNavigationView.visibility = View.VISIBLE
+//                }
+
             }
         }
         appBarConfiguration = AppBarConfiguration(

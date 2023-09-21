@@ -7,15 +7,18 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.data.model.Notification
 import com.oceantech.tracking.databinding.FragmentNotificationBinding
+import com.oceantech.tracking.ui.tracking.TrackingAdapter
 
 class NotificationFragment : TrackingBaseFragment<FragmentNotificationBinding>() {
-    private lateinit var menu: Menu
+    private lateinit var notificationAdapter: NotificationAdapter
+    private val mlistNotification: MutableList<Notification> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setHasOptionsMenu(true)
     }
 
     override fun getBinding(
@@ -24,14 +27,17 @@ class NotificationFragment : TrackingBaseFragment<FragmentNotificationBinding>()
     ): FragmentNotificationBinding {
         return FragmentNotificationBinding.inflate(inflater, container, false)
     }
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        this.menu = menu
-//        inflater.inflate(R.menu.edt_info_menu, menu)
-//        val editMenuItem = menu.findItem(R.id.action_edit)
-//        val saveMenuItem = menu.findItem(R.id.action_save)
-//        // Ban đầu ẩn menu item "Lưu"
-//        saveMenuItem.isVisible = false
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpAdapter()
+    }
+
+    private fun setUpAdapter() {
+        notificationAdapter = NotificationAdapter(requireActivity(), mlistNotification)
+        views.recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        views.recyclerView.adapter = notificationAdapter
+    }
 
 }

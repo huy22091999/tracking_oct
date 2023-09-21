@@ -4,15 +4,17 @@
 
     <item
         android:id="@+id/action_edit"
+        android:orderInCategory="100"
         android:title="Sửa"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="100"/>
+        android:itemTextAppearance="@style/WhiteTextMenu"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_save"
-        android:title="Lưu"
-        app:showAsAction="ifRoom"
         android:orderInCategory="100"
-        android:visible="false"/> <!-- Ban đầu là ẩn -->
+        android:title="Lưu"
+        android:itemTextAppearance="@style/WhiteTextMenu"
+        android:visible="false"
+        app:showAsAction="ifRoom" /> <!-- Ban đầu là ẩn -->
 </menu>
 

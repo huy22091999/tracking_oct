@@ -92,9 +92,13 @@ class TrackingAdapter(
     }
 
     fun removeItem(position: Int) {
-        if (!mlistTracking.isNullOrEmpty()) {
-            mlistTracking.removeAt(position)
-            notifyDataSetChanged()
+        try {
+            if (!mlistTracking.isNullOrEmpty() && position >= 0 && position < mlistTracking.size) {
+                mlistTracking.removeAt(position)
+                notifyDataSetChanged()
+            }
+        } catch (e: Exception) {
+            println("không xoá được")
         }
     }
 

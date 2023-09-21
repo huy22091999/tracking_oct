@@ -14,6 +14,9 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="WhiteTextMenu">
+        <item name="android:textColor">@color/white</item> <!-- Đặt màu trắng cho tiêu đề -->
+    </style>
 
     <style name="NimpeButtonLogin">
         <item name="cornerRadius">24dp</item>

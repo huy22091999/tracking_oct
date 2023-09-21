@@ -326,19 +326,19 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             }
         }
     }
-//    override fun onStart() {
-//        super.onStart()
-//        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
-//    }
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        (requireActivity() as AppCompatActivity).supportActionBar?.show()
-//    }
+    override fun onStart() {
+        super.onStart()
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+    }
 
     companion object {
         private const val DEFAULT_STATE = 0

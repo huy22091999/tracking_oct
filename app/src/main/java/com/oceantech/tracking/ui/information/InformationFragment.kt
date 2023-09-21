@@ -1,12 +1,14 @@
 package com.oceantech.tracking.ui.information
 
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -32,7 +34,6 @@ import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.FragmentInformationBinding
-
 import com.oceantech.tracking.utils.checkStatusApiRes
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -153,6 +154,7 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
         inflater.inflate(R.menu.edt_info_menu, menu)
         val editMenuItem = menu.findItem(R.id.action_edit)
         val saveMenuItem = menu.findItem(R.id.action_save)
+
         // Ban đầu ẩn menu item "Lưu"
         saveMenuItem.isVisible = false
         super.onCreateOptionsMenu(menu, inflater)
