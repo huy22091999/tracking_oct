@@ -29,10 +29,9 @@
         android:theme="@style/Theme.Nimpe"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA1jRYFuIs7U4UjvhujZNxHLQIIS9EfUQQ" />
+            android:value="" />
 
         <activity
             android:name=".ui.security.LoginActivity"
