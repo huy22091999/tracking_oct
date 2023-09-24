@@ -33,6 +33,19 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(views.root)
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+        val screenHeight = displayMetrics.heightPixels
+        val targetWidth = (screenWidth * 0.3).toInt()
+        val targetHeight = (screenHeight * 0.3).toInt()
+        val imageView = views.imgLogo
+        val layoutParams = imageView.layoutParams
+        layoutParams.width = targetWidth
+        layoutParams.height = targetHeight
+        imageView.layoutParams = layoutParams
+
+
         viewModel.handle(SecurityViewAction.GetUserCurrent)
         setupSettingApp()
         viewModel.subscribe(this) {

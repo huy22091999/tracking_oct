@@ -98,4 +98,5 @@
     <string name="fail">Thất bại</string>
     <string name="update_feedback">Sửa</string>
     <string name="notification">Thông báo</string>
+    <string name="network_disconnected">Đã mất kết nối mạng</string>
 </resources>

@@ -42,7 +42,6 @@ class LoginActivity : TrackingBaseActivity<ActivityLoginBinding>(), SecurityView
             is SecurityViewEvent.ReturnResetpassEvent -> {
                 addFragmentToBackstack(R.id.frame_layout, ResetPasswordFragment::class.java)
             }
-
         }
     }
 

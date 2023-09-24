@@ -98,4 +98,5 @@
     <string name="fail">Fail</string>
     <string name="update_feedback">Update</string>
     <string name="notification">Notification</string>
+    <string name="network_disconnected">Network is disconnected</string>
 </resources>

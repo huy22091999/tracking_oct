@@ -12,10 +12,15 @@ import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.network.getDeviceToken
 import com.oceantech.tracking.databinding.FragmentSigninBinding
 import com.oceantech.tracking.utils.DialogUtil
 import com.oceantech.tracking.utils.PasswordMaskUtil
 import com.oceantech.tracking.utils.addEndIconClickListener
+import com.oceantech.tracking.utils.isNetworkAvailable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -35,6 +40,7 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
     lateinit var first_name: String
     lateinit var display_name: String
     lateinit var email: String
+    lateinit var tokenDevice:String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,24 +83,51 @@ class SigninFragment @Inject constructor() : TrackingBaseFragment<FragmentSignin
             !last_name.isNullOrEmpty() && !first_name.isNullOrEmpty() && !display_name.isNullOrEmpty() &&
             !email.isNullOrEmpty() && password==confirmPassword
         ) {
+            DialogUtil.showLoadingDialog(requireContext())
+            CoroutineScope(Dispatchers.Main).launch {
+                val token = getDeviceToken(requireContext())
+                if (token != null) {
+                    tokenDevice = token
+                    val newUser = User(
+                        active=true,
+                        username = username,
+                        password = password,
+                        confirmPassword = confirmPassword,
+                        displayName = display_name,
+                        email = email,
+                        firstName = first_name,
+                        lastName = last_name,
+                        tokenDevice=tokenDevice
 
-            DialogUtil.showLoadingDialog(requireContext())
-            val user = User(
-                active=true,
-                username = username,
-                password = password,
-                confirmPassword = confirmPassword,
-                displayName = display_name,
-                email = email,
-                firstName = first_name,
-                lastName = last_name
-                // Các trường khác mà bạn muốn sử dụng
-            )
-            // Call ViewModel to perform registration
-            DialogUtil.showLoadingDialog(requireContext())
-            viewModel.handle(
-                SecurityViewAction.SignAction(user)
-            )
+                        // Các trường khác mà bạn muốn sử dụng
+                    )
+
+                    if(isNetworkAvailable(requireContext())){
+                        viewModel.handle(
+                            SecurityViewAction.SignAction(newUser)
+                        )
+                    } else {
+                        Toast.makeText(requireContext(), getString(R.string.network_disconnected),Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+//            val user = User(
+//                active=true,
+//                username = username,
+//                password = password,
+//                confirmPassword = confirmPassword,
+//                displayName = display_name,
+//                email = email,
+//                firstName = first_name,
+//                lastName = last_name,
+//                tokenDevice=tokenDevice
+//                // Các trường khác mà bạn muốn sử dụng
+//            )
+//            // Call ViewModel to perform registration
+//            //DialogUtil.showLoadingDialog(requireContext())
+//            viewModel.handle(
+//                SecurityViewAction.SignAction(user)
+//            )
         }
     }
 

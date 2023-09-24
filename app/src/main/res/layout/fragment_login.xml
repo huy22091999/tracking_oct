@@ -30,7 +30,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/logo_login" />
+                    android:background="@drawable/logo" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
-                    android:text="@string/warning"
+                    android:text="@string/menu_tracking"
                     android:textColor="@color/gray"
                     android:textSize="28sp"
                     android:textStyle="bold" />

@@ -1,6 +1,8 @@
 package com.oceantech.tracking.utils
 
+import android.content.Context
 import android.location.Location
+import android.net.ConnectivityManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -64,4 +66,10 @@ fun<T> checkStatusApiRes(err: Fail<T>): Int {
             R.string.http500
         }
     }
+}
+
+fun isNetworkAvailable(context: Context): Boolean {
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetwork = cm.activeNetworkInfo
+    return activeNetwork != null && activeNetwork.isAvailable && activeNetwork.isConnectedOrConnecting
 }

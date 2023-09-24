@@ -20,7 +20,6 @@ class NotificationFragment : TrackingBaseFragment<FragmentNotificationBinding>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
