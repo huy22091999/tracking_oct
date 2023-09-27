@@ -9,6 +9,7 @@ import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.User
@@ -21,32 +22,56 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class UsersViewModel @AssistedInject constructor(
-    @Assisted state: UserViewState,
-    private val userRepo: UserRepository
+    @Assisted state: UserViewState, private val userRepo: UserRepository
 ) : TrackingViewModel<UserViewState, UsersViewAction, UsersViewEvent>(state) {
     private var job: Job? = null
     override fun handle(action: UsersViewAction) {
         when (action) {
             is UsersViewAction.RefeshUserAction -> handleFetchData(action.lifecycleScope)
+            is UsersViewAction.EditUser -> handleEditInfo(action.id, action.user)
+            is UsersViewAction.blockUser -> handleBlock(action.id)
+            is UsersViewAction.restart -> handleResart()
             else -> {}
         }
+    }
+
+    fun handleRemoveStateBlockUser() =
+        setState { copy(blockUser = Uninitialized, userEdit = Uninitialized) }
+
+    private fun handleBlock(id: Int) {
+        setState { copy(blockUser = Loading()) }
+        userRepo.blockUser(id).execute {
+            copy(blockUser = it)
+        }
+    }
+
+    private fun handleEditInfo(id: Int, user: User) {
+        setState { copy(userEdit = Loading()) }
+        userRepo.edit(id, user).execute {
+            copy(userEdit = it)
+        }
+    }
+
+    private fun handleResart() {
+        setState { copy(userEdit = Uninitialized) }
     }
 
     private fun handleFetchData(lifecycleScope: LifecycleCoroutineScope) {
         setState { copy(pageUsers = Loading()) }
         job?.cancel()
         job = lifecycleScope.launch {
-            userRepo
-                .getUserByPage()
-                .cachedIn(viewModelScope)
-                .collectLatest {
-                    setState { copy(pageUsers = Success(it)) }
-                }
+            userRepo.getUserByPage().cachedIn(viewModelScope).collectLatest {
+                setState { copy(pageUsers = Success(it)) }
+            }
         }
     }
 
     fun handleReturnDetailUser(user: User) {
         _viewEvents.post(UsersViewEvent.ReturnDetailViewEvent(user))
+    }
+
+    fun handleReturnEditInfo(user: User) {
+        _viewEvents.post(UsersViewEvent.ReturnEditInfo(user))
     }
 
     @AssistedFactory
@@ -56,15 +81,13 @@ class UsersViewModel @AssistedInject constructor(
 
     companion object : MvRxViewModelFactory<UsersViewModel, UserViewState> {
         override fun create(
-            viewModelContext: ViewModelContext,
-            state: UserViewState
-        ): UsersViewModel? {
+            viewModelContext: ViewModelContext, state: UserViewState
+        ): UsersViewModel {
             val fatory = when (viewModelContext) {
                 is FragmentViewModelContext -> viewModelContext.fragment as Factory
                 is ActivityViewModelContext -> viewModelContext.activity as Factory
             }
-            return fatory?.create(state)
-                ?: error("You should let your activity/fragment implements Factory interface")
+            return fatory.create(state)
         }
     }
 }

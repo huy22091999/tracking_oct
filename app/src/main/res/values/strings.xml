@@ -99,4 +99,13 @@
     <string name="update_feedback">Update</string>
     <string name="notification">Notification</string>
     <string name="network_disconnected">Network is disconnected</string>
+    <string name="year">Year</string>
+    <string name="level">Level</string>
+    <string name="amount_of_leave_days">Amount of leave Days</string>
+    <string name="trackings_of_participations">Trackings of participations</string>
+    <string name="email_not_correct">Incorrect email format</string>
+    <string name="confirm_password_not_correct">Confirm password is incorrect</string>
+    <string name="inforStudent">Student information</string>
+    <string name="lock">Block</string>
+    <string name="unlock">Unblock</string>
 </resources>

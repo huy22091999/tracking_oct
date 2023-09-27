@@ -1,14 +1,15 @@
 package com.oceantech.tracking.ui.information
 
-import android.app.Activity
+import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.graphics.Color
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -28,14 +29,17 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.bumptech.glide.Glide
-import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.databinding.FragmentInformationBinding
 import com.oceantech.tracking.utils.checkStatusApiRes
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import timber.log.Timber
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -44,35 +48,48 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
     private val args: InformationFragmentArgs by navArgs()
     private lateinit var menu: Menu
     var user: User? = null
+    private var selectedImageUri: Uri? = null
+    private val PICK_IMAGE_REQUEST_CODE = 123
+
 
     private val infoViewModel: InformationViewModel by activityViewModel()
 
     // khai báo đối tượng launcher nhận vào input là một intent
-    private var myLauncher: ActivityResultLauncher<Intent>? = null
+    private var myLauncher: ActivityResultLauncher<Intent?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         // đăng ký nhận kết quả trả về từ activiy con
-        myLauncher = registerForActivityResult(StartActivityForResult(), this::handleResult)
+        // đăng ký nhận kết quả trả về từ activiy con
+        myLauncher = registerForActivityResult(StartActivityForResult(), ::handleResult)
 
     }
 
+
     private fun handleResult(result: ActivityResult) {
         val data = result.data
-        val resultCode = result.resultCode
-        if (resultCode == Activity.RESULT_OK) {
-            //Image Uri will not be null for RESULT_OK
-            val fileUri = data?.data!!
-
-            val mProfileUri = fileUri
-            views.imageUser.setImageURI(fileUri)
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(requireActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        if (data != null && result.resultCode == RESULT_OK) {
+            selectedImageUri = data.data
+            if (selectedImageUri != null) {
+                Log.e("IMAGE1", selectedImageUri.toString())
+                val imageFile = File(getPath(selectedImageUri))
+                Log.e("IMAGE", imageFile.path)
+//                if (imageFile.exists()) {
+                val requestBody =
+                    imageFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val imagePart =
+                    MultipartBody.Part.createFormData("uploadfile", imageFile.name, requestBody)
+                infoViewModel.handle(InformationViewActon.UploadImage(imagePart))
+//                } else
+//                    Toast.makeText(requireActivity(), "Tếp không tồn tại", Toast.LENGTH_SHORT)
+//                        .show()
+            } else {
+                Toast.makeText(requireActivity(), "Lỗi", Toast.LENGTH_SHORT).show()
+            }
         } else {
-            Toast.makeText(requireActivity(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireActivity(), "No data", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     override fun getBinding(
@@ -82,6 +99,21 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
         return FragmentInformationBinding.inflate(inflater, container, false)
     }
 
+    fun getPath(uri: Uri?): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor =
+            uri?.let {
+                requireContext().getContentResolver().query(it, projection, null, null, null)
+            }
+                ?: return null
+        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val s = cursor.getString(column_index)
+        cursor.close()
+        return s
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         user = args.ReviveUser
@@ -112,19 +144,18 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
         }
 
         views.edtPhoto.setOnClickListener {
-            ImagePicker.with(this)
-                .compress(1024)         //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(
-                    1080,
-                    1080
-                )  //Final image resolution will be less than 1080 x 1080(Optional)
-                .createIntent { intent ->
-                    myLauncher?.launch(intent)
-                }
-        }
-
-
-        infoViewModel.observeViewEvents {
+//            ImagePicker.with(this)
+//                .compress(1024)         //Final image size will be less than 1 MB(Optional)
+//                .maxResultSize(
+//                    1080,
+//                    1080
+//                )  //Final image resolution will be less than 1080 x 1080(Optional)
+//                .createIntent { intent ->
+//                    myLauncher?.launch(intent)
+//                }
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "image/*" // Chỉ lấy các tệp hình ảnh
+            myLauncher?.launch(intent)
         }
     }
 
@@ -205,13 +236,14 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
         }
     }
 
-    override fun invalidate() = withState(infoViewModel) {
+    override fun invalidate(): Unit = withState(infoViewModel) {
         when (it.user) {
             is Success -> {
                 user = it.user.invoke()
                 Timber.e("UsersFragment Success: $user")
                 Toast.makeText(requireContext(), getString(R.string.success), Toast.LENGTH_SHORT)
                     .show()
+                infoViewModel.restartState()
             }
 
             is Fail -> {
@@ -220,9 +252,33 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
                     getString(checkStatusApiRes(it.user)),
                     Toast.LENGTH_SHORT
                 ).show()
+                infoViewModel.restartState()
             }
 
+
             else -> {}
+        }
+        when (it.upLoadImage) {
+            is Success -> {
+                Toast.makeText(requireContext(), getString(R.string.success), Toast.LENGTH_SHORT)
+                    .show()
+                infoViewModel.handle(InformationViewActon.UpdateUserAction(User(image = it.upLoadImage.invoke()?.name)))
+                infoViewModel.restartState()
+
+            }
+
+            is Fail -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(checkStatusApiRes(it.upLoadImage)),
+                    Toast.LENGTH_SHORT
+                ).show()
+                infoViewModel.restartState()
+            }
+
+            else -> {
+                false
+            }
         }
     }
 

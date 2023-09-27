@@ -18,11 +18,30 @@ class SessionManager(context: Context) {
         const val USER_TOKEN = "user_token"
         const val TOKEN_REFRESH = "refresh_token"
         const val LANGUAGE = "language"
+        const val ROLE_ADMIN = "ROLE_ADMIN"
     }
 
     /**
      * Function to save auth token refresh
      */
+
+    fun saveRoleAdmin(admin: Boolean) {
+        val editor = prefs.edit()
+        editor.putBoolean(ROLE_ADMIN, admin)
+        editor.apply()
+    }
+
+    fun fetchRole(): Boolean {
+        Log.e("ROLE", "fetchRole: " + prefs.getBoolean(ROLE_ADMIN, false))
+        return prefs.getBoolean(ROLE_ADMIN, false)
+    }
+
+    fun clearRole() {
+        val editor = prefs.edit()
+        editor.remove(ROLE_ADMIN)
+        editor.apply()
+    }
+
     fun saveAuthTokenRefresh(token: String) {
         val editor = prefs.edit()
         editor.putString(TOKEN_REFRESH, token)
@@ -34,14 +53,16 @@ class SessionManager(context: Context) {
     }
 
     fun fetchAuthToken(): String? {
-        Log.e("TOKEN", "fetchAuthToken: "+ prefs.getString(USER_TOKEN, null))
+        Log.e("TOKEN", "fetchAuthToken: " + prefs.getString(USER_TOKEN, null))
         return prefs.getString(USER_TOKEN, null)
     }
+
     fun saveLanguage(language: String) {
         val editor = prefs.edit()
         editor.putString(LANGUAGE, language)
         editor.apply()
     }
+
     fun fetchLanguage(): String? {
         return prefs.getString(LANGUAGE, "en")
     }
@@ -58,7 +79,6 @@ class SessionManager(context: Context) {
         editor.remove(TOKEN_REFRESH)
         editor.apply()
     }
-
 
 
 }

@@ -13,6 +13,7 @@ import com.oceantech.tracking.core.TrackingBaseActivity
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.SessionManager
+import com.oceantech.tracking.data.network.SessionManager.Companion.ROLE_ADMIN
 import com.oceantech.tracking.databinding.ActivitySplashBinding
 import com.oceantech.tracking.ui.MainActivity
 import java.util.Locale
@@ -28,6 +29,8 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
 
     @Inject
     lateinit var sessionManager: SessionManager
+
+    private val role_admin = ROLE_ADMIN
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
@@ -68,12 +71,22 @@ class SplashActivity : TrackingBaseActivity<ActivitySplashBinding>(), SecurityVi
     private fun handleStateChange(it: SecurityViewState) {
         when (it.userCurrent) {
             is Success -> {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                val user = it.userCurrent.invoke()
+                it.userCurrent.invoke().let { user ->
+                    val role = user?.roles?.last()?.authority.toString()
+//                    if (role == role_admin)
+//                        sessionManager.saveRoleAdmin(true)
+                    viewModel.handle(SecurityViewAction.SaveRole(role))
+                    viewModel.handle(SecurityViewAction.SaveFullName(user?.displayName.toString()))
+                }
+                startActivity(Intent(this, MainActivity::class.java).apply {
+                    putExtra(MainActivity.EXTRA_USER, user)
+                })
             }
 
             is Fail -> {
                 sessionManager.clearAuthToken()
+                sessionManager.clearRole()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }

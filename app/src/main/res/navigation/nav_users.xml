@@ -2,8 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:label="@string/menu_users"
     android:id="@+id/nav_users"
+    android:label="@string/menu_users"
     app:startDestination="@id/nav_usersFragment">
 
     <fragment
@@ -11,17 +11,23 @@
         android:name="com.oceantech.tracking.ui.users.UsersFragment"
         android:label="@string/fragment_users"
         tools:layout="@layout/fragment_users">
+
         <action
-            android:id="@+id/action_nav_usersFragment_to_informationFragment3"
-            app:destination="@id/informationFragment3" />
+            android:id="@+id/action_nav_usersFragment_to_NextUpdateFragment"
+            app:destination="@id/nav_nextUpdateFragment" />
     </fragment>
     <fragment
-        android:id="@+id/informationFragment3"
-        android:name="com.oceantech.tracking.ui.information.InformationFragment"
+        android:id="@+id/nav_nextUpdateFragment"
+        android:name="com.oceantech.tracking.ui.users.NextUpdateFragment"
         android:label="fragment_information"
-        tools:layout="@layout/fragment_information" >
+        tools:layout="@layout/fragment_next_update">
+
         <argument
-            android:name="ReviveUser"
+            android:name="ReviveUser1"
             app:argType="com.oceantech.tracking.data.model.User" />
+        <argument
+            android:name="isAdmin"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 </navigation>

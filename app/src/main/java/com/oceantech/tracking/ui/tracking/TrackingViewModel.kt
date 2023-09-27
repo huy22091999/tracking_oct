@@ -4,6 +4,7 @@ import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
+import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.model.Tracking
@@ -29,6 +30,15 @@ class TrackingViewModel @AssistedInject constructor(
         }
     }
 
+    fun handleRemoveStateTracking() = setState {
+        copy(
+            Tracking = Uninitialized,
+            listTracking = Uninitialized,
+            deleteTracking = Uninitialized,
+            updateTracking = Uninitialized
+        )
+    }
+
     private fun handleUpdateTracking(id: Int, content: String) {
         setState { copy(updateTracking = Loading()) }
         repo.updateTracking(id, content).execute {
@@ -36,7 +46,7 @@ class TrackingViewModel @AssistedInject constructor(
         }
     }
 
-    fun handleReturnDelete() {
+    fun handleReturnDelete(lang:String) {
         _viewEvents.post(TrackingViewEvent.ReturnDeleteTracking)
     }
 

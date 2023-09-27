@@ -3,15 +3,16 @@ package com.oceantech.tracking.ui.users
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.oceantech.tracking.R
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.ui.tracking.ActionType
 
 val USER_COMPARATOR = object : DiffUtil.ItemCallback<User>() {
     override fun areItemsTheSame(oldItem: User, newItem: User): Boolean =
@@ -23,14 +24,18 @@ val USER_COMPARATOR = object : DiffUtil.ItemCallback<User>() {
         oldItem == newItem
 }
 
-class UserAdapter(private val action: (User) -> Unit) :
+class UserAdapter(private val action: (User, ActionType) -> Unit) :
     PagingDataAdapter<User, UserAdapter.ViewHolder>(USER_COMPARATOR) {
 
-    inner class ViewHolder(private val itemView: View, private val action: (User) -> Unit) :
+    inner class ViewHolder(
+        private val itemView: View,
+        private val action: (User, ActionType) -> Unit
+    ) :
         RecyclerView.ViewHolder(itemView) {
         private var imgUser = itemView.findViewById<ImageView?>(R.id.imageView)
         private var userName = itemView.findViewById<TextView?>(R.id.text_user)
         private var email = itemView.findViewById<TextView?>(R.id.text_email)
+        private var edit = itemView.findViewById<ImageButton?>(R.id.img_edit)
 
 
         fun onBind(user: User?) {
@@ -40,8 +45,13 @@ class UserAdapter(private val action: (User) -> Unit) :
             userName.text = user?.displayName
             email.text = user?.email
             itemView.setOnClickListener {
-                action(user!!)
+                action(user!!, ActionType.NONE)
             }
+            imgUser
+            edit.setOnClickListener {
+                action(user!!, ActionType.EDIT)
+            }
+
         }
     }
 

@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthRepository (
+class AuthRepository(
     val api: AuthApi,
     private val preferences: UserPreferences
 ) {
@@ -28,11 +28,26 @@ class AuthRepository (
 
     fun register(user: User): Observable<User> = api.registerUser(user)
         .subscribeOn(Schedulers.io())
+
     suspend fun saveAccessTokens(tokens: TokenResponse) {
         if (tokens.accessToken == null || tokens.refreshToken == null) {
             return
         }
         preferences.saveAccessTokens(tokens.accessToken, tokens.refreshToken)
+    }
+
+    suspend fun saveRole(authority: String) {
+        if (authority == null) {
+            return
+        }
+        preferences.saveUserRole(authority)
+    }
+
+    suspend fun saveName(name: String) {
+        if (name == null) {
+            return
+        }
+        preferences.saveUserFullname(name)
     }
 
 }

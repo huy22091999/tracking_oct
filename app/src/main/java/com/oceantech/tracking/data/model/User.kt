@@ -8,15 +8,15 @@ data class User(
     @SerializedName("id")
     val id: String? = null,
     @SerializedName("username")
-    val username: String? = null,
+    var username: String? = null,
     @SerializedName("active")
-    val active: Boolean? = null,
+    var active: Boolean? = null,
     @SerializedName("birthPlace")
     var birthPlace: String? = null,
     @SerializedName("changePass")
-    val changePass: Boolean? = null,
+    var changePass: Boolean? = null,
     @SerializedName("confirmPassword")
-    val confirmPassword: String? = null,
+    var confirmPassword: String? = null,
     @SerializedName("displayName")
     var displayName: String? = null,
 
@@ -34,7 +34,7 @@ data class User(
 //    @SerializedName("oldPassword")
 //    val oldPassword: String? = null,
     @SerializedName("password")
-    val password: String? = null,
+    var password: String? = null,
     @SerializedName("setPassword")
     val setPassword: Boolean? = null,
 //    @SerializedName("person")
@@ -54,5 +54,7 @@ data class User(
     @SerializedName("university")
     var university: String? = null,
     @SerializedName("year")
-    val year: Int? = null
-): Serializable
+    val year: Int? = null,
+    @SerializedName("image")
+    var image: String? = null
+) : Serializable

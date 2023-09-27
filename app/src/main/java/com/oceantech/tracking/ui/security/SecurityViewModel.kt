@@ -29,6 +29,20 @@ class SecurityViewModel @AssistedInject constructor(
             is SecurityViewAction.SignAction->handleRegister(action.user)
             is SecurityViewAction.SaveTokenAction->handleSaveToken(action.token)
             is SecurityViewAction.GetUserCurrent ->handleCurrentUser()
+            is SecurityViewAction.SaveRole ->handleRole(action.authority)
+            is SecurityViewAction.SaveFullName ->handleName(action.fullName)
+        }
+    }
+
+    private fun handleName(fullName: String) {
+        this.viewModelScope.async {
+            repository.saveName(fullName)
+        }
+    }
+
+    private fun handleRole(authority: String) {
+        this.viewModelScope.async {
+            repository.saveRole(authority)
         }
     }
 

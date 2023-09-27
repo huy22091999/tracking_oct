@@ -65,8 +65,17 @@ object NetWorkModule {
     ): TrackingRepository = TrackingRepository(api)
 
     @Provides
+    fun providerNotificationApi(
+        remoteDataSource: RemoteDataSource, context: Context
+    ) = remoteDataSource.buildApi(NotificationApi::class.java, context)
+
+    @Provides
+    fun providerNotificationRepository(
+        api: NotificationApi
+    ): NotificationRepository = NotificationRepository(api)
+
+    @Provides
     fun providerSessionManager(
         context: Context
     ): SessionManager = SessionManager(context.applicationContext)
-
 }

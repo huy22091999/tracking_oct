@@ -4,14 +4,9 @@ import com.airbnb.mvrx.ActivityViewModelContext
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
-import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.oceantech.tracking.core.TrackingViewModel
 import com.oceantech.tracking.data.repository.UserRepository
-import com.oceantech.tracking.ui.home.HomeViewAction
-import com.oceantech.tracking.ui.home.HomeViewEvent
-import com.oceantech.tracking.ui.home.HomeViewModel
-import com.oceantech.tracking.ui.home.HomeViewState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -45,13 +40,13 @@ class ProfileViewModel @AssistedInject constructor(
     override fun handle(action: ProfileViewAction) {
         when (action) {
             is ProfileViewAction.GetCurrentUser -> handleCurrentUser()
-            is ProfileViewAction.ResetLang -> handResetLang()
-            else -> {}
+            //is ProfileViewAction.ResetLang -> handResetLang(action.lang)
+            else -> {false}
         }
     }
 
-    private fun handResetLang() {
-        _viewEvents.post(ProfileViewEvent.ResetLanguege)
+    fun handResetLang(lang: String) {
+        _viewEvents.post(ProfileViewEvent.ResetLanguege(lang))
     }
 
     private fun handleCurrentUser() {

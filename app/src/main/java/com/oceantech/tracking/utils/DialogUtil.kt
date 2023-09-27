@@ -1,10 +1,10 @@
 package com.oceantech.tracking.utils
 
 import android.R
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import com.example.mymockproject.view.dialog.LoadingDialog
-import com.oceantech.tracking.ui.tracking.TrackingAdapter
 import com.saadahmedsoft.popupdialog.PopupDialog
 import com.saadahmedsoft.popupdialog.Styles
 import com.saadahmedsoft.popupdialog.listener.OnDialogButtonClickListener

@@ -47,9 +47,9 @@
                 android:layout_centerInParent="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
+                android:id="@+id/name"
                 android:layout_toRightOf="@id/image_user"
-                android:text="Nguyễn Công Sơn"
-                android:textColor="@color/black" />
+                android:textColor="@color/white" />
 
             <ImageView
                 android:id="@+id/img_notification"

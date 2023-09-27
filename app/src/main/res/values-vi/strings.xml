@@ -99,4 +99,13 @@
     <string name="update_feedback">Sửa</string>
     <string name="notification">Thông báo</string>
     <string name="network_disconnected">Đã mất kết nối mạng</string>
+    <string name="year">Year</string>
+    <string name="level">Level</string>
+    <string name="amount_of_leave_days">Amount of leave Days</string>
+    <string name="trackings_of_participations">Trackings of participations</string>
+    <string name="email_not_correct">Email không đúng định dạng</string>
+    <string name="confirm_password_not_correct">Xác nhận mật khẩu không đúng</string>
+    <string name="inforStudent">Thông tin sinh viên</string>
+    <string name="lock">Chặn</string>
+    <string name="unlock">Bỏ chặn</string>
 </resources>

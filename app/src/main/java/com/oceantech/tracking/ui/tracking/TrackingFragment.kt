@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.Fail
@@ -17,19 +18,26 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.oceantech.tracking.R
+import com.oceantech.tracking.TrackingApplication
 import com.oceantech.tracking.core.TrackingBaseFragment
 import com.oceantech.tracking.data.model.Tracking
 import com.oceantech.tracking.databinding.FragmentTrackingBinding
+import com.oceantech.tracking.ui.security.SecurityViewAction
+import com.oceantech.tracking.ui.security.SecurityViewModel
+import com.oceantech.tracking.ui.security.UserPreferences
 import com.oceantech.tracking.utils.checkStatusApiRes
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import javax.inject.Inject
 
 @Suppress("DEPRECATION")
 class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
-
+    @Inject
+    lateinit var userPreferences: UserPreferences
     val trackingViewModel: TrackingViewModel by activityViewModel()
     private var mlistTracking: MutableList<Tracking> = mutableListOf()
     private var content: String = ""
@@ -38,95 +46,11 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     private lateinit var rvAdapter: TrackingAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        trackingViewModel.observeViewEvents {
-            if (it != null) {
-                handleEvents(it)
-            }
-        }
+        (requireActivity().application as TrackingApplication).trackingComponent.inject(
+            this
+        )
     }
 
-    private fun handleEvents(it: TrackingViewEvent) {
-        when (state) {
-            DEFAULT_STATE -> handleGetAll(it)
-            SAVE -> handleSave(it)
-            DELETE -> handleDelete(it)
-            UPDATE -> handleUpdate(it)
-        }
-    }
-
-    private fun handleUpdate(it: TrackingViewEvent) {
-        when (it) {
-            is TrackingViewEvent.ReturnGetTracking -> {
-                withState(trackingViewModel) {
-                    if (it.updateTracking is Success) {
-                        it.updateTracking.invoke().content?.let { it1 ->
-                            rvAdapter.update(
-                                it1, positionToSelected
-                            )
-                        }
-                        state = NONE
-                    }
-                }
-            }
-
-            else -> {
-                false
-            }
-        }
-    }
-
-    private fun handleGetAll(it: TrackingViewEvent) {
-        when (it) {
-            is TrackingViewEvent.ReturnGetTracking -> {
-                withState(trackingViewModel) {
-                    if (it.listTracking is Success) {
-                        mlistTracking.clear()
-                        mlistTracking.addAll(it.listTracking.invoke())
-                        rvAdapter.notifyDataSetChanged()
-                        state = NONE
-                    }
-                }
-            }
-
-            else -> {
-                false
-            }
-        }
-    }
-
-    private fun handleDelete(it: TrackingViewEvent) {
-        when (it) {
-            is TrackingViewEvent.ReturnDeleteTracking -> {
-                withState(trackingViewModel) {
-                    if (it.deleteTracking is Success) if (positionToSelected != -1) {
-                        rvAdapter.removeItem(positionToSelected)
-                        state = NONE
-                    }
-                }
-            }
-
-            else -> {
-                false
-            }
-        }
-    }
-
-    private fun handleSave(it: TrackingViewEvent) {
-        when (it) {
-            is TrackingViewEvent.ReturnSaveTracking -> {
-                withState(trackingViewModel) {
-                    if (it.Tracking is Success) {
-                        rvAdapter.addItem(it.Tracking.invoke())
-                        state = NONE
-                    }
-                }
-            }
-
-            else -> {
-                false
-            }
-        }
-    }
 
     override fun getBinding(
         inflater: LayoutInflater, container: ViewGroup?
@@ -236,6 +160,16 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     }
 
     private fun setUpCalender() {
+        lifecycleScope.launch {
+            userPreferences.userFullname.collect { userFullname ->
+                // Dữ liệu userFullname đã thay đổi, bạn có thể làm gì đó với nó ở đây
+                if (userFullname != null) {
+                    views.name.text = userFullname
+                } else {
+                    views.name.text = "Xin chào"
+                }
+            }
+        }
         views.calenderEvent.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit()
         val currentDate = CalendarDay.today()
         val selectedDateDecorator = object : DayViewDecorator {
@@ -253,7 +187,10 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
     override fun invalidate(): Unit = withState(trackingViewModel) {
         when (it.listTracking) {
             is Success -> {
-                trackingViewModel.handleReturnGetAll(it.listTracking.invoke())
+                mlistTracking.clear()
+                mlistTracking.addAll(it.listTracking.invoke())
+                rvAdapter.notifyDataSetChanged()
+                trackingViewModel.handleRemoveStateTracking()
             }
 
             is Fail -> {
@@ -262,6 +199,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
                     getString(checkStatusApiRes(it.listTracking)),
                     Toast.LENGTH_SHORT
                 ).show()
+                trackingViewModel.handleRemoveStateTracking()
             }
 
             else -> {
@@ -272,13 +210,15 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         when (it.Tracking) {
             is Success -> {
                 Log.d("Save tracking success", it.Tracking.invoke().toString())
-                trackingViewModel.handleReturnSave(it.Tracking.invoke())
+                rvAdapter.addItem(it.Tracking.invoke())
+                trackingViewModel.handleRemoveStateTracking()
             }
 
             is Fail -> {
                 Toast.makeText(
                     requireContext(), getString(checkStatusApiRes(it.Tracking)), Toast.LENGTH_SHORT
                 ).show()
+                trackingViewModel.handleRemoveStateTracking()
             }
 
             else -> {
@@ -289,7 +229,10 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         when (it.deleteTracking) {
             is Success -> {
                 Log.d("Delete tracking success", it.deleteTracking.invoke().toString())
-                trackingViewModel.handleReturnDelete()
+                if (positionToSelected != -1) {
+                    rvAdapter.removeItem(positionToSelected)
+                }
+                trackingViewModel.handleRemoveStateTracking()
             }
 
             is Fail -> {
@@ -298,6 +241,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
                     getString(checkStatusApiRes(it.deleteTracking)),
                     Toast.LENGTH_SHORT
                 ).show()
+                trackingViewModel.handleRemoveStateTracking()
             }
 
             else -> {
@@ -308,9 +252,12 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         when (it.updateTracking) {
             is Success -> {
                 Log.d("Update tracking success", it.updateTracking.invoke().toString())
-                trackingViewModel.handleReturnUpdate(
-                    it.updateTracking.invoke().content, positionToSelected
-                )
+                it.updateTracking.invoke().content?.let { it1 ->
+                    rvAdapter.update(
+                        it1, positionToSelected
+                    )
+                }
+                trackingViewModel.handleRemoveStateTracking()
             }
 
             is Fail -> {
@@ -319,6 +266,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
                     getString(checkStatusApiRes(it.updateTracking)),
                     Toast.LENGTH_SHORT
                 ).show()
+                trackingViewModel.handleRemoveStateTracking()
             }
 
             else -> {
@@ -326,6 +274,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
             }
         }
     }
+
     override fun onStart() {
         super.onStart()
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
@@ -335,6 +284,7 @@ class TrackingFragment : TrackingBaseFragment<FragmentTrackingBinding>() {
         super.onResume()
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         (requireActivity() as AppCompatActivity).supportActionBar?.show()

@@ -10,7 +10,9 @@ import com.oceantech.tracking.data.model.User
 data class UserViewState(
     val users: Async<User> = Uninitialized,
     val pageUsers: Async<PagingData<User>> = Uninitialized,
-    var userCurrent: Async<User> = Uninitialized
+    var userCurrent: Async<User> = Uninitialized,
+    var userEdit: Async<User> = Uninitialized,
+    val blockUser: Async<User> = Uninitialized
 ) : MvRxState {
     fun isLoadding() = pageUsers is Loading || userCurrent is Loading
 }

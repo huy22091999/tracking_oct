@@ -1,15 +1,17 @@
 package com.oceantech.tracking.data.repository
 
-import android.annotation.SuppressLint
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.oceantech.tracking.data.model.UpLoadImage
 import com.oceantech.tracking.data.model.User
 import com.oceantech.tracking.data.network.UserApi
 import com.oceantech.tracking.ui.users.UserPagingSource
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Singleton
 
 @Singleton
@@ -28,4 +30,12 @@ class UserRepository(
         ),
         pagingSourceFactory = { UserPagingSource(api) }
     ).flow
+
+    fun edit(id: Int, user: User): Observable<User> =
+        api.edit(id, user).subscribeOn(Schedulers.io())
+
+    fun blockUser(id: Int): Observable<User> = api.blockUser(id).subscribeOn(Schedulers.io())
+
+    fun upLoadFile(image: MultipartBody.Part): Observable<UpLoadImage> =
+        api.uploadAttachment(image).subscribeOn(Schedulers.io())
 }

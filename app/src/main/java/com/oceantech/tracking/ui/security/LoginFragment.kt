@@ -67,11 +67,6 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
                     token.refreshToken?.let { it1 -> sessionManager!!.saveAuthTokenRefresh(it1) }
                     viewModel.handle(SecurityViewAction.SaveTokenAction(token!!))
                 }
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.login_success),
-                    Toast.LENGTH_LONG
-                ).show()
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 activity?.finish()
             }
@@ -83,5 +78,26 @@ class LoginFragment @Inject constructor() : TrackingBaseFragment<FragmentLoginBi
             else -> {}
         }
 
+        when (it.userCurrent) {
+            is Success -> {
+
+                it.userCurrent.invoke().let { user ->
+                    val role = user?.roles?.last()?.authority.toString()
+                    viewModel.handle(SecurityViewAction.SaveRole(role))
+                }
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+                activity?.finish()
+            }
+
+            else -> {
+                false
+            }
+        }
+
     }
+
+    companion object {
+        const val EXTRA_USER = "extra_user"
+    }
+
 }

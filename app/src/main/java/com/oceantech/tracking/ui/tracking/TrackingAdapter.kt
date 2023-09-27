@@ -117,5 +117,5 @@ class TrackingAdapter(
 }
 
 enum class ActionType {
-    EDIT, DELETE
+    EDIT, DELETE,NONE
 }

@@ -7,10 +7,15 @@
     android:orientation="vertical"
     tools:context=".ui.notification.NotificationFragment">
 
+    <include
+        android:id="@+id/item_loading"
+        layout="@layout/item_loading_state"
+        android:visibility="visible" />
+
     <!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
         android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/notification_item">
 

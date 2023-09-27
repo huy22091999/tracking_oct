@@ -40,6 +40,13 @@ class UserPreferences @Inject constructor(context: Context) {
             preferences[USER_FULLNAME]
         }
 
+    suspend fun saveUserFullname(fullname: String) {
+        mContext.dataStore.edit { preferences ->
+            preferences[USER_FULLNAME] = fullname
+        }
+    }
+
+
     val userEmail: Flow<String?>
         get() = mContext.dataStore.data.map { preferences ->
             preferences[USER_EMAIL]
@@ -48,6 +55,12 @@ class UserPreferences @Inject constructor(context: Context) {
         get() = mContext.dataStore.data.map { preferences ->
             preferences[USER_ROLE]
         }
+
+    suspend fun saveUserRole(authority: String) {
+        mContext.dataStore.edit { preferences ->
+            preferences[USER_ROLE] = authority
+        }
+    }
 
     suspend fun saveAccessTokens(accessToken: String, refreshToken: String) {
         mContext.dataStore.edit { preferences ->
@@ -76,7 +89,7 @@ class UserPreferences @Inject constructor(context: Context) {
         private val ACCESS_TOKEN = stringPreferencesKey("key_access_token")
         private val REFRESH_TOKEN = stringPreferencesKey("key_refresh_token")
         private val USER_ID = longPreferencesKey("key_user_id")
-        private val USER_ROLE= stringPreferencesKey("user_role")
+        private val USER_ROLE = stringPreferencesKey("user_role")
         private val USERNAME = stringPreferencesKey("key_user_name")
         private val USER_FULLNAME = stringPreferencesKey("key_user_fullname")
         private val USER_EMAIL = stringPreferencesKey("key_user_email")
