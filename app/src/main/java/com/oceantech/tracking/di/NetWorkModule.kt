@@ -44,6 +44,12 @@ object NetWorkModule {
         api: UserApi
     ): UserRepository = UserRepository(api)
 
+
+    @Provides
+    fun providerImageRepository(
+        api: ImageApi
+    ): ImageRepository = ImageRepository(api)
+
     @Provides
     fun providerTimeSheetApi(
         remoteDataSource: RemoteDataSource, context: Context

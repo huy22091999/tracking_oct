@@ -37,6 +37,7 @@ class RemoteDataSource() {
             "http://android-tracking.oceantech.com.vn/mita/"
         private const val DEFAULT_USER_AGENT = "Nimpe-Android"
         private const val DEFAULT_CONTENT_TYPE = "application/json"
+            //private const val DEFAULT_CONTENT_TYPE1 = "multipart/form-data"
     }
     fun <Api> buildApi(
         api: Class<Api>,
@@ -64,6 +65,7 @@ class RemoteDataSource() {
             .create(api)
     }
 
+
     private fun getRetrofitClient(
         authenticator: Authenticator? = null
     ): OkHttpClient {
@@ -82,7 +84,6 @@ class RemoteDataSource() {
             }
             .build()
     }
-
     private fun cookieJar(): CookieJar {
         val cookieManager = CookieManager().apply {
             setCookiePolicy(CookiePolicy.ACCEPT_ALL)

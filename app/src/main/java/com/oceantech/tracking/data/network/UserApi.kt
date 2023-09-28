@@ -34,9 +34,5 @@ interface UserApi {
     @POST("users/searchByPage")
     suspend fun getUserByPage(@Body filter: Pageable): Page<User>
 
-    @Multipart
-    @POST("public/uploadFile")
-    fun uploadAttachment(
-        @Part image: MultipartBody.Part
-    ): Observable<UpLoadImage>
+
 }

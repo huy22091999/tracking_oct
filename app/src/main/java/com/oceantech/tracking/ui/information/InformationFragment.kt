@@ -1,14 +1,14 @@
 package com.oceantech.tracking.ui.information
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.database.Cursor
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,22 +22,35 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.airbnb.mvrx.Fail
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.oceantech.tracking.R
 import com.oceantech.tracking.core.TrackingBaseFragment
+import com.oceantech.tracking.data.model.UpLoadImage
 import com.oceantech.tracking.data.model.User
+import com.oceantech.tracking.data.network.ImageApi
 import com.oceantech.tracking.databinding.FragmentInformationBinding
 import com.oceantech.tracking.utils.checkStatusApiRes
+import com.oceantech.tracking.utils.getFilePath
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
@@ -68,25 +81,47 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
 
 
     private fun handleResult(result: ActivityResult) {
-        val data = result.data
-        if (data != null && result.resultCode == RESULT_OK) {
-            selectedImageUri = data.data
-            if (selectedImageUri != null) {
-                Log.e("IMAGE1", selectedImageUri.toString())
-                val imageFile = File(getPath(selectedImageUri))
-                Log.e("IMAGE", imageFile.path)
+        val intent = result.data
+        if (intent != null && result.resultCode == RESULT_OK) {
+            val selectedPath = intent.getFilePath(requireActivity())
 //                if (imageFile.exists()) {
-                val requestBody =
-                    imageFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val imagePart =
-                    MultipartBody.Part.createFormData("uploadfile", imageFile.name, requestBody)
-                infoViewModel.handle(InformationViewActon.UploadImage(imagePart))
-//                } else
-//                    Toast.makeText(requireActivity(), "Tếp không tồn tại", Toast.LENGTH_SHORT)
-//                        .show()
-            } else {
-                Toast.makeText(requireActivity(), "Lỗi", Toast.LENGTH_SHORT).show()
-            }
+            val imageFile = File(selectedPath)
+            val retrofit =
+                Retrofit.Builder().baseUrl("http://android-tracking.oceantech.com.vn/mita/")
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+            val api = retrofit.create(ImageApi::class.java)
+            val requestBody: RequestBody =
+                imageFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val imagePart =
+                MultipartBody.Part.createFormData("uploadfile", imageFile.name, requestBody)
+
+            val call = api.uploadFile(imagePart)
+            call.enqueue(object : Callback<UpLoadImage> {
+                override fun onResponse(call: Call<UpLoadImage>, response: Response<UpLoadImage>) {
+                    if (response.isSuccessful) {
+                        val result = response.body()
+                        if (result != null) {
+                            user?.apply {
+                                this.image = result.name
+                            }
+                            views.imageUser.setImageURI(intent.data)
+                            infoViewModel.handle(
+                                InformationViewActon.UpdateUserAction(
+                                    user!!
+                                )
+                            )
+                        }
+                    } else {
+                        Log.e("RESPONSE", response.errorBody().toString())
+                    }
+                }
+
+                override fun onFailure(call: Call<UpLoadImage>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+            //infoViewModel.handle(InformationViewActon.UploadImage(imagePart))
         } else {
             Toast.makeText(requireActivity(), "No data", Toast.LENGTH_SHORT).show()
         }
@@ -99,19 +134,6 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
         return FragmentInformationBinding.inflate(inflater, container, false)
     }
 
-    fun getPath(uri: Uri?): String? {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor: Cursor =
-            uri?.let {
-                requireContext().getContentResolver().query(it, projection, null, null, null)
-            }
-                ?: return null
-        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor.moveToFirst()
-        val s = cursor.getString(column_index)
-        cursor.close()
-        return s
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -144,18 +166,22 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
         }
 
         views.edtPhoto.setOnClickListener {
-//            ImagePicker.with(this)
-//                .compress(1024)         //Final image size will be less than 1 MB(Optional)
-//                .maxResultSize(
-//                    1080,
-//                    1080
-//                )  //Final image resolution will be less than 1080 x 1080(Optional)
-//                .createIntent { intent ->
-//                    myLauncher?.launch(intent)
-//                }
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*" // Chỉ lấy các tệp hình ảnh
-            myLauncher?.launch(intent)
+            if (ContextCompat.checkSelfPermission(
+                    (requireActivity().applicationContext),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                == PackageManager.PERMISSION_GRANTED
+            ) {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "image/*" // Chỉ lấy các tệp hình ảnh
+                myLauncher?.launch(intent)
+            } else {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    123
+                )
+            }
         }
     }
 
@@ -257,28 +283,6 @@ class InformationFragment : TrackingBaseFragment<FragmentInformationBinding>() {
 
 
             else -> {}
-        }
-        when (it.upLoadImage) {
-            is Success -> {
-                Toast.makeText(requireContext(), getString(R.string.success), Toast.LENGTH_SHORT)
-                    .show()
-                infoViewModel.handle(InformationViewActon.UpdateUserAction(User(image = it.upLoadImage.invoke()?.name)))
-                infoViewModel.restartState()
-
-            }
-
-            is Fail -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(checkStatusApiRes(it.upLoadImage)),
-                    Toast.LENGTH_SHORT
-                ).show()
-                infoViewModel.restartState()
-            }
-
-            else -> {
-                false
-            }
         }
     }
 

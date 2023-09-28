@@ -10,6 +10,7 @@ import android.util.DisplayMetrics
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -105,6 +106,9 @@ class MainActivity : TrackingBaseActivity<ActivityMainBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         (applicationContext as TrackingApplication).trackingComponent.inject(this)
         super.onCreate(savedInstanceState)
+
+        
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         val receivedUser = intent.getSerializableExtra(EXTRA_USER) as User?
 
         if (receivedUser == null) {

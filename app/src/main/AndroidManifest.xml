@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
@@ -13,16 +14,18 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <!-- TODO: Step 1.0, Review Permissions: Specify permissions you are using. -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name="com.oceantech.tracking.TrackingApplication"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
-        android:screenOrientation="portrait"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.Nimpe"
         android:usesCleartextTraffic="true"
@@ -44,7 +47,7 @@
         <activity
             android:name="com.oceantech.tracking.ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Nimpe.NoActionBar"/>
+            android:theme="@style/Theme.Nimpe.NoActionBar" />
     </application>
 
 </manifest>
